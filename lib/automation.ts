@@ -10,9 +10,8 @@ export interface QueueItem {
   generatedArticleSlug?: string;
 }
 
-const getGeminiApiKey = () => {
-  return process.env.GEMINI_API_KEY || "";
-};
+const getGeminiApiKey = () => process.env.GEMINI_API_KEY || "";
+const getUnsplashAccessKey = () => process.env.UNSPLASH_ACCESS_KEY || "FLqjxtnt8-eGS9mpiB3-GMOvHhVAqT4_lQxyslYLO0A";
 
 // Global in-memory storage (persists across server requests in Node process)
 let dynamicArticlesStore: Article[] = [];
@@ -68,28 +67,57 @@ let keywordQueueStore: QueueItem[] = [
   },
 ];
 
-// Topic to Image Mapper with high-res unsplash photography
-function getImageUrlForKeyword(keyword: string, category: string): string {
-  const kw = keyword.toLowerCase();
-  if (kw.includes("ai") || kw.includes("robot") || kw.includes("tech") || kw.includes("software") || kw.includes("data")) {
-    return "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80";
+/**
+ * Fetch a unique high-res photograph dynamically from Unsplash API for a keyword
+ */
+async function fetchUniqueUnsplashImage(keyword: string, category: string): Promise<{ url: string; caption: string }> {
+  const accessKey = getUnsplashAccessKey();
+  const searchTopic = `${keyword} ${category}`;
+
+  try {
+    const res = await fetch(
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(searchTopic)}&per_page=15&orientation=landscape&client_id=${accessKey}`
+    );
+
+    if (res.ok) {
+      const data = await res.json();
+      const results = data?.results;
+      if (Array.isArray(results) && results.length > 0) {
+        // Pick a random photo from the search results to guarantee uniqueness every time
+        const randomIndex = Math.floor(Math.random() * results.length);
+        const photo = results[randomIndex];
+        const imageUrl = photo?.urls?.regular || photo?.urls?.full;
+        const authorName = photo?.user?.name || "Unsplash Photographer";
+        const description = photo?.alt_description || photo?.description || keyword;
+
+        if (imageUrl) {
+          return {
+            url: imageUrl,
+            caption: `Editorial photograph for ${keyword}. Photo by ${authorName} on Unsplash.`,
+          };
+        }
+      }
+    }
+  } catch (err) {
+    console.error("Unsplash API fetch error fallback:", err);
   }
-  if (kw.includes("celebrity") || kw.includes("fashion") || kw.includes("carpet") || kw.includes("star") || kw.includes("movie")) {
-    return "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80";
-  }
-  if (kw.includes("health") || kw.includes("sleep") || kw.includes("medical") || kw.includes("fitness") || kw.includes("wellness")) {
-    return "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80";
-  }
-  if (kw.includes("business") || kw.includes("finance") || kw.includes("capital") || kw.includes("market") || kw.includes("startup")) {
-    return "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=80";
-  }
-  if (kw.includes("food") || kw.includes("recipe") || kw.includes("gourmet") || kw.includes("dining") || kw.includes("chef")) {
-    return "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80";
-  }
-  if (kw.includes("news") || kw.includes("global") || kw.includes("city") || kw.includes("accord") || kw.includes("climate")) {
-    return "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80";
-  }
-  return "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80";
+
+  // High-res curated fallbacks per category if API limit or network fallback occurs
+  const randomSig = Math.floor(Math.random() * 10000);
+  const fallbacks: Record<string, string> = {
+    tech: `https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
+    celebrity: `https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
+    health: `https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
+    business: `https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
+    food: `https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
+    news: `https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
+    "life-style": `https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
+  };
+
+  return {
+    url: fallbacks[category] || fallbacks["tech"],
+    caption: `Editorial visualization for ${keyword} on On Gravity Magazine.`,
+  };
 }
 
 function inferCategoryFromKeyword(keyword: string): string {
@@ -185,7 +213,7 @@ async function fetchGeminiArticle(keyword: string, categoryOverride?: string): P
 }
 
 /**
- * Generate a complete blog article dynamically using Gemini AI or structured fallback
+ * Generate a complete blog article dynamically using Gemini AI & Unsplash API
  */
 export async function generateArticleObjectAsync(keyword: string, categoryOverride?: string): Promise<Article> {
   const cleanKw = keyword.trim();
@@ -194,6 +222,10 @@ export async function generateArticleObjectAsync(keyword: string, categoryOverri
 
   // Attempt real Gemini AI generation
   const geminiData = await fetchGeminiArticle(cleanKw, categoryOverride);
+  const category = geminiData?.category || categoryOverride || inferCategoryFromKeyword(cleanKw);
+
+  // Fetch unique photograph from Unsplash API for this specific keyword & category
+  const image = await fetchUniqueUnsplashImage(cleanKw, category);
 
   if (geminiData) {
     return {
@@ -202,12 +234,12 @@ export async function generateArticleObjectAsync(keyword: string, categoryOverri
       title: geminiData.title,
       excerpt: geminiData.excerpt,
       content: geminiData.paragraphs,
-      category: geminiData.category,
+      category,
       author,
       publishedAt: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
       readTime: `${Math.max(4, Math.ceil(geminiData.paragraphs.join(" ").split(" ").length / 200))} min read`,
-      imageUrl: getImageUrlForKeyword(cleanKw, geminiData.category),
-      imageCaption: `AI-enhanced editorial coverage on ${cleanKw} for On Gravity Magazine.`,
+      imageUrl: image.url,
+      imageCaption: image.caption,
       featured: true,
       trending: true,
       tags: geminiData.tags,
@@ -215,7 +247,6 @@ export async function generateArticleObjectAsync(keyword: string, categoryOverri
   }
 
   // Structured Fallback
-  const category = categoryOverride || inferCategoryFromKeyword(cleanKw);
   const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
   const title = `${capitalizedKw}: A Comprehensive Analysis & Future Outlook`;
   const excerpt = `Exploring the latest developments, expert perspectives, and societal impacts surrounding ${cleanKw} in 2026.`;
@@ -237,8 +268,8 @@ export async function generateArticleObjectAsync(keyword: string, categoryOverri
     author,
     publishedAt: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
     readTime: "5 min read",
-    imageUrl: getImageUrlForKeyword(cleanKw, category),
-    imageCaption: `Editorial visualization highlighting key developments in ${cleanKw}.`,
+    imageUrl: image.url,
+    imageCaption: image.caption,
     featured: true,
     trending: true,
     tags: [cleanKw.split(" ")[0] || "Featured", category.toUpperCase(), "2026"],
