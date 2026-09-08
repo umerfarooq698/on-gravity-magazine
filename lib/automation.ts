@@ -545,14 +545,85 @@ export async function publishSpecificKeywordAsync(keyword: string, category?: st
   return newArticle;
 }
 
+function buildArticleFromQueueItem(item: QueueItem): Article {
+  const cleanKw = item.keyword;
+  const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
+  const category = item.category || inferCategoryFromKeyword(cleanKw);
+  const slug = item.generatedArticleSlug || cleanKw.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const author = AUTHORS[Math.floor(Math.random() * AUTHORS.length)];
+  const title = generateDynamicFallbackTitle(cleanKw, category, false);
+  const excerpt = `An essential, reader-first examination of ${cleanKw}, exploring technical benchmarks, real-world utility, and future market trends.`;
+
+  return {
+    id: `queue-${item.id}`,
+    slug,
+    title,
+    metaTitle: `${title} | On Gravity Magazine`,
+    metaDescription: excerpt,
+    excerpt,
+    content: [
+      `As ${cleanKw} continues to shape contemporary discussions across technology, industry, and modern lifestyle, understanding its core principles, practical implications, and underlying mechanisms has become vital for enthusiasts and decision-makers alike.`,
+      `## Key Architecture & Operational Features of ${capitalizedKw}`,
+      `From a structural and operational perspective, ${cleanKw} represents a significant evolution in its domain. Industry benchmarks indicate that adoption rates have grown exponentially over the past 12 months, driven by advances in core integration and refined user experiences.`,
+      `### Core Hardware & System Integration`,
+      `Key specifications and primary features highlight several distinct advantages. Users consistently praise its flexibility, streamlined interface, and high reliability, while expert testing confirms that performance metrics regularly exceed standard expectations.`,
+      `## Real-World Utility & Hands-On User Experience`,
+      `Real-world implementation scenarios reveal practical strategies for maximizing value. Experts recommend establishing clear operational protocols, utilizing automated safeguards, and periodically assessing workflow bottlenecks to ensure optimal outcomes.`,
+      `## Comparative Benchmarks & Industry Alternatives`,
+      `When comparing ${cleanKw} against traditional alternatives, key trade-offs emerge. While initial setup and investment require deliberate planning, long-term efficiency gains and operational benefits overwhelmingly justify the transition.`,
+      `### Efficiency Metrics & Performance Testing`,
+      `Rigorous side-by-side evaluations demonstrate notable performance gains. Under heavy operational loads, key throughput metrics outperform standard legacy configurations by substantial margins.`,
+      `## Key Limitations & Essential Buyer Caveats`,
+      `Despite its notable benefits, certain limitations and practical caveats warrant consideration. Potential users should account for integration timelines, ongoing maintenance requirements, and compatibility with legacy infrastructure before committing resources.`,
+      `## Strategic Outlook & Final Verdict`,
+      `Looking ahead to the next decade, ongoing innovations surrounding ${cleanKw} promise to unlock even greater capabilities. Editors at On Gravity Magazine will continue monitoring developments to deliver timely, actionable coverage as new breakthroughs emerge.`
+    ],
+    faqs: [
+      {
+        question: `What makes ${capitalizedKw} a major focus in 2026?`,
+        answer: `${capitalizedKw} offers a blend of performance, versatility, and efficiency that aligns with modern user demand and market trends.`
+      },
+      {
+        question: `How does ${capitalizedKw} compare to traditional solutions?`,
+        answer: `While initial adoption may require adjustment, testing demonstrates that ${capitalizedKw} delivers superior long-term reliability and streamlined operation.`
+      },
+      {
+        question: `What are the key limitations to consider regarding ${capitalizedKw}?`,
+        answer: `Prospective users should review compatibility requirements, setup timeframes, and resource allocation to ensure a smooth implementation.`
+      }
+    ],
+    category,
+    author,
+    publishedAt: item.publishedAt || item.createdAt,
+    readTime: "7 min read",
+    imageUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: `Editorial photography for ${cleanKw}`,
+    imageCaption: `Editorial photograph for ${cleanKw}.`,
+    featured: true,
+    trending: true,
+    tags: [cleanKw.split(" ")[0] || "Featured", category.toUpperCase(), "2026"],
+  };
+}
+
 export function getAllArticlesCombined(): Article[] {
   const diskArticles = loadCacheFromDisk();
   const map = new Map<string, Article>();
+
   for (const art of [...dynamicArticlesStore, ...diskArticles, ...ARTICLES]) {
     if (!map.has(art.slug)) {
       map.set(art.slug, art);
     }
   }
+
+  // Include any published items from queue so they appear in feed across all serverless instances
+  for (const qItem of keywordQueueStore) {
+    if (qItem.status === "published" && qItem.generatedArticleSlug) {
+      if (!map.has(qItem.generatedArticleSlug)) {
+        map.set(qItem.generatedArticleSlug, buildArticleFromQueueItem(qItem));
+      }
+    }
+  }
+
   return Array.from(map.values());
 }
 
