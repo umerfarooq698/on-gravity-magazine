@@ -1038,6 +1038,9 @@ function generateDynamicFallbackTitle(keyword: string, category: string, isSuffi
 /**
  * Generate a complete blog article dynamically using Gemini AI & Unsplash API
  */
+/**
+ * Generate a complete blog article dynamically using Gemini AI & Unsplash API
+ */
 export async function generateArticleObjectAsync(
   keyword: string,
   categoryOverride?: string,
@@ -1045,23 +1048,13 @@ export async function generateArticleObjectAsync(
 ): Promise<Article> {
   const cleanKw = keyword.trim();
 
-  // Generate unique slug, avoiding collisions with existing articles
-  let baseSlug =
+  // Use clean slug directly (e.g. "elon-musk", "bathtub-drain") so generated articles immediately update target URLs
+  const slug =
     customSlug ||
     cleanKw
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-|-$/g, "");
-
-  let slug = baseSlug;
-  const existingSlugs = new Set(getAllArticlesCombined().map((a) => a.slug));
-  let isSuffixAdded = false;
-
-  if (!customSlug && existingSlugs.has(slug)) {
-    // If slug already exists in database/store, append a short random hex suffix to guarantee URL uniqueness
-    slug = `${baseSlug}-${Math.random().toString(36).substring(2, 6)}`;
-    isSuffixAdded = true;
-  }
 
   const author = AUTHORS[Math.floor(Math.random() * AUTHORS.length)];
 
@@ -1098,25 +1091,73 @@ export async function generateArticleObjectAsync(
   } else {
     // Comprehensive Dynamic Fallback (900-1200 words) with 100% unique title, headings & FAQs
     const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
-    const title = generateDynamicFallbackTitle(cleanKw, category, isSuffixAdded);
+    const title = generateDynamicFallbackTitle(cleanKw, category, false);
     const headings = generateDynamicHeadingsForArticle(cleanKw, category);
     const excerpt = `An essential, reader-first examination of ${cleanKw}, exploring technical benchmarks, real-world utility, and future market trends.`;
     const content = generateDynamicDomainParagraphs(cleanKw, category, headings);
 
-    const faqs = [
+    let faqs = [
       {
-        question: `What makes ${capitalizedKw} a major focus in 2026?`,
-        answer: `${capitalizedKw} offers a blend of performance, versatility, and efficiency that aligns with modern user demand and market trends.`
+        question: `What are the key real-world benefits of ${capitalizedKw}?`,
+        answer: `${capitalizedKw} delivers superior efficiency, practical reliability, and long-term performance when implemented according to established best practices.`
       },
       {
-        question: `How does ${capitalizedKw} compare to traditional solutions?`,
-        answer: `While initial adoption may require adjustment, testing demonstrates that ${capitalizedKw} delivers superior long-term reliability and streamlined operation.`
+        question: `How can you get started with ${capitalizedKw} effectively?`,
+        answer: `Begin by evaluating your specific requirements, setting clear priorities, and following step-by-step guidelines for smooth adoption.`
       },
       {
-        question: `What are the key limitations to consider regarding ${capitalizedKw}?`,
-        answer: `Prospective users should review compatibility requirements, setup timeframes, and resource allocation to ensure a smooth implementation.`
+        question: `What common caveats or mistakes should be avoided?`,
+        answer: `Avoid rushing setup without reviewing specifications, and perform regular maintenance checks to prevent unexpected issues.`
       }
     ];
+
+    const cleanKwLower = cleanKw.toLowerCase();
+    if (cleanKwLower.includes("drain") || cleanKwLower.includes("bathtub") || cleanKwLower.includes("tub") || cleanKwLower.includes("plumbing")) {
+      faqs = [
+        {
+          question: "How often should you perform routine drain maintenance?",
+          answer: "Clearing surface hair catchers weekly and performing a hot water flush every 1 to 2 months keeps drain pipes flowing smoothly."
+        },
+        {
+          question: "What is the best natural way to clear minor drain buildup?",
+          answer: "Pouring half a cup of baking soda followed by a cup of white vinegar down the drain, letting it sit for 15 minutes, then flushing with hot water breaks down organic residue naturally."
+        },
+        {
+          question: "When is it necessary to call a professional plumber?",
+          answer: "If water backs up completely, drains smell strongly of sewer gas, or subfloor leaks appear, call a licensed plumber immediately to prevent structural damage."
+        }
+      ];
+    } else if (cleanKwLower.includes("musk") || cleanKwLower.includes("elon") || cleanKwLower.includes("ceo") || cleanKwLower.includes("founder")) {
+      faqs = [
+        {
+          question: "What is the core philosophy behind first-principles engineering?",
+          answer: "First-principles engineering breaks complex problems down to basic physical facts and re-evaluates solutions from scratch, bypassing legacy industry assumptions."
+        },
+        {
+          question: "Why is vertical integration valuable in technology manufacturing?",
+          answer: "Manufacturing components in-house reduces reliance on third-party supply chains, lowers long-term production costs, and allows rapid iteration cycles."
+        },
+        {
+          question: "How do high-velocity iteration cycles improve product reliability?",
+          answer: "Testing early prototypes to failure generates real telemetry data that engineers use to continuously upgrade subsequent hardware and software revisions."
+        }
+      ];
+    } else if (cleanKwLower.includes("tv") || cleanKwLower.includes("samsung") || cleanKwLower.includes("display")) {
+      faqs = [
+        {
+          question: "What is the main difference between QLED and QD-OLED displays?",
+          answer: "QLED uses Quantum Dot Mini-LED backlights for intense peak brightness in lit rooms, while QD-OLED uses self-emissive pixels for absolute dark room contrast."
+        },
+        {
+          question: "Are 120Hz refresh rates necessary for modern gaming?",
+          answer: "Yes, 120Hz refresh rates combined with VRR and HDMI 2.1 deliver ultra-smooth gameplay motion and sub-10ms response times for modern consoles and PCs."
+        },
+        {
+          question: "How can you protect display panels from image retention?",
+          answer: "Enable automated pixel refresh routines, avoid leaving static HUD graphics on high brightness for extended hours, and use power-saving sleep timers."
+        }
+      ];
+    }
 
     resultArticle = {
       id: `auto-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -1140,8 +1181,8 @@ export async function generateArticleObjectAsync(
     };
   }
 
-  // Store in memory & cache to disk
-  dynamicArticlesStore.unshift(resultArticle);
+  // Store in memory (overwriting any existing entry with the same slug) & cache to disk
+  dynamicArticlesStore = [resultArticle, ...dynamicArticlesStore.filter((a) => a.slug !== resultArticle.slug)];
   saveCacheToDisk(dynamicArticlesStore);
 
   return resultArticle;
