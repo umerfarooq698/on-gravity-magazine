@@ -6,19 +6,11 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { CATEGORIES } from "@/data/categories";
 import Logo from "@/components/Logo";
-import {
-  Search,
-  Sun,
-  Moon,
-  Menu,
-  X,
-  ChevronDown
-} from "lucide-react";
+import { Search, Sun, Moon, Menu, X } from "lucide-react";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [pagesDropdownOpen, setPagesDropdownOpen] = useState(false);
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
 
@@ -27,6 +19,13 @@ export default function Header() {
   }, []);
 
   const todayDate = "Tuesday, Sept 8, 2026";
+
+  const PAGE_LINKS = [
+    { name: "About Us", href: "/about" },
+    { name: "Contact Us", href: "/contact" },
+    { name: "Privacy Policy", href: "/privacy-policy" },
+    { name: "Cookie Policy", href: "/cookie-policy" },
+  ];
 
   return (
     <header className="w-full bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 transition-colors duration-200 sticky top-0 z-50 shadow-xs">
@@ -112,79 +111,59 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Primary Categories Navigation Desktop */}
-      <nav className="hidden lg:block bg-zinc-50/80 dark:bg-zinc-900/50 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between">
-          <div className="flex items-center space-x-1 font-sans text-sm font-semibold tracking-wide">
-            <Link
-              href="/"
-              className={`py-3.5 px-4 border-b-2 transition-colors ${
-                pathname === "/"
-                  ? "border-amber-500 text-amber-600 dark:text-amber-400"
-                  : "border-transparent text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
-              }`}
-            >
-              Home
-            </Link>
+      {/* Primary Navigation Bar (Categories First + Pages Next Inline) */}
+      <nav className="hidden lg:block bg-zinc-50/80 dark:bg-zinc-900/50 backdrop-blur-md overflow-x-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 flex items-center space-x-1 font-sans text-xs font-semibold tracking-wide whitespace-nowrap">
+          {/* Home Link */}
+          <Link
+            href="/"
+            className={`py-3.5 px-3 border-b-2 transition-colors ${
+              pathname === "/"
+                ? "border-amber-500 text-amber-600 dark:text-amber-400 font-bold"
+                : "border-transparent text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
+            }`}
+          >
+            Home
+          </Link>
 
-            {CATEGORIES.map((cat) => {
-              const isActive = pathname === `/category/${cat.slug}`;
-              return (
-                <Link
-                  key={cat.id}
-                  href={`/category/${cat.slug}`}
-                  className={`py-3.5 px-3.5 border-b-2 transition-colors ${
-                    isActive
-                      ? "border-amber-500 text-amber-600 dark:text-amber-400"
-                      : "border-transparent text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
-                  }`}
-                >
-                  {cat.name}
-                </Link>
-              );
-            })}
-          </div>
+          {/* 7 Categories Links */}
+          {CATEGORIES.map((cat) => {
+            const isActive = pathname === `/category/${cat.slug}`;
+            return (
+              <Link
+                key={cat.id}
+                href={`/category/${cat.slug}`}
+                className={`py-3.5 px-3 border-b-2 transition-colors ${
+                  isActive
+                    ? "border-amber-500 text-amber-600 dark:text-amber-400 font-bold"
+                    : "border-transparent text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
+                }`}
+              >
+                {cat.name}
+              </Link>
+            );
+          })}
 
-          {/* Pages Dropdown */}
-          <div className="relative">
-            <button
-              onClick={() => setPagesDropdownOpen(!pagesDropdownOpen)}
-              onBlur={() => setTimeout(() => setPagesDropdownOpen(false), 200)}
-              className="flex items-center gap-1 py-3.5 px-4 text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
-              Pages
-              <ChevronDown className={`w-4 h-4 transition-transform ${pagesDropdownOpen ? "rotate-180" : ""}`} />
-            </button>
+          {/* Visual Divider between Categories and Pages */}
+          <span className="text-zinc-300 dark:text-zinc-700 px-1 font-light">|</span>
 
-            {pagesDropdownOpen && (
-              <div className="absolute right-0 top-full mt-1 w-48 bg-white dark:bg-zinc-900 rounded-xl shadow-xl border border-zinc-200 dark:border-zinc-800 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                <Link
-                  href="/about"
-                  className="block px-4 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                >
-                  About Us
-                </Link>
-                <Link
-                  href="/contact"
-                  className="block px-4 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                >
-                  Contact Us
-                </Link>
-                <Link
-                  href="/privacy-policy"
-                  className="block px-4 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                >
-                  Privacy Policy
-                </Link>
-                <Link
-                  href="/cookie-policy"
-                  className="block px-4 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                >
-                  Cookie Policy
-                </Link>
-              </div>
-            )}
-          </div>
+          {/* Pages Direct Links */}
+          {PAGE_LINKS.map((page) => {
+            const isActive = pathname === page.href;
+            return (
+              <Link
+                key={page.href}
+                href={page.href}
+                className={`py-3.5 px-3 border-b-2 transition-colors ${
+                  isActive
+                    ? "border-amber-500 text-amber-600 dark:text-amber-400 font-bold"
+                    : "border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
+                }`}
+              >
+                {page.name}
+              </Link>
+            );
+          })}
         </div>
       </nav>
 
@@ -216,36 +195,18 @@ export default function Header() {
 
           <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800 space-y-2">
             <div className="font-semibold text-xs text-zinc-400 uppercase tracking-widest px-2">
-              Information & Company
+              Pages
             </div>
-            <Link
-              href="/about"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block p-2 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900"
-            >
-              About Us
-            </Link>
-            <Link
-              href="/contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block p-2 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900"
-            >
-              Contact Us
-            </Link>
-            <Link
-              href="/privacy-policy"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block p-2 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/cookie-policy"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block p-2 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900"
-            >
-              Cookie Policy
-            </Link>
+            {PAGE_LINKS.map((page) => (
+              <Link
+                key={page.href}
+                href={page.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="block p-2 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900"
+              >
+                {page.name}
+              </Link>
+            ))}
           </div>
         </div>
       )}
