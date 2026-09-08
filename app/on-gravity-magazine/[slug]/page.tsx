@@ -23,8 +23,8 @@ export async function generateMetadata({ params }: ArticlePageProps) {
   const article = getArticleBySlug(slug);
   if (!article) return { title: "Article Not Found" };
   return {
-    title: `${article.title} | On Gravity Magazine`,
-    description: article.excerpt,
+    title: article.metaTitle || `${article.title} | On Gravity Magazine`,
+    description: article.metaDescription || article.excerpt,
   };
 }
 
@@ -116,7 +116,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <div className="relative w-full aspect-16/9 rounded-3xl overflow-hidden shadow-2xl border border-zinc-200/80 dark:border-zinc-800">
           <Image
             src={article.imageUrl}
-            alt={article.title}
+            alt={article.imageAlt || article.title}
             fill
             className="object-cover"
             priority

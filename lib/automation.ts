@@ -70,7 +70,7 @@ let keywordQueueStore: QueueItem[] = [
 /**
  * Fetch a unique high-res photograph dynamically from Unsplash API for a keyword
  */
-async function fetchUniqueUnsplashImage(keyword: string, category: string): Promise<{ url: string; caption: string }> {
+async function fetchUniqueUnsplashImage(keyword: string, category: string): Promise<{ url: string; caption: string; alt: string }> {
   const accessKey = getUnsplashAccessKey();
   const searchTopic = `${keyword} ${category}`;
 
@@ -83,7 +83,6 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string): Prom
       const data = await res.json();
       const results = data?.results;
       if (Array.isArray(results) && results.length > 0) {
-        // Pick a random photo from the search results to guarantee uniqueness every time
         const randomIndex = Math.floor(Math.random() * results.length);
         const photo = results[randomIndex];
         const imageUrl = photo?.urls?.regular || photo?.urls?.full;
@@ -94,6 +93,7 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string): Prom
           return {
             url: imageUrl,
             caption: `Editorial photograph for ${keyword}. Photo by ${authorName} on Unsplash.`,
+            alt: description,
           };
         }
       }
@@ -102,7 +102,6 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string): Prom
     console.error("Unsplash API fetch error fallback:", err);
   }
 
-  // High-res curated fallbacks per category if API limit or network fallback occurs
   const randomSig = Math.floor(Math.random() * 10000);
   const fallbacks: Record<string, string> = {
     tech: `https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
@@ -116,7 +115,8 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string): Prom
 
   return {
     url: fallbacks[category] || fallbacks["tech"],
-    caption: `Editorial visualization for ${keyword} on On Gravity Magazine.`,
+    caption: `Editorial photograph highlighting ${keyword} for On Gravity Magazine.`,
+    alt: `High resolution photography representing ${keyword}`,
   };
 }
 
@@ -152,11 +152,14 @@ const AUTHORS = [
 ];
 
 /**
- * Call Gemini 3.6 Flash API to generate rich, human-like editorial content
+ * Call Gemini 3.6 Flash API to generate rich content + SEO meta title & description + Image ALT text
  */
 async function fetchGeminiArticle(keyword: string, categoryOverride?: string): Promise<{
   title: string;
   excerpt: string;
+  metaTitle: string;
+  metaDescription: string;
+  imageAlt: string;
   paragraphs: string[];
   category: string;
   tags: string[];
@@ -165,10 +168,13 @@ async function fetchGeminiArticle(keyword: string, categoryOverride?: string): P
   if (!apiKey) return null;
 
   try {
-    const prompt = `You are the Editor-in-Chief of "On Gravity Magazine". Write an in-depth, captivating, high-quality magazine article based on the keyword/topic: "${keyword}".
+    const prompt = `You are the Senior SEO Editor & Editor-in-Chief of "On Gravity Magazine". Write an in-depth, high-ranking magazine article based on the target keyword: "${keyword}".
     Return ONLY a valid JSON object with the following fields:
     {
-      "title": "A captivating editorial headline",
+      "title": "A captivating editorial headline containing '${keyword}'",
+      "metaTitle": "SEO Title under 60 chars ending with | On Gravity Magazine",
+      "metaDescription": "Compelling SEO meta description under 155 chars optimized for Google search clicks",
+      "imageAlt": "Descriptive accessibility and image SEO ALT text for photo of ${keyword}",
       "excerpt": "A compelling 2-sentence summary excerpt",
       "paragraphs": [
         "First comprehensive introductory paragraph engaging the reader...",
@@ -200,6 +206,9 @@ async function fetchGeminiArticle(keyword: string, categoryOverride?: string): P
     if (parsed.title && parsed.excerpt && Array.isArray(parsed.paragraphs)) {
       return {
         title: parsed.title,
+        metaTitle: parsed.metaTitle || `${parsed.title} | On Gravity Magazine`,
+        metaDescription: parsed.metaDescription || parsed.excerpt,
+        imageAlt: parsed.imageAlt || `High-resolution photograph representing ${keyword}`,
         excerpt: parsed.excerpt,
         paragraphs: parsed.paragraphs,
         category: categoryOverride || parsed.category || inferCategoryFromKeyword(keyword),
@@ -232,6 +241,8 @@ export async function generateArticleObjectAsync(keyword: string, categoryOverri
       id: `gemini-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
       slug,
       title: geminiData.title,
+      metaTitle: geminiData.metaTitle,
+      metaDescription: geminiData.metaDescription,
       excerpt: geminiData.excerpt,
       content: geminiData.paragraphs,
       category,
@@ -239,6 +250,7 @@ export async function generateArticleObjectAsync(keyword: string, categoryOverri
       publishedAt: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
       readTime: `${Math.max(4, Math.ceil(geminiData.paragraphs.join(" ").split(" ").length / 200))} min read`,
       imageUrl: image.url,
+      imageAlt: geminiData.imageAlt || image.alt,
       imageCaption: image.caption,
       featured: true,
       trending: true,
@@ -262,6 +274,8 @@ export async function generateArticleObjectAsync(keyword: string, categoryOverri
     id: `auto-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
     slug,
     title,
+    metaTitle: `${title} | On Gravity Magazine`,
+    metaDescription: excerpt,
     excerpt,
     content,
     category,
@@ -269,6 +283,7 @@ export async function generateArticleObjectAsync(keyword: string, categoryOverri
     publishedAt: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
     readTime: "5 min read",
     imageUrl: image.url,
+    imageAlt: image.alt,
     imageCaption: image.caption,
     featured: true,
     trending: true,
