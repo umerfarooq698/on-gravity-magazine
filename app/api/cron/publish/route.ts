@@ -17,7 +17,7 @@ export async function GET() {
       success: true,
       message: `Cron automated publishing triggered! Article '${article.title}' published.`,
       article,
-      readUrl: `/article/${article.slug}`,
+      readUrl: `/on-gravity-magazine/${article.slug}`,
     });
   } catch (error: any) {
     return NextResponse.json(

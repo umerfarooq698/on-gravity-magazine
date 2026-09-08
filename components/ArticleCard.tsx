@@ -12,6 +12,7 @@ interface ArticleCardProps {
 
 export default function ArticleCard({ article, variant = "standard" }: ArticleCardProps) {
   const category = getCategoryBySlug(article.category);
+  const articleUrl = `/on-gravity-magazine/${article.slug}`;
 
   if (variant === "featured") {
     return (
@@ -47,7 +48,7 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
           </div>
 
           <h2 className="font-serif text-2xl sm:text-4xl font-bold tracking-tight leading-tight group-hover:text-amber-400 transition-colors">
-            <Link href={`/article/${article.slug}`}>
+            <Link href={articleUrl}>
               {article.title}
             </Link>
           </h2>
@@ -72,7 +73,7 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
             </div>
 
             <Link
-              href={`/article/${article.slug}`}
+              href={articleUrl}
               className="inline-flex items-center gap-1 text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full backdrop-blur-xs"
             >
               Read Article
@@ -114,7 +115,7 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
             </div>
 
             <h3 className="font-serif text-lg sm:text-xl font-bold text-zinc-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors leading-snug">
-              <Link href={`/article/${article.slug}`}>{article.title}</Link>
+              <Link href={articleUrl}>{article.title}</Link>
             </h3>
 
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">
@@ -165,7 +166,7 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
           </div>
 
           <h3 className="font-serif text-lg font-bold text-zinc-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors leading-snug">
-            <Link href={`/article/${article.slug}`}>{article.title}</Link>
+            <Link href={articleUrl}>{article.title}</Link>
           </h3>
 
           <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">
@@ -188,7 +189,7 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
           </div>
 
           <Link
-            href={`/article/${article.slug}`}
+            href={articleUrl}
             className="text-amber-600 dark:text-amber-400 font-bold hover:underline"
           >
             Read →

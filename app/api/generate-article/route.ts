@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       success: true,
       message: `Article for keyword '${keyword}' successfully generated & published!`,
       article: publishedArticle,
-      readUrl: `/article/${publishedArticle.slug}`,
+      readUrl: `/on-gravity-magazine/${publishedArticle.slug}`,
     });
   } catch (error: any) {
     return NextResponse.json(

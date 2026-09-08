@@ -2,20 +2,16 @@ import React from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { getArticleBySlug, ARTICLES, Article } from "@/data/articles";
+import { getArticleBySlug, ARTICLES } from "@/data/articles";
 import { getCategoryBySlug } from "@/data/categories";
 import ArticleCard from "@/components/ArticleCard";
 import Newsletter from "@/components/Newsletter";
 import {
   Clock,
   Calendar,
-  Share2,
-  Bookmark,
   ArrowLeft,
-  Check,
   Tag,
-  Sparkles,
-  Globe
+  Sparkles
 } from "lucide-react";
 
 interface ArticlePageProps {

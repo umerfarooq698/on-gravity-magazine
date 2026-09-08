@@ -45,7 +45,7 @@ export default function Header() {
               Breaking News:
             </div>
             <Link
-              href="/article/ai-generative-revolution-2026"
+              href="/on-gravity-magazine/ai-generative-revolution-2026"
               className="hover:underline text-zinc-200 truncate max-w-xs sm:max-w-md transition-colors"
             >
               The Next Frontier of AI: Autonomous Agents Reshaping Workflows

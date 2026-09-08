@@ -1,5 +1,4 @@
 import { Article, ARTICLES } from "@/data/articles";
-import { CATEGORIES } from "@/data/categories";
 
 export interface QueueItem {
   id: string;
@@ -86,7 +85,6 @@ function getImageUrlForKeyword(keyword: string, category: string): string {
   if (kw.includes("news") || kw.includes("global") || kw.includes("city") || kw.includes("accord") || kw.includes("climate")) {
     return "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80";
   }
-  // Default lifestyle/editorial image
   return "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80";
 }
 
@@ -111,7 +109,7 @@ function inferCategoryFromKeyword(keyword: string): string {
   if (kw.includes("news") || kw.includes("global") || kw.includes("summit") || kw.includes("accord") || kw.includes("policy") || kw.includes("climate")) {
     return "news";
   }
-  return "tech"; // default fallback
+  return "tech";
 }
 
 const AUTHORS = [
@@ -122,16 +120,12 @@ const AUTHORS = [
   { name: "Camilla Dupuis", role: "Culinary Editor", avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" },
 ];
 
-/**
- * Generate a complete, high-quality blog article dynamically from a keyword
- */
 export function generateArticleObject(keyword: string, categoryOverride?: string): Article {
   const cleanKw = keyword.trim();
   const slug = cleanKw.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + "-" + Date.now().toString().slice(-4);
   const category = categoryOverride || inferCategoryFromKeyword(cleanKw);
   const author = AUTHORS[Math.floor(Math.random() * AUTHORS.length)];
 
-  // Formulate Title
   const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
   const title = `${capitalizedKw}: A Comprehensive Analysis & Future Outlook`;
   const excerpt = `Exploring the latest developments, expert perspectives, and societal impacts surrounding ${cleanKw} in 2026.`;
@@ -168,7 +162,6 @@ export function generateArticleObject(keyword: string, categoryOverride?: string
   };
 }
 
-// Queue Management
 export function getKeywordQueue(): QueueItem[] {
   return keywordQueueStore;
 }
@@ -208,7 +201,6 @@ export function publishSpecificKeyword(keyword: string, category?: string): Arti
   const newArticle = generateArticleObject(keyword, category);
   dynamicArticlesStore.unshift(newArticle);
 
-  // Add item to queue log as published
   keywordQueueStore.unshift({
     id: `q-${Date.now()}`,
     keyword,

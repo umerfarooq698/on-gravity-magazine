@@ -13,7 +13,6 @@ import {
   Globe,
   RotateCw,
   Zap,
-  Clock,
   CheckCircle2,
   ExternalLink,
   Bot,
@@ -21,9 +20,7 @@ import {
   ChevronRight,
   User,
   Sparkles,
-  BarChart3,
-  ListOrdered,
-  HelpCircle
+  ListOrdered
 } from "lucide-react";
 
 export default function AutoBlogAdminPage() {
@@ -525,7 +522,7 @@ export default function AutoBlogAdminPage() {
                       <td className="py-2.5 px-4 text-right">
                         {item.generatedArticleSlug ? (
                           <Link
-                            href={`/article/${item.generatedArticleSlug}`}
+                            href={`/on-gravity-magazine/${item.generatedArticleSlug}`}
                             target="_blank"
                             className="text-[#2271b1] hover:underline font-bold inline-flex items-center gap-1"
                           >
