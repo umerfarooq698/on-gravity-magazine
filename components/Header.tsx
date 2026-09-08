@@ -5,15 +5,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { CATEGORIES } from "@/data/categories";
+import Logo from "@/components/Logo";
 import {
   Search,
   Sun,
   Moon,
   Menu,
   X,
-  Sparkles,
-  TrendingUp,
-  BookOpen,
   ChevronDown
 } from "lucide-react";
 
@@ -88,7 +86,7 @@ export default function Header() {
       </div>
 
       {/* Main Logo Branding Area */}
-      <div className="py-6 px-4 sm:px-8 border-b border-zinc-100 dark:border-zinc-900 bg-white dark:bg-zinc-950">
+      <div className="py-5 px-4 sm:px-8 border-b border-zinc-100 dark:border-zinc-900 bg-white dark:bg-zinc-950">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -98,16 +96,8 @@ export default function Header() {
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
 
-          <Link href="/" className="flex flex-col items-center mx-auto lg:mx-0 text-center group">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-amber-500 transform group-hover:rotate-12 transition-transform duration-300" />
-              <span className="font-serif text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-zinc-900 dark:text-white">
-                ON GRAVITY
-              </span>
-            </div>
-            <span className="text-[10px] sm:text-xs font-sans tracking-[0.35em] text-zinc-500 dark:text-zinc-400 uppercase font-bold mt-1">
-              INDEPENDENT GENERAL MAGAZINE & JOURNAL
-            </span>
+          <Link href="/" className="flex items-center mx-auto lg:mx-0 text-center">
+            <Logo size="md" />
           </Link>
 
           <div className="hidden lg:flex items-center gap-3">

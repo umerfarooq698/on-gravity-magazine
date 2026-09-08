@@ -1,0 +1,52 @@
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gravityGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="50%" stop-color="#EF4444" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <linearGradient id="ringGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Dark Background Container for clean contrast -->
+  <rect width="100" height="100" rx="24" fill="#09090B" />
+
+  <!-- Central Gravity Core Sphere -->
+  <circle cx="50" cy="50" r="20" fill="url(#gravityGradient)" />
+  
+  <!-- Gravitational Orbital Rings -->
+  <ellipse
+    cx="50"
+    cy="50"
+    rx="38"
+    ry="14"
+    stroke="url(#ringGradient)"
+    stroke-width="5"
+    stroke-linecap="round"
+    transform="rotate(-25 50 50)"
+  />
+  <ellipse
+    cx="50"
+    cy="50"
+    rx="38"
+    ry="14"
+    stroke="url(#gravityGradient)"
+    stroke-width="3"
+    stroke-dasharray="10 6"
+    stroke-linecap="round"
+    transform="rotate(35 50 50)"
+    opacity="0.85"
+  />
+
+  <!-- Center Stylized 'G' Node -->
+  <path
+    d="M56 43C53.5 40 49 39 44 42C38 45.5 36 53 39.5 59C43 65 50 66 56 62.5C60 60 61 56 61 52H49"
+    stroke="#FFFFFF"
+    stroke-width="5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

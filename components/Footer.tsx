@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { CATEGORIES } from "@/data/categories";
-import { Sparkles, Mail, ShieldCheck, Heart } from "lucide-react";
+import Logo from "@/components/Logo";
 
 export default function Footer() {
   return (
@@ -12,11 +12,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-8 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
         {/* Brand Column */}
         <div className="lg:col-span-2 space-y-4">
-          <Link href="/" className="flex items-center gap-2">
-            <Sparkles className="w-6 h-6 text-amber-500" />
-            <span className="font-serif text-2xl font-black text-white tracking-tight">
-              ON GRAVITY
-            </span>
+          <Link href="/">
+            <Logo size="sm" />
           </Link>
           <p className="text-sm text-zinc-400 leading-relaxed max-w-sm">
             On Gravity Magazine is an independent publication delivering high-caliber journalism, culture insights, technological developments, and lifestyle perspectives for global readers.
