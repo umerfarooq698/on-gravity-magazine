@@ -1,3 +1,5 @@
+import { getAllArticlesCombined } from "@/lib/automation";
+
 export interface Article {
   id: string;
   slug: string;
@@ -194,79 +196,34 @@ export const ARTICLES: Article[] = [
     featured: false,
     trending: true,
     tags: ["News", "Environment", "Global", "Climate"]
-  },
-  {
-    id: "art-8",
-    slug: "quantum-computing-chips-breakthrough",
-    title: "Fault-Tolerant Quantum Processors Hit Commercial Milestones",
-    excerpt: "Engineers achieve stable qubit coherence at room temperatures, accelerating drug discovery and cryptography capabilities.",
-    content: [
-      "Quantum hardware developers have unveiled a 10,000-qubit processor demonstrating unprecedented error correction rates.",
-      "The system can perform molecular dynamics simulations in seconds that would take classical supercomputers decades to calculate.",
-      "Pharmaceutical companies are leveraging the platform to model complex protein foldings and accelerate life-saving cancer therapeutics.",
-      "This breakthrough heralds the dawn of practical quantum utility across encryption, logistics, and material sciences."
-    ],
-    category: "tech",
-    author: {
-      name: "Marcus Vance",
-      role: "Senior Technology Editor",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
-    },
-    publishedAt: "Sept 1, 2026",
-    readTime: "5 min read",
-    imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1200&q=80",
-    imageCaption: "Quantum chip architecture bathed in cryo-chamber glow.",
-    featured: false,
-    trending: false,
-    tags: ["Tech", "Quantum", "Hardware", "Science"]
-  },
-  {
-    id: "art-9",
-    slug: "indie-film-festival-winners-2026",
-    title: "Indie Cinema Triumph: Emotional Breakthrough Hits Win Festival Honors",
-    excerpt: "Emerging directors showcase daring storytelling, inventive cinematography, and powerful debut performances.",
-    content: [
-      "This year's International Independent Film Festival proved that soul-stirring narrative cinema is thriving across global independent studios.",
-      "The Grand Jury Prize went to an intimate coming-of-age drama shot entirely on 35mm film in rural South America.",
-      "Critics praised the film's unhurried pacing, luminous natural lighting, and haunting original score created by indie electronic composers.",
-      "With theatrical and streaming distribution rights secured, the film promises to be a major award contender in the upcoming season."
-    ],
-    category: "celebrity",
-    author: {
-      name: "Elena Rostova",
-      role: "Pop Culture Lead",
-      avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80"
-    },
-    publishedAt: "Aug 29, 2026",
-    readTime: "4 min read",
-    imageUrl: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80",
-    imageCaption: "Vintage film camera projector beaming light onto movie canvas.",
-    featured: false,
-    trending: false,
-    tags: ["Celebrity", "Cinema", "Film", "Entertainment"]
   }
 ];
 
 export function getArticleBySlug(slug: string): Article | undefined {
-  return ARTICLES.find((a) => a.slug === slug || a.id === slug);
+  const all = getAllArticlesCombined();
+  return all.find((a) => a.slug === slug || a.id === slug);
 }
 
 export function getArticlesByCategory(categorySlug: string): Article[] {
-  return ARTICLES.filter((a) => a.category === categorySlug);
+  const all = getAllArticlesCombined();
+  return all.filter((a) => a.category === categorySlug);
 }
 
 export function getFeaturedArticles(): Article[] {
-  return ARTICLES.filter((a) => a.featured);
+  const all = getAllArticlesCombined();
+  return all.filter((a) => a.featured);
 }
 
 export function getTrendingArticles(): Article[] {
-  return ARTICLES.filter((a) => a.trending);
+  const all = getAllArticlesCombined();
+  return all.filter((a) => a.trending);
 }
 
 export function searchArticles(query: string): Article[] {
   const q = query.toLowerCase().trim();
   if (!q) return [];
-  return ARTICLES.filter(
+  const all = getAllArticlesCombined();
+  return all.filter(
     (a) =>
       a.title.toLowerCase().includes(q) ||
       a.excerpt.toLowerCase().includes(q) ||
