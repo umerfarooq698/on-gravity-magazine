@@ -14,13 +14,16 @@ import {
   Sparkles
 } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: ArticlePageProps) {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await getArticleBySlug(slug);
   if (!article) return { title: "Article Not Found" };
   return {
     title: article.metaTitle || `${article.title} | On Gravity Magazine`,
@@ -36,7 +39,7 @@ export async function generateStaticParams() {
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await getArticleBySlug(slug);
 
   if (!article) {
     notFound();

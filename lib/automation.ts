@@ -10,6 +10,35 @@ export interface QueueItem {
   generatedArticleSlug?: string;
 }
 
+function loadCacheFromDisk(): Article[] {
+  if (typeof window !== "undefined") return [];
+  try {
+    const fs = require("fs");
+    const path = require("path");
+    const cacheFile = path.join("/tmp", "on_gravity_articles_cache.json");
+    if (fs.existsSync(cacheFile)) {
+      const data = fs.readFileSync(cacheFile, "utf-8");
+      const parsed = JSON.parse(data);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch (e) {
+    // Ignore
+  }
+  return [];
+}
+
+function saveCacheToDisk(articles: Article[]) {
+  if (typeof window !== "undefined") return;
+  try {
+    const fs = require("fs");
+    const path = require("path");
+    const cacheFile = path.join("/tmp", "on_gravity_articles_cache.json");
+    fs.writeFileSync(cacheFile, JSON.stringify(articles.slice(0, 50)), "utf-8");
+  } catch (e) {
+    // Ignore
+  }
+}
+
 const getGeminiApiKey = () => process.env.GEMINI_API_KEY || "";
 const getUnsplashAccessKey = () => process.env.UNSPLASH_ACCESS_KEY || "FLqjxtnt8-eGS9mpiB3-GMOvHhVAqT4_lQxyslYLO0A";
 
@@ -224,9 +253,20 @@ async function fetchGeminiArticle(keyword: string, categoryOverride?: string): P
 /**
  * Generate a complete blog article dynamically using Gemini AI & Unsplash API
  */
-export async function generateArticleObjectAsync(keyword: string, categoryOverride?: string): Promise<Article> {
+export async function generateArticleObjectAsync(
+  keyword: string,
+  categoryOverride?: string,
+  customSlug?: string
+): Promise<Article> {
   const cleanKw = keyword.trim();
-  const slug = cleanKw.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + "-" + Date.now().toString().slice(-4);
+  const slug =
+    customSlug ||
+    cleanKw
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "") +
+      "-" +
+      Date.now().toString().slice(-4);
   const author = AUTHORS[Math.floor(Math.random() * AUTHORS.length)];
 
   // Attempt real Gemini AI generation
@@ -236,8 +276,10 @@ export async function generateArticleObjectAsync(keyword: string, categoryOverri
   // Fetch unique photograph from Unsplash API for this specific keyword & category
   const image = await fetchUniqueUnsplashImage(cleanKw, category);
 
+  let resultArticle: Article;
+
   if (geminiData) {
-    return {
+    resultArticle = {
       id: `gemini-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
       slug,
       title: geminiData.title,
@@ -256,39 +298,45 @@ export async function generateArticleObjectAsync(keyword: string, categoryOverri
       trending: true,
       tags: geminiData.tags,
     };
+  } else {
+    // Structured Fallback
+    const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
+    const title = `${capitalizedKw}: A Comprehensive Analysis & Future Outlook`;
+    const excerpt = `Exploring the latest developments, expert perspectives, and societal impacts surrounding ${cleanKw} in 2026.`;
+
+    const content = [
+      `In recent years, the discussion around ${cleanKw} has captured widespread attention from industry pioneers, researchers, and global audiences alike. As technology and culture evolve, understanding the nuances of this subject becomes paramount.`,
+      `Experts highlight several key factors driving momentum in ${cleanKw}. From technological integration and shift in consumer behavior to strategic investments, the landscape is transforming at a rapid pace.`,
+      `A recent survey conducted by leading analysts revealed that over 68% of organizations and individuals consider ${cleanKw} a crucial focal point for their strategic roadmap over the next three years.`,
+      `Looking forward, the integration of intelligent workflows and sustainable practices will further elevate the impact of ${cleanKw}. Editors at On Gravity Magazine will continue monitoring these breakthroughs as they unfold.`
+    ];
+
+    resultArticle = {
+      id: `auto-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+      slug,
+      title,
+      metaTitle: `${title} | On Gravity Magazine`,
+      metaDescription: excerpt,
+      excerpt,
+      content,
+      category,
+      author,
+      publishedAt: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+      readTime: "5 min read",
+      imageUrl: image.url,
+      imageAlt: image.alt,
+      imageCaption: image.caption,
+      featured: true,
+      trending: true,
+      tags: [cleanKw.split(" ")[0] || "Featured", category.toUpperCase(), "2026"],
+    };
   }
 
-  // Structured Fallback
-  const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
-  const title = `${capitalizedKw}: A Comprehensive Analysis & Future Outlook`;
-  const excerpt = `Exploring the latest developments, expert perspectives, and societal impacts surrounding ${cleanKw} in 2026.`;
+  // Store in memory & cache to disk
+  dynamicArticlesStore.unshift(resultArticle);
+  saveCacheToDisk(dynamicArticlesStore);
 
-  const content = [
-    `In recent years, the discussion around ${cleanKw} has captured widespread attention from industry pioneers, researchers, and global audiences alike. As technology and culture evolve, understanding the nuances of this subject becomes paramount.`,
-    `Experts highlight several key factors driving momentum in ${cleanKw}. From technological integration and shift in consumer behavior to strategic investments, the landscape is transforming at a rapid pace.`,
-    `A recent survey conducted by leading analysts revealed that over 68% of organizations and individuals consider ${cleanKw} a crucial focal point for their strategic roadmap over the next three years.`,
-    `Looking forward, the integration of intelligent workflows and sustainable practices will further elevate the impact of ${cleanKw}. Editors at On Gravity Magazine will continue monitoring these breakthroughs as they unfold.`
-  ];
-
-  return {
-    id: `auto-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-    slug,
-    title,
-    metaTitle: `${title} | On Gravity Magazine`,
-    metaDescription: excerpt,
-    excerpt,
-    content,
-    category,
-    author,
-    publishedAt: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-    readTime: "5 min read",
-    imageUrl: image.url,
-    imageAlt: image.alt,
-    imageCaption: image.caption,
-    featured: true,
-    trending: true,
-    tags: [cleanKw.split(" ")[0] || "Featured", category.toUpperCase(), "2026"],
-  };
+  return resultArticle;
 }
 
 export function getKeywordQueue(): QueueItem[] {
@@ -317,7 +365,6 @@ export async function publishNextKeywordAsync(): Promise<Article | null> {
   item.status = "publishing";
 
   const newArticle = await generateArticleObjectAsync(item.keyword, item.category);
-  dynamicArticlesStore.unshift(newArticle);
 
   item.status = "published";
   item.publishedAt = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -333,7 +380,6 @@ export async function publishQueueItemByIdAsync(id: string): Promise<Article | n
   item.status = "publishing";
 
   const newArticle = await generateArticleObjectAsync(item.keyword, item.category);
-  dynamicArticlesStore.unshift(newArticle);
 
   item.status = "published";
   item.publishedAt = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -344,7 +390,6 @@ export async function publishQueueItemByIdAsync(id: string): Promise<Article | n
 
 export async function publishSpecificKeywordAsync(keyword: string, category?: string): Promise<Article> {
   const newArticle = await generateArticleObjectAsync(keyword, category);
-  dynamicArticlesStore.unshift(newArticle);
 
   keywordQueueStore.unshift({
     id: `q-${Date.now()}`,
@@ -360,7 +405,33 @@ export async function publishSpecificKeywordAsync(keyword: string, category?: st
 }
 
 export function getAllArticlesCombined(): Article[] {
-  return [...dynamicArticlesStore, ...ARTICLES];
+  const diskArticles = loadCacheFromDisk();
+  const map = new Map<string, Article>();
+  for (const art of [...dynamicArticlesStore, ...diskArticles, ...ARTICLES]) {
+    if (!map.has(art.slug)) {
+      map.set(art.slug, art);
+    }
+  }
+  return Array.from(map.values());
+}
+
+export async function getArticleBySlugAsync(slug: string): Promise<Article | undefined> {
+  const all = getAllArticlesCombined();
+  const found = all.find((a) => a.slug === slug || a.id === slug);
+  if (found) return found;
+
+  // On-demand generation for cold-start Vercel lambdas
+  const rawKeyword = slug.replace(/-\d{4,10}$/, "").replace(/-/g, " ");
+  if (!rawKeyword.trim()) return undefined;
+
+  try {
+    const generated = await generateArticleObjectAsync(rawKeyword, undefined, slug);
+    return generated;
+  } catch (err) {
+    console.error("On-demand article generation failed:", err);
+  }
+
+  return undefined;
 }
 
 export function clearPublishedStore() {

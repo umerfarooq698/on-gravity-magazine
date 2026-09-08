@@ -1,4 +1,4 @@
-import { getAllArticlesCombined } from "@/lib/automation";
+import { getAllArticlesCombined, getArticleBySlugAsync } from "@/lib/automation";
 
 export interface Article {
   id: string;
@@ -111,9 +111,8 @@ export const ARTICLES: Article[] = [
   }
 ];
 
-export function getArticleBySlug(slug: string): Article | undefined {
-  const all = getAllArticlesCombined();
-  return all.find((a) => a.slug === slug || a.id === slug);
+export async function getArticleBySlug(slug: string): Promise<Article | undefined> {
+  return await getArticleBySlugAsync(slug);
 }
 
 export function getArticlesByCategory(categorySlug: string): Article[] {
