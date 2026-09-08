@@ -1,69 +1,171 @@
+import React from "react";
+import Link from "next/link";
 import Image from "next/image";
+import { ARTICLES, getFeaturedArticles, getTrendingArticles } from "@/data/articles";
+import { CATEGORIES } from "@/data/categories";
+import ArticleCard from "@/components/ArticleCard";
+import Newsletter from "@/components/Newsletter";
+import { Flame, TrendingUp, Sparkles, ArrowRight, BookOpen } from "lucide-react";
 
-export default function Home() {
+export default function HomePage() {
+  const featuredArticles = getFeaturedArticles();
+  const trendingArticles = getTrendingArticles();
+
+  const heroMain = featuredArticles[0] || ARTICLES[0];
+  const heroSub1 = featuredArticles[1] || ARTICLES[1];
+  const heroSub2 = featuredArticles[2] || ARTICLES[2];
+
+  const recentArticles = ARTICLES.slice(0, 6);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-16">
+      {/* Category Pills Header */}
+      <section className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-zinc-100 dark:border-zinc-900">
+        <span className="text-xs font-bold uppercase tracking-wider text-zinc-400 shrink-0 mr-2 flex items-center gap-1">
+          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+          Explore Topics:
+        </span>
+        {CATEGORIES.map((cat) => (
+          <Link
+            key={cat.id}
+            href={`/category/${cat.slug}`}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border ${cat.bgLight} hover:scale-105`}
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            {cat.name}
+          </Link>
+        ))}
+      </section>
+
+      {/* Hero Showcase Grid */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div className="flex items-center gap-2">
+            <Flame className="w-5 h-5 text-rose-500" />
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
+              Cover Stories & Highlights
+            </h2>
+          </div>
+          <span className="text-xs text-zinc-500 font-medium">Updated Daily</span>
         </div>
-      </main>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Main Large Cover Story */}
+          <div className="lg:col-span-8">
+            <ArticleCard article={heroMain} variant="featured" />
+          </div>
+
+          {/* Side Secondary Featured */}
+          <div className="lg:col-span-4 flex flex-col gap-6">
+            <ArticleCard article={heroSub1} variant="standard" />
+            <ArticleCard article={heroSub2} variant="standard" />
+          </div>
+        </div>
+      </section>
+
+      {/* Trending News Bar */}
+      <section className="bg-amber-500/10 dark:bg-amber-950/20 border border-amber-500/20 rounded-2xl p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <TrendingUp className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+          <h3 className="font-serif text-lg font-bold text-zinc-900 dark:text-amber-300">
+            Trending Across On Gravity
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {trendingArticles.slice(0, 3).map((item, idx) => (
+            <Link
+              key={item.id}
+              href={`/article/${item.slug}`}
+              className="group flex gap-4 items-start"
+            >
+              <span className="font-serif text-3xl font-black text-amber-500/40 group-hover:text-amber-500 transition-colors">
+                0{idx + 1}
+              </span>
+              <div className="space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                  {item.category}
+                </span>
+                <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors leading-snug line-clamp-2">
+                  {item.title}
+                </h4>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Latest Articles Stream */}
+      <section className="space-y-8">
+        <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div className="flex items-center gap-2">
+            <BookOpen className="w-5 h-5 text-blue-500" />
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
+              Latest Dispatches & Essays
+            </h2>
+          </div>
+          <Link
+            href="/search"
+            className="text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1"
+          >
+            View All Articles
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {recentArticles.map((article) => (
+            <ArticleCard key={article.id} article={article} variant="standard" />
+          ))}
+        </div>
+      </section>
+
+      {/* Categories Spotlight */}
+      <section className="space-y-10">
+        <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <h2 className="font-serif text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
+            Explore By Edition
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {CATEGORIES.slice(0, 4).map((cat) => {
+            const catArticles = ARTICLES.filter((a) => a.category === cat.slug);
+            return (
+              <div
+                key={cat.id}
+                className="p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 flex flex-col justify-between space-y-4 hover:border-amber-500/50 transition-colors"
+              >
+                <div className="space-y-2">
+                  <span
+                    className={`inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full ${cat.bgLight}`}
+                  >
+                    {cat.name}
+                  </span>
+                  <h3 className="font-serif text-lg font-bold text-zinc-900 dark:text-white">
+                    {cat.name} Edition
+                  </h3>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    {cat.description}
+                  </p>
+                </div>
+
+                <div className="pt-2 border-t border-zinc-200/60 dark:border-zinc-800 flex items-center justify-between text-xs">
+                  <span className="text-zinc-500 font-medium">{catArticles.length} Articles</span>
+                  <Link
+                    href={`/category/${cat.slug}`}
+                    className="font-bold text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1"
+                  >
+                    Browse Category →
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <Newsletter />
     </div>
   );
 }
