@@ -223,16 +223,23 @@ CRITICAL REQUIREMENTS:
    - Write 7 to 10 substantial, highly-detailed paragraphs (each paragraph 120–160 words).
    - Provide extensive real-world facts, specifications, step-by-step insights, pros/cons, market context, and expert advice.
 
-2. 100% UNIQUE & NATURAL TITLE:
+2. HEADINGS & STRUCTURE (H2 & H3 REQUIRED):
+   - Use clear Markdown H2 ("## Headline") and H3 ("### Subheadline") headings to structure the content logically.
+   - H2 KEYWORD RULE: Use the primary keyword "${keyword}" naturally in ONLY 1 or 2 H2 headings (e.g., "## Architectural Overview of ${keyword}").
+   - DO NOT put the keyword in every H2 heading! Use clear subtopic headings for other H2 sections (e.g., "## Real-World Utility & Hands-On Experience", "## Comparative Benchmarks & Industry Alternatives", "## Key Limitations & Buyer Caveats", "## Strategic Outlook & Final Verdict").
+   - Include 1 to 2 H3 subheadings ("### ...") to break down complex sub-sections cleanly.
+   - Put each H2 and H3 heading on its own separate string entry in the "paragraphs" array.
+
+3. 100% UNIQUE & NATURAL TITLE:
    - Create a completely distinct, engaging, human-first headline specifically tailored to "${keyword}".
    - NEVER use fixed formula templates like "${keyword}: 2026 In-Depth Analysis...".
    - Make the title sound like a real human headline from Forbes, Wired, TechCrunch, or Vogue (e.g., "Why ${keyword} Is Quietly Reshaping Modern Tech", "${keyword} Tested: High Performance, Real-World Utility, and Key Limits", "The Definitive Guide to ${keyword}").
 
-3. WRITE FOR HUMANS FIRST (GOOGLE HELPFUL CONTENT ALIGNMENT):
+4. WRITE FOR HUMANS FIRST (GOOGLE HELPFUL CONTENT ALIGNMENT):
    - Match exact user search intent.
    - NO AI BUZZWORDS: Strictly do NOT use phrases like "In today's fast-paced digital world", "delve into", "tapestry", "game-changer", "beacon of", "testament to", "it remains to be seen", "paradigm shift".
 
-4. HELPFUL FAQS (2-4 QUESTIONS):
+5. HELPFUL FAQS (2-4 QUESTIONS):
    - Provide 2 to 4 genuinely helpful, non-generic Frequently Asked Questions with clear, direct, multi-sentence answers.
 
 Return ONLY a valid JSON object matching this schema:
@@ -244,12 +251,20 @@ Return ONLY a valid JSON object matching this schema:
   "excerpt": "A compelling 2-sentence executive summary of the article",
   "paragraphs": [
     "Paragraph 1 (130-160 words): Engaging intro establishing immediate value, real-world context, and clear thesis...",
+    "## Key Specifications & Performance Overview of ${keyword}",
     "Paragraph 2 (130-160 words): Detailed background analysis, historical context, or technical specifications...",
+    "### Core System Integration",
     "Paragraph 3 (130-160 words): Core features breakdown, practical operation, or user experience highlights...",
-    "Paragraph 4 (130-160 words): Comparative benchmark, industry alternatives, pros and cons...",
-    "Paragraph 5 (130-160 words): Real-world applications, case studies, or practical implementation steps...",
-    "Paragraph 6 (130-160 words): Critical limitations, challenges, or buyer/user caveats to consider...",
-    "Paragraph 7 (130-160 words): Forward-looking market analysis, future expectations, and definitive conclusion..."
+    "## Real-World Utility & Hands-On Experience",
+    "Paragraph 4 (130-160 words): Practical applications, case studies, or workflow implementation steps...",
+    "## Comparative Benchmarks & Industry Alternatives",
+    "Paragraph 5 (130-160 words): Side-by-side performance benchmarks, pros and cons...",
+    "### Efficiency Metrics & Value Assessment",
+    "Paragraph 6 (130-160 words): Detailed analysis of throughput, speed, or cost-to-performance ratio...",
+    "## Key Limitations & Essential Buyer Caveats",
+    "Paragraph 7 (130-160 words): Critical limitations, challenges, or buyer/user caveats to consider...",
+    "## Strategic Outlook & Final Verdict",
+    "Paragraph 8 (130-160 words): Forward-looking market analysis, future expectations, and definitive conclusion..."
   ],
   "faqs": [
     { "question": "Specific Question 1 regarding ${keyword}?", "answer": "Direct, thorough answer..." },
@@ -405,11 +420,19 @@ export async function generateArticleObjectAsync(
 
     const content = [
       `As ${cleanKw} continues to shape contemporary discussions across technology, industry, and modern lifestyle, understanding its core principles, practical implications, and underlying mechanisms has become vital for enthusiasts and decision-makers alike.`,
+      `## Key Architecture & Operational Features of ${capitalizedKw}`,
       `From a structural and operational perspective, ${cleanKw} represents a significant evolution in its domain. Industry benchmarks indicate that adoption rates have grown exponentially over the past 12 months, driven by advances in core integration and refined user experiences.`,
+      `### Core Hardware & System Integration`,
       `Key specifications and primary features highlight several distinct advantages. Users consistently praise its flexibility, streamlined interface, and high reliability, while expert testing confirms that performance metrics regularly exceed standard expectations.`,
-      `When comparing ${cleanKw} against traditional alternatives, key trade-offs emerge. While initial setup and investment require deliberate planning, long-term efficiency gains and operational benefits overwhelmingly justify the transition.`,
+      `## Real-World Utility & Hands-On User Experience`,
       `Real-world implementation scenarios reveal practical strategies for maximizing value. Experts recommend establishing clear operational protocols, utilizing automated safeguards, and periodically assessing workflow bottlenecks to ensure optimal outcomes.`,
+      `## Comparative Benchmarks & Industry Alternatives`,
+      `When comparing ${cleanKw} against traditional alternatives, key trade-offs emerge. While initial setup and investment require deliberate planning, long-term efficiency gains and operational benefits overwhelmingly justify the transition.`,
+      `### Efficiency Metrics & Performance Testing`,
+      `Rigorous side-by-side evaluations demonstrate notable performance gains. Under heavy operational loads, key throughput metrics outperform standard legacy configurations by substantial margins.`,
+      `## Key Limitations & Essential Buyer Caveats`,
       `Despite its notable benefits, certain limitations and practical caveats warrant consideration. Potential users should account for integration timelines, ongoing maintenance requirements, and compatibility with legacy infrastructure before committing resources.`,
+      `## Strategic Outlook & Final Verdict`,
       `Looking ahead to the next decade, ongoing innovations surrounding ${cleanKw} promise to unlock even greater capabilities. Editors at On Gravity Magazine will continue monitoring developments to deliver timely, actionable coverage as new breakthroughs emerge.`
     ];
 

@@ -136,11 +136,43 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
       {/* Reading Body */}
       <div className="prose prose-lg dark:prose-invert max-w-none space-y-6 font-serif text-zinc-800 dark:text-zinc-200 text-lg leading-relaxed">
-        {article.content.map((paragraph, index) => (
-          <p key={index} className={index === 0 ? "first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-3 first-letter:font-serif first-letter:text-amber-500" : ""}>
-            {paragraph}
-          </p>
-        ))}
+        {article.content.map((item, index) => {
+          const trimmed = item.trim();
+          if (trimmed.startsWith("## ")) {
+            const headingText = trimmed.replace(/^##\s+/, "");
+            return (
+              <h2
+                key={index}
+                className="font-serif text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white pt-8 pb-3 border-b border-zinc-200 dark:border-zinc-800 mt-8 mb-4 tracking-tight"
+              >
+                {headingText}
+              </h2>
+            );
+          }
+          if (trimmed.startsWith("### ")) {
+            const headingText = trimmed.replace(/^###\s+/, "");
+            return (
+              <h3
+                key={index}
+                className="font-serif text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 pt-6 pb-2 mt-6 mb-3 tracking-tight"
+              >
+                {headingText}
+              </h3>
+            );
+          }
+          return (
+            <p
+              key={index}
+              className={
+                index === 0
+                  ? "first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-3 first-letter:font-serif first-letter:text-amber-500"
+                  : ""
+              }
+            >
+              {item}
+            </p>
+          );
+        })}
       </div>
 
       {/* Frequently Asked Questions (FAQ) Section */}
