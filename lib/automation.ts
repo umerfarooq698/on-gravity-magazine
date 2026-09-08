@@ -223,9 +223,10 @@ CRITICAL REQUIREMENTS:
    - Write 7 to 10 substantial, highly-detailed paragraphs (each paragraph 120–160 words).
    - Provide extensive real-world facts, specifications, step-by-step insights, pros/cons, market context, and expert advice.
 
-2. 100% UNIQUE TITLE & ANGLE:
-   - Create a completely distinct, engaging, authoritative title specifically tailored to "${keyword}" and the angle "${selectedAngle}".
-   - Do NOT use repetitive or generic headline templates. Ensure both title and content are 100% fresh and unique even if "${keyword}" was covered before.
+2. 100% UNIQUE & NATURAL TITLE:
+   - Create a completely distinct, engaging, human-first headline specifically tailored to "${keyword}".
+   - NEVER use fixed formula templates like "${keyword}: 2026 In-Depth Analysis...".
+   - Make the title sound like a real human headline from Forbes, Wired, TechCrunch, or Vogue (e.g., "Why ${keyword} Is Quietly Reshaping Modern Tech", "${keyword} Tested: High Performance, Real-World Utility, and Key Limits", "The Definitive Guide to ${keyword}").
 
 3. WRITE FOR HUMANS FIRST (GOOGLE HELPFUL CONTENT ALIGNMENT):
    - Match exact user search intent.
@@ -236,7 +237,7 @@ CRITICAL REQUIREMENTS:
 
 Return ONLY a valid JSON object matching this schema:
 {
-  "title": "Unique, compelling, high-converting headline for ${keyword}",
+  "title": "Natural, engaging, 100% unique magazine headline for ${keyword}",
   "metaTitle": "Natural SEO Title under 60 chars ending with | On Gravity Magazine",
   "metaDescription": "Helpful, engaging meta description under 155 chars optimized for search clicks",
   "imageAlt": "Descriptive, high-quality image ALT text for a photograph of ${keyword}",
@@ -296,6 +297,47 @@ Return ONLY a valid JSON object matching this schema:
 }
 
 /**
+ * Generate a dynamic fallback title for any keyword to guarantee headline uniqueness
+ */
+function generateDynamicFallbackTitle(keyword: string, category: string, isSuffixAdded: boolean): string {
+  const cleanKw = keyword.trim();
+  const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
+  const catUpper = category.toUpperCase();
+
+  const titleTemplates = [
+    `Why ${capitalizedKw} Is Reshaping the Modern ${catUpper} Landscape`,
+    `${capitalizedKw} Tested: Performance, Features, and Real-World Verdict`,
+    `The Definitive Guide to ${capitalizedKw}: Everything You Need to Know`,
+    `Inside ${capitalizedKw}: Key Insights, Benchmarks, and Practical Advice`,
+    `Is ${capitalizedKw} Worth the Hype? An In-Depth Editorial Breakdown`,
+    `Navigating ${capitalizedKw}: Specs, Limitations, and Buyer Recommendations`,
+    `How ${capitalizedKw} Is Driving New Industry Benchmarks in 2026`,
+    `Understanding ${capitalizedKw}: Core Features, Utility, and Future Outlook`,
+    `${capitalizedKw} Explained: Real-World Applications and Key Takeaways`,
+    `The Rise of ${capitalizedKw}: What Experts and Enthusiasts Are Saying`,
+    `Top Breakthroughs and Practical Insights Surrounding ${capitalizedKw}`,
+    `${capitalizedKw} Handbook: Architecture, User Experience, and Long-Term Value`,
+  ];
+
+  const randomIndex = Math.floor(Math.random() * titleTemplates.length);
+  let selectedTitle = titleTemplates[randomIndex];
+
+  if (isSuffixAdded) {
+    const subtitleModifiers = [
+      "Deep Dive Perspective",
+      "Comprehensive User Evaluation",
+      "Architectural & Utility Review",
+      "2026 Industry Breakdown",
+      "Real-World Performance Analysis",
+    ];
+    const modifier = subtitleModifiers[Math.floor(Math.random() * subtitleModifiers.length)];
+    selectedTitle = `${capitalizedKw}: ${modifier}`;
+  }
+
+  return selectedTitle;
+}
+
+/**
  * Generate a complete blog article dynamically using Gemini AI & Unsplash API
  */
 export async function generateArticleObjectAsync(
@@ -315,10 +357,12 @@ export async function generateArticleObjectAsync(
 
   let slug = baseSlug;
   const existingSlugs = new Set(getAllArticlesCombined().map((a) => a.slug));
+  let isSuffixAdded = false;
 
   if (!customSlug && existingSlugs.has(slug)) {
     // If slug already exists in database/store, append a short random hex suffix to guarantee URL uniqueness
     slug = `${baseSlug}-${Math.random().toString(36).substring(2, 6)}`;
+    isSuffixAdded = true;
   }
 
   const author = AUTHORS[Math.floor(Math.random() * AUTHORS.length)];
@@ -354,9 +398,9 @@ export async function generateArticleObjectAsync(
       tags: geminiData.tags,
     };
   } else {
-    // Comprehensive Fallback (800+ words)
+    // Comprehensive Dynamic Fallback (800+ words) with 100% unique title & FAQs
     const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
-    const title = `${capitalizedKw}: 2026 In-Depth Analysis & Comprehensive Buyer Guide`;
+    const title = generateDynamicFallbackTitle(cleanKw, category, isSuffixAdded);
     const excerpt = `An essential, reader-first examination of ${cleanKw}, exploring technical benchmarks, real-world utility, and future market trends.`;
 
     const content = [
@@ -369,6 +413,21 @@ export async function generateArticleObjectAsync(
       `Looking ahead to the next decade, ongoing innovations surrounding ${cleanKw} promise to unlock even greater capabilities. Editors at On Gravity Magazine will continue monitoring developments to deliver timely, actionable coverage as new breakthroughs emerge.`
     ];
 
+    const faqs = [
+      {
+        question: `What makes ${capitalizedKw} a major focus in 2026?`,
+        answer: `${capitalizedKw} offers a blend of performance, versatility, and efficiency that aligns with modern user demand and market trends.`
+      },
+      {
+        question: `How does ${capitalizedKw} compare to traditional solutions?`,
+        answer: `While initial adoption may require adjustment, testing demonstrates that ${capitalizedKw} delivers superior long-term reliability and streamlined operation.`
+      },
+      {
+        question: `What are the key limitations to consider regarding ${capitalizedKw}?`,
+        answer: `Prospective users should review compatibility requirements, setup timeframes, and resource allocation to ensure a smooth implementation.`
+      }
+    ];
+
     resultArticle = {
       id: `auto-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
       slug,
@@ -377,6 +436,7 @@ export async function generateArticleObjectAsync(
       metaDescription: excerpt,
       excerpt,
       content,
+      faqs,
       category,
       author,
       publishedAt: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
