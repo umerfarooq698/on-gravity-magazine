@@ -111,59 +111,59 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Primary Navigation Bar (Categories First + Pages Next Inline) */}
-      <nav className="hidden lg:block bg-zinc-50/80 dark:bg-zinc-900/50 backdrop-blur-md overflow-x-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 flex items-center space-x-1 font-sans text-xs font-semibold tracking-wide whitespace-nowrap">
-          {/* Home Link */}
-          <Link
-            href="/"
-            className={`py-3.5 px-3 border-b-2 transition-colors ${
-              pathname === "/"
-                ? "border-amber-500 text-amber-600 dark:text-amber-400 font-bold"
-                : "border-transparent text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
-            }`}
-          >
-            Home
-          </Link>
+      {/* 2-Tier Navigation Bar */}
+      <nav className="hidden lg:block bg-zinc-50/80 dark:bg-zinc-900/50 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-1 py-1">
+          {/* Row 1: Categories Bar */}
+          <div className="flex items-center space-x-1 font-sans text-xs font-semibold tracking-wide whitespace-nowrap overflow-x-auto">
+            <Link
+              href="/"
+              className={`py-2 px-3 border-b-2 transition-colors ${
+                pathname === "/"
+                  ? "border-amber-500 text-amber-600 dark:text-amber-400 font-bold"
+                  : "border-transparent text-zinc-800 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white"
+              }`}
+            >
+              Home
+            </Link>
 
-          {/* 7 Categories Links */}
-          {CATEGORIES.map((cat) => {
-            const isActive = pathname === `/category/${cat.slug}`;
-            return (
-              <Link
-                key={cat.id}
-                href={`/category/${cat.slug}`}
-                className={`py-3.5 px-3 border-b-2 transition-colors ${
-                  isActive
-                    ? "border-amber-500 text-amber-600 dark:text-amber-400 font-bold"
-                    : "border-transparent text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
-                }`}
-              >
-                {cat.name}
-              </Link>
-            );
-          })}
+            {CATEGORIES.map((cat) => {
+              const isActive = pathname === `/category/${cat.slug}`;
+              return (
+                <Link
+                  key={cat.id}
+                  href={`/category/${cat.slug}`}
+                  className={`py-2 px-3 border-b-2 transition-colors ${
+                    isActive
+                      ? "border-amber-500 text-amber-600 dark:text-amber-400 font-bold"
+                      : "border-transparent text-zinc-800 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white"
+                  }`}
+                >
+                  {cat.name}
+                </Link>
+              );
+            })}
+          </div>
 
-          {/* Visual Divider between Categories and Pages */}
-          <span className="text-zinc-300 dark:text-zinc-700 px-1 font-light">|</span>
-
-          {/* Pages Direct Links */}
-          {PAGE_LINKS.map((page) => {
-            const isActive = pathname === page.href;
-            return (
-              <Link
-                key={page.href}
-                href={page.href}
-                className={`py-3.5 px-3 border-b-2 transition-colors ${
-                  isActive
-                    ? "border-amber-500 text-amber-600 dark:text-amber-400 font-bold"
-                    : "border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
-                }`}
-              >
-                {page.name}
-              </Link>
-            );
-          })}
+          {/* Row 2: Pages Row Directly Below Categories */}
+          <div className="flex items-center space-x-1 font-sans text-[11px] font-medium tracking-wide whitespace-nowrap overflow-x-auto pt-1 border-t border-zinc-200/60 dark:border-zinc-800/60">
+            {PAGE_LINKS.map((page) => {
+              const isActive = pathname === page.href;
+              return (
+                <Link
+                  key={page.href}
+                  href={page.href}
+                  className={`py-1 px-3 rounded-md transition-colors ${
+                    isActive
+                      ? "bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold"
+                      : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/60"
+                  }`}
+                >
+                  {page.name}
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </nav>
 
