@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { CATEGORIES } from "@/data/categories";
 import { QueueItem } from "@/lib/automation";
+import { saveCustomArticleToStorage } from "@/lib/clientStorage";
 import Logo from "@/components/Logo";
 import {
   LayoutDashboard,
@@ -66,7 +67,8 @@ export default function AutoBlogAdminPage() {
       });
 
       const data = await res.json();
-      if (data.success) {
+      if (data.success && data.article) {
+        saveCustomArticleToStorage(data.article);
         setMessage({
           text: `Published! Article for '${keyword}' generated: "${data.article.title}"`,
           type: "success",
@@ -135,7 +137,8 @@ export default function AutoBlogAdminPage() {
       });
 
       const data = await res.json();
-      if (data.success) {
+      if (data.success && data.article) {
+        saveCustomArticleToStorage(data.article);
         setSingleKeyword("");
         setLastPublished({ title: data.article.title, slug: data.article.slug });
         setMessage({
