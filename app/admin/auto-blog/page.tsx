@@ -30,6 +30,7 @@ export default function AutoBlogAdminPage() {
   const [scheduleInterval, setScheduleInterval] = useState<string>("4");
   const [singleKeyword, setSingleKeyword] = useState("");
   const [queue, setQueue] = useState<QueueItem[]>([]);
+  const [publishingId, setPublishingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
 
@@ -48,6 +49,38 @@ export default function AutoBlogAdminPage() {
   useEffect(() => {
     fetchQueue();
   }, []);
+
+  const handlePublishQueueItem = async (id: string, keyword: string) => {
+    setPublishingId(id);
+    setMessage(null);
+
+    try {
+      const res = await fetch("/api/generate-article", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "publish-item",
+          id,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setMessage({
+          text: `Published! Article for '${keyword}' generated: "${data.article.title}"`,
+          type: "success",
+        });
+        if (data.queue) setQueue(data.queue);
+        else fetchQueue();
+      } else {
+        setMessage({ text: data.error || "Failed to publish item", type: "error" });
+      }
+    } catch (err: any) {
+      setMessage({ text: err.message || "Network error", type: "error" });
+    } finally {
+      setPublishingId(null);
+    }
+  };
 
   const handleBulkAdd = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -493,7 +526,7 @@ export default function AutoBlogAdminPage() {
                     <th className="py-2.5 px-4 font-bold">Topic Keyword</th>
                     <th className="py-2.5 px-4 font-bold">Category</th>
                     <th className="py-2.5 px-4 font-bold">Date</th>
-                    <th className="py-2.5 px-4 font-bold text-right">View Article</th>
+                    <th className="py-2.5 px-4 font-bold text-right">Action / View Article</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-800 dark:text-zinc-200">
@@ -530,7 +563,23 @@ export default function AutoBlogAdminPage() {
                             <ExternalLink className="w-3 h-3" />
                           </Link>
                         ) : (
-                          <span className="text-zinc-400">Pending</span>
+                          <button
+                            onClick={() => handlePublishQueueItem(item.id, item.keyword)}
+                            disabled={publishingId === item.id || loading}
+                            className="bg-amber-500 hover:bg-amber-600 text-zinc-950 font-bold px-3 py-1 rounded text-[11px] transition-colors inline-flex items-center gap-1 shadow-xs disabled:opacity-50"
+                          >
+                            {publishingId === item.id ? (
+                              <>
+                                <RotateCw className="w-3 h-3 animate-spin" />
+                                Generating...
+                              </>
+                            ) : (
+                              <>
+                                <Zap className="w-3 h-3 text-zinc-950 fill-zinc-950" />
+                                Publish Now
+                              </>
+                            )}
+                          </button>
                         )}
                       </td>
                     </tr>

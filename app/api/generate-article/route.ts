@@ -1,16 +1,30 @@
 import { NextResponse } from "next/server";
-import { publishSpecificKeywordAsync, addKeywordsToQueue, getKeywordQueue } from "@/lib/automation";
+import { publishSpecificKeywordAsync, publishQueueItemByIdAsync, addKeywordsToQueue, getKeywordQueue } from "@/lib/automation";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { keyword, keywords, category, action } = body;
+    const { keyword, keywords, category, action, id } = body;
 
     if (action === "bulk-add" && keywords) {
       const added = addKeywordsToQueue(keywords, category);
       return NextResponse.json({
         success: true,
         message: `Added ${added.length} keywords to the auto-publish queue.`,
+        queue: getKeywordQueue(),
+      });
+    }
+
+    if (action === "publish-item" && id) {
+      const publishedArticle = await publishQueueItemByIdAsync(id);
+      if (!publishedArticle) {
+        return NextResponse.json({ success: false, error: "Queue item not found" }, { status: 404 });
+      }
+      return NextResponse.json({
+        success: true,
+        message: `Queued keyword article generated & published successfully!`,
+        article: publishedArticle,
+        readUrl: `/on-gravity-magazine/${publishedArticle.slug}`,
         queue: getKeywordQueue(),
       });
     }

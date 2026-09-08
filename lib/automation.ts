@@ -326,6 +326,22 @@ export async function publishNextKeywordAsync(): Promise<Article | null> {
   return newArticle;
 }
 
+export async function publishQueueItemByIdAsync(id: string): Promise<Article | null> {
+  const item = keywordQueueStore.find((i) => i.id === id);
+  if (!item) return null;
+
+  item.status = "publishing";
+
+  const newArticle = await generateArticleObjectAsync(item.keyword, item.category);
+  dynamicArticlesStore.unshift(newArticle);
+
+  item.status = "published";
+  item.publishedAt = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  item.generatedArticleSlug = newArticle.slug;
+
+  return newArticle;
+}
+
 export async function publishSpecificKeywordAsync(keyword: string, category?: string): Promise<Article> {
   const newArticle = await generateArticleObjectAsync(keyword, category);
   dynamicArticlesStore.unshift(newArticle);
