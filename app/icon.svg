@@ -1,52 +1,82 @@
-<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="gravityGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F59E0B" />
-      <stop offset="50%" stop-color="#EF4444" />
-      <stop offset="100%" stop-color="#8B5CF6" />
+    <!-- Gold & Celestial Gradients -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A" />
+      <stop offset="30%" stop-color="#F59E0B" />
+      <stop offset="70%" stop-color="#D97706" />
+      <stop offset="100%" stop-color="#B45309" />
     </linearGradient>
-    <linearGradient id="ringGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#F59E0B" />
-      <stop offset="100%" stop-color="#10B981" />
+
+    <linearGradient id="orbitGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1" stop-opacity="0.9" />
+      <stop offset="50%" stop-color="#EC4899" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#F59E0B" stop-opacity="0.9" />
     </linearGradient>
+
+    <radialGradient id="coreLight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFBEB" />
+      <stop offset="60%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#7C2D12" />
+    </radialGradient>
   </defs>
 
-  <!-- Outer Dark Background Container for clean contrast -->
-  <rect width="100" height="100" rx="24" fill="#09090B" />
+  <!-- Dark Obsidian Rounded Background Container -->
+  <rect width="120" height="120" rx="30" fill="#09090B" />
+  <rect x="2" y="2" width="116" height="116" rx="28" stroke="url(#goldGrad)" stroke-opacity="0.25" stroke-width="2" fill="none" />
 
-  <!-- Central Gravity Core Sphere -->
-  <circle cx="50" cy="50" r="20" fill="url(#gravityGradient)" />
-  
-  <!-- Gravitational Orbital Rings -->
-  <ellipse
-    cx="50"
-    cy="50"
-    rx="38"
-    ry="14"
-    stroke="url(#ringGradient)"
-    stroke-width="5"
-    stroke-linecap="round"
-    transform="rotate(-25 50 50)"
-  />
-  <ellipse
-    cx="50"
-    cy="50"
-    rx="38"
-    ry="14"
-    stroke="url(#gravityGradient)"
-    stroke-width="3"
-    stroke-dasharray="10 6"
-    stroke-linecap="round"
-    transform="rotate(35 50 50)"
-    opacity="0.85"
+  <!-- Outer Gravitational Ring Halo -->
+  <circle
+    cx="60"
+    cy="60"
+    r="48"
+    fill="none"
+    stroke="url(#goldGrad)"
+    stroke-width="1.5"
+    stroke-dasharray="6 4"
+    opacity="0.5"
   />
 
-  <!-- Center Stylized 'G' Node -->
+  <!-- Dynamic Elliptical Orbit 1 -->
+  <ellipse
+    cx="60"
+    cy="60"
+    rx="45"
+    ry="16"
+    stroke="url(#orbitGlow)"
+    stroke-width="4.5"
+    stroke-linecap="round"
+    transform="rotate(-30 60 60)"
+  />
+
+  <!-- Dynamic Elliptical Orbit 2 -->
+  <ellipse
+    cx="60"
+    cy="60"
+    rx="45"
+    ry="16"
+    stroke="url(#goldGrad)"
+    stroke-width="3.5"
+    stroke-dasharray="12 8"
+    stroke-linecap="round"
+    transform="rotate(40 60 60)"
+  />
+
+  <!-- Core Luminous Sphere -->
+  <circle cx="60" cy="60" r="20" fill="url(#coreLight)" />
+
+  <!-- Monogram 'G' with Gravitational Arc -->
   <path
-    d="M56 43C53.5 40 49 39 44 42C38 45.5 36 53 39.5 59C43 65 50 66 56 62.5C60 60 61 56 61 52H49"
+    d="M67 50C64.5 45.5 59.5 43.5 53.5 46.5C45.5 50.5 43 61 47 68.5C51 76 61 77 67.5 73C72 70 74 63.5 73.5 58.5H54"
     stroke="#FFFFFF"
-    stroke-width="5"
+    stroke-width="6"
     stroke-linecap="round"
     stroke-linejoin="round"
+  />
+
+  <!-- Four-Point Radiant Star Flare at top right -->
+  <path
+    d="M84 32 L86 24 L88 32 L96 34 L88 36 L86 44 L84 36 L76 34 Z"
+    fill="url(#goldGrad)"
   />
 </svg>
