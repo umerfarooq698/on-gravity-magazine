@@ -566,6 +566,10 @@ CRITICAL INSTRUCTIONS & EDITORIAL RULES:
 
 6. FAQS SECTION (3-4 SHORT HELPFUL FAQS):
    - Provide 3 to 4 short, helpful Frequently Asked Questions at the end with concise, direct, friendly answers.
+   - MANDATORY: Every question and answer MUST be 100% SPECIFIC and TAILORED to the exact subject "${keyword}".
+   - NEVER use generic formula questions like "What makes ${keyword} a major focus in 2026?" or "How does ${keyword} compare to traditional solutions?".
+   - For example: if the keyword is "bathroom cold tap", every question MUST specifically address cold water supply, freezing frost protection, cold pressure, or cold filtration!
+   - For example: if the keyword is "bathroom hot tap", every question MUST specifically address hot water boilers, scalding safety, thermal mixing valves, or heating delays!
 
 Return ONLY a valid JSON object matching this schema:
 {
@@ -749,6 +753,9 @@ function generateDynamicDomainParagraphs(keyword: string, category: string, head
 /**
  * Generate dynamic, topic-tailored H2 and H3 headings for fallback articles
  */
+/**
+ * Generate dynamic, topic-tailored H2 and H3 headings for fallback articles
+ */
 function generateDynamicHeadingsForArticle(keyword: string, category: string) {
   const cleanKw = keyword.trim();
   const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
@@ -757,220 +764,174 @@ function generateDynamicHeadingsForArticle(keyword: string, category: string) {
   let h2Pool: string[] = [];
   let h3Pool: string[] = [];
 
-  // Home / Plumbing / Bathroom / DIY
-  if (
-    kwLower.includes("drain") ||
-    kwLower.includes("bathtub") ||
-    kwLower.includes("bathroom") ||
-    kwLower.includes("shower") ||
-    kwLower.includes("sink") ||
-    kwLower.includes("plumbing") ||
-    kwLower.includes("faucet") ||
-    kwLower.includes("pipe") ||
-    kwLower.includes("toilet") ||
-    kwLower.includes("decor") ||
-    kwLower.includes("renovation")
-  ) {
+  // Cold Water / Cold Tap Specifics
+  if (kwLower.includes("cold")) {
     h2Pool = [
-      `## Understanding Drain Assembly & Pipe Diameter Standards for ${capitalizedKw}`,
-      `## Clearing Tough Clogs: Chemical-Free Snaking & Trap Maintenance`,
-      `## Material Durability: Brass, Copper, and Heavy-Duty PVC Fittings`,
-      `## Preventing Water Leaks & Waterproof Seal Maintenance`,
-      `## Essential Tools & Safety Guidelines for Home DIY Repairs`,
-      `## Flow Rate Optimization & Overflow Valve Mechanics`,
-      `## Troubleshooting Slow Water Drainage & Odor Prevention`,
-      `## When to Hire a Licensed Plumber vs Handling DIY Installation`
+      `## Cold Water Supply Line Insulation & Freezing Protection for ${capitalizedKw}`,
+      `## Pressure Balancing: Cold Line Flow Rates vs Main System Feeds`,
+      `## Under-Sink Inline Water Filtration Systems for Cold Taps`,
+      `## Preventing Water Line Whistling & Vibration Noises`,
+      `## Material Durability: Brass, Copper, and PVD Coated Cold Fittings`,
+      `## Troubleshooting Slow Cold Water Flow & Aerator Mineral Clogs`,
+      `## Cold Tap Maintenance: Cartridge Replacement & Washer Seals`,
+      `## When to Upgrade Household Cold Plumbing Pipe Lines`
+    ];
+    h3Pool = [
+      `### Foam Pipe Sleeve Installation & Frost Prevention`,
+      `### Dual-Feed Water Pressure Equalization Protocols`,
+      `### In-Line Carbon Filter Cartridge Maintenance`,
+      `### Aerator Vinegar Soak & Mineral Removal`
+    ];
+  }
+  // Hot Water / Hot Tap / Boiling Water Specifics
+  else if (kwLower.includes("hot") || kwLower.includes("boiling") || kwLower.includes("heater")) {
+    h2Pool = [
+      `## Boiler Connections & Instant Hot Water Delivery for ${capitalizedKw}`,
+      `## Anti-Scald Thermostatic Valves & Water Temperature Regulation`,
+      `## Purging Trapped Air & Eliminating Hot Line Water Sputtering`,
+      `## Energy Efficiency: Standby Tank Power vs Instant Heat Systems`,
+      `## Heavy-Duty Brass Construction for Thermal Expansion Resilience`,
+      `## Disinfecting Hot Water Lines & Preventing Bacteria Growth`,
+      `## Troubleshooting Delayed Hot Water Delivery in Long Pipe Runs`,
+      `## Annual Water Heater Flush & Thermal Valve Inspections`
+    ];
+    h3Pool = [
+      `### Thermostatic Valve Calibration at 120°F (49°C)`,
+      `### Recirculating Pump Setup for Instant Hot Flow`,
+      `### Thermal Expansion Chamber Checks`,
+      `### Microscopic Air Bubble Dispersion Protocols`
+    ];
+  }
+  // Bathtub / Tub Specifics
+  else if (kwLower.includes("bathtub") || kwLower.includes("tub")) {
+    h2Pool = [
+      `## High-Flow Spout Rates & Basin Fill Speed for ${capitalizedKw}`,
+      `## Deck-Mounted vs Wall-Mounted Fixture Architecture`,
+      `## Waterproof Flange Seals & Subfloor Moisture Protection`,
+      `## Hydrotherapy Jet Sanitation & Biofilm Prevention Protocols`,
+      `## Cast Iron vs Acrylic Basin Thermal Retention Benchmarks`,
+      `## Cleaning Soap Scum & Hard Water Etching Without Scratches`,
+      `## Overflow Linkage Adjustments & Pop-Up Stopper Care`,
+      `## Long-Term Subfloor Support & Load Bearing Considerations`
+    ];
+    h3Pool = [
+      `### Silicone Flange Bead & Plumber's Putty Seals`,
+      `### High-GPM Water Pressure Requirements`,
+      `### Non-Abrasive Microfiber Cleaning Protocols`,
+      `### Air Jet Line Purge & Sanitization`
+    ];
+  }
+  // Drain / Waste Assembly Specifics
+  else if (kwLower.includes("drain") || kwLower.includes("trap") || kwLower.includes("waste")) {
+    h2Pool = [
+      `## Drain Pipe Diameter & P-Trap Water Barrier Standards for ${capitalizedKw}`,
+      `## Clearing Tough Clogs: Chemical-Free Snaking & Auger Techniques`,
+      `## Eliminating Sewer Gas Odors & Overflow Channel Cleaning`,
+      `## Tip-Toe vs Trip-Lever Drain Stopper Mechanism Comparison`,
+      `## Flange Nut Tightening & Rubber Gasket Leak Prevention`,
+      `## Flow Rate Benchmarks: 1.5-Inch vs 2-Inch Waste Stack Evacuation`,
+      `## Preventative Mesh Hair Trap Maintenance & Bi-Weekly Flushes`,
+      `## When to Call a Licensed Plumber for Main Stack Blockages`
     ];
     h3Pool = [
       `### Rubber Gasket & Flange Sealing Instructions`,
-      `### Hair & Soap Scum Trap Cleaning Protocols`,
-      `### Water Pressure & Leak Detection Checks`,
-      `### Long-Term Pipe Maintenance & Deodorization Tips`
+      `### Hair & Soap Scum Mechanical Removal Protocols`,
+      `### Water Barrier Depth in Curved P-Traps`,
+      `### Overflow Pipe Disinfection Protocols`
+    ];
+  }
+  // General Tap / Faucet / Plumbing Fixtures
+  else if (kwLower.includes("tap") || kwLower.includes("faucet") || kwLower.includes("mixer") || kwLower.includes("spout")) {
+    h2Pool = [
+      `## Single-Handle vs Dual-Control Ergonomics for ${capitalizedKw}`,
+      `## Ceramic Disc Cartridges vs Traditional Rubber Washer Valves`,
+      `## Aerator Selection: Aerated Flow vs Laminar Stream & Splash Control`,
+      `## Matte Black, Brushed Brass, and Chrome PVD Finish Care`,
+      `## Spout Clearance & Reach Calculation for Modern Basins`,
+      `## Fixing Persistent Dripping & Internal Cartridge Swaps`,
+      `## Flexible Braided Supply Line Connections & Burst Protection`,
+      `## Long-Term Plumbing Warranty Ratings & Installation Protocols`
+    ];
+    h3Pool = [
+      `### Quarter-Turn Ceramic Valve Mechanism Specs`,
+      `### Low-Flow Aerator GPM Pressure Ratings`,
+      `### Soft Microfiber Cleaning for PVD Finishes`,
+      `### Under-Sink Supply Hose Tightening Limits`
+    ];
+  }
+  // Tech Executives / Elon Musk / CEOs
+  else if (kwLower.includes("musk") || kwLower.includes("elon") || kwLower.includes("zuckerberg") || kwLower.includes("jobs") || kwLower.includes("altman")) {
+    h2Pool = [
+      `## First-Principles Engineering & Vertical Integration Behind ${capitalizedKw}`,
+      `## High-Velocity Iteration Cycles & Telemetry-Driven Hardware Upgrades`,
+      `## Flat Management Structures & Cross-Functional Team Execution`,
+      `## Capital Allocation Strategy: High-Risk Infrastructure Bets`,
+      `## Manufacturing Throughput Benchmarks & Automated Assembly`,
+      `## Navigating Executive Friction, Bureaucracy, and Public Scrutiny`,
+      `## Disrupting Legacy Monopolies Through Radical Innovation`,
+      `## Strategic 10-Year Global Industry Outlook for ${capitalizedKw}`
+    ];
+    h3Pool = [
+      `### Telemetry Data Capture from Test Failures`,
+      `### In-House Component Sourcing & Tooling`,
+      `### Rapid Over-the-Air Software Deployments`,
+      `### High-Risk Capital Reserves & Scaling Logistics`
     ];
   }
   // Display / TV / Electronics
-  else if (
-    kwLower.includes("tv") ||
-    kwLower.includes("samsung") ||
-    kwLower.includes("display") ||
-    kwLower.includes("oled") ||
-    kwLower.includes("qled") ||
-    kwLower.includes("screen") ||
-    kwLower.includes("monitor") ||
-    kwLower.includes("audio") ||
-    kwLower.includes("speaker")
-  ) {
+  else if (kwLower.includes("tv") || kwLower.includes("samsung") || kwLower.includes("display") || kwLower.includes("oled") || kwLower.includes("qled") || kwLower.includes("screen")) {
     h2Pool = [
-      `## Panel Contrast, Peak Nits & Quantum Dot Color Accuracy for ${capitalizedKw}`,
-      `## 4K Gaming Benchmarks: 120Hz VRR & Low Input Lag Performance`,
-      `## Smart TV Platform Ergonomics & Voice Navigation Controls`,
-      `## Audio Fidelity: Soundbar Integration & eARC Passthrough`,
-      `## Anti-Reflective Screen Coating & Wide Viewing Angle Capabilities`,
-      `## Energy Efficiency & Panel Heat Dissipation Analysis`,
-      `## Picture Calibration: Cinema, Sports, and Gaming Modes`,
-      `## Long-Term Panel Reliability & Burn-In Prevention Techniques`
+      `## Quantum Dot Peak Brightness & Contrast Benchmarks for ${capitalizedKw}`,
+      `## 4K 120Hz Gaming Performance: VRR, ALLM & Input Lag Ratings`,
+      `## Anti-Reflective Screen Coating & Sunlit Room Visibility`,
+      `## Smart OS Ergonomics: Navigation Speed & Voice Integration`,
+      `## Audio Output: eARC Passthrough & Soundbar Integration`,
+      `## Preventing Image Retention & Automated Pixel Refreshing`,
+      `## Picture Calibration Modes: Filmmaker, Game, and Vivid Presets`,
+      `## Panel Longevity & Heat Dissipation Standards`
     ];
     h3Pool = [
-      `### Local Dimming Zones & Peak Brightness Nits`,
-      `### HDR10+ and Dolby Vision Dynamic Metadata`,
-      `### Remote Control Usability & App Connectivity`,
-      `### Cable Management & Wall Mount Compatibility`
+      `### Local Dimming Array Zone Control`,
+      `### HDMI 2.1 48Gbps Cable Bandwidth Requirements`,
+      `### DCI-P3 Color Volume Accuracy Ratings`,
+      `### Automated Screen Saver & Sleep Timers`
     ];
   }
-  // Wearables / Battery / Smartwatches
-  else if (
-    kwLower.includes("watch") ||
-    kwLower.includes("battery") ||
-    kwLower.includes("wearable") ||
-    kwLower.includes("sensor") ||
-    kwLower.includes("fitness") ||
-    kwLower.includes("apple") ||
-    kwLower.includes("gadget")
-  ) {
+  // Sleep / Health / Wellness
+  else if (kwLower.includes("sleep") || kwLower.includes("circadian") || kwLower.includes("health") || kwLower.includes("diet") || kwLower.includes("wellness")) {
     h2Pool = [
-      `## Battery Chemistry & Daily Endurance Metrics for ${capitalizedKw}`,
-      `## Biometric Sensor Precision: ECG, SpO2, and Optical Heart Rate`,
-      `## Case Durability: Titanium Alloys & Sapphire Crystal Lenses`,
-      `## Water Resistance Ratings & Open-Water Swim Testing`,
-      `## Fast Charging Speeds & Daily Power Management Options`,
-      `## Health Data Synchronization & Companion App Integration`,
-      `## Always-On Display Visibility Under Direct Sunlight`,
-      `## Power-Saving Modes & Background GPS Battery Consumption`
+      `## Circadian Rhythm Synchronization & Morning Solar Exposure for ${capitalizedKw}`,
+      `## Bedroom Environment Science: Ambient Temp, Sound Proofing & Light Shielding`,
+      `## Biometric Tracking: HRV, Deep Sleep Cycles & Recovery Scores`,
+      `## Evening Meal Timing & Mitigating Digestive Disruption`,
+      `## Blue Light Suppression & Melatonin Synthesis Protocols`,
+      `## Stress Reduction Habits & Evening Wind-Down Routines`,
+      `## Hydration Balance & Nocturia Prevention Strategies`,
+      `## Long-Term Benefits for Cognitive Focus & Cellular Longevity`
     ];
     h3Pool = [
-      `### Multi-Band GPS Signal Lock Speed`,
-      `### Sleep Architecture & REM Cycle Metrics`,
-      `### Haptic Feedback & Touch Responsiveness`,
-      `### Wristband Ergonomics & Long-Term Comfort`
-    ];
-  }
-  // Health / Sleep / Wellness / Skincare
-  else if (
-    kwLower.includes("sleep") ||
-    kwLower.includes("health") ||
-    kwLower.includes("diet") ||
-    kwLower.includes("wellness") ||
-    kwLower.includes("nutrition") ||
-    kwLower.includes("mindful") ||
-    kwLower.includes("skin") ||
-    kwLower.includes("therapy")
-  ) {
-    h2Pool = [
-      `## Circadian Rhythm Alignment & Melatonin Production`,
-      `## Deep Sleep vs REM Cycles: Rest Quality Metrics for ${capitalizedKw}`,
-      `## Bedroom Environment Optimization: Temp, Sound & Ambient Light`,
-      `## Dietary Protocols & Evening Meal Timing Strategies`,
-      `## Biometric Signals: HRV & Resting Heart Rate Recovery`,
-      `## Mitigating Evening Screen Time & Blue Light Exposure`,
-      `## Supplementation Protocols & Clinical Evidence Review`,
-      `## Long-Term Benefits for Mental Clarity & Metabolic Health`
-    ];
-    h3Pool = [
-      `### Morning Solar Exposure & Light Therapy`,
-      `### Cortisol Mitigation & Evening Wind-Down Habits`,
-      `### Wearable Sleep Tracker Accuracy Ratings`,
-      `### Hydration Balance & Restful Sleep`
-    ];
-  }
-  // EV / Automotive / Tech / AI / Finance
-  else if (
-    kwLower.includes("car") ||
-    kwLower.includes("ev") ||
-    kwLower.includes("ai") ||
-    kwLower.includes("startup") ||
-    kwLower.includes("energy") ||
-    kwLower.includes("business") ||
-    kwLower.includes("finance") ||
-    kwLower.includes("invest")
-  ) {
-    h2Pool = [
-      `## Core System Architecture & Operational Efficiency of ${capitalizedKw}`,
-      `## Performance Benchmarks & Real-World Output Analysis`,
-      `## Capital Allocation, Market Demand & Strategic Growth Drivers`,
-      `## Regulatory Frameworks & International Compliance Standards`,
-      `## Hardware & Software Integration Protocols`,
-      `## Scaling Logistics & Supply Chain Reliability`,
-      `## Key Buyer Caveats & Operational Challenges`,
-      `## Strategic 5-Year Industry Forecast for ${capitalizedKw}`
-    ];
-    h3Pool = [
-      `### Thermal Management & Energy Loss Controls`,
-      `### Cost-to-Performance Ratio Analysis`,
-      `### User Adoption Trends & Market Feedback`,
-      `### Safety Compliance & Fault Tolerances`
-    ];
-  }
-  // Food / Culinary / Recipes / Wine
-  else if (
-    kwLower.includes("food") ||
-    kwLower.includes("dish") ||
-    kwLower.includes("recipe") ||
-    kwLower.includes("gourmet") ||
-    kwLower.includes("chef") ||
-    kwLower.includes("cooking") ||
-    kwLower.includes("wine") ||
-    kwLower.includes("coffee")
-  ) {
-    h2Pool = [
-      `## Flavor Profile Balancing & Essential Seasoning Ratios for ${capitalizedKw}`,
-      `## Precision Cooking Methods & Heat Control Principles`,
-      `## Sourcing Quality Ingredients & Fresh Seasonal Produce`,
-      `## Plating Aesthetics & Professional Culinary Presentation`,
-      `## Beverage & Wine Pairing Recommendations`,
-      `## Essential Kitchen Equipment & Cookware Selection`,
-      `## Recipe Adjustments for Dietary Customizations`,
-      `## Storage, Prep-Ahead Guidelines & Reheating Techniques`
-    ];
-    h3Pool = [
-      `### Marinating & Texture Enhancement Protocols`,
-      `### Sauce Emulsification & Reduction Secrets`,
-      `### Plating Garnishes & Visual Appeal`,
-      `### Cookware Heat Distribution Analysis`
-    ];
-  }
-  // Celebrity / Red Carpet / Fashion / Entertainment
-  else if (
-    kwLower.includes("fashion") ||
-    kwLower.includes("celebrity") ||
-    kwLower.includes("actor") ||
-    kwLower.includes("gala") ||
-    kwLower.includes("star") ||
-    kwLower.includes("movie") ||
-    kwLower.includes("singer")
-  ) {
-    h2Pool = [
-      `## Standout Style Moments & Red Carpet Highlights for ${capitalizedKw}`,
-      `## Designer Collaborations & Tailored Silhouette Craftsmanship`,
-      `## Color Palette Trends & Textile Innovation`,
-      `## Luxury Accessories, Fine Jewelry & Footwear Pairing`,
-      `## Behind-the-Scenes Prep & Celebrity Styling Insights`,
-      `## Cultural Impact & Viral Social Media Reactions`,
-      `## Vintage Nostalgia vs Modern Avant-Garde Looks`,
-      `## Future Style Trends Inspiring Next Season's Collections`
-    ];
-    h3Pool = [
-      `### Fabric Selection & Hand-Stitched Embellishments`,
-      `### Statement Footwear & Accessory Choices`,
-      `### Hair, Makeup & Grooming Coordination`,
-      `### Media Reaction & Critic Consensus`
+      `### Optimal Ambient Temp Range: 60°F–67°F (15°C–19°C)`,
+      `### Wearable Optical Sensor HRV Accuracy`,
+      `### Evening Screen Filtering & Amber Lenses`,
+      `### Magnesium & Herbal Wind-Down Formulations`
     ];
   }
   // Fallback for general topics
   else {
     h2Pool = [
-      `## Fundamental Principles & Key Innovations Behind ${capitalizedKw}`,
-      `## Operational Performance Benchmarks & Real-World Utility`,
-      `## Practical Implementation & Workflow Integration Guidelines`,
-      `## Comparative Analysis: Efficiency vs Legacy Alternatives`,
-      `## Essential Buyer Considerations & System Limitations`,
-      `## Resource Allocation & Optimization Strategies`,
-      `## Industry Adoption Trends & User Feedback Highlights`,
-      `## Strategic Future Outlook & 2026 Recommendations`
+      `## Key Technical Innovations & System Specifications for ${capitalizedKw}`,
+      `## Real-World Performance Benchmarks & Everyday Utility`,
+      `## Step-by-Step Installation & Setup Best Practices`,
+      `## Comparative Efficiency: Modern Features vs Legacy Alternatives`,
+      `## Material Durability & Preventative Maintenance Schedules`,
+      `## Addressing Common Operating Challenges & Troubleshooting`,
+      `## Cost-to-Value Ratio & Long-Term Investment Analysis`,
+      `## Strategic Industry Forecast & Future Outlook for ${capitalizedKw}`
     ];
     h3Pool = [
-      `### Performance Metrics & Testing Accuracy`,
-      `### System Compatibility & Integration Checks`,
-      `### Maintenance & Risk Mitigation Protocols`,
+      `### Performance Metric Verification & Safety Checks`,
+      `### Material Quality & Build Standards`,
+      `### Routine Inspection & Service Schedules`,
       `### Key Milestones for Long-Term Value`
     ];
   }
@@ -1036,8 +997,208 @@ function generateDynamicFallbackTitle(keyword: string, category: string, isSuffi
 }
 
 /**
- * Generate a complete blog article dynamically using Gemini AI & Unsplash API
+ * Generate dynamic, topic-tailored, 100% unique FAQs for fallback articles
  */
+function generateDynamicFaqsForArticle(keyword: string, category: string): { question: string; answer: string }[] {
+  const cleanKw = keyword.trim();
+  const kwLower = cleanKw.toLowerCase();
+  const capitalizedKw = cleanKw.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+
+  const faqs: { question: string; answer: string }[] = [];
+
+  // 1. Cold Water / Cold Tap Specifics
+  if (kwLower.includes("cold")) {
+    faqs.push(
+      {
+        question: `Why is cold water from my ${capitalizedKw} coming out lukewarm or warm?`,
+        answer: `Warm water from a cold tap usually happens when pipes pass near heating ducts or when a faulty mixer valve elsewhere allows hot water to cross-bleed into the cold line.`
+      },
+      {
+        question: `How do I protect my ${capitalizedKw} from freezing during severe winter frost?`,
+        answer: `Insulate exterior wall pipes with foam sleeves, keep indoor heating at a minimum of 55°F (13°C), and let the tap trickle slowly during extreme cold snaps.`
+      },
+      {
+        question: `Why is the cold water pressure lower than hot water pressure on my ${capitalizedKw}?`,
+        answer: `A partially closed under-sink isolation valve, mineral debris clogging the cold inlet cartridge, or localized pipe corrosion restricted cold water flow.`
+      },
+      {
+        question: `Can I connect an under-sink water filter directly to a ${capitalizedKw}?`,
+        answer: `Yes, under-sink inline carbon and reverse-osmosis filtration units connect directly to standard 3/8-inch cold supply lines without affecting hot water lines.`
+      }
+    );
+  }
+  // 2. Hot Water / Hot Tap Specifics
+  else if (kwLower.includes("hot") || kwLower.includes("boiling") || kwLower.includes("heater")) {
+    faqs.push(
+      {
+        question: `Why does it take several minutes for hot water to reach my ${capitalizedKw}?`,
+        answer: `Long pipe runs between your water heater or boiler and the tap mean standing cold water must purge first. Installing a recirculating pump provides instant hot water.`
+      },
+      {
+        question: `What temperature setting is recommended for a ${capitalizedKw}?`,
+        answer: `Water heaters should be set to 120°F (49°C) to prevent thermal scalding while remaining hot enough to prevent bacteria growth in storage tanks.`
+      },
+      {
+        question: `Why does water from my ${capitalizedKw} sputter or spit air when turned on?`,
+        answer: `Air trapped in the hot water tank after plumbing repairs or high thermal expansion causes sputtering. Running the hot tap for 2 minutes usually clears it.`
+      },
+      {
+        question: `How do thermostatic anti-scald valves protect users on a ${capitalizedKw}?`,
+        answer: `Thermostatic valves automatically cut off or throttle hot water output if cold supply pressure drops suddenly, preventing accidental burns.`
+      }
+    );
+  }
+  // 3. Bathtub / Tub Specifics
+  else if (kwLower.includes("bathtub") || kwLower.includes("tub")) {
+    faqs.push(
+      {
+        question: `What water flow rate is recommended for filling a ${capitalizedKw}?`,
+        answer: `High-flow tub fillers typically require 4 to 8 gallons per minute (GPM) at 3.0 bar pressure so large soaking basins fill quickly without water cooling down.`
+      },
+      {
+        question: `Should I choose a wall-mounted or deck-mounted fixture for my ${capitalizedKw}?`,
+        answer: `Deck-mounted fixtures install directly on the tub rim for easy access, while wall-mounted taps create a clean floating look but require in-wall rough-in plumbing.`
+      },
+      {
+        question: `How do I prevent leaks under the rim of a ${capitalizedKw}?`,
+        answer: `Apply high-grade silicone sealant or plumber's putty beneath the fixture flange and securely tighten the locknut underneath to maintain a watertight barrier.`
+      },
+      {
+        question: `How do I clean soap scum and hard water deposits off a ${capitalizedKw}?`,
+        answer: `Soak a rag in warm white vinegar, wrap it around affected spouts or handles for 20 minutes, then wipe clean with a soft microfiber cloth.`
+      }
+    );
+  }
+  // 4. Drain / Waste Assembly Specifics
+  else if (kwLower.includes("drain") || kwLower.includes("trap") || kwLower.includes("waste")) {
+    faqs.push(
+      {
+        question: `What is the easiest chemical-free way to unblock a ${capitalizedKw}?`,
+        answer: `Insert a plastic zip-it drain snake to pull out hair clogs physically, then flush with boiling water mixed with baking soda and white vinegar.`
+      },
+      {
+        question: `Why does a bad sewer smell come up from my ${capitalizedKw}?`,
+        answer: `A dry P-trap water seal or rotting hair residue inside the overflow channel causes sewer smells. Flushing warm water and mild disinfectant clears it.`
+      },
+      {
+        question: `What pipe diameter is standard for a residential ${capitalizedKw}?`,
+        answer: `Standard tub and shower drains connect to 1.5-inch PVC or ABS pipes, while vanity sink drains typically use 1.25-inch waste assemblies.`
+      },
+      {
+        question: `How do tip-toe stoppers compare to trip-lever drain plugs for a ${capitalizedKw}?`,
+        answer: `Tip-toe plugs press down by hand/foot and unscrew easily for hair removal, whereas trip-lever stoppers rely on overflow linkage rods that require periodic adjustment.`
+      }
+    );
+  }
+  // 5. General Tap / Faucet / Mixer Fixtures
+  else if (kwLower.includes("tap") || kwLower.includes("faucet") || kwLower.includes("mixer") || kwLower.includes("spout")) {
+    faqs.push(
+      {
+        question: `What is the main difference between single-handle and dual-handle ${capitalizedKw} models?`,
+        answer: `Single-handle models let you control temperature and volume with one hand, while dual-handle fixtures offer separate, precise control over hot and cold streams.`
+      },
+      {
+        question: `How do ceramic disc cartridges prevent drips in a ${capitalizedKw}?`,
+        answer: `Ceramic disc cartridges feature smooth diamond-hard ceramic plates that seal tight without rubber washers, eliminating drips and lasting for years.`
+      },
+      {
+        question: `Why is water splashing out of the basin when using my ${capitalizedKw}?`,
+        answer: `The water stream might be striking the drain directly at high pressure. Installing a low-flow aerator softens the stream and prevents splashing.`
+      },
+      {
+        question: `How do I clean matte black or brushed metal finishes on a ${capitalizedKw}?`,
+        answer: `Use warm water with mild liquid dish soap and a soft cloth. Avoid abrasive sponges or acidic bathroom sprays that can strip protective PVD coatings.`
+      }
+    );
+  }
+  // 6. Elon Musk / Tech Executives
+  else if (kwLower.includes("musk") || kwLower.includes("elon") || kwLower.includes("zuckerberg") || kwLower.includes("jobs") || kwLower.includes("altman")) {
+    faqs.push(
+      {
+        question: `What core engineering methodology defines leadership in ${capitalizedKw}?`,
+        answer: `First-principles thinking—questioning every legacy requirement, reducing complex problems to basic physics laws, and rebuilding efficient solutions from scratch.`
+      },
+      {
+        question: `Why is vertical integration critical for ventures associated with ${capitalizedKw}?`,
+        answer: `Designing and manufacturing components in-house cuts out middleman supplier markups, speeds up design iterations, and ensures tight quality control.`
+      },
+      {
+        question: `How do rapid prototyping and telemetry cycles drive technological progress?`,
+        answer: `By testing early prototypes to failure, engineering teams collect real-world telemetry data to instantly fix flaws in subsequent hardware revisions.`
+      },
+      {
+        question: `What role does flat management play in organizational velocity?`,
+        answer: `Eliminating traditional corporate layers allows engineers to speak directly to decision-makers, speeding up execution and product deployment.`
+      }
+    );
+  }
+  // 7. TV / Display / Electronics
+  else if (kwLower.includes("tv") || kwLower.includes("samsung") || kwLower.includes("display") || kwLower.includes("oled") || kwLower.includes("qled") || kwLower.includes("screen")) {
+    faqs.push(
+      {
+        question: `What is the key visual difference between QLED and QD-OLED for ${capitalizedKw}?`,
+        answer: `QLED uses Quantum Dot Mini-LED backlights for intense brightness in brightly lit rooms, while QD-OLED uses self-emissive pixels for perfect black levels in dark home theaters.`
+      },
+      {
+        question: `Why is a 120Hz or 144Hz refresh rate important on a modern ${capitalizedKw}?`,
+        answer: `Higher refresh rates combined with Variable Refresh Rate (VRR) eliminate screen tearing, reduce motion blur, and drop input lag under 10ms for next-gen console gaming.`
+      },
+      {
+        question: `What HDMI cable is required to output full 4K at 120Hz on ${capitalizedKw}?`,
+        answer: `An Ultra High Speed HDMI 2.1 cable rated for 48Gbps bandwidth is required to support uncompressed 4K video at 120Hz alongside eARC Dolby Atmos audio.`
+      },
+      {
+        question: `How do anti-glare screen coatings improve viewing on ${capitalizedKw}?`,
+        answer: `Anti-reflective layers scatter incoming room reflections and sunlight, maintaining sharp contrast and vivid color volume even in sunlit living rooms.`
+      }
+    );
+  }
+  // 8. Sleep / Health / Wellness
+  else if (kwLower.includes("sleep") || kwLower.includes("circadian") || kwLower.includes("health") || kwLower.includes("diet") || kwLower.includes("wellness")) {
+    faqs.push(
+      {
+        question: `How does optimizing light exposure impact results with ${capitalizedKw}?`,
+        answer: `Morning sunlight exposure anchors your circadian clock and boosts daytime energy, while eliminating blue light 2 hours before bed triggers natural melatonin release.`
+      },
+      {
+        question: `What room temperature is recommended for optimal rest in relation to ${capitalizedKw}?`,
+        answer: `Sleep research indicates a cool bedroom ambient temperature between 60°F and 67°F (15°C–19°C) promotes deeper slow-wave sleep cycles.`
+      },
+      {
+        question: `How do wearable biometrics track the effectiveness of ${capitalizedKw}?`,
+        answer: `Tracking Heart Rate Variability (HRV), resting heart rate, and sleep stage durations provides objective data on physical recovery and nervous system balance.`
+      },
+      {
+        question: `What dietary habits support sustainable improvements for ${capitalizedKw}?`,
+        answer: `Avoiding heavy meals and caffeine within 4 to 6 hours of bedtime prevents digestive disruption and nighttime heart rate elevation.`
+      }
+    );
+  }
+  // 9. General Topic Generator for ANY Keyword (100% dynamic, unique, no formula text!)
+  else {
+    faqs.push(
+      {
+        question: `What maintenance routine is recommended for ${capitalizedKw}?`,
+        answer: `Perform routine visual checks for wear, clean surfaces with non-abrasive products, and address minor performance shifts before they require major repairs.`
+      },
+      {
+        question: `What key factors should buyers evaluate when choosing ${capitalizedKw}?`,
+        answer: `Prioritize high-grade materials, manufacturer warranty coverage, system compatibility, and verified real-world user reviews over marketing claims.`
+      },
+      {
+        question: `How do modern developments in ${capitalizedKw} improve everyday performance?`,
+        answer: `Recent design and engineering updates emphasize higher energy efficiency, simplified operation, and enhanced durability under daily usage loads.`
+      },
+      {
+        question: `What common installation mistake should be avoided with ${capitalizedKw}?`,
+        answer: `Skipping pre-installation dimension measurements or forcing fittings during assembly often leads to seal failures, leaks, or premature wear.`
+      }
+    );
+  }
+
+  return faqs;
+}
+
 /**
  * Generate a complete blog article dynamically using Gemini AI & Unsplash API
  */
@@ -1095,69 +1256,7 @@ export async function generateArticleObjectAsync(
     const headings = generateDynamicHeadingsForArticle(cleanKw, category);
     const excerpt = `An essential, reader-first examination of ${cleanKw}, exploring technical benchmarks, real-world utility, and future market trends.`;
     const content = generateDynamicDomainParagraphs(cleanKw, category, headings);
-
-    let faqs = [
-      {
-        question: `What are the key real-world benefits of ${capitalizedKw}?`,
-        answer: `${capitalizedKw} delivers superior efficiency, practical reliability, and long-term performance when implemented according to established best practices.`
-      },
-      {
-        question: `How can you get started with ${capitalizedKw} effectively?`,
-        answer: `Begin by evaluating your specific requirements, setting clear priorities, and following step-by-step guidelines for smooth adoption.`
-      },
-      {
-        question: `What common caveats or mistakes should be avoided?`,
-        answer: `Avoid rushing setup without reviewing specifications, and perform regular maintenance checks to prevent unexpected issues.`
-      }
-    ];
-
-    const cleanKwLower = cleanKw.toLowerCase();
-    if (cleanKwLower.includes("drain") || cleanKwLower.includes("bathtub") || cleanKwLower.includes("tub") || cleanKwLower.includes("plumbing")) {
-      faqs = [
-        {
-          question: "How often should you perform routine drain maintenance?",
-          answer: "Clearing surface hair catchers weekly and performing a hot water flush every 1 to 2 months keeps drain pipes flowing smoothly."
-        },
-        {
-          question: "What is the best natural way to clear minor drain buildup?",
-          answer: "Pouring half a cup of baking soda followed by a cup of white vinegar down the drain, letting it sit for 15 minutes, then flushing with hot water breaks down organic residue naturally."
-        },
-        {
-          question: "When is it necessary to call a professional plumber?",
-          answer: "If water backs up completely, drains smell strongly of sewer gas, or subfloor leaks appear, call a licensed plumber immediately to prevent structural damage."
-        }
-      ];
-    } else if (cleanKwLower.includes("musk") || cleanKwLower.includes("elon") || cleanKwLower.includes("ceo") || cleanKwLower.includes("founder")) {
-      faqs = [
-        {
-          question: "What is the core philosophy behind first-principles engineering?",
-          answer: "First-principles engineering breaks complex problems down to basic physical facts and re-evaluates solutions from scratch, bypassing legacy industry assumptions."
-        },
-        {
-          question: "Why is vertical integration valuable in technology manufacturing?",
-          answer: "Manufacturing components in-house reduces reliance on third-party supply chains, lowers long-term production costs, and allows rapid iteration cycles."
-        },
-        {
-          question: "How do high-velocity iteration cycles improve product reliability?",
-          answer: "Testing early prototypes to failure generates real telemetry data that engineers use to continuously upgrade subsequent hardware and software revisions."
-        }
-      ];
-    } else if (cleanKwLower.includes("tv") || cleanKwLower.includes("samsung") || cleanKwLower.includes("display")) {
-      faqs = [
-        {
-          question: "What is the main difference between QLED and QD-OLED displays?",
-          answer: "QLED uses Quantum Dot Mini-LED backlights for intense peak brightness in lit rooms, while QD-OLED uses self-emissive pixels for absolute dark room contrast."
-        },
-        {
-          question: "Are 120Hz refresh rates necessary for modern gaming?",
-          answer: "Yes, 120Hz refresh rates combined with VRR and HDMI 2.1 deliver ultra-smooth gameplay motion and sub-10ms response times for modern consoles and PCs."
-        },
-        {
-          question: "How can you protect display panels from image retention?",
-          answer: "Enable automated pixel refresh routines, avoid leaving static HUD graphics on high brightness for extended hours, and use power-saving sleep timers."
-        }
-      ];
-    }
+    const faqs = generateDynamicFaqsForArticle(cleanKw, category);
 
     resultArticle = {
       id: `auto-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -1288,20 +1387,7 @@ function buildArticleFromQueueItem(item: QueueItem): Article {
     metaDescription: excerpt,
     excerpt,
     content,
-    faqs: [
-      {
-        question: `What makes ${capitalizedKw} a major focus in 2026?`,
-        answer: `${capitalizedKw} offers a blend of performance, versatility, and efficiency that aligns with modern user demand and market trends.`
-      },
-      {
-        question: `How does ${capitalizedKw} compare to traditional solutions?`,
-        answer: `While initial adoption may require adjustment, testing demonstrates that ${capitalizedKw} delivers superior long-term reliability and streamlined operation.`
-      },
-      {
-        question: `What are the key limitations to consider regarding ${capitalizedKw}?`,
-        answer: `Prospective users should review compatibility requirements, setup timeframes, and resource allocation to ensure a smooth implementation.`
-      }
-    ],
+    faqs: generateDynamicFaqsForArticle(cleanKw, category),
     category,
     author,
     publishedAt: item.publishedAt || item.createdAt,
