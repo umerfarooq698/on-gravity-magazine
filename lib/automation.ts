@@ -536,70 +536,63 @@ async function fetchGeminiArticle(keyword: string, categoryOverride?: string): P
   const randomSeed = Math.floor(Math.random() * 999999);
 
   try {
-    const prompt = `You are a Senior Investigative Journalist and Managing Editor for "On Gravity Magazine".
-Write an exceptional, 100% UNIQUE, human-first magazine feature article for keyword: "${keyword}".
+    const prompt = `You are a friendly, experienced local expert writing for "On Gravity Magazine".
+Write an exceptional, 100% UNIQUE, human feature article for keyword: "${keyword}".
 
-EDITORIAL ANGLE FOR THIS SPECIFIC ARTICLE (Random Seed ${randomSeed}):
-${selectedAngle}.
+CRITICAL INSTRUCTIONS & EDITORIAL RULES:
 
-CRITICAL REQUIREMENTS:
-1. WORD COUNT (900 - 1200 WORDS TOTAL):
-   - The article MUST be strictly between 900 and 1200 words in total length.
-   - Write 7 to 9 substantial, highly-detailed paragraphs (each paragraph MUST be 130–150 words long).
-   - Provide extensive real-world facts, specifications, step-by-step insights, pros/cons, market context, and expert advice.
+1. WORD COUNT (STRICTLY 900 - 1200 WORDS TOTAL):
+   - The entire article MUST be strictly between 900 and 1200 words in total length.
+   - Write 7 to 9 detailed paragraphs (approx 120-150 words per paragraph).
 
-2. HEADINGS & STRUCTURE (H2 & H3 MUST BE 100% TOPIC-SPECIFIC & UNIQUE FOR "${keyword}"):
-   - STRICTLY FORBIDDEN GENERIC HEADINGS: Do NOT use generic template headings like "Key Architecture", "Real-World Utility", "Comparative Benchmarks", "Key Limitations", "Strategic Outlook", "System Workflow", "Core Specifications"!
-   - You MUST create custom, topic-specific H2 ("## Heading") and H3 ("### Subheading") headers tailored exclusively to the domain and vocabulary of "${keyword}".
-   - Examples of topic-specific H2s:
-     * For home/plumbing ("bathtub drain"): "## Drain Pipe Diameter & Overflow Valve Standards", "## Clearing Tough Clogs: Chemical-Free Snaking & Trap Maintenance", "## Preventing Water Leaks & Mold Around the Seal"
-     * For displays/tech ("samsung tv"): "## Quantum Dot Luminance & Local Dimming Zones", "## 4K Gaming Benchmarks: 120Hz VRR & Input Lag", "## Tizen OS Ergonomics & Soundbar Integration"
-     * For tech executives ("elon musk"): "## First-Principles Engineering & Rapid Prototyping Cycles", "## Multi-Disciplinary Hardware & Software Ecosystems", "## Regulatory Compliance & Capital Allocation"
-     * For health ("sleep optimization"): "## Circadian Rhythm Alignment & Melatonin Pathways", "## Rest Architecture: REM vs Deep Sleep Recovery"
-   - H2 KEYWORD RULE: Include the primary keyword "${keyword}" naturally in ONLY 1 or 2 H2 headings. The remaining H2 headings MUST address specific topic aspects without repeating the keyword!
-   - Place each H2 and H3 heading on its own separate string entry in the "paragraphs" array.
+2. TITLE & INTRO:
+   - TITLE: Create a clear, engaging, human headline specifically for "${keyword}". Do NOT use generic formula templates.
+   - INTRO: Start with a short, warm introduction that speaks directly to the reader ("you"), setting immediate real-world value.
 
-3. 100% UNIQUE & NATURAL TITLE:
-   - Create a completely distinct, engaging headline specifically tailored to "${keyword}".
-   - NEVER use fixed formula templates like "${keyword}: 2026 In-Depth Analysis...".
-   - Make the title sound like a real human headline from Forbes, Wired, TechCrunch, or Vogue.
+3. HEADINGS & H2 KEYWORD RULE:
+   - Use custom H2 ("## Heading") and H3 ("### Subheading") sections for each topic and each article.
+   - H2 KEYWORD RULE: Include the primary keyword "${keyword}" naturally in 1 or 2 H2 headings. The remaining H2 headings MUST address specific sub-topics without repeating the keyword.
+   - STRICTLY FORBIDDEN GENERIC HEADINGS: Do NOT use template headings like "Key Architecture", "Real-World Utility", "Comparative Benchmarks", "Key Limitations", "Strategic Outlook"!
 
-4. WRITE FOR HUMANS FIRST (GOOGLE HELPFUL CONTENT ALIGNMENT):
-   - Match exact user search intent.
-   - NO REPETITIVE PATTERNS: Do NOT start paragraphs with formula phrases like "As X continues to shape", "From a structural perspective", "Despite its notable benefits".
-   - NO AI BUZZWORDS: Strictly do NOT use phrases like "In today's fast-paced digital world", "delve into", "tapestry", "game-changer", "beacon of", "testament to", "it remains to be seen", "paradigm shift".
+4. TONE & WRITING STYLE:
+   - Write like a local person explaining things to a friend.
+   - Make it human, conversational, warm, but still highly informative and professional.
+   - Vary sentence length and avoid repetitive patterns or formula sentence starters.
+   - NO BULLET POINT OVERKILL: Mix well-structured paragraphs with occasional clean list items where natural.
 
-5. HELPFUL FAQS (2-4 QUESTIONS):
-   - Provide 2 to 4 genuinely helpful, topic-specific Frequently Asked Questions with clear, direct, multi-sentence answers.
+5. FORBIDDEN WORDS & ABSOLUTE ZERO META / AI MENTIONS:
+   - ABSOLUTELY NO MENTION OF AI: Do NOT use "AI", "artificial intelligence", "as an AI", "AI model", "language model", or any machine/bot references.
+   - FORBIDDEN PHRASES: Do NOT use "why search", "when search", "this article", "in today's fast-paced digital world", "delve into", "tapestry", "game-changer", "paradigm shift", "testament to", "beacon of", or any meta commentary.
+
+6. FAQS SECTION (3-4 SHORT HELPFUL FAQS):
+   - Provide 3 to 4 short, helpful Frequently Asked Questions at the end with concise, direct, friendly answers.
 
 Return ONLY a valid JSON object matching this schema:
 {
-  "title": "Natural, engaging, 100% unique magazine headline for ${keyword}",
-  "metaTitle": "Natural SEO Title under 60 chars ending with | On Gravity Magazine",
-  "metaDescription": "Helpful, engaging meta description under 155 chars optimized for search clicks",
-  "imageAlt": "Descriptive, high-quality image ALT text for a photograph of ${keyword}",
-  "excerpt": "A compelling 2-sentence executive summary of the article",
+  "title": "Clear, engaging headline for ${keyword}",
+  "metaTitle": "SEO Title under 60 chars ending with | On Gravity Magazine",
+  "metaDescription": "Friendly meta description under 155 chars for search clicks",
+  "imageAlt": "Descriptive photograph ALT text for ${keyword}",
+  "excerpt": "A compelling 2-sentence summary of the article",
   "paragraphs": [
-    "Paragraph 1 (130-150 words): Engaging intro establishing immediate value, real-world context, and clear thesis...",
-    "## Topic-Specific H2 Heading incorporating ${keyword}",
-    "Paragraph 2 (130-150 words): Detailed background analysis, technical specifications, or domain context...",
-    "### Topic-Specific H3 Subheading",
-    "Paragraph 3 (130-150 words): Core features breakdown, practical operation, or user experience highlights...",
-    "## Topic-Specific H2 Heading addressing technical/practical aspect",
-    "Paragraph 4 (130-150 words): Practical applications, case studies, or workflow implementation steps...",
-    "## Topic-Specific H2 Heading addressing comparison or testing",
-    "Paragraph 5 (130-150 words): Side-by-side performance evaluation, real-world pros and cons...",
-    "### Topic-Specific H3 Subheading",
-    "Paragraph 6 (130-150 words): Detailed analysis of throughput, speed, or cost-to-performance ratio...",
-    "## Topic-Specific H2 Heading focusing on practical caveats or maintenance",
-    "Paragraph 7 (130-150 words): Critical limitations, challenges, or user caveats to consider...",
-    "## Topic-Specific H2 Heading focusing on future trends or conclusion",
-    "Paragraph 8 (130-150 words): Forward-looking market analysis, future expectations, and definitive conclusion..."
+    "Short engaging intro speaking directly to you, the reader...",
+    "## Topic-Specific H2 Heading with ${keyword}",
+    "Paragraph 2 (120-150 words): Conversational, detailed local explanation...",
+    "### Topic-Specific Subheading",
+    "Paragraph 3 (120-150 words): Practical advice and real-world breakdown...",
+    "## Topic-Specific H2 Heading",
+    "Paragraph 4 (120-150 words): Step-by-step practical insights...",
+    "## Topic-Specific H2 Heading",
+    "Paragraph 5 (120-150 words): Detailed breakdown and friendly recommendations...",
+    "Paragraph 6 (120-150 words): Practical caveats or maintenance tips...",
+    "## Topic-Specific H2 Heading",
+    "Paragraph 7 (120-150 words): Concluding advice and key takeaway..."
   ],
   "faqs": [
-    { "question": "Specific Question 1 regarding ${keyword}?", "answer": "Direct, thorough answer..." },
-    { "question": "Specific Question 2 regarding ${keyword}?", "answer": "Direct, thorough answer..." },
-    { "question": "Specific Question 3 regarding ${keyword}?", "answer": "Direct, thorough answer..." }
+    { "question": "Short Question 1 regarding ${keyword}?", "answer": "Short, helpful, friendly answer." },
+    { "question": "Short Question 2 regarding ${keyword}?", "answer": "Short, helpful, friendly answer." },
+    { "question": "Short Question 3 regarding ${keyword}?", "answer": "Short, helpful, friendly answer." },
+    { "question": "Short Question 4 regarding ${keyword}?", "answer": "Short, helpful, friendly answer." }
   ],
   "category": "one of: celebrity, life-style, tech, health, business, news, food",
   "tags": ["Tag1", "Tag2", "Tag3", "Tag4"]
