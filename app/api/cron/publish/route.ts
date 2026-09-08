@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { publishNextKeyword, getKeywordQueue } from "@/lib/automation";
+import { publishNextKeywordAsync, getKeywordQueue } from "@/lib/automation";
 
 export async function GET() {
   try {
-    const article = publishNextKeyword();
+    const article = await publishNextKeywordAsync();
 
     if (!article) {
       return NextResponse.json({
@@ -15,7 +15,7 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      message: `Cron automated publishing triggered! Article '${article.title}' published.`,
+      message: `Gemini AI Cron automated publishing triggered! Article '${article.title}' published.`,
       article,
       readUrl: `/on-gravity-magazine/${article.slug}`,
     });

@@ -10,6 +10,10 @@ export interface QueueItem {
   generatedArticleSlug?: string;
 }
 
+const getGeminiApiKey = () => {
+  return process.env.GEMINI_API_KEY || "";
+};
+
 // Global in-memory storage (persists across server requests in Node process)
 let dynamicArticlesStore: Article[] = [];
 let keywordQueueStore: QueueItem[] = [
@@ -88,7 +92,6 @@ function getImageUrlForKeyword(keyword: string, category: string): string {
   return "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80";
 }
 
-// Category Inferencer from keyword text
 function inferCategoryFromKeyword(keyword: string): string {
   const kw = keyword.toLowerCase();
   if (kw.includes("celebrity") || kw.includes("actor") || kw.includes("fashion") || kw.includes("movie") || kw.includes("hollywood") || kw.includes("gala")) {
@@ -120,12 +123,99 @@ const AUTHORS = [
   { name: "Camilla Dupuis", role: "Culinary Editor", avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" },
 ];
 
-export function generateArticleObject(keyword: string, categoryOverride?: string): Article {
+/**
+ * Call Gemini 3.6 Flash API to generate rich, human-like editorial content
+ */
+async function fetchGeminiArticle(keyword: string, categoryOverride?: string): Promise<{
+  title: string;
+  excerpt: string;
+  paragraphs: string[];
+  category: string;
+  tags: string[];
+} | null> {
+  const apiKey = getGeminiApiKey();
+  if (!apiKey) return null;
+
+  try {
+    const prompt = `You are the Editor-in-Chief of "On Gravity Magazine". Write an in-depth, captivating, high-quality magazine article based on the keyword/topic: "${keyword}".
+    Return ONLY a valid JSON object with the following fields:
+    {
+      "title": "A captivating editorial headline",
+      "excerpt": "A compelling 2-sentence summary excerpt",
+      "paragraphs": [
+        "First comprehensive introductory paragraph engaging the reader...",
+        "Second paragraph analyzing key trends, data, or technical details...",
+        "Third paragraph with expert perspectives or industry quotes...",
+        "Fourth forward-looking concluding paragraph highlighting future impact."
+      ],
+      "category": "one of: celebrity, life-style, tech, health, business, news, food",
+      "tags": ["Tag1", "Tag2", "Tag3"]
+    }`;
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+      }),
+    });
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+    const cleanedText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
+    const parsed = JSON.parse(cleanedText);
+
+    if (parsed.title && parsed.excerpt && Array.isArray(parsed.paragraphs)) {
+      return {
+        title: parsed.title,
+        excerpt: parsed.excerpt,
+        paragraphs: parsed.paragraphs,
+        category: categoryOverride || parsed.category || inferCategoryFromKeyword(keyword),
+        tags: Array.isArray(parsed.tags) ? parsed.tags : ["Analysis", "2026"],
+      };
+    }
+  } catch (err) {
+    console.error("Gemini API generation error fallback:", err);
+  }
+  return null;
+}
+
+/**
+ * Generate a complete blog article dynamically using Gemini AI or structured fallback
+ */
+export async function generateArticleObjectAsync(keyword: string, categoryOverride?: string): Promise<Article> {
   const cleanKw = keyword.trim();
   const slug = cleanKw.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + "-" + Date.now().toString().slice(-4);
-  const category = categoryOverride || inferCategoryFromKeyword(cleanKw);
   const author = AUTHORS[Math.floor(Math.random() * AUTHORS.length)];
 
+  // Attempt real Gemini AI generation
+  const geminiData = await fetchGeminiArticle(cleanKw, categoryOverride);
+
+  if (geminiData) {
+    return {
+      id: `gemini-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+      slug,
+      title: geminiData.title,
+      excerpt: geminiData.excerpt,
+      content: geminiData.paragraphs,
+      category: geminiData.category,
+      author,
+      publishedAt: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+      readTime: `${Math.max(4, Math.ceil(geminiData.paragraphs.join(" ").split(" ").length / 200))} min read`,
+      imageUrl: getImageUrlForKeyword(cleanKw, geminiData.category),
+      imageCaption: `AI-enhanced editorial coverage on ${cleanKw} for On Gravity Magazine.`,
+      featured: true,
+      trending: true,
+      tags: geminiData.tags,
+    };
+  }
+
+  // Structured Fallback
+  const category = categoryOverride || inferCategoryFromKeyword(cleanKw);
   const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
   const title = `${capitalizedKw}: A Comprehensive Analysis & Future Outlook`;
   const excerpt = `Exploring the latest developments, expert perspectives, and societal impacts surrounding ${cleanKw} in 2026.`;
@@ -135,13 +225,6 @@ export function generateArticleObject(keyword: string, categoryOverride?: string
     `Experts highlight several key factors driving momentum in ${cleanKw}. From technological integration and shift in consumer behavior to strategic investments, the landscape is transforming at a rapid pace.`,
     `A recent survey conducted by leading analysts revealed that over 68% of organizations and individuals consider ${cleanKw} a crucial focal point for their strategic roadmap over the next three years.`,
     `Looking forward, the integration of intelligent workflows and sustainable practices will further elevate the impact of ${cleanKw}. Editors at On Gravity Magazine will continue monitoring these breakthroughs as they unfold.`
-  ];
-
-  const tags = [
-    cleanKw.split(" ")[0] || "Featured",
-    category.toUpperCase(),
-    "2026",
-    "Analysis"
   ];
 
   return {
@@ -158,7 +241,7 @@ export function generateArticleObject(keyword: string, categoryOverride?: string
     imageCaption: `Editorial visualization highlighting key developments in ${cleanKw}.`,
     featured: true,
     trending: true,
-    tags,
+    tags: [cleanKw.split(" ")[0] || "Featured", category.toUpperCase(), "2026"],
   };
 }
 
@@ -180,14 +263,14 @@ export function addKeywordsToQueue(keywordsText: string, defaultCategory?: strin
   return newItems;
 }
 
-export function publishNextKeyword(): Article | null {
+export async function publishNextKeywordAsync(): Promise<Article | null> {
   const pendingIndex = keywordQueueStore.findIndex((item) => item.status === "pending");
   if (pendingIndex === -1) return null;
 
   const item = keywordQueueStore[pendingIndex];
   item.status = "publishing";
 
-  const newArticle = generateArticleObject(item.keyword, item.category);
+  const newArticle = await generateArticleObjectAsync(item.keyword, item.category);
   dynamicArticlesStore.unshift(newArticle);
 
   item.status = "published";
@@ -197,8 +280,8 @@ export function publishNextKeyword(): Article | null {
   return newArticle;
 }
 
-export function publishSpecificKeyword(keyword: string, category?: string): Article {
-  const newArticle = generateArticleObject(keyword, category);
+export async function publishSpecificKeywordAsync(keyword: string, category?: string): Promise<Article> {
+  const newArticle = await generateArticleObjectAsync(keyword, category);
   dynamicArticlesStore.unshift(newArticle);
 
   keywordQueueStore.unshift({

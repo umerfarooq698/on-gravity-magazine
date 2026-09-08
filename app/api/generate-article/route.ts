@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { publishSpecificKeyword, addKeywordsToQueue, getKeywordQueue } from "@/lib/automation";
+import { publishSpecificKeywordAsync, addKeywordsToQueue, getKeywordQueue } from "@/lib/automation";
 
 export async function POST(request: Request) {
   try {
@@ -22,11 +22,11 @@ export async function POST(request: Request) {
       );
     }
 
-    const publishedArticle = publishSpecificKeyword(keyword, category);
+    const publishedArticle = await publishSpecificKeywordAsync(keyword, category);
 
     return NextResponse.json({
       success: true,
-      message: `Article for keyword '${keyword}' successfully generated & published!`,
+      message: `Gemini AI Article for keyword '${keyword}' successfully generated & published!`,
       article: publishedArticle,
       readUrl: `/on-gravity-magazine/${publishedArticle.slug}`,
     });
