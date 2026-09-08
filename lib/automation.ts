@@ -129,6 +129,11 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string): Prom
       caption: "Editorial portrait of Elon Musk, CEO and technology innovator.",
       alt: "Editorial portrait photograph of Elon Musk",
     },
+    "musk": {
+      photoId: "photo-1560250097-0b93528c311a",
+      caption: "Editorial portrait of Elon Musk, CEO and technology innovator.",
+      alt: "Editorial portrait photograph of Elon Musk",
+    },
     "steve jobs": {
       photoId: "photo-1507003211169-0a1dd7228f2d",
       caption: "Editorial portrait of Steve Jobs, Apple co-founder.",
@@ -149,10 +154,50 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string): Prom
       caption: "Editorial photograph for bathtub drain assembly.",
       alt: "Clawfoot bathtub and drain fitting",
     },
+    "bathroom tub": {
+      photoId: "photo-1507652313519-d4e9174996dd",
+      caption: "Editorial photograph of a modern luxury bathroom soaking tub.",
+      alt: "Modern luxury freestanding bathtub",
+    },
     "samsung tv": {
       photoId: "photo-1593359677879-a4bb92f829d1",
       caption: "Editorial photograph for Samsung TV screen display.",
       alt: "4K QLED display panel",
+    },
+    "ai autonomous agents in healthcare": {
+      photoId: "photo-1576091160399-112ba8d25d1d",
+      caption: "Medical clinical technology interface visualization.",
+      alt: "Healthcare AI analytics dashboard",
+    },
+    "2026 red carpet fashion highlights": {
+      photoId: "photo-1492684223066-81342ee5ff30",
+      caption: "Red carpet gala lighting and high-fashion showcase.",
+      alt: "Red carpet gala event stage",
+    },
+    "holistic sleep optimization and circadian rhythms": {
+      photoId: "photo-1511295742362-92c96b124e52",
+      caption: "Serene bedroom atmosphere optimized for circadian sleep.",
+      alt: "Minimalist peaceful bedroom interior",
+    },
+    "venture capital shifts in clean energy startups": {
+      photoId: "photo-1559526324-4b87b5e36e44",
+      caption: "Clean energy solar infrastructure and sustainable investment.",
+      alt: "Solar energy infrastructure array",
+    },
+    "minimalist architecture and slow living spaces": {
+      photoId: "photo-1600585154340-be6161a56a0c",
+      caption: "Minimalist architectural living space with natural lighting.",
+      alt: "Modern minimalist residential interior architecture",
+    },
+    "zero-waste farm to table michelin dining": {
+      photoId: "photo-1555396273-367ea4eb4db5",
+      caption: "Gourmet culinary presentation at a fine dining restaurant.",
+      alt: "Fine dining gourmet chef plating",
+    },
+    "global renewable energy municipal accords": {
+      photoId: "photo-1470071459604-3b5ec3a7fe05",
+      caption: "Global earth environmental perspective for municipal energy accords.",
+      alt: "Earth environment landscape",
     },
   };
 
@@ -164,6 +209,17 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string): Prom
       caption: override.caption,
       alt: override.alt,
     };
+  }
+
+  // Check partial keyword matches for entity overrides (e.g. "elon musk news", "bathroom tub guide")
+  for (const [key, override] of Object.entries(SPECIFIC_KEYWORD_PHOTO_MAP)) {
+    if (cleanKw.includes(key)) {
+      return {
+        url: `https://images.unsplash.com/${override.photoId}?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`,
+        caption: override.caption,
+        alt: override.alt,
+      };
+    }
   }
 
   // Refine query for people/celebrities to get portraits instead of vehicles/products
@@ -1172,6 +1228,23 @@ function buildArticleFromQueueItem(item: QueueItem): Article {
   const title = generateDynamicFallbackTitle(cleanKw, category, false);
   const headings = generateDynamicHeadingsForArticle(cleanKw, category);
   const excerpt = `An essential, reader-first examination of ${cleanKw}, exploring technical benchmarks, real-world utility, and future market trends.`;
+  const content = generateDynamicDomainParagraphs(cleanKw, category, headings);
+
+  // Synchronously compute deterministic image URL and ALT text
+  const cleanKwLower = cleanKw.toLowerCase();
+  const slugSig = cleanKwLower.replace(/[^a-z0-9]+/g, "-");
+  const hashVal = getDeterministicHash(cleanKwLower);
+  let imageUrl = `https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`;
+
+  if (cleanKwLower.includes("musk") || cleanKwLower.includes("elon")) {
+    imageUrl = `https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`;
+  } else if (cleanKwLower.includes("drain") || cleanKwLower.includes("bathtub")) {
+    imageUrl = `https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`;
+  } else if (cleanKwLower.includes("tub") || cleanKwLower.includes("bathroom")) {
+    imageUrl = `https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`;
+  } else if (cleanKwLower.includes("tv") || cleanKwLower.includes("samsung")) {
+    imageUrl = `https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`;
+  }
 
   return {
     id: `queue-${item.id}`,
@@ -1180,23 +1253,7 @@ function buildArticleFromQueueItem(item: QueueItem): Article {
     metaTitle: `${title} | On Gravity Magazine`,
     metaDescription: excerpt,
     excerpt,
-    content: [
-      `As ${cleanKw} continues to shape contemporary discussions across technology, industry, and modern lifestyle, understanding its core principles, practical implications, and underlying mechanisms has become vital for enthusiasts and decision-makers alike.`,
-      headings.h2Keyword,
-      `From a structural and operational perspective, ${cleanKw} represents a significant evolution in its domain. Industry benchmarks indicate that adoption rates have grown exponentially over the past 12 months, driven by advances in core integration and refined user experiences.`,
-      headings.h3Sub1,
-      `Key specifications and primary features highlight several distinct advantages. Users consistently praise its flexibility, streamlined interface, and high reliability, while expert testing confirms that performance metrics regularly exceed standard expectations.`,
-      headings.h2Utility,
-      `Real-world implementation scenarios reveal practical strategies for maximizing value. Experts recommend establishing clear operational protocols, utilizing automated safeguards, and periodically assessing workflow bottlenecks to ensure optimal outcomes.`,
-      headings.h2Comparative,
-      `When comparing ${cleanKw} against traditional alternatives, key trade-offs emerge. While initial setup and investment require deliberate planning, long-term efficiency gains and operational benefits overwhelmingly justify the transition.`,
-      headings.h3Sub2,
-      `Rigorous side-by-side evaluations demonstrate notable performance gains. Under heavy operational loads, key throughput metrics outperform standard legacy configurations by substantial margins.`,
-      headings.h2Limitations,
-      `Despite its notable benefits, certain limitations and practical caveats warrant consideration. Potential users should account for integration timelines, ongoing maintenance requirements, and compatibility with legacy infrastructure before committing resources.`,
-      headings.h2Outlook,
-      `Looking ahead to the next decade, ongoing innovations surrounding ${cleanKw} promise to unlock even greater capabilities. Editors at On Gravity Magazine will continue monitoring developments to deliver timely, actionable coverage as new breakthroughs emerge.`
-    ],
+    content,
     faqs: [
       {
         question: `What makes ${capitalizedKw} a major focus in 2026?`,
@@ -1215,7 +1272,7 @@ function buildArticleFromQueueItem(item: QueueItem): Article {
     author,
     publishedAt: item.publishedAt || item.createdAt,
     readTime: "7 min read",
-    imageUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
+    imageUrl,
     imageAlt: `Editorial photography for ${cleanKw}`,
     imageCaption: `Editorial photograph for ${cleanKw}.`,
     featured: true,
