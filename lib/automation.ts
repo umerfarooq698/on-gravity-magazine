@@ -337,27 +337,28 @@ CRITICAL REQUIREMENTS:
    - Write 7 to 10 substantial, highly-detailed paragraphs (each paragraph 120–160 words).
    - Provide extensive real-world facts, specifications, step-by-step insights, pros/cons, market context, and expert advice.
 
-2. HEADINGS & STRUCTURE (H2 & H3 MUST BE 100% TOPIC-SPECIFIC & UNIQUE):
-   - DO NOT use generic repeated headings like "Key Architecture" or "Real-World Utility"!
-   - Create journalistic H2 ("## Headline") and H3 ("### Subheadline") headers strictly tailored to "${keyword}".
+2. HEADINGS & STRUCTURE (H2 & H3 MUST BE 100% TOPIC-SPECIFIC & UNIQUE FOR "${keyword}"):
+   - STRICTLY FORBIDDEN GENERIC HEADINGS: Do NOT use generic template headings like "Key Architecture", "Real-World Utility", "Comparative Benchmarks", "Key Limitations", "Strategic Outlook", "System Workflow", "Core Specifications"!
+   - You MUST create custom, topic-specific H2 ("## Heading") and H3 ("### Subheading") headers tailored exclusively to the domain and vocabulary of "${keyword}".
    - Examples of topic-specific H2s:
-     * For home/plumbing ("bathtub drain"): "## Drainage Flow Dynamics & Overflow Standards", "## Preventing Clogs: Cleaning & Maintenance Protocols"
-     * For tech ("samsung tv"): "## Panel Luminance & Neural Quantum Upscaling", "## Gaming Performance & Input Lag Benchmarks"
-     * For wellness/health ("sleep optimization"): "## Circadian Alignment & Melatonin Regulation", "## Sleep Tracking Accuracy & Biometric Data"
-   - H2 KEYWORD RULE: Include the primary keyword "${keyword}" naturally in ONLY 1 or 2 H2 headings. Do NOT put the keyword in every H2 heading!
+     * For home/plumbing ("bathtub drain"): "## Drain Pipe Diameter & Overflow Valve Standards", "## Clearing Tough Clogs: Chemical-Free Snaking & Trap Maintenance", "## Preventing Water Leaks & Mold Around the Seal"
+     * For displays/tech ("samsung tv"): "## Quantum Dot Luminance & Local Dimming Zones", "## 4K Gaming Benchmarks: 120Hz VRR & Input Lag", "## Tizen OS Ergonomics & Soundbar Integration"
+     * For health ("sleep optimization"): "## Circadian Rhythm Alignment & Melatonin Pathways", "## Rest Architecture: REM vs Deep Sleep Recovery"
+     * For culinary ("gourmet dish"): "## Flavor Profile Balancing & Essential Seasoning Ratios", "## Precision Heat Control & Searing Techniques"
+   - H2 KEYWORD RULE: Include the primary keyword "${keyword}" naturally in ONLY 1 or 2 H2 headings. The remaining H2 headings MUST address specific topic aspects without repeating the keyword!
    - Place each H2 and H3 heading on its own separate string entry in the "paragraphs" array.
 
 3. 100% UNIQUE & NATURAL TITLE:
-   - Create a completely distinct, engaging, human-first headline specifically tailored to "${keyword}".
+   - Create a completely distinct, engaging headline specifically tailored to "${keyword}".
    - NEVER use fixed formula templates like "${keyword}: 2026 In-Depth Analysis...".
-   - Make the title sound like a real human headline from Forbes, Wired, TechCrunch, or Vogue (e.g., "Why ${keyword} Is Quietly Reshaping Modern Tech", "${keyword} Tested: High Performance, Real-World Utility, and Key Limits", "The Definitive Guide to ${keyword}").
+   - Make the title sound like a real human headline from Forbes, Wired, TechCrunch, or Vogue.
 
 4. WRITE FOR HUMANS FIRST (GOOGLE HELPFUL CONTENT ALIGNMENT):
    - Match exact user search intent.
    - NO AI BUZZWORDS: Strictly do NOT use phrases like "In today's fast-paced digital world", "delve into", "tapestry", "game-changer", "beacon of", "testament to", "it remains to be seen", "paradigm shift".
 
 5. HELPFUL FAQS (2-4 QUESTIONS):
-   - Provide 2 to 4 genuinely helpful, non-generic Frequently Asked Questions with clear, direct, multi-sentence answers.
+   - Provide 2 to 4 genuinely helpful, topic-specific Frequently Asked Questions with clear, direct, multi-sentence answers.
 
 Return ONLY a valid JSON object matching this schema:
 {
@@ -369,18 +370,18 @@ Return ONLY a valid JSON object matching this schema:
   "paragraphs": [
     "Paragraph 1 (130-160 words): Engaging intro establishing immediate value, real-world context, and clear thesis...",
     "## Topic-Specific H2 Heading incorporating ${keyword}",
-    "Paragraph 2 (130-160 words): Detailed background analysis, historical context, or technical specifications...",
+    "Paragraph 2 (130-160 words): Detailed background analysis, technical specifications, or domain context...",
     "### Topic-Specific H3 Subheading",
     "Paragraph 3 (130-160 words): Core features breakdown, practical operation, or user experience highlights...",
-    "## Topic-Specific H2 Heading without keyword",
+    "## Topic-Specific H2 Heading addressing technical/practical aspect",
     "Paragraph 4 (130-160 words): Practical applications, case studies, or workflow implementation steps...",
-    "## Topic-Specific H2 Heading without keyword",
-    "Paragraph 5 (130-160 words): Side-by-side performance benchmarks, pros and cons...",
+    "## Topic-Specific H2 Heading addressing comparison or testing",
+    "Paragraph 5 (130-160 words): Side-by-side performance evaluation, real-world pros and cons...",
     "### Topic-Specific H3 Subheading",
     "Paragraph 6 (130-160 words): Detailed analysis of throughput, speed, or cost-to-performance ratio...",
-    "## Topic-Specific H2 Heading focusing on Limitations",
-    "Paragraph 7 (130-160 words): Critical limitations, challenges, or buyer/user caveats to consider...",
-    "## Topic-Specific H2 Heading focusing on Future Outlook",
+    "## Topic-Specific H2 Heading focusing on practical caveats or maintenance",
+    "Paragraph 7 (130-160 words): Critical limitations, challenges, or user caveats to consider...",
+    "## Topic-Specific H2 Heading focusing on future trends or conclusion",
     "Paragraph 8 (130-160 words): Forward-looking market analysis, future expectations, and definitive conclusion..."
   ],
   "faqs": [
@@ -429,80 +430,250 @@ Return ONLY a valid JSON object matching this schema:
 }
 
 /**
- * Generate dynamic, non-repetitive H2 and H3 headings for fallback articles
+ * Generate dynamic, topic-tailored H2 and H3 headings for fallback articles
  */
 function generateDynamicHeadingsForArticle(keyword: string, category: string) {
   const cleanKw = keyword.trim();
   const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
-  const catUpper = category.toUpperCase();
+  const kwLower = cleanKw.toLowerCase();
 
-  const h2KeywordOptions = [
-    `## Architectural Overview & Key Capabilities of ${capitalizedKw}`,
-    `## Why ${capitalizedKw} Is Driving ${catUpper} Innovation`,
-    `## Core Features and System Specifications of ${capitalizedKw}`,
-    `## Understanding the Foundational Principles Behind ${capitalizedKw}`,
-    `## The Technological & Structural Evolution of ${capitalizedKw}`,
-    `## Key Specifications and Primary Highlights of ${capitalizedKw}`,
-  ];
+  let h2Pool: string[] = [];
+  let h3Pool: string[] = [];
 
-  const h3Sub1Options = [
-    `### Core Sub-System Integration`,
-    `### Primary Hardware & Interface Design`,
-    `### Operational Architecture Breakdown`,
-    `### System Workflow & Integration Protocols`,
-    `### Essential Component Specifications`,
-  ];
+  // Home / Plumbing / Bathroom / DIY
+  if (
+    kwLower.includes("drain") ||
+    kwLower.includes("bathtub") ||
+    kwLower.includes("bathroom") ||
+    kwLower.includes("shower") ||
+    kwLower.includes("sink") ||
+    kwLower.includes("plumbing") ||
+    kwLower.includes("faucet") ||
+    kwLower.includes("pipe") ||
+    kwLower.includes("toilet") ||
+    kwLower.includes("decor") ||
+    kwLower.includes("renovation")
+  ) {
+    h2Pool = [
+      `## Understanding Drain Assembly & Pipe Diameter Standards for ${capitalizedKw}`,
+      `## Clearing Tough Clogs: Chemical-Free Snaking & Trap Maintenance`,
+      `## Material Durability: Brass, Copper, and Heavy-Duty PVC Fittings`,
+      `## Preventing Water Leaks & Waterproof Seal Maintenance`,
+      `## Essential Tools & Safety Guidelines for Home DIY Repairs`,
+      `## Flow Rate Optimization & Overflow Valve Mechanics`,
+      `## Troubleshooting Slow Water Drainage & Odor Prevention`,
+      `## When to Hire a Licensed Plumber vs Handling DIY Installation`
+    ];
+    h3Pool = [
+      `### Rubber Gasket & Flange Sealing Instructions`,
+      `### Hair & Soap Scum Trap Cleaning Protocols`,
+      `### Water Pressure & Leak Detection Checks`,
+      `### Long-Term Pipe Maintenance & Deodorization Tips`
+    ];
+  }
+  // Display / TV / Electronics
+  else if (
+    kwLower.includes("tv") ||
+    kwLower.includes("samsung") ||
+    kwLower.includes("display") ||
+    kwLower.includes("oled") ||
+    kwLower.includes("qled") ||
+    kwLower.includes("screen") ||
+    kwLower.includes("monitor") ||
+    kwLower.includes("audio") ||
+    kwLower.includes("speaker")
+  ) {
+    h2Pool = [
+      `## Panel Contrast, Peak Nits & Quantum Dot Color Accuracy for ${capitalizedKw}`,
+      `## 4K Gaming Benchmarks: 120Hz VRR & Low Input Lag Performance`,
+      `## Smart TV Platform Ergonomics & Voice Navigation Controls`,
+      `## Audio Fidelity: Soundbar Integration & eARC Passthrough`,
+      `## Anti-Reflective Screen Coating & Wide Viewing Angle Capabilities`,
+      `## Energy Efficiency & Panel Heat Dissipation Analysis`,
+      `## Picture Calibration: Cinema, Sports, and Gaming Modes`,
+      `## Long-Term Panel Reliability & Burn-In Prevention Techniques`
+    ];
+    h3Pool = [
+      `### Local Dimming Zones & Peak Brightness Nits`,
+      `### HDR10+ and Dolby Vision Dynamic Metadata`,
+      `### Remote Control Usability & App Connectivity`,
+      `### Cable Management & Wall Mount Compatibility`
+    ];
+  }
+  // Wearables / Battery / Smartwatches
+  else if (
+    kwLower.includes("watch") ||
+    kwLower.includes("battery") ||
+    kwLower.includes("wearable") ||
+    kwLower.includes("sensor") ||
+    kwLower.includes("fitness") ||
+    kwLower.includes("apple") ||
+    kwLower.includes("gadget")
+  ) {
+    h2Pool = [
+      `## Battery Chemistry & Daily Endurance Metrics for ${capitalizedKw}`,
+      `## Biometric Sensor Precision: ECG, SpO2, and Optical Heart Rate`,
+      `## Case Durability: Titanium Alloys & Sapphire Crystal Lenses`,
+      `## Water Resistance Ratings & Open-Water Swim Testing`,
+      `## Fast Charging Speeds & Daily Power Management Options`,
+      `## Health Data Synchronization & Companion App Integration`,
+      `## Always-On Display Visibility Under Direct Sunlight`,
+      `## Power-Saving Modes & Background GPS Battery Consumption`
+    ];
+    h3Pool = [
+      `### Multi-Band GPS Signal Lock Speed`,
+      `### Sleep Architecture & REM Cycle Metrics`,
+      `### Haptic Feedback & Touch Responsiveness`,
+      `### Wristband Ergonomics & Long-Term Comfort`
+    ];
+  }
+  // Health / Sleep / Wellness / Skincare
+  else if (
+    kwLower.includes("sleep") ||
+    kwLower.includes("health") ||
+    kwLower.includes("diet") ||
+    kwLower.includes("wellness") ||
+    kwLower.includes("nutrition") ||
+    kwLower.includes("mindful") ||
+    kwLower.includes("skin") ||
+    kwLower.includes("therapy")
+  ) {
+    h2Pool = [
+      `## Circadian Rhythm Alignment & Melatonin Production`,
+      `## Deep Sleep vs REM Cycles: Rest Quality Metrics for ${capitalizedKw}`,
+      `## Bedroom Environment Optimization: Temp, Sound & Ambient Light`,
+      `## Dietary Protocols & Evening Meal Timing Strategies`,
+      `## Biometric Signals: HRV & Resting Heart Rate Recovery`,
+      `## Mitigating Evening Screen Time & Blue Light Exposure`,
+      `## Supplementation Protocols & Clinical Evidence Review`,
+      `## Long-Term Benefits for Mental Clarity & Metabolic Health`
+    ];
+    h3Pool = [
+      `### Morning Solar Exposure & Light Therapy`,
+      `### Cortisol Mitigation & Evening Wind-Down Habits`,
+      `### Wearable Sleep Tracker Accuracy Ratings`,
+      `### Hydration Balance & Restful Sleep`
+    ];
+  }
+  // EV / Automotive / Tech / AI / Finance
+  else if (
+    kwLower.includes("car") ||
+    kwLower.includes("ev") ||
+    kwLower.includes("ai") ||
+    kwLower.includes("startup") ||
+    kwLower.includes("energy") ||
+    kwLower.includes("business") ||
+    kwLower.includes("finance") ||
+    kwLower.includes("invest")
+  ) {
+    h2Pool = [
+      `## Core System Architecture & Operational Efficiency of ${capitalizedKw}`,
+      `## Performance Benchmarks & Real-World Output Analysis`,
+      `## Capital Allocation, Market Demand & Strategic Growth Drivers`,
+      `## Regulatory Frameworks & International Compliance Standards`,
+      `## Hardware & Software Integration Protocols`,
+      `## Scaling Logistics & Supply Chain Reliability`,
+      `## Key Buyer Caveats & Operational Challenges`,
+      `## Strategic 5-Year Industry Forecast for ${capitalizedKw}`
+    ];
+    h3Pool = [
+      `### Thermal Management & Energy Loss Controls`,
+      `### Cost-to-Performance Ratio Analysis`,
+      `### User Adoption Trends & Market Feedback`,
+      `### Safety Compliance & Fault Tolerances`
+    ];
+  }
+  // Food / Culinary / Recipes / Wine
+  else if (
+    kwLower.includes("food") ||
+    kwLower.includes("dish") ||
+    kwLower.includes("recipe") ||
+    kwLower.includes("gourmet") ||
+    kwLower.includes("chef") ||
+    kwLower.includes("cooking") ||
+    kwLower.includes("wine") ||
+    kwLower.includes("coffee")
+  ) {
+    h2Pool = [
+      `## Flavor Profile Balancing & Essential Seasoning Ratios for ${capitalizedKw}`,
+      `## Precision Cooking Methods & Heat Control Principles`,
+      `## Sourcing Quality Ingredients & Fresh Seasonal Produce`,
+      `## Plating Aesthetics & Professional Culinary Presentation`,
+      `## Beverage & Wine Pairing Recommendations`,
+      `## Essential Kitchen Equipment & Cookware Selection`,
+      `## Recipe Adjustments for Dietary Customizations`,
+      `## Storage, Prep-Ahead Guidelines & Reheating Techniques`
+    ];
+    h3Pool = [
+      `### Marinating & Texture Enhancement Protocols`,
+      `### Sauce Emulsification & Reduction Secrets`,
+      `### Plating Garnishes & Visual Appeal`,
+      `### Cookware Heat Distribution Analysis`
+    ];
+  }
+  // Celebrity / Red Carpet / Fashion / Entertainment
+  else if (
+    kwLower.includes("fashion") ||
+    kwLower.includes("celebrity") ||
+    kwLower.includes("actor") ||
+    kwLower.includes("gala") ||
+    kwLower.includes("star") ||
+    kwLower.includes("movie") ||
+    kwLower.includes("singer")
+  ) {
+    h2Pool = [
+      `## Standout Style Moments & Red Carpet Highlights for ${capitalizedKw}`,
+      `## Designer Collaborations & Tailored Silhouette Craftsmanship`,
+      `## Color Palette Trends & Textile Innovation`,
+      `## Luxury Accessories, Fine Jewelry & Footwear Pairing`,
+      `## Behind-the-Scenes Prep & Celebrity Styling Insights`,
+      `## Cultural Impact & Viral Social Media Reactions`,
+      `## Vintage Nostalgia vs Modern Avant-Garde Looks`,
+      `## Future Style Trends Inspiring Next Season's Collections`
+    ];
+    h3Pool = [
+      `### Fabric Selection & Hand-Stitched Embellishments`,
+      `### Statement Footwear & Accessory Choices`,
+      `### Hair, Makeup & Grooming Coordination`,
+      `### Media Reaction & Critic Consensus`
+    ];
+  }
+  // Fallback for general topics
+  else {
+    h2Pool = [
+      `## Fundamental Principles & Key Innovations Behind ${capitalizedKw}`,
+      `## Operational Performance Benchmarks & Real-World Utility`,
+      `## Practical Implementation & Workflow Integration Guidelines`,
+      `## Comparative Analysis: Efficiency vs Legacy Alternatives`,
+      `## Essential Buyer Considerations & System Limitations`,
+      `## Resource Allocation & Optimization Strategies`,
+      `## Industry Adoption Trends & User Feedback Highlights`,
+      `## Strategic Future Outlook & 2026 Recommendations`
+    ];
+    h3Pool = [
+      `### Performance Metrics & Testing Accuracy`,
+      `### System Compatibility & Integration Checks`,
+      `### Maintenance & Risk Mitigation Protocols`,
+      `### Key Milestones for Long-Term Value`
+    ];
+  }
 
-  const h2UtilityOptions = [
-    `## Real-World Utility & Hands-On User Experience`,
-    `## Field Performance & Operational Dynamics`,
-    `## Practical Implementation & Workflow Integration`,
-    `## Hands-On Testing: Usability, Ergonomics & Setup`,
-    `## High-Value Use Cases & Practical Applications`,
-  ];
+  const pickAndRemove = (arr: string[]) => {
+    const idx = Math.floor(Math.random() * arr.length);
+    return arr.splice(idx, 1)[0];
+  };
 
-  const h2ComparativeOptions = [
-    `## Comparative Benchmarks & Industry Alternatives`,
-    `## How It Stacks Up Against Market Competitors`,
-    `## Performance Evaluation & Relative Advantage`,
-    `## Industry Trade-Offs: Efficiency vs Initial Setup`,
-    `## Benchmark Testing Across Standard Scenarios`,
-  ];
-
-  const h3Sub2Options = [
-    `### Throughput & Performance Metrics`,
-    `### Strategic Efficiency Assessments`,
-    `### Cost-to-Performance Ratio Analysis`,
-    `### Comparative Speed & Operational Testing`,
-    `### Long-Term Value & ROI Evaluation`,
-  ];
-
-  const h2LimitationsOptions = [
-    `## Key Limitations & Essential Buyer Caveats`,
-    `## Practical Constraints & Maintenance Warnings`,
-    `## What to Consider Before Committing Resources`,
-    `## Potential Drawbacks & Integration Challenges`,
-    `## Operational Risks & User Considerations`,
-  ];
-
-  const h2OutlookOptions = [
-    `## Strategic Outlook & Final Verdict`,
-    `## Future Trajectory & Next-Generation Expectations`,
-    `## Industry Forecast & Market Evolution`,
-    `## Final Editorial Verdict & Strategic Recommendations`,
-    `## Emerging Innovations & Long-Term Roadmap`,
-  ];
-
-  const pickRandom = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+  const h2Copy = [...h2Pool];
+  const h3Copy = [...h3Pool];
 
   return {
-    h2Keyword: pickRandom(h2KeywordOptions),
-    h3Sub1: pickRandom(h3Sub1Options),
-    h2Utility: pickRandom(h2UtilityOptions),
-    h2Comparative: pickRandom(h2ComparativeOptions),
-    h3Sub2: pickRandom(h3Sub2Options),
-    h2Limitations: pickRandom(h2LimitationsOptions),
-    h2Outlook: pickRandom(h2OutlookOptions),
+    h2Keyword: pickAndRemove(h2Copy) || `## Key Performance Capabilities of ${capitalizedKw}`,
+    h3Sub1: pickAndRemove(h3Copy) || `### Primary Specifications & Feature Breakdown`,
+    h2Utility: pickAndRemove(h2Copy) || `## Real-World Applications & Workflow Integration`,
+    h2Comparative: pickAndRemove(h2Copy) || `## Performance Benchmarks & Relative Advantages`,
+    h3Sub2: pickAndRemove(h3Copy) || `### Comparative Speed & Operational Testing`,
+    h2Limitations: pickAndRemove(h2Copy) || `## Key Buyer Caveats & Practical Considerations`,
+    h2Outlook: pickAndRemove(h2Copy) || `## Strategic Verdict & Future Roadmap`,
   };
 }
 
