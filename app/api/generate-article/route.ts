@@ -24,7 +24,7 @@ export async function POST(request: Request) {
         success: true,
         message: `Queued keyword article generated & published successfully!`,
         article: publishedArticle,
-        readUrl: `/on-gravity-magazine/${publishedArticle.slug}`,
+        readUrl: `/${publishedArticle.slug}`,
         queue: getKeywordQueue(),
       });
     }
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
       success: true,
       message: `Gemini AI Article for keyword '${keyword}' successfully generated & published!`,
       article: publishedArticle,
-      readUrl: `/on-gravity-magazine/${publishedArticle.slug}`,
+      readUrl: `/${publishedArticle.slug}`,
     });
   } catch (error: any) {
     return NextResponse.json(

@@ -264,9 +264,7 @@ export async function generateArticleObjectAsync(
     cleanKw
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "") +
-      "-" +
-      Date.now().toString().slice(-4);
+      .replace(/^-|-$/g, "");
   const author = AUTHORS[Math.floor(Math.random() * AUTHORS.length)];
 
   // Attempt real Gemini AI generation

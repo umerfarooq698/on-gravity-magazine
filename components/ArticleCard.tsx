@@ -12,7 +12,7 @@ interface ArticleCardProps {
 
 export default function ArticleCard({ article, variant = "standard" }: ArticleCardProps) {
   const category = getCategoryBySlug(article.category);
-  const articleUrl = `/on-gravity-magazine/${article.slug}`;
+  const articleUrl = `/${article.slug}`;
 
   if (variant === "featured") {
     return (

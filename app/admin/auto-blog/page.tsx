@@ -444,7 +444,7 @@ export default function AutoBlogAdminPage() {
                         </div>
                       </div>
                       <Link
-                        href={`/on-gravity-magazine/${lastPublished.slug}`}
+                        href={`/${lastPublished.slug}`}
                         target="_blank"
                         className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded text-xs font-bold shrink-0 transition-colors inline-flex items-center gap-1"
                       >
@@ -595,7 +595,7 @@ export default function AutoBlogAdminPage() {
                       <td className="py-2.5 px-4 text-right">
                         {item.generatedArticleSlug ? (
                           <Link
-                            href={`/on-gravity-magazine/${item.generatedArticleSlug}`}
+                            href={`/${item.generatedArticleSlug}`}
                             target="_blank"
                             className="text-[#2271b1] hover:underline font-bold inline-flex items-center gap-1"
                           >

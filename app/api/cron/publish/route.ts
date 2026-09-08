@@ -17,7 +17,7 @@ export async function GET() {
       success: true,
       message: `Gemini AI Cron automated publishing triggered! Article '${article.title}' published.`,
       article,
-      readUrl: `/on-gravity-magazine/${article.slug}`,
+      readUrl: `/${article.slug}`,
     });
   } catch (error: any) {
     return NextResponse.json(
