@@ -101,52 +101,119 @@ let keywordQueueStore: QueueItem[] = [
  */
 async function fetchUniqueUnsplashImage(keyword: string, category: string): Promise<{ url: string; caption: string; alt: string }> {
   const accessKey = getUnsplashAccessKey();
-  const searchTopic = `${keyword} ${category}`;
-  const randomPage = Math.floor(Math.random() * 3) + 1;
+  const randomPage = Math.floor(Math.random() * 5) + 1;
+  const uniqueSig = `${Date.now()}_${Math.floor(Math.random() * 1000000)}`;
 
-  try {
-    const res = await fetch(
-      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(searchTopic)}&per_page=30&page=${randomPage}&orientation=landscape&client_id=${accessKey}`
-    );
+  if (accessKey) {
+    try {
+      const res = await fetch(
+        `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keyword)}&per_page=30&page=${randomPage}&orientation=landscape&client_id=${accessKey}`
+      );
 
-    if (res.ok) {
-      const data = await res.json();
-      const results = data?.results;
-      if (Array.isArray(results) && results.length > 0) {
-        const randomIndex = Math.floor(Math.random() * results.length);
-        const photo = results[randomIndex];
-        const rawUrl = photo?.urls?.regular || photo?.urls?.full;
-        const authorName = photo?.user?.name || "Unsplash Photographer";
-        const description = photo?.alt_description || photo?.description || keyword;
+      if (res.ok) {
+        const data = await res.json();
+        const results = data?.results;
+        if (Array.isArray(results) && results.length > 0) {
+          const photo = results[Math.floor(Math.random() * results.length)];
+          const rawUrl = photo?.urls?.regular || photo?.urls?.full;
+          const authorName = photo?.user?.name || "Unsplash Photographer";
+          const description = photo?.alt_description || photo?.description || keyword;
 
-        if (rawUrl) {
-          const sig = Math.floor(Math.random() * 100000);
-          const imageUrl = rawUrl.includes("?") ? `${rawUrl}&sig=${sig}` : `${rawUrl}?sig=${sig}`;
-          return {
-            url: imageUrl,
-            caption: `Editorial photograph for ${keyword}. Photo by ${authorName} on Unsplash.`,
-            alt: description,
-          };
+          if (rawUrl) {
+            const imageUrl = rawUrl.includes("?") ? `${rawUrl}&sig=${uniqueSig}` : `${rawUrl}?sig=${uniqueSig}`;
+            return {
+              url: imageUrl,
+              caption: `Editorial photograph for ${keyword}. Photo by ${authorName} on Unsplash.`,
+              alt: description,
+            };
+          }
         }
       }
+    } catch (err) {
+      console.error("Unsplash API fetch error fallback:", err);
     }
-  } catch (err) {
-    console.error("Unsplash API fetch error fallback:", err);
   }
 
-  const randomSig = Math.floor(Math.random() * 100000);
-  const fallbacks: Record<string, string> = {
-    tech: `https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
-    celebrity: `https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
-    health: `https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
-    business: `https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
-    food: `https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
-    news: `https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
-    "life-style": `https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80&sig=${randomSig}`,
+  // High-resolution Unsplash photo pools per category (56+ distinct high-res photos)
+  const categoryPhotoPools: Record<string, string[]> = {
+    "life-style": [
+      "photo-1584622650111-993a426fbf0a",
+      "photo-1507652313519-d4e9174996dd",
+      "photo-1618221195710-dd6b41faaea6",
+      "photo-1499750310107-5fef28a66643",
+      "photo-1513694203232-719a280e022f",
+      "photo-1586023492125-27b2c045efd7",
+      "photo-1600585154340-be6161a56a0c",
+      "photo-1507089947368-19c1da9775ae",
+    ],
+    tech: [
+      "photo-1593359677879-a4bb92f829d1",
+      "photo-1550745165-9bc0b252726f",
+      "photo-1518770660439-4636190af475",
+      "photo-1519389950473-47ba0277781c",
+      "photo-1526374965328-7f61d4dc18c5",
+      "photo-1531297484001-80022131f5a1",
+      "photo-1618005182384-a83a8bd57fbe",
+      "photo-1508739773434-c26b3d09e071",
+    ],
+    health: [
+      "photo-1506126613408-eca07ce68773",
+      "photo-1540420773420-3366772f4999",
+      "photo-1571019613454-1cb2f99b2d8b",
+      "photo-1511295742362-92c96b124e52",
+      "photo-1544367567-0f2fcb009e0b",
+      "photo-1498837167922-ddd27525d352",
+      "photo-1505576399279-565b52d4ac71",
+      "photo-1512290900673-066b567a5449",
+    ],
+    celebrity: [
+      "photo-1492684223066-81342ee5ff30",
+      "photo-1515886657613-9f3515b0c78f",
+      "photo-1509631179647-0177331693ae",
+      "photo-1469334031218-e382a71b716b",
+      "photo-1539571696357-5a69c17a67c6",
+      "photo-1490481651871-ab68de25d43d",
+      "photo-1529139574466-a303027c1d8b",
+      "photo-1500648767791-00dcc994a43e",
+    ],
+    business: [
+      "photo-1590283603385-17ffb3a7f29f",
+      "photo-1486406146926-c627a92ad1ab",
+      "photo-1507679799987-c73779587ccf",
+      "photo-1551836022-d5d88e9218df",
+      "photo-1559526324-4b87b5e36e44",
+      "photo-1454165804606-c3d57bc86b40",
+      "photo-1522071820081-009f0129c71c",
+      "photo-1444653614773-995cb1ef9efa",
+    ],
+    food: [
+      "photo-1555396273-367ea4eb4db5",
+      "photo-1504674900247-0877df9cc836",
+      "photo-1540189549336-e6e99c3679fe",
+      "photo-1565299624946-b28f40a0ae38",
+      "photo-1551024709-8f23befc6f87",
+      "photo-1510812431401-41d2bd2722f3",
+      "photo-1495474472287-4d71bcdd2085",
+      "photo-1544025162-d76694265947",
+    ],
+    news: [
+      "photo-1470071459604-3b5ec3a7fe05",
+      "photo-1541872703-74c5e44368f9",
+      "photo-1585829365295-ab7cd400c167",
+      "photo-1526304640581-d334cdbbf45e",
+      "photo-1529107386315-e1a2ed48a620",
+      "photo-1451187580459-43490279c0fa",
+      "photo-1569163139599-0f4517e36f51",
+      "photo-1572949645841-094f3a9c4c94",
+    ],
   };
 
+  const pool = categoryPhotoPools[category] || categoryPhotoPools["tech"];
+  const selectedPhotoId = pool[Math.floor(Math.random() * pool.length)];
+  const fallbackUrl = `https://images.unsplash.com/${selectedPhotoId}?auto=format&fit=crop&w=1200&q=80&sig=${uniqueSig}`;
+
   return {
-    url: fallbacks[category] || fallbacks["tech"],
+    url: fallbackUrl,
     caption: `Editorial photograph highlighting ${keyword} for On Gravity Magazine.`,
     alt: `High resolution photography representing ${keyword}`,
   };
