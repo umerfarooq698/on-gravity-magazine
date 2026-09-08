@@ -30,6 +30,7 @@ export default function AutoBlogAdminPage() {
   const [scheduleInterval, setScheduleInterval] = useState<string>("4");
   const [singleKeyword, setSingleKeyword] = useState("");
   const [queue, setQueue] = useState<QueueItem[]>([]);
+  const [lastPublished, setLastPublished] = useState<{ title: string; slug: string } | null>(null);
   const [publishingId, setPublishingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
@@ -70,6 +71,7 @@ export default function AutoBlogAdminPage() {
           text: `Published! Article for '${keyword}' generated: "${data.article.title}"`,
           type: "success",
         });
+        setLastPublished({ title: data.article.title, slug: data.article.slug });
         if (data.queue) setQueue(data.queue);
         else fetchQueue();
       } else {
@@ -135,11 +137,13 @@ export default function AutoBlogAdminPage() {
       const data = await res.json();
       if (data.success) {
         setSingleKeyword("");
+        setLastPublished({ title: data.article.title, slug: data.article.slug });
         setMessage({
           text: `Published! Article generated: "${data.article.title}"`,
           type: "success",
         });
-        fetchQueue();
+        if (data.queue) setQueue(data.queue);
+        else fetchQueue();
       } else {
         setMessage({ text: data.error || "Failed to publish", type: "error" });
       }
@@ -363,17 +367,23 @@ export default function AutoBlogAdminPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left Column: Quick Draft & Bulk Keywords */}
             <div className="lg:col-span-7 space-y-6">
-              {/* Quick Draft Box */}
-              <div className="bg-white dark:bg-zinc-900 rounded border border-zinc-300 dark:border-zinc-800 shadow-2xs overflow-hidden">
-                <div className="bg-zinc-100 dark:bg-zinc-800/80 px-4 py-2.5 border-b border-zinc-300 dark:border-zinc-800 flex items-center justify-between">
+              {/* Instant AI Publisher Box */}
+              <div className="bg-white dark:bg-zinc-900 rounded border border-zinc-300 dark:border-zinc-800 shadow-2xs overflow-hidden border-t-4 border-t-emerald-500">
+                <div className="bg-zinc-100 dark:bg-zinc-800/80 px-4 py-3 border-b border-zinc-300 dark:border-zinc-800 flex items-center justify-between">
                   <h2 className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-amber-500" />
-                    Quick Post Draft & Publish
+                    <Zap className="w-4 h-4 text-emerald-500 fill-emerald-500" />
+                    Instant AI Article Publisher
                   </h2>
-                  <span className="text-[11px] text-zinc-500">Instant AI Writer</span>
+                  <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                    ⚡ Instant Live
+                  </span>
                 </div>
 
                 <div className="p-4 space-y-4">
+                  <p className="text-xs text-zinc-500">
+                    Enter any keyword below to immediately generate a full AI article (with SEO Meta Title, Description, ALT Text & Unsplash photo) and publish it live right now.
+                  </p>
+
                   <form onSubmit={handleInstantPublishSingle} className="space-y-3">
                     <div>
                       <label className="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">
@@ -384,16 +394,16 @@ export default function AutoBlogAdminPage() {
                         required
                         value={singleKeyword}
                         onChange={(e) => setSingleKeyword(e.target.value)}
-                        placeholder="Enter topic (e.g. Next-Gen Space Telescopes)..."
+                        placeholder="Enter topic keyword (e.g. Next-Gen Space Telescopes)..."
                         className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-[#2271b1]"
                       />
                     </div>
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-3">
                       <select
                         value={selectedCategory}
                         onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="bg-zinc-100 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded px-2.5 py-1 text-xs text-zinc-800 dark:text-zinc-200"
+                        className="bg-zinc-100 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded px-2.5 py-1.5 text-xs text-zinc-800 dark:text-zinc-200 font-semibold"
                       >
                         <option value="auto">Auto Category</option>
                         {CATEGORIES.map((c) => (
@@ -406,12 +416,42 @@ export default function AutoBlogAdminPage() {
                       <button
                         type="submit"
                         disabled={loading}
-                        className="bg-[#2271b1] hover:bg-[#135e96] text-white px-4 py-1.5 rounded text-xs font-bold transition-colors"
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded text-xs font-bold transition-all shadow-md flex items-center gap-1.5 shrink-0 disabled:opacity-50"
                       >
-                        Publish Draft Now
+                        {loading && !publishingId ? (
+                          <>
+                            <RotateCw className="w-3.5 h-3.5 animate-spin" />
+                            Generating & Publishing...
+                          </>
+                        ) : (
+                          <>
+                            <Zap className="w-3.5 h-3.5 fill-white" />
+                            Publish Instantly Now
+                          </>
+                        )}
                       </button>
                     </div>
                   </form>
+
+                  {lastPublished && (
+                    <div className="mt-3 p-3.5 bg-emerald-50 dark:bg-emerald-950/40 rounded border border-emerald-300 dark:border-emerald-800 flex items-center justify-between gap-3">
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                          ✓ Article Published Live
+                        </div>
+                        <div className="text-xs font-bold text-zinc-900 dark:text-white truncate max-w-xs sm:max-w-sm">
+                          {lastPublished.title}
+                        </div>
+                      </div>
+                      <Link
+                        href={`/on-gravity-magazine/${lastPublished.slug}`}
+                        target="_blank"
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded text-xs font-bold shrink-0 transition-colors inline-flex items-center gap-1"
+                      >
+                        View Live Article ↗
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </div>
 
