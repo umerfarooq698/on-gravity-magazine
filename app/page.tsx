@@ -1,21 +1,25 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ARTICLES, getFeaturedArticles, getTrendingArticles } from "@/data/articles";
+import { ARTICLES } from "@/data/articles";
 import { CATEGORIES } from "@/data/categories";
+import { getAllArticlesCombined } from "@/lib/automation";
 import ArticleCard from "@/components/ArticleCard";
 import Newsletter from "@/components/Newsletter";
 import { Flame, TrendingUp, Sparkles, ArrowRight, BookOpen } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default function HomePage() {
-  const featuredArticles = getFeaturedArticles();
-  const trendingArticles = getTrendingArticles();
+  const allArticles = getAllArticlesCombined();
+  const featuredArticles = allArticles.filter((a) => a.featured);
+  const trendingArticles = allArticles.filter((a) => a.trending);
 
-  const heroMain = featuredArticles[0] || ARTICLES[0];
-  const heroSub1 = featuredArticles[1] || ARTICLES[1];
-  const heroSub2 = featuredArticles[2] || ARTICLES[2];
+  const heroMain = featuredArticles[0] || allArticles[0] || ARTICLES[0];
+  const heroSub1 = featuredArticles[1] || allArticles[1] || ARTICLES[1];
+  const heroSub2 = featuredArticles[2] || allArticles[2] || ARTICLES[2];
 
-  const recentArticles = ARTICLES.slice(0, 6);
+  const recentArticles = allArticles.slice(0, 12);
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-16">
@@ -75,7 +79,7 @@ export default function HomePage() {
           {trendingArticles.slice(0, 3).map((item, idx) => (
             <Link
               key={item.id}
-              href={`/article/${item.slug}`}
+              href={`/${item.slug}`}
               className="group flex gap-4 items-start"
             >
               <span className="font-serif text-3xl font-black text-amber-500/40 group-hover:text-amber-500 transition-colors">
