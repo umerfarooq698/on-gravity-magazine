@@ -154,24 +154,138 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string): Prom
 
 function inferCategoryFromKeyword(keyword: string): string {
   const kw = keyword.toLowerCase();
-  if (kw.includes("celebrity") || kw.includes("actor") || kw.includes("fashion") || kw.includes("movie") || kw.includes("hollywood") || kw.includes("gala")) {
+
+  // Celebrity / Entertainment
+  if (
+    kw.includes("celebrity") ||
+    kw.includes("actor") ||
+    kw.includes("actress") ||
+    kw.includes("fashion") ||
+    kw.includes("movie") ||
+    kw.includes("film") ||
+    kw.includes("hollywood") ||
+    kw.includes("gala") ||
+    kw.includes("star") ||
+    kw.includes("singer") ||
+    kw.includes("music") ||
+    kw.includes("pop") ||
+    kw.includes("influencer") ||
+    kw.includes("entertainment")
+  ) {
     return "celebrity";
   }
-  if (kw.includes("lifestyle") || kw.includes("home") || kw.includes("living") || kw.includes("mindful") || kw.includes("travel") || kw.includes("design")) {
+
+  // Lifestyle / Home / Living / DIY
+  if (
+    kw.includes("lifestyle") ||
+    kw.includes("life-style") ||
+    kw.includes("home") ||
+    kw.includes("house") ||
+    kw.includes("living") ||
+    kw.includes("mindful") ||
+    kw.includes("travel") ||
+    kw.includes("design") ||
+    kw.includes("bathtub") ||
+    kw.includes("drain") ||
+    kw.includes("bathroom") ||
+    kw.includes("shower") ||
+    kw.includes("sink") ||
+    kw.includes("faucet") ||
+    kw.includes("plumbing") ||
+    kw.includes("kitchen decor") ||
+    kw.includes("interior") ||
+    kw.includes("decor") ||
+    kw.includes("renovation") ||
+    kw.includes("furniture") ||
+    kw.includes("garden") ||
+    kw.includes("diy") ||
+    kw.includes("cleaning") ||
+    kw.includes("routine")
+  ) {
     return "life-style";
   }
-  if (kw.includes("health") || kw.includes("medical") || kw.includes("sleep") || kw.includes("diet") || kw.includes("longevity") || kw.includes("fitness")) {
+
+  // Health & Wellness
+  if (
+    kw.includes("health") ||
+    kw.includes("medical") ||
+    kw.includes("medicine") ||
+    kw.includes("doctor") ||
+    kw.includes("hospital") ||
+    kw.includes("sleep") ||
+    kw.includes("diet") ||
+    kw.includes("nutrition") ||
+    kw.includes("fitness") ||
+    kw.includes("workout") ||
+    kw.includes("longevity") ||
+    kw.includes("mental") ||
+    kw.includes("therapy") ||
+    kw.includes("wellness") ||
+    kw.includes("skin") ||
+    kw.includes("skincare") ||
+    kw.includes("disease")
+  ) {
     return "health";
   }
-  if (kw.includes("business") || kw.includes("market") || kw.includes("stock") || kw.includes("startup") || kw.includes("finance") || kw.includes("economy")) {
+
+  // Business & Finance
+  if (
+    kw.includes("business") ||
+    kw.includes("market") ||
+    kw.includes("stock") ||
+    kw.includes("startup") ||
+    kw.includes("finance") ||
+    kw.includes("economy") ||
+    kw.includes("invest") ||
+    kw.includes("crypto") ||
+    kw.includes("money") ||
+    kw.includes("ceo") ||
+    kw.includes("company") ||
+    kw.includes("bank") ||
+    kw.includes("trade") ||
+    kw.includes("real estate")
+  ) {
     return "business";
   }
-  if (kw.includes("food") || kw.includes("dining") || kw.includes("dish") || kw.includes("recipe") || kw.includes("gourmet") || kw.includes("chef")) {
+
+  // Food & Culinary
+  if (
+    kw.includes("food") ||
+    kw.includes("dining") ||
+    kw.includes("dish") ||
+    kw.includes("recipe") ||
+    kw.includes("gourmet") ||
+    kw.includes("chef") ||
+    kw.includes("cooking") ||
+    kw.includes("cook") ||
+    kw.includes("restaurant") ||
+    kw.includes("meal") ||
+    kw.includes("snack") ||
+    kw.includes("coffee") ||
+    kw.includes("wine") ||
+    kw.includes("baking")
+  ) {
     return "food";
   }
-  if (kw.includes("news") || kw.includes("global") || kw.includes("summit") || kw.includes("accord") || kw.includes("policy") || kw.includes("climate")) {
+
+  // News & Global Affairs
+  if (
+    kw.includes("news") ||
+    kw.includes("global") ||
+    kw.includes("summit") ||
+    kw.includes("accord") ||
+    kw.includes("policy") ||
+    kw.includes("climate") ||
+    kw.includes("election") ||
+    kw.includes("government") ||
+    kw.includes("politics") ||
+    kw.includes("breaking") ||
+    kw.includes("world")
+  ) {
     return "news";
   }
+
+  // Tech / Software / Electronics (Default)
   return "tech";
 }
 
