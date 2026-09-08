@@ -337,12 +337,15 @@ CRITICAL REQUIREMENTS:
    - Write 7 to 10 substantial, highly-detailed paragraphs (each paragraph 120–160 words).
    - Provide extensive real-world facts, specifications, step-by-step insights, pros/cons, market context, and expert advice.
 
-2. HEADINGS & STRUCTURE (H2 & H3 REQUIRED):
-   - Use clear Markdown H2 ("## Headline") and H3 ("### Subheadline") headings to structure the content logically.
-   - H2 KEYWORD RULE: Use the primary keyword "${keyword}" naturally in ONLY 1 or 2 H2 headings (e.g., "## Architectural Overview of ${keyword}").
-   - DO NOT put the keyword in every H2 heading! Use clear subtopic headings for other H2 sections (e.g., "## Real-World Utility & Hands-On Experience", "## Comparative Benchmarks & Industry Alternatives", "## Key Limitations & Buyer Caveats", "## Strategic Outlook & Final Verdict").
-   - Include 1 to 2 H3 subheadings ("### ...") to break down complex sub-sections cleanly.
-   - Put each H2 and H3 heading on its own separate string entry in the "paragraphs" array.
+2. HEADINGS & STRUCTURE (H2 & H3 MUST BE 100% TOPIC-SPECIFIC & UNIQUE):
+   - DO NOT use generic repeated headings like "Key Architecture" or "Real-World Utility"!
+   - Create journalistic H2 ("## Headline") and H3 ("### Subheadline") headers strictly tailored to "${keyword}".
+   - Examples of topic-specific H2s:
+     * For home/plumbing ("bathtub drain"): "## Drainage Flow Dynamics & Overflow Standards", "## Preventing Clogs: Cleaning & Maintenance Protocols"
+     * For tech ("samsung tv"): "## Panel Luminance & Neural Quantum Upscaling", "## Gaming Performance & Input Lag Benchmarks"
+     * For wellness/health ("sleep optimization"): "## Circadian Alignment & Melatonin Regulation", "## Sleep Tracking Accuracy & Biometric Data"
+   - H2 KEYWORD RULE: Include the primary keyword "${keyword}" naturally in ONLY 1 or 2 H2 headings. Do NOT put the keyword in every H2 heading!
+   - Place each H2 and H3 heading on its own separate string entry in the "paragraphs" array.
 
 3. 100% UNIQUE & NATURAL TITLE:
    - Create a completely distinct, engaging, human-first headline specifically tailored to "${keyword}".
@@ -365,19 +368,19 @@ Return ONLY a valid JSON object matching this schema:
   "excerpt": "A compelling 2-sentence executive summary of the article",
   "paragraphs": [
     "Paragraph 1 (130-160 words): Engaging intro establishing immediate value, real-world context, and clear thesis...",
-    "## Key Specifications & Performance Overview of ${keyword}",
+    "## Topic-Specific H2 Heading incorporating ${keyword}",
     "Paragraph 2 (130-160 words): Detailed background analysis, historical context, or technical specifications...",
-    "### Core System Integration",
+    "### Topic-Specific H3 Subheading",
     "Paragraph 3 (130-160 words): Core features breakdown, practical operation, or user experience highlights...",
-    "## Real-World Utility & Hands-On Experience",
+    "## Topic-Specific H2 Heading without keyword",
     "Paragraph 4 (130-160 words): Practical applications, case studies, or workflow implementation steps...",
-    "## Comparative Benchmarks & Industry Alternatives",
+    "## Topic-Specific H2 Heading without keyword",
     "Paragraph 5 (130-160 words): Side-by-side performance benchmarks, pros and cons...",
-    "### Efficiency Metrics & Value Assessment",
+    "### Topic-Specific H3 Subheading",
     "Paragraph 6 (130-160 words): Detailed analysis of throughput, speed, or cost-to-performance ratio...",
-    "## Key Limitations & Essential Buyer Caveats",
+    "## Topic-Specific H2 Heading focusing on Limitations",
     "Paragraph 7 (130-160 words): Critical limitations, challenges, or buyer/user caveats to consider...",
-    "## Strategic Outlook & Final Verdict",
+    "## Topic-Specific H2 Heading focusing on Future Outlook",
     "Paragraph 8 (130-160 words): Forward-looking market analysis, future expectations, and definitive conclusion..."
   ],
   "faqs": [
@@ -423,6 +426,84 @@ Return ONLY a valid JSON object matching this schema:
     console.error("Gemini API generation error fallback:", err);
   }
   return null;
+}
+
+/**
+ * Generate dynamic, non-repetitive H2 and H3 headings for fallback articles
+ */
+function generateDynamicHeadingsForArticle(keyword: string, category: string) {
+  const cleanKw = keyword.trim();
+  const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
+  const catUpper = category.toUpperCase();
+
+  const h2KeywordOptions = [
+    `## Architectural Overview & Key Capabilities of ${capitalizedKw}`,
+    `## Why ${capitalizedKw} Is Driving ${catUpper} Innovation`,
+    `## Core Features and System Specifications of ${capitalizedKw}`,
+    `## Understanding the Foundational Principles Behind ${capitalizedKw}`,
+    `## The Technological & Structural Evolution of ${capitalizedKw}`,
+    `## Key Specifications and Primary Highlights of ${capitalizedKw}`,
+  ];
+
+  const h3Sub1Options = [
+    `### Core Sub-System Integration`,
+    `### Primary Hardware & Interface Design`,
+    `### Operational Architecture Breakdown`,
+    `### System Workflow & Integration Protocols`,
+    `### Essential Component Specifications`,
+  ];
+
+  const h2UtilityOptions = [
+    `## Real-World Utility & Hands-On User Experience`,
+    `## Field Performance & Operational Dynamics`,
+    `## Practical Implementation & Workflow Integration`,
+    `## Hands-On Testing: Usability, Ergonomics & Setup`,
+    `## High-Value Use Cases & Practical Applications`,
+  ];
+
+  const h2ComparativeOptions = [
+    `## Comparative Benchmarks & Industry Alternatives`,
+    `## How It Stacks Up Against Market Competitors`,
+    `## Performance Evaluation & Relative Advantage`,
+    `## Industry Trade-Offs: Efficiency vs Initial Setup`,
+    `## Benchmark Testing Across Standard Scenarios`,
+  ];
+
+  const h3Sub2Options = [
+    `### Throughput & Performance Metrics`,
+    `### Strategic Efficiency Assessments`,
+    `### Cost-to-Performance Ratio Analysis`,
+    `### Comparative Speed & Operational Testing`,
+    `### Long-Term Value & ROI Evaluation`,
+  ];
+
+  const h2LimitationsOptions = [
+    `## Key Limitations & Essential Buyer Caveats`,
+    `## Practical Constraints & Maintenance Warnings`,
+    `## What to Consider Before Committing Resources`,
+    `## Potential Drawbacks & Integration Challenges`,
+    `## Operational Risks & User Considerations`,
+  ];
+
+  const h2OutlookOptions = [
+    `## Strategic Outlook & Final Verdict`,
+    `## Future Trajectory & Next-Generation Expectations`,
+    `## Industry Forecast & Market Evolution`,
+    `## Final Editorial Verdict & Strategic Recommendations`,
+    `## Emerging Innovations & Long-Term Roadmap`,
+  ];
+
+  const pickRandom = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+
+  return {
+    h2Keyword: pickRandom(h2KeywordOptions),
+    h3Sub1: pickRandom(h3Sub1Options),
+    h2Utility: pickRandom(h2UtilityOptions),
+    h2Comparative: pickRandom(h2ComparativeOptions),
+    h3Sub2: pickRandom(h3Sub2Options),
+    h2Limitations: pickRandom(h2LimitationsOptions),
+    h2Outlook: pickRandom(h2OutlookOptions),
+  };
 }
 
 /**
@@ -527,26 +608,27 @@ export async function generateArticleObjectAsync(
       tags: geminiData.tags,
     };
   } else {
-    // Comprehensive Dynamic Fallback (800+ words) with 100% unique title & FAQs
+    // Comprehensive Dynamic Fallback (800+ words) with 100% unique title, headings & FAQs
     const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
     const title = generateDynamicFallbackTitle(cleanKw, category, isSuffixAdded);
+    const headings = generateDynamicHeadingsForArticle(cleanKw, category);
     const excerpt = `An essential, reader-first examination of ${cleanKw}, exploring technical benchmarks, real-world utility, and future market trends.`;
 
     const content = [
       `As ${cleanKw} continues to shape contemporary discussions across technology, industry, and modern lifestyle, understanding its core principles, practical implications, and underlying mechanisms has become vital for enthusiasts and decision-makers alike.`,
-      `## Key Architecture & Operational Features of ${capitalizedKw}`,
+      headings.h2Keyword,
       `From a structural and operational perspective, ${cleanKw} represents a significant evolution in its domain. Industry benchmarks indicate that adoption rates have grown exponentially over the past 12 months, driven by advances in core integration and refined user experiences.`,
-      `### Core Hardware & System Integration`,
+      headings.h3Sub1,
       `Key specifications and primary features highlight several distinct advantages. Users consistently praise its flexibility, streamlined interface, and high reliability, while expert testing confirms that performance metrics regularly exceed standard expectations.`,
-      `## Real-World Utility & Hands-On User Experience`,
+      headings.h2Utility,
       `Real-world implementation scenarios reveal practical strategies for maximizing value. Experts recommend establishing clear operational protocols, utilizing automated safeguards, and periodically assessing workflow bottlenecks to ensure optimal outcomes.`,
-      `## Comparative Benchmarks & Industry Alternatives`,
+      headings.h2Comparative,
       `When comparing ${cleanKw} against traditional alternatives, key trade-offs emerge. While initial setup and investment require deliberate planning, long-term efficiency gains and operational benefits overwhelmingly justify the transition.`,
-      `### Efficiency Metrics & Performance Testing`,
+      headings.h3Sub2,
       `Rigorous side-by-side evaluations demonstrate notable performance gains. Under heavy operational loads, key throughput metrics outperform standard legacy configurations by substantial margins.`,
-      `## Key Limitations & Essential Buyer Caveats`,
+      headings.h2Limitations,
       `Despite its notable benefits, certain limitations and practical caveats warrant consideration. Potential users should account for integration timelines, ongoing maintenance requirements, and compatibility with legacy infrastructure before committing resources.`,
-      `## Strategic Outlook & Final Verdict`,
+      headings.h2Outlook,
       `Looking ahead to the next decade, ongoing innovations surrounding ${cleanKw} promise to unlock even greater capabilities. Editors at On Gravity Magazine will continue monitoring developments to deliver timely, actionable coverage as new breakthroughs emerge.`
     ];
 
@@ -666,6 +748,7 @@ function buildArticleFromQueueItem(item: QueueItem): Article {
   const slug = item.generatedArticleSlug || cleanKw.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   const author = AUTHORS[Math.floor(Math.random() * AUTHORS.length)];
   const title = generateDynamicFallbackTitle(cleanKw, category, false);
+  const headings = generateDynamicHeadingsForArticle(cleanKw, category);
   const excerpt = `An essential, reader-first examination of ${cleanKw}, exploring technical benchmarks, real-world utility, and future market trends.`;
 
   return {
@@ -677,19 +760,19 @@ function buildArticleFromQueueItem(item: QueueItem): Article {
     excerpt,
     content: [
       `As ${cleanKw} continues to shape contemporary discussions across technology, industry, and modern lifestyle, understanding its core principles, practical implications, and underlying mechanisms has become vital for enthusiasts and decision-makers alike.`,
-      `## Key Architecture & Operational Features of ${capitalizedKw}`,
+      headings.h2Keyword,
       `From a structural and operational perspective, ${cleanKw} represents a significant evolution in its domain. Industry benchmarks indicate that adoption rates have grown exponentially over the past 12 months, driven by advances in core integration and refined user experiences.`,
-      `### Core Hardware & System Integration`,
+      headings.h3Sub1,
       `Key specifications and primary features highlight several distinct advantages. Users consistently praise its flexibility, streamlined interface, and high reliability, while expert testing confirms that performance metrics regularly exceed standard expectations.`,
-      `## Real-World Utility & Hands-On User Experience`,
+      headings.h2Utility,
       `Real-world implementation scenarios reveal practical strategies for maximizing value. Experts recommend establishing clear operational protocols, utilizing automated safeguards, and periodically assessing workflow bottlenecks to ensure optimal outcomes.`,
-      `## Comparative Benchmarks & Industry Alternatives`,
+      headings.h2Comparative,
       `When comparing ${cleanKw} against traditional alternatives, key trade-offs emerge. While initial setup and investment require deliberate planning, long-term efficiency gains and operational benefits overwhelmingly justify the transition.`,
-      `### Efficiency Metrics & Performance Testing`,
+      headings.h3Sub2,
       `Rigorous side-by-side evaluations demonstrate notable performance gains. Under heavy operational loads, key throughput metrics outperform standard legacy configurations by substantial margins.`,
-      `## Key Limitations & Essential Buyer Caveats`,
+      headings.h2Limitations,
       `Despite its notable benefits, certain limitations and practical caveats warrant consideration. Potential users should account for integration timelines, ongoing maintenance requirements, and compatibility with legacy infrastructure before committing resources.`,
-      `## Strategic Outlook & Final Verdict`,
+      headings.h2Outlook,
       `Looking ahead to the next decade, ongoing innovations surrounding ${cleanKw} promise to unlock even greater capabilities. Editors at On Gravity Magazine will continue monitoring developments to deliver timely, actionable coverage as new breakthroughs emerge.`
     ],
     faqs: [
