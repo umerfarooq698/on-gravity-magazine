@@ -646,31 +646,112 @@ function generateDynamicDomainParagraphs(keyword: string, category: string, head
   const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
   const kwLower = cleanKw.toLowerCase();
 
-  // Plumbing / Home / DIY
+  // 1. Taps / Faucets / Mixers / Spouts / Tap Ideas
   if (
-    kwLower.includes("drain") ||
-    kwLower.includes("bathtub") ||
-    kwLower.includes("bathroom") ||
-    kwLower.includes("shower") ||
-    kwLower.includes("sink") ||
-    kwLower.includes("plumbing")
+    kwLower.includes("tap") ||
+    kwLower.includes("faucet") ||
+    kwLower.includes("mixer") ||
+    kwLower.includes("spout")
   ) {
+    if (kwLower.includes("cold")) {
+      return [
+        `Designing and maintaining a reliable cold water supply with ${cleanKw} is essential for daily household hygiene, refreshment, and efficient plumbing management. Cold water lines operate under constant municipal or well pressure, requiring durable valve fittings and proper pipe insulation to prevent temperature degradation or seasonal freezing in exterior wall cavities.`,
+        headings.h2Keyword,
+        `Cold water taps connect directly to dedicated supply feeds, bypassing water heating storage units to deliver immediate, unheated water. Ensuring consistent cold line pressure involves inspecting under-sink shutoff valves, clearing mineral sediment from aerator screens, and maintaining intact pipe joints.`,
+        headings.h3Sub1,
+        `During cold winter snaps, uninsulated cold water pipes running through exterior walls or unheated crawl spaces are vulnerable to freezing and bursting. Installing dense foam pipe sleeves and allowing cold taps to drip at a slow trickle during extreme freezes relieves internal hydrostatic pressure and prevents costly pipe ruptures.`,
+        headings.h2Utility,
+        `For homeowners interested in purified drinking water directly from their cold fixture, inline carbon and reverse-osmosis filtration systems connect seamlessly to standard 3/8-inch supply lines. Filtration removes residual chlorine, heavy metals, and sediment without restricting cold flow velocity.`,
+        headings.h2Comparative,
+        `Comparing dedicated cold taps against single-lever combination mixers reveals distinct functional trade-offs. Dedicated cold taps provide isolated, unheated water ideal for drinking and cooking prep, whereas combination mixers blend hot and cold streams for adjustable basin temperature.`,
+        headings.h3Sub2,
+        `Pressure balancing checks between cold and hot supply lines ensure that opening a tap elsewhere in the home does not cause sudden temperature shifts or pressure drops at the primary fixture.`,
+        headings.h2Limitations,
+        `If cold water unexpectedly runs warm or lukewarm, a faulty single-lever mixer cartridge elsewhere in the building may be allowing hot water to cross-bleed into the cold line. Replacing worn internal cartridges or installing check valves resolves thermal cross-bleeding.`,
+        headings.h2Outlook,
+        `Maintaining ${cleanKw} with periodic aerator cleanings and seasonal pipe insulation ensures dependable, clean cold water flow all year round.`
+      ];
+    }
+
+    if (kwLower.includes("hot") || kwLower.includes("boiling")) {
+      return [
+        `Integrating a high-performance hot water system for ${cleanKw} provides immediate comfort, efficient dishwashing, and hygienic personal care. Modern hot water fixtures rely on precise temperature regulation, boiler connectivity, and anti-scald safety mechanisms to deliver steady hot water on demand.`,
+        headings.h2Keyword,
+        `Hot water delivery relies on central water heaters, tankless combi boilers, or instant under-sink heating units. Water heater thermostats should be set to 120°F (49°C) to prevent thermal scalding while keeping water hot enough to prevent bacterial growth inside storage tanks.`,
+        headings.h3Sub1,
+        `Installing thermostatic mixing valves beneath the sink or tub basin automatically throttles hot water output if cold supply pressure drops suddenly, protecting children and elderly family members from accidental burns.`,
+        headings.h2Utility,
+        `Long pipe runs between a central water heater and distant fixtures can cause delays when turning on hot water. Installing a low-wattage hot water recirculating pump keeps warm water circulating through supply lines, providing instant hot water without wasting gallons of standing cold water down the drain.`,
+        headings.h2Comparative,
+        `Evaluating instant boiling water taps against traditional kettle boiling demonstrates significant daily energy and time savings. Compact under-sink vacuum-insulated tanks maintain near-boiling water for instant tea, coffee, and culinary prep while drawing minimal standby electrical power.`,
+        headings.h3Sub2,
+        `If hot taps sputter or spit air when turned on, trapped air inside the water heater tank or thermal expansion is usually responsible. Purging the hot line for 2 minutes or installing an expansion bottle eliminates air sputtering.`,
+        headings.h2Limitations,
+        `Over time, mineral scale accumulates on heating elements and inside hot tap cartridges, reducing flow rates. Periodic descaling with food-grade citric acid or white vinegar restores full hot water volume and extends fixture life.`,
+        headings.h2Outlook,
+        `Investing in energy-efficient hot water fixtures for ${cleanKw} enhances daily convenience while reducing household water and heating costs over time.`
+      ];
+    }
+
+    // General Tap / Faucet / Tap Ideas / Mixer
     return [
-      `Ensuring optimal water drainage and maintaining proper plumbing standards for ${cleanKw} is essential for preventing structural water damage, mold growth, and unpleasant odors in modern residential bathrooms. Over time, hair, soap residue, and mineral deposits accumulate inside drain traps, reducing water flow rates and straining household waste pipes. Implementing effective plumbing practices from the outset protects subflooring and ensures long-term system reliability.`,
+      `Selecting the ideal fixture for ${cleanKw} combines interior design aesthetics with precision engineering, water conservation, and long-term mechanical reliability. Whether remodeling a modern master bathroom or upgrading a simple guest lavatory, choosing the right spout height, handle ergonomics, and surface finish transforms the basin into a functional centerpiece.`,
       headings.h2Keyword,
-      `Standard residential bathtub drain systems operate using a combination of a waste pipe, overflow tube, P-trap assembly, and rubber gasket seals. The standard drain opening diameter measures 1.5 inches, connecting directly to a curved P-trap designed to trap a standing water barrier that prevents sewer gas backup into living spaces. Choosing heavy-duty solid brass or thick PVC fittings ensures durability against hot water, chemical cleaners, and daily mechanical wear.`,
+      `Modern tap design embraces a wide range of architectural finishes, including matte black, brushed brass, polished nickel, and physical vapor deposition (PVD) gold. PVD coatings bond atomically to solid brass bodies, producing vibrant metallic finishes that resist scratching, tarnishing, and corrosion from daily exposure to soap and water.`,
       headings.h3Sub1,
-      `When installing a new drain kit, applying a smooth ring of professional plumber's putty beneath the tub flange creates an airtight, watertight seal. Tightening the lower locknut securely from beneath the basin compresses the rubber washer against the fiberglass or porcelain surface, preventing subtle leaks that could otherwise rot wooden support joists over time.`,
+      `At the heart of modern tap performance lies ceramic disc cartridge technology. Replacing legacy rubber washers that deteriorate and drip over time, smooth diamond-hard ceramic plates rotate against each other to control water flow with effortless quarter-turn handle precision.`,
       headings.h2Utility,
-      `Clearing stubborn drain clogs requires a systematic approach prioritizing non-damaging mechanical methods before resorting to harsh chemical agents. Utilizing a flexible plastic hair snake or manual auger allows homeowners to extract trapped debris directly from the upper elbow without disassembling the main pipe network. Periodic warm water flushes mixed with baking soda and white vinegar dissolve organic buildup naturally while protecting pipe walls from corrosion.`,
+      `When planning basin ergonomics, matching spout height and reach to sink dimensions prevents water splashing outside the bowl. For deep vessel sinks, tall counter-mounted or wall-mounted spouts provide comfortable clearance for washing hands without striking the porcelain rim.`,
       headings.h2Comparative,
-      `Comparing traditional push-pull stoppers against modern tip-toe and lever-operated overflow mechanisms reveals distinct usability advantages. Tip-toe stoppers feature fewer internal moving parts, making them significantly easier to remove and clean, whereas trip-lever designs offer a sleek flush finish but require occasional linkage adjustments inside the overflow pipe.`,
+      `Comparing single-lever mixer taps against traditional dual-handle pillar taps highlights key usability differences. Single-lever mixers allow one-handed temperature and flow adjustment, making them ideal for compact family bathrooms, whereas dual-handle taps offer classic symmetry and separate hot/cold tuning.`,
       headings.h3Sub2,
-      `Laboratory flow rate benchmarks indicate that a clean, properly vented 1.5-inch bathtub drain evacuates standing water at approximately 5 to 7 gallons per minute. Any drop below 3 gallons per minute signals partial blockage or inadequate atmospheric venting within the main waste line stack.`,
+      `Engineered low-flow aerators attached to the spout tip mix air with incoming water streams, maintaining strong perceived water pressure while reducing flow rates to an eco-friendly 1.2 to 1.5 gallons per minute (GPM).`,
       headings.h2Limitations,
-      `While DIY maintenance resolves minor clogs and surface seal replacements, severe main line blockages, cracked cast iron drain stacks, or persistent subfloor leaks warrant immediate attention from a licensed plumber. Attempting excessive force on rusted metal fittings can fracture tub basins or create costly structural plumbing emergencies.`,
+      `To preserve delicate matte black or brushed metal finishes, avoid cleaning fixtures with abrasive scouring pads, harsh chemical sprays, or bleach. Gently wiping spouts dry with a soft microfiber cloth and mild dish soap prevents hard water mineral spots from dulling the luster.`,
       headings.h2Outlook,
-      `Long-term maintenance of ${cleanKw} centers on simple preventative habits: installing mesh hair catchers, avoiding heavy oil disposal down bath drains, and inspecting silicone caulk lines annually. Following these guidelines ensures smooth drainage, pristine hygiene, and durable performance for years to come.`
+      `Exploring ${cleanKw} allows homeowners to combine water-saving innovation with timeless design, creating an elegant, dependable bathroom space built to last.`
+    ];
+  }
+
+  // 2. Bathtubs / Soaking Basins (WITHOUT tap/faucet)
+  if (kwLower.includes("bathtub") || kwLower.includes("tub")) {
+    return [
+      `Designing a peaceful bath space around ${cleanKw} blends luxury basin ergonomics with solid subfloor structural engineering and high-flow plumbing. As bather preferences shift toward home wellness retreats, selecting tub materials, basin depths, and hydrotherapy features shapes daily relaxation and property value.`,
+      headings.h2Keyword,
+      `Evaluating soaking tub materials highlights performance differences between high-grade acrylic, fiberglass, and heavy cast iron. Cast iron basins provide exceptional heat retention but require subfloor joist reinforcement due to empty weights exceeding 300 pounds. Lightweight acrylic basins offer versatility and smooth contours suited for freestanding vessels.`,
+      headings.h3Sub1,
+      `Freestanding soaking tubs create striking architectural focal points in open floor plan bathrooms, requiring floor-mounted or wall-mounted filler spouts. Alcove tub designs maximize space efficiency in standard 60-inch footprints, featuring built-in tile flanges that prevent splash water from seeping into wall studs.`,
+      headings.h2Utility,
+      `Maintaining hygiene in air jet and hydrotherapy soaking tubs requires periodic flushing with specialized purge solutions to prevent organic biofilms from building up inside recirculation lines.`,
+      headings.h2Comparative,
+      `Comparing deep soaking vessels against shallow standard tubs shows significant relaxation benefits, allowing bather shoulders to remain fully submerged in 14 to 18 inches of warm water.`,
+      headings.h3Sub2,
+      `Installing high-flow 4 to 8 GPM tub fillers ensures large soaking basins fill quickly before bathwater loses thermal energy.`,
+      headings.h2Limitations,
+      `Cleaning acrylic and enamel tub basins requires non-abrasive liquid cleaners. Abrasive powders strip gel coatings, leaving microscopic pores that trap soap scum.`,
+      headings.h2Outlook,
+      `Investing in a well-crafted basin for ${cleanKw} elevates daily self-care while anchoring modern interior design.`
+    ];
+  }
+
+  // 3. Drains / P-Traps / Waste Pipes (WITHOUT tap/faucet)
+  if (kwLower.includes("drain") || kwLower.includes("trap") || kwLower.includes("waste")) {
+    return [
+      `Ensuring rapid water evacuation and maintaining proper waste line standards for ${cleanKw} is essential for preventing structural water damage and unpleasant odors in residential bathrooms. Hair, soap residue, and mineral scale accumulate inside drain traps over time, reducing flow rates and straining household plumbing.`,
+      headings.h2Keyword,
+      `Standard residential bath and sink drain assemblies connect 1.5-inch waste piping to a curved P-trap. The standing water barrier inside the P-trap prevents sewer gas from venting into living spaces, while solid brass or heavy PVC fittings withstand hot water and daily usage.`,
+      headings.h3Sub1,
+      `Applying a smooth ring of plumber's putty beneath the drain flange creates a watertight seal. Tightening the securing nut beneath the basin compresses the rubber washer, preventing subtle subfloor leaks.`,
+      headings.h2Utility,
+      `Clearing stubborn drain clogs prioritizes non-chemical mechanical methods. A flexible zip-it snake extracts hair clogs directly from upper elbows without disassembling pipe joints. Periodic baking soda and white vinegar flushes break down buildup naturally.`,
+      headings.h2Comparative,
+      `Comparing tip-toe stoppers against traditional trip-lever overflow mechanisms shows usability benefits. Tip-toe stoppers unscrew easily for hair removal, whereas trip-lever stoppers require periodic internal linkage tuning.`,
+      headings.h3Sub2,
+      `Clean, properly vented 1.5-inch drains evacuate standing water at 5 to 7 gallons per minute. Flows under 3 GPM indicate partial blockages or inadequate stack venting.`,
+      headings.h2Limitations,
+      `Persistent subfloor leaks or cracked cast iron stacks warrant attention from a licensed plumber to avoid structural subfloor damage.`,
+      headings.h2Outlook,
+      `Following simple preventative habits for ${cleanKw} ensures smooth drainage, hygiene, and long-term plumbing reliability.`
     ];
   }
 
