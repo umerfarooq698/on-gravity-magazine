@@ -52,12 +52,16 @@ export const ARTICLES: Article[] = [
     ],
     faqs: [
       {
-        question: "What is the core principle behind first-principles engineering?",
-        answer: "First-principles engineering breaks down complex problems to their most basic physical truths and re-evaluates solutions from the ground up, eliminating legacy assumptions and unnecessary middleman costs."
+        question: "How does Elon Musk come up with these ideas?",
+        answer: "He uses first-principles thinking—basically breaking a problem down to pure physics and building back up without following old corporate rules."
       },
       {
-        question: "How does vertical integration impact manufacturing speed?",
-        answer: "By manufacturing components in-house rather than relying on third-party supply chains, organizations can modify designs immediately, shorten lead times, and maintain strict quality control."
+        question: "Why does he insist on making everything in-house?",
+        answer: "Manufacturing in-house lets his teams fix designs instantly instead of waiting months for suppliers to send updated parts."
+      },
+      {
+        question: "What is the secret behind Tesla and SpaceX speed?",
+        answer: "They test early prototypes fast and treat every failure as useful telemetry data to improve the next version right away."
       }
     ],
     category: "business",
@@ -101,12 +105,16 @@ export const ARTICLES: Article[] = [
     ],
     faqs: [
       {
-        question: "What size drain pipe is standard for a residential bathtub?",
-        answer: "The standard residential bathtub drain pipe diameter is 1.5 inches, connected to a 1.5-inch P-trap trap assembly."
+        question: "What size pipe does a bath drain usually need?",
+        answer: "A standard tub drain uses a 1.5-inch pipe connected to a P-trap—just right for keeping flow fast and preventing odors."
       },
       {
-        question: "How do I fix a leaking bathtub drain flange?",
-        answer: "Unscrew the drain body using a tub drain tool, clean away old putty, apply fresh plumber's putty under the flange, replace the lower rubber washer, and re-tighten securely."
+        question: "How do I fix a leaking tub flange seal?",
+        answer: "Unscrew the drain flange, clear out old dried putty, apply fresh plumber's putty, and tighten the washer underneath securely."
+      },
+      {
+        question: "What's the best way to keep bath drains clear?",
+        answer: "Put a simple mesh hair catcher over the drain and flush it with hot water once a month—it saves you from major clogs later."
       }
     ],
     category: "life-style",
@@ -150,12 +158,16 @@ export const ARTICLES: Article[] = [
     ],
     faqs: [
       {
-        question: "Which tub material holds heat the longest?",
-        answer: "Cast iron holds heat the longest due to its dense mass, though high-grade insulated acrylic tubs perform nearly as well while weighing significantly less."
+        question: "Should I pick acrylic or cast iron for a tub?",
+        answer: "Cast iron holds heat longer but is super heavy, while high-grade acrylic stays warm, costs less, and is way easier to install."
       },
       {
-        question: "What is the standard length for a residential bathtub?",
-        answer: "The standard alcove bathtub measures 60 inches long, 30 to 32 inches wide, and 14 to 18 inches deep."
+        question: "What is the most popular standard tub size?",
+        answer: "A standard alcove tub measures 60 inches long by 30 to 32 inches wide—perfect for most standard bathroom layouts."
+      },
+      {
+        question: "How do I keep an acrylic tub shiny without scratching it?",
+        answer: "Use soft liquid dish soap and a microfiber cloth. Avoid harsh scrubbing powders that can dull the smooth protective gel coat."
       }
     ],
     category: "life-style",
@@ -199,12 +211,16 @@ export const ARTICLES: Article[] = [
     ],
     faqs: [
       {
-        question: "What is the difference between QLED and OLED Samsung TVs?",
-        answer: "QLED uses a backlight with Quantum Dots for higher peak brightness in bright rooms, whereas QD-OLED uses self-emissive pixels for perfect black levels and superior viewing angles in dark rooms."
+        question: "Is QLED or OLED better for a bright living room?",
+        answer: "QLED is great for bright rooms with lots of sunlight, while QD-OLED shines best in dark rooms with incredible deep blacks."
       },
       {
-        question: "Does Samsung TV support HDMI 2.1 4K at 120Hz for gaming?",
-        answer: "Yes, modern flagship Samsung TVs feature full-bandwidth HDMI 2.1 ports supporting 4K resolution at 120Hz/144Hz with VRR and ALLM."
+        question: "Do I need 120Hz for PS5 or Xbox gaming?",
+        answer: "If you play fast action or sports games, 120Hz with HDMI 2.1 makes gameplay super smooth with virtually zero input lag."
+      },
+      {
+        question: "How do I avoid screen burn-in on a smart TV?",
+        answer: "Just leave automatic pixel refresh settings turned on and avoid keeping static pause screens on full brightness for hours."
       }
     ],
     category: "tech",
