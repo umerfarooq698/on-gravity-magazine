@@ -190,6 +190,7 @@ async function fetchGeminiArticle(keyword: string, categoryOverride?: string): P
   metaDescription: string;
   imageAlt: string;
   paragraphs: string[];
+  faqs?: { question: string; answer: string }[];
   category: string;
   tags: string[];
 } | null> {
@@ -197,23 +198,40 @@ async function fetchGeminiArticle(keyword: string, categoryOverride?: string): P
   if (!apiKey) return null;
 
   try {
-    const prompt = `You are the Senior SEO Editor & Editor-in-Chief of "On Gravity Magazine". Write an in-depth, high-ranking magazine article based on the target keyword: "${keyword}".
-    Return ONLY a valid JSON object with the following fields:
-    {
-      "title": "A captivating editorial headline containing '${keyword}'",
-      "metaTitle": "SEO Title under 60 chars ending with | On Gravity Magazine",
-      "metaDescription": "Compelling SEO meta description under 155 chars optimized for Google search clicks",
-      "imageAlt": "Descriptive accessibility and image SEO ALT text for photo of ${keyword}",
-      "excerpt": "A compelling 2-sentence summary excerpt",
-      "paragraphs": [
-        "First comprehensive introductory paragraph engaging the reader...",
-        "Second paragraph analyzing key trends, data, or technical details...",
-        "Third paragraph with expert perspectives or industry quotes...",
-        "Fourth forward-looking concluding paragraph highlighting future impact."
-      ],
-      "category": "one of: celebrity, life-style, tech, health, business, news, food",
-      "tags": ["Tag1", "Tag2", "Tag3"]
-    }`;
+    const prompt = `You are a Senior Journalist and Senior Editor for "On Gravity Magazine".
+Write a high-quality, human-first, authoritative magazine article about the keyword: "${keyword}".
+
+CRITICAL GOOGLE SEARCH QUALITY & HELPFUL CONTENT RULES:
+1. WRITE FOR HUMANS FIRST: Match exact user search intent. Avoid generic AI fluff, repetitive headers, boilerplate intro/conclusions, or cookie-cutter templates.
+2. NO GENERIC AI BUZZWORDS: Strictly do NOT use phrases like "In today's fast-paced digital world", "delve into", "tapestry", "game-changer", "beacon of", "testament to", "it remains to be seen".
+3. NATURAL KEYWORD USE: Use "${keyword}" naturally in title, introduction, relevant headings, and body. Never keyword stuff.
+4. HIGH VALUE & CONCRETE DETAILS: Provide specific facts, specs, comparisons, practical advice, real-world context, limitations, or expert insights.
+5. SPECIFIC NON-CLICKBAIT TITLE: Create a compelling, accurate title that reflects the exact topic.
+6. HELPFUL FAQS: Provide 2 to 4 genuinely useful Frequently Asked Questions with concise, clear answers.
+7. NO EXPOSED PROMPT/SEO NOTES: Do not output prompt labels, methodology notes, or content framework headers in the JSON.
+
+Return ONLY a valid JSON object matching this schema:
+{
+  "title": "Specific, authoritative magazine title for ${keyword}",
+  "metaTitle": "Natural SEO Title under 60 chars ending with | On Gravity Magazine",
+  "metaDescription": "Helpful, compelling meta description under 155 chars optimized for search clicks",
+  "imageAlt": "Descriptive, high-quality image ALT text for a photograph representing ${keyword}",
+  "excerpt": "A concise, engaging 2-sentence overview",
+  "paragraphs": [
+    "Engaging introduction delivering immediate value and setting the context...",
+    "Detailed breakdown of core features, specs, context, or news developments...",
+    "Practical advice, real-world applications, user impact, or comparisons...",
+    "Key limitations, expert insights, or critical considerations...",
+    "Forward-looking summary or actionable conclusion..."
+  ],
+  "faqs": [
+    { "question": "Practical Question 1 regarding ${keyword}?", "answer": "Direct, helpful answer..." },
+    { "question": "Practical Question 2 regarding ${keyword}?", "answer": "Direct, helpful answer..." },
+    { "question": "Practical Question 3 regarding ${keyword}?", "answer": "Direct, helpful answer..." }
+  ],
+  "category": "one of: celebrity, life-style, tech, health, business, news, food",
+  "tags": ["Tag1", "Tag2", "Tag3"]
+}`;
 
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
     const response = await fetch(url, {
@@ -240,6 +258,7 @@ async function fetchGeminiArticle(keyword: string, categoryOverride?: string): P
         imageAlt: parsed.imageAlt || `High-resolution photograph representing ${keyword}`,
         excerpt: parsed.excerpt,
         paragraphs: parsed.paragraphs,
+        faqs: Array.isArray(parsed.faqs) && parsed.faqs.length > 0 ? parsed.faqs : undefined,
         category: categoryOverride || parsed.category || inferCategoryFromKeyword(keyword),
         tags: Array.isArray(parsed.tags) ? parsed.tags : ["Analysis", "2026"],
       };
@@ -285,6 +304,7 @@ export async function generateArticleObjectAsync(
       metaDescription: geminiData.metaDescription,
       excerpt: geminiData.excerpt,
       content: geminiData.paragraphs,
+      faqs: geminiData.faqs,
       category,
       author,
       publishedAt: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),

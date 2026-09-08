@@ -11,7 +11,8 @@ import {
   Calendar,
   ArrowLeft,
   Tag,
-  Sparkles
+  Sparkles,
+  HelpCircle
 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -141,6 +142,31 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </p>
         ))}
       </div>
+
+      {/* Frequently Asked Questions (FAQ) Section */}
+      {article.faqs && article.faqs.length > 0 && (
+        <section className="p-6 sm:p-8 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-6">
+          <div className="flex items-center gap-2 text-zinc-900 dark:text-white font-serif text-xl sm:text-2xl font-bold">
+            <HelpCircle className="w-6 h-6 text-amber-500 shrink-0" />
+            <h3>Frequently Asked Questions</h3>
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            {article.faqs.map((faq, index) => (
+              <div
+                key={index}
+                className="p-4 sm:p-5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200/60 dark:border-zinc-800/80 space-y-1.5 shadow-2xs"
+              >
+                <h4 className="font-sans font-bold text-sm sm:text-base text-zinc-900 dark:text-white">
+                  {faq.question}
+                </h4>
+                <p className="font-sans text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                  {faq.answer}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Highlights Box */}
       <div className="p-6 rounded-2xl bg-amber-500/10 dark:bg-amber-950/20 border border-amber-500/20 space-y-2">

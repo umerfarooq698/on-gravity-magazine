@@ -6,6 +6,7 @@ export interface Article {
   title: string;
   excerpt: string;
   content: string[]; // Content paragraphs
+  faqs?: { question: string; answer: string }[]; // 2-4 Helpful FAQs for Google Search Quality
   category: string; // Category slug
   author: {
     name: string;
