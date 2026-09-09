@@ -85,6 +85,7 @@ export default function AutoBlogAdminPage() {
         body: JSON.stringify({
           action: "publish-item",
           id,
+          existingSlugs: getCustomArticlesFromStorage().map((a) => a.slug),
         }),
       });
 
@@ -156,6 +157,7 @@ export default function AutoBlogAdminPage() {
         body: JSON.stringify({
           keyword: singleKeyword,
           category: selectedCategory === "auto" ? undefined : selectedCategory,
+          existingSlugs: getCustomArticlesFromStorage().map((a) => a.slug),
         }),
       });
 

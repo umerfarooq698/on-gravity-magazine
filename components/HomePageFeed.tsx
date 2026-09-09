@@ -47,7 +47,7 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
   const heroSub1 = featuredArticles[1] || allArticles[1];
   const heroSub2 = featuredArticles[2] || allArticles[2];
 
-  const recentArticles = allArticles.slice(0, 12);
+  const recentArticles = allArticles.slice(0, 100);
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-16">

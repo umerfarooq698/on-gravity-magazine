@@ -4,7 +4,8 @@ import { publishSpecificKeywordAsync, publishQueueItemByIdAsync, addKeywordsToQu
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { keyword, keywords, category, action, id } = body;
+    const { keyword, keywords, category, action, id, existingSlugs } = body;
+    const clientSlugsList = Array.isArray(existingSlugs) ? existingSlugs : [];
 
     if (action === "bulk-add" && keywords) {
       const added = addKeywordsToQueue(keywords, category);
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
     }
 
     if (action === "publish-item" && id) {
-      const publishedArticle = await publishQueueItemByIdAsync(id);
+      const publishedArticle = await publishQueueItemByIdAsync(id, clientSlugsList);
       if (!publishedArticle) {
         return NextResponse.json({ success: false, error: "Queue item not found" }, { status: 404 });
       }
@@ -36,7 +37,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const publishedArticle = await publishSpecificKeywordAsync(keyword, category);
+    const publishedArticle = await publishSpecificKeywordAsync(keyword, category, clientSlugsList);
 
     return NextResponse.json({
       success: true,

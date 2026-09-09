@@ -945,7 +945,8 @@ function generateDynamicFaqs(
 export async function generateArticleObjectAsync(
   rawKeyword: string,
   categoryOverride?: string,
-  slugOverride?: string
+  slugOverride?: string,
+  clientSlugs?: string[]
 ): Promise<Article> {
   const cleanKw = rawKeyword.replace(/&/g, "and").trim();
   const baseSlug = slugOverride || cleanKw.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -955,11 +956,27 @@ export async function generateArticleObjectAsync(
 
   if (!slugOverride) {
     const allExisting = getAllArticlesCombined();
-    const existingMatches = allExisting.filter(
-      (a) => a.slug === baseSlug || a.slug.match(new RegExp(`^${baseSlug}-\\d+$`))
-    );
-    if (existingMatches.length > 0) {
-      const nextNum = existingMatches.length + 1;
+    const serverSlugs = allExisting.map((a) => a.slug);
+    const combinedSlugs = Array.from(new Set([...serverSlugs, ...(clientSlugs || [])]));
+
+    const numbers: number[] = [];
+    const escapedBase = baseSlug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(`^${escapedBase}(-\\d+)?$`);
+
+    for (const s of combinedSlugs) {
+      if (s === baseSlug) {
+        numbers.push(1);
+      } else if (regex.test(s)) {
+        const match = s.match(new RegExp(`^${escapedBase}-(\\d+)$`));
+        if (match && match[1]) {
+          numbers.push(parseInt(match[1], 10));
+        }
+      }
+    }
+
+    if (numbers.length > 0) {
+      const maxNum = Math.max(...numbers);
+      const nextNum = maxNum + 1;
       slug = `${baseSlug}-${nextNum}`;
     }
   }
@@ -1053,14 +1070,14 @@ export function addKeywordsToQueue(keywordsText: string, defaultCategory?: strin
   return newItems;
 }
 
-export async function publishNextKeywordAsync(): Promise<Article | null> {
+export async function publishNextKeywordAsync(clientSlugs?: string[]): Promise<Article | null> {
   const pendingIndex = keywordQueueStore.findIndex((item) => item.status === "pending");
   if (pendingIndex === -1) return null;
 
   const item = keywordQueueStore[pendingIndex];
   item.status = "publishing";
 
-  const newArticle = await generateArticleObjectAsync(item.keyword, item.category);
+  const newArticle = await generateArticleObjectAsync(item.keyword, item.category, undefined, clientSlugs);
 
   item.status = "published";
   item.publishedAt = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -1069,13 +1086,13 @@ export async function publishNextKeywordAsync(): Promise<Article | null> {
   return newArticle;
 }
 
-export async function publishQueueItemByIdAsync(id: string): Promise<Article | null> {
+export async function publishQueueItemByIdAsync(id: string, clientSlugs?: string[]): Promise<Article | null> {
   const item = keywordQueueStore.find((i) => i.id === id);
   if (!item) return null;
 
   item.status = "publishing";
 
-  const newArticle = await generateArticleObjectAsync(item.keyword, item.category);
+  const newArticle = await generateArticleObjectAsync(item.keyword, item.category, undefined, clientSlugs);
 
   item.status = "published";
   item.publishedAt = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -1084,8 +1101,8 @@ export async function publishQueueItemByIdAsync(id: string): Promise<Article | n
   return newArticle;
 }
 
-export async function publishSpecificKeywordAsync(keyword: string, category?: string): Promise<Article> {
-  const newArticle = await generateArticleObjectAsync(keyword, category);
+export async function publishSpecificKeywordAsync(keyword: string, category?: string, clientSlugs?: string[]): Promise<Article> {
+  const newArticle = await generateArticleObjectAsync(keyword, category, undefined, clientSlugs);
 
   keywordQueueStore.unshift({
     id: `q-${Date.now()}`,
