@@ -10,7 +10,7 @@ export interface QueueItem {
   generatedArticleSlug?: string;
 }
 
-const CACHE_VERSION_FILE = "on_gravity_articles_cache_v10.json";
+const CACHE_VERSION_FILE = "on_gravity_articles_cache_v11.json";
 
 function loadCacheFromDisk(): Article[] {
   if (typeof window !== "undefined") return [];
@@ -216,85 +216,85 @@ function getDomainKey(kw: string): string {
 
 const DOMAIN_SUFFIXES: Record<string, string[]> = {
   gaming: [
-    ": Sensor DPI, Latency & Weight Specs 2026",
-    ": Optical Tracking & Polling Rates 2026",
-    ": Ergonomic Grip & Wireless Review 2026"
+    ": Sensor Precision, Latency & Weight Balance",
+    ": Optical Tracking, Polling Rates & Ergonomics",
+    ": Ergonomic Grip & Low Latency Performance"
   ],
   cold_tap: [
-    ": Installation, Aerators & Flow Care 2026",
-    ": Cold Line Pressure & Freezing Care 2026",
-    ": Aerator Cleaning & Isolation Valves 2026"
+    ": Installation, Aerator Flow & Leak Control",
+    ": Line Pressure, Aerators & Flow Control",
+    ": Aerator Screen Cleaning & Valve Safety"
   ],
   hot_tap: [
-    ": Instant Hot Water & Anti-Scald Care 2026",
-    ": Thermostatic Valve & Pressure Guide 2026",
-    ": Instant Delivery & Thermal Safety 2026"
+    ": Instant Water Delivery & Heat Safety",
+    ": Thermostatic Valve & Pressure Balance",
+    ": Instant Delivery & Thermal Protection"
   ],
   black_tap: [
-    ": PVD Coating, Care & Stain Removal 2026",
-    ": Hard Water Protection & Finish Care 2026",
-    ": Non-Abrasive Cleaning & Basin Specs 2026"
+    ": PVD Coating Finish & Stain Removal Care",
+    ": Hard Water Protection & Matte Finish Care",
+    ": Non-Abrasive Cleaning & Basin Finish"
   ],
   plumbing: [
-    ": Ceramic Disc Valves & Aerators 2026",
-    ": Installation, Seals & Flow Care 2026",
-    ": Spout Reach & Vessel Clearance 2026"
+    ": Ceramic Disc Valves & Basin Flow Rates",
+    ": Installation Seals, Pressure & Flow Control",
+    ": Spout Reach & Vessel Clearance Control"
   ],
   smarthome: [
-    ": Matter Protocol & Local Automation 2026",
-    ": Mesh Network Range & Device Security 2026",
-    ": Zero-Cloud Latency & IoT Setup 2026"
+    ": Matter Protocol & Local Hub Automation",
+    ": Mesh Network Range & Device Security",
+    ": Zero-Cloud Latency & Smart Sensor Hubs"
   ],
   crypto: [
-    ": Market Liquidity & Venture Trends 2026",
-    ": Asset Allocation & Macro Metrics 2026"
+    ": Liquidity Dynamics & Venture Capital Shifts",
+    ": Asset Allocation & Macro Market Metrics"
   ],
   food: [
-    ": Michelin Culinary & Farm Sourcing 2026",
-    ": Artisanal Prep & Recipe Insights 2026"
+    ": Michelin Culinary Craft & Farm Sourcing",
+    ": Artisanal Prep & Recipe Taste Insights"
   ],
   fashion: [
-    ": Red Carpet Couture & Gala Fashion 2026",
-    ": Runway Style & Designer Trends 2026"
+    ": Red Carpet Couture & Gala Runway Fashion",
+    ": Runway Style & Designer Look Trends"
   ],
   general: [
-    ": Architectural Specs & Buyer Guide 2026",
-    ": Technical Features & Service Guide 2026"
+    ": Architectural Specs & Quality Review",
+    ": Technical Features & System Efficiency"
   ]
 };
 
 const PHRASES_BY_LEN: Record<number, string> = {
-  15: ": Review & Specs",
-  16: ": Complete Review",
-  17: ": Tech Specs 2026",
-  18: ": Performance 2026",
-  19: ": 2026 Buyer Insights",
-  20: ": Technical Review 2026",
-  21: ": Quality & Specs 2026",
+  15: ": System Review",
+  16: ": Tech Evaluation",
+  17: ": System Analytics",
+  18: ": Performance Review",
+  19: ": Technical Analysis",
+  20: ": Structural Overview",
+  21: ": Quality & Performance",
   22: ": Architectural Review",
-  23: ": 2026 Engineering Guide",
-  24: ": Technical Feature Guide",
-  25: ": Performance & Specs 2026",
-  26: ": Architectural Specs Guide",
-  27: ": Installation & Care 2026",
-  28: ": Technical Performance 2026",
-  29: ": 2026 Complete Tech Insights",
-  30: ": System Performance & Care 2026",
-  31: ": Engineering Standards & Specs",
-  32: ": Complete Technical Review 2026",
-  33: ": Real-World Performance & Specs",
-  34: ": Architectural Standards & Care 2026",
-  35: ": Complete Engineering & Care Guide 2026",
-  36: ": Architectural Performance Specs 2026",
-  37: ": Technical Feature & Quality Guide 2026",
-  38: ": Real-World Durability & Spec Review 2026",
-  39: ": Complete Performance & Technical Guide 2026",
-  40: ": Architectural Engineering Standards 2026",
-  41: ": Technical Benchmarks & Feature Review 2026",
-  42: ": Complete Architectural & Care Guide 2026",
-  43: ": Real-World Engineering & Performance Guide",
+  23: ": Engineering Evaluation",
+  24: ": System Features & Review",
+  25: ": Quality & System Features",
+  26: ": Technical Quality & Design",
+  27: ": Installation & Maintenance",
+  28: ": System Performance & Quality",
+  29: ": Complete Technical Performance",
+  30: ": Engineering Features & Quality",
+  31: ": Technical Standards & Features",
+  32: ": Technical Engineering & Quality",
+  33: ": System Efficiency & Performance",
+  34: ": Engineering Standards & Features",
+  35: ": System Engineering & Craftsmanship",
+  36: ": Architectural Performance Standards",
+  37: ": Technical Quality & Performance Review",
+  38: ": Real-World Durability & Specifications",
+  39: ": Complete Performance & Quality Analysis",
+  40: ": Architectural & Engineering Standards",
+  41: ": Technical Benchmarks & Feature Analysis",
+  42: ": Technical Performance & System Craftsmanship",
+  43: ": Real-World Engineering & Performance Review",
   44: ": Architectural Feature & Performance Standards",
-  45: ": Complete Technical & Architectural Spec Guide 2026"
+  45: ": Complete Technical & Architectural Standards"
 };
 
 export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string {
@@ -336,7 +336,7 @@ export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string 
     }
   }
 
-  return (kwWords + ": Complete Technical Feature & Quality Guide 2026").slice(0, 57);
+  return (kwWords + ": Technical Performance & System Craftsmanship").slice(0, 57);
 }
 
 // ----------------------------------------------------
@@ -528,6 +528,18 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
     paragraphs.push(h2List[3]);
     paragraphs.push(`Routine maintenance and preventative inspections preserve peak functionality. Inspecting key wear points every few months, applying appropriate lubricants, and replacing worn seals promptly protects manufacturer warranties.`);
     paragraphs.push(`Following structured care protocols extends equipment service life, protects internal components, and guarantees smooth, trouble-free utility.`);
+  }
+
+  // Add Conclusion & Summary before FAQs
+  paragraphs.push("## Conclusion & Summary");
+  if (tokens.isCold && tokens.isTap) {
+    paragraphs.push(`Investing in a well-engineered bathroom cold tap equipped with ceramic disc cartridges and low-flow aerators ensures efficient water control and reliable performance. Following routine aerator maintenance and winter pipe care protects your plumbing setup for years to come.`);
+  } else if (tokens.isBlack && tokens.isTap) {
+    paragraphs.push(`Matte black bathroom taps offer striking visual style when cared for with proper non-abrasive methods. Simple microfiber cleaning and post-use drying keep PVD electroplated finishes looking pristine and free from mineral spots.`);
+  } else if (tokens.isGaming) {
+    paragraphs.push(`Selecting the ideal gaming mouse relies on balancing optical tracking precision, wireless response times, and ergonomic weight balance. Choosing durable optical switches and high-grade PTFE skates ensures smooth, competitive gameplay.`);
+  } else {
+    paragraphs.push(`Choosing high-quality ${kwFmt.topic} depends on evaluating structural design, material craftsmanship, and practical utility. Consistent care and adherence to technical operating limits preserve peak performance and long-term durability.`);
   }
 
   let faqs = [
