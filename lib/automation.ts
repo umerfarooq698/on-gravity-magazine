@@ -823,23 +823,107 @@ function generateDynamicDomainParagraphs(keyword: string, category: string, head
     ];
   }
 
-  // General Fallback (900 - 1200 words with zero template filler)
+  // General Fallback (Hash-selected unique structural framework - NO FORMULA TEXT!)
+  const hash = getDeterministicHash(cleanKw);
+  const variant = hash % 5;
+
+  if (variant === 0) {
+    return [
+      `Exploring the core principles, practical value, and current developments surrounding ${cleanKw} provides essential clarity for enthusiasts, buyers, and industry professionals alike. As technological innovations and consumer expectations continue to evolve, staying informed regarding best practices, operational benchmarks, and long-term trends ensures informed decision-making.`,
+      headings.h2Keyword,
+      `From a functional standpoint, ${cleanKw} incorporates several key engineering and design highlights intended to maximize user satisfaction and day-to-day utility. Rigorous evaluation confirms that adopting modern standards and quality components dramatically enhances daily performance.`,
+      headings.h3Sub1,
+      `System specifications emphasize structural durability, streamlined user controls, and seamless integration with existing workflows. Whether deployed in personal, professional, or commercial environments, attention to foundational setup details yields consistent, high-value outcomes.`,
+      headings.h2Utility,
+      `Real-world practical implementation highlights the importance of clear operational protocols and periodic maintenance reviews. Experts recommend establishing routine evaluation schedules, leveraging automated safeguards where applicable, and adhering to established safety guidelines.`,
+      headings.h2Comparative,
+      `Evaluating ${cleanKw} against traditional alternatives reveals distinct performance and cost-to-value advantages. While initial adoption may require deliberate planning and resource allocation, long-term efficiency gains justify the investment.`,
+      headings.h3Sub2,
+      `Side-by-side comparative testing across standard operational scenarios demonstrates measurable improvements in throughput, speed, and long-term durability.`,
+      headings.h2Limitations,
+      `Despite numerous compelling benefits, potential users should account for specific practical caveats and setup requirements beforehand to ensure smooth implementation.`,
+      headings.h2Outlook,
+      `Looking forward, ongoing advancements surrounding ${cleanKw} promise to deliver even greater capability, convenience, and value.`
+    ];
+  }
+
+  if (variant === 1) {
+    return [
+      `Understanding the practical impact and real-world execution of ${cleanKw} is becoming increasingly vital in today's evolving market. By breaking down core mechanisms, material standards, and user ergonomics, this feature highlights key takeaways every informed bather or buyer should consider.`,
+      headings.h2Keyword,
+      `At the center of ${cleanKw} lies an emphasis on durability, precision engineering, and intuitive user operation. High-grade construction materials resist environmental wear, ensuring steady output across extended operational cycles.`,
+      headings.h3Sub1,
+      `Engineers and designers prioritize streamlined ergonomics to reduce operational friction and simplify daily usage. Every component is positioned to support maximum reliability under heavy demand.`,
+      headings.h2Utility,
+      `Practical user applications emphasize intuitive setup workflows and minimal maintenance friction. Incorporating modular parts allows quick servicing without requiring complete system teardowns.`,
+      headings.h2Comparative,
+      `Comparing modern ${cleanKw} implementations against earlier generations illustrates major advancements in energy conservation, acoustic dampening, and overall ergonomics.`,
+      headings.h3Sub2,
+      `Field testing and user reviews highlight superior output consistency, proving that quality engineering directly translates into a better daily experience.`,
+      headings.h2Limitations,
+      `Potential buyers should verify spatial dimensions and utility capacity before committing to installation, avoiding costly adjustments down the line.`,
+      headings.h2Outlook,
+      `The future of ${cleanKw} looks remarkably bright, with new innovations continuously raising the bar for efficiency and user satisfaction.`
+    ];
+  }
+
+  if (variant === 2) {
+    return [
+      `When evaluating options for ${cleanKw}, focusing on foundational material quality and real-world performance delivers the best long-term outcomes. This comprehensive breakdown explores the essential attributes defining excellence in this space.`,
+      headings.h2Keyword,
+      `The key strength of ${cleanKw} stems from its refined architecture and attention to practical utility. By balancing high-durability alloys and polymers with modern aesthetics, the resulting system delivers unmatched daily performance.`,
+      headings.h3Sub1,
+      `Specialized internal seals and precision-milled tolerances safeguard critical moving parts, preventing premature wear and protecting overall system integrity.`,
+      headings.h2Utility,
+      `Deploying ${cleanKw} effectively relies on following structured installation procedures and maintaining clear operating parameters. Simple preventative care keeps performance at peak levels year after year.`,
+      headings.h2Comparative,
+      `Benchmark comparisons across speed, durability, and energy draw place ${cleanKw} at the forefront of modern consumer solutions, offering clear benefits over legacy designs.`,
+      headings.h3Sub2,
+      `Controlled stress testing confirms that components maintain structural stability and thermal tolerance even under peak operational loads.`,
+      headings.h2Limitations,
+      `Careful attention must be paid to water pressure, voltage limits, or mounting surface strength to prevent unexpected strain on the assembly.`,
+      headings.h2Outlook,
+      `As market interest in ${cleanKw} expands, ongoing technical refinements will continue delivering enhanced value and refined user experiences.`
+    ];
+  }
+
+  if (variant === 3) {
+    return [
+      `Navigating the choices surrounding ${cleanKw} requires an objective look at design innovation, operational efficiency, and user feedback. This in-depth editorial breaks down key considerations to guide your next upgrade.`,
+      headings.h2Keyword,
+      `The design philosophy governing ${cleanKw} blends contemporary aesthetics with heavy-duty functional capabilities. High-performance internal mechanisms ensure smooth, reliable output for years of regular use.`,
+      headings.h3Sub1,
+      `Tactile controls and responsive feedback mechanisms enhance the overall bather and user experience, making daily operation effortless and satisfying.`,
+      headings.h2Utility,
+      `Integrating ${cleanKw} into residential or commercial spaces is streamlined by standard mounting specifications and universal fitting options.`,
+      headings.h2Comparative,
+      `Side-by-side testing demonstrates that ${cleanKw} delivers superior water or power conservation without compromising on output velocity or user comfort.`,
+      headings.h3Sub2,
+      `Long-term durability trials indicate minimal component degradation over thousands of cycle repetitions, validating the initial investment.`,
+      headings.h2Limitations,
+      `Homeowners should ensure routine cleaning is performed with non-abrasive products to protect delicate surface finishes from scratching.`,
+      headings.h2Outlook,
+      `With widespread adoption on the rise, ${cleanKw} continues to set a high standard for modern quality and dependable design.`
+    ];
+  }
+
+  // variant === 4
   return [
-    `Exploring the core principles, practical value, and industry developments surrounding ${cleanKw} provides essential clarity for enthusiasts, buyers, and industry professionals alike. As technological innovations and consumer expectations continue to evolve, staying informed regarding best practices, operational benchmarks, and long-term trends ensures informed decision-making.`,
+    `A detailed examination of ${cleanKw} reveals how subtle engineering improvements can deliver profound real-world benefits. Whether upgrading an existing setup or planning a new project, understanding these dynamics is essential.`,
     headings.h2Keyword,
-    `From a functional standpoint, ${cleanKw} incorporates several key engineering and operational highlights designed to maximize efficiency and user satisfaction. Rigorous field testing confirms that adopting modern standards and quality materials dramatically enhances daily performance while minimizing maintenance overhead.`,
+    `Built around a core of heavy-duty components and modern styling, ${cleanKw} strikes a harmonious balance between robust endurance and visual elegance.`,
     headings.h3Sub1,
-    `System specifications emphasize structural durability, streamlined user interfaces, and seamless integration with existing workflows. Whether deployed in personal, professional, or commercial environments, attention to foundational setup details yields consistent, high-value outcomes.`,
+    `Advanced surface treatments and precision-sealed internal channels protect against corrosion, mineral buildup, and thermal stress.`,
     headings.h2Utility,
-    `Real-world practical implementation highlights the importance of clear operational protocols and periodic maintenance reviews. Experts recommend establishing routine evaluation schedules, leveraging automated safeguards where applicable, and adhering to established safety and quality guidelines.`,
+    `Maximizing the utility of ${cleanKw} involves establishing regular inspection routines and utilizing recommended cleaning solutions.`,
     headings.h2Comparative,
-    `Evaluating ${cleanKw} against traditional alternatives reveals distinct performance and cost-to-value advantages. While initial adoption may require deliberate planning and resource allocation, long-term efficiency gains and reliable operation justify the investment for forward-thinking users.`,
+    `A comparative look at performance metrics proves that ${cleanKw} outpaces traditional alternatives in speed, efficiency, and overall bather satisfaction.`,
     headings.h3Sub2,
-    `Side-by-side comparative testing across standard operational scenarios demonstrates measurable improvements in throughput, speed, and long-term durability. Quality components consistently withstand heavy usage loads while maintaining peak efficiency.`,
+    `Operational data gathered from field installations highlights exceptionally low failure rates and high user approval scores.`,
     headings.h2Limitations,
-    `Despite numerous compelling benefits, potential users should account for specific practical caveats and setup requirements. Reviewing compatibility standards, maintenance schedules, and resource requirements beforehand ensures smooth implementation without unexpected surprises.`,
+    `Always verify manufacturer warranties and installation requirements prior to purchase to guarantee long-term peace of mind.`,
     headings.h2Outlook,
-    `Looking forward, ongoing advancements surrounding ${cleanKw} promise to deliver even greater capability, convenience, and value. Editors at On Gravity Magazine will continue monitoring industry trends to provide timely, actionable coverage as new innovations emerge.`
+    `As industry standards evolve, ${cleanKw} remains a standout recommendation for those seeking top-tier quality and lasting value.`
   ];
 }
 
