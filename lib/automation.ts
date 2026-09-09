@@ -691,27 +691,191 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
   ];
   paragraphs.push(conclusionVars[(hashVal + 10) % conclusionVars.length]);
 
-  // FAQs Matrix
-  const faqs = [
-    {
-      question: `What key specifications should I check when choosing ${topicTitle}?`,
-      answer: `Focus on build material quality, technical compatibility, energy or fluid efficiency, and manufacturer warranty coverage before making your selection.`
-    },
-    {
-      question: `How do I maintain peak performance for ${topicTitle} over time?`,
-      answer: `Follow non-abrasive cleaning protocols, conduct routine inspections every few months, and replace worn internal seals or components promptly.`
-    },
-    {
-      question: `Why is modern hardware superior to legacy alternatives for ${topicTitle}?`,
-      answer: `Modern iterations incorporate advanced materials and refined engineering, offering higher efficiency, longer durability, and smoother operation.`
-    },
-    {
-      question: `Where can I find additional technical guides for ${topicTitle}?`,
-      answer: `Consult manufacturer documentation, specialized technical reviews, and editorial dispatches on On Gravity Magazine for expert advice.`
-    }
-  ];
+  // Dynamic FAQs Matrix
+  const faqs = generateDynamicFaqs(topicTitle, tokens, hashVal);
 
   return { title, excerpt, paragraphs, faqs };
+}
+
+function generateDynamicFaqs(
+  topicTitle: string,
+  tokens: ReturnType<typeof extractKeywordSubTokens>,
+  hashVal: number
+): { question: string; answer: string }[] {
+  let faqPool: { question: string; answer: string }[] = [];
+
+  if (tokens.isTap || tokens.isCold || tokens.isHot || tokens.isBlack) {
+    faqPool = [
+      {
+        question: `What water pressure range is optimal for ${topicTitle}?`,
+        answer: `Most modern tap assemblies perform best between 1.5 and 3.0 bar line pressure, delivering steady flow rates without excessive splash.`
+      },
+      {
+        question: `How do ceramic disc cartridges improve the operation of ${topicTitle}?`,
+        answer: `Ceramic disc cartridges replace traditional rubber washers, providing smooth quarter-turn control and preventing frustrating drips or leaks.`
+      },
+      {
+        question: `What routine cleaning prevents mineral buildup on ${topicTitle}?`,
+        answer: `Wiping the fixture daily with a dry microfiber cloth prevents hard water limescale from etching into the outer surface finish.`
+      },
+      {
+        question: `How do I maintain the finish on matte black or PVD coated ${topicTitle}?`,
+        answer: `Avoid abrasive scrubbing pads and harsh chemical descalers; warm soapy water and soft cloths preserve electroplated and PVD coatings indefinitely.`
+      },
+      {
+        question: `What should I do if aerator flow becomes restricted on ${topicTitle}?`,
+        answer: `Unscrew the spout aerator screen, soak it in a vinegar solution to dissolve mineral deposits, and rinse thoroughly before reassembling.`
+      },
+      {
+        question: `Are flexible hose connectors included with standard ${topicTitle} fittings?`,
+        answer: `Most quality tap sets include braided stainless steel flexi-tails with standard female connectors for simplified plumbing installation.`
+      },
+      {
+        question: `How does thermostatic control protect users of ${topicTitle}?`,
+        answer: `Thermostatic valves automatically balance incoming hot and cold lines, maintaining constant output temperatures and eliminating scalding risk.`
+      },
+      {
+        question: `What causes tap whistling or supply line noise in ${topicTitle}?`,
+        answer: `High line pressure or loose internal valve washers typically cause acoustic vibrations, which can be resolved using pressure reducing valves.`
+      }
+    ];
+  } else if (tokens.isTiles || tokens.isBathroom) {
+    faqPool = [
+      {
+        question: `How does material density impact the durability of ${topicTitle}?`,
+        answer: `Higher material density reduces porosity, preventing moisture absorption and ensuring the surface withstands heavy daily foot traffic without cracking.`
+      },
+      {
+        question: `What slip resistance rating is recommended for ${topicTitle}?`,
+        answer: `For wet zones like bathrooms or kitchens, look for a R10 or higher slip resistance rating to maintain safe traction under wet conditions.`
+      },
+      {
+        question: `How frequently should protective sealant be applied to ${topicTitle}?`,
+        answer: `Applying a high-grade penetrating sealant every 12 to 18 months protects grout lines and tile surfaces from deep discoloration and water ingress.`
+      },
+      {
+        question: `Can ${topicTitle} be installed over existing subfloor heating systems?`,
+        answer: `Yes, dense porcelain and ceramic materials conduct heat efficiently, making them an ideal surface choice for underfloor radiant heating setups.`
+      },
+      {
+        question: `What is the optimal grout joint width when laying ${topicTitle}?`,
+        answer: `Rectified edge tiles allow for tight 1.5mm to 2mm grout lines, whereas standard unrectified edges require a 3mm to 4mm joint for thermal expansion.`
+      },
+      {
+        question: `How do I remove stubborn hard water stains from ${topicTitle}?`,
+        answer: `Use a mild pH-neutral stone and tile cleaner combined with a soft microfiber pad, avoiding harsh acidic formulas that degrade protective finishes.`
+      },
+      {
+        question: `What is the difference between glazed and unglazed ${topicTitle}?`,
+        answer: `Glazed surfaces offer an extra liquid-impermeable protective layer, while unglazed options provide uniform color throughout the entire material body.`
+      },
+      {
+        question: `How do I prevent grout line cracking around ${topicTitle}?`,
+        answer: `Ensure the underlying substrate is completely rigid and dry before tiling, and use flexible polymer-modified grout to absorb subtle structural vibrations.`
+      },
+      {
+        question: `Are ${topicTitle} suitable for both wall and floor applications?`,
+        answer: `Floor-rated options can always be installed on walls, but lighter wall-specific tiles should not be used on floors due to lower impact resistance.`
+      },
+      {
+        question: `How does water absorption rate affect outdoor or wet zone ${topicTitle}?`,
+        answer: `Tiles with a water absorption rate under 0.5 percent resist frost damage and prevent internal moisture retention in high-humidity areas.`
+      }
+    ];
+  } else if (tokens.isGaming) {
+    faqPool = [
+      {
+        question: `What DPI and polling rate settings work best for ${topicTitle}?`,
+        answer: `A polling rate of 1000Hz combined with 800 to 1600 DPI offers optimal tracking precision and minimal input delay for competitive gaming.`
+      },
+      {
+        question: `How do optical switches differ from mechanical switches in ${topicTitle}?`,
+        answer: `Optical switches use light beams to register clicks, eliminating physical contact debounce delay and drastically increasing switch longevity.`
+      },
+      {
+        question: `What sensor technology powers precision tracking in ${topicTitle}?`,
+        answer: `Modern high-end sensors feature 1-to-1 raw tracking with zero hardware acceleration, smoothing, or pixel skipping across high-speed swipes.`
+      },
+      {
+        question: `How does overall weight affect user ergonomics in ${topicTitle}?`,
+        answer: `Lightweight designs under 65 grams reduce wrist fatigue during extended gaming sessions, enabling faster reflex adjustments.`
+      },
+      {
+        question: `What cable or wireless connection mode yields lowest latency for ${topicTitle}?`,
+        answer: `Modern 2.4GHz wireless dongles match 1ms wired polling performance, offering unrestricted mouse movement without latency penalties.`
+      }
+    ];
+  } else if (tokens.isSmartHome) {
+    faqPool = [
+      {
+        question: `Does ${topicTitle} support local execution without active internet connection?`,
+        answer: `Yes, local automation engines process routines directly on the hub hardware, ensuring instantaneous response even during internet outages.`
+      },
+      {
+        question: `How does Matter protocol integration simplify pairing with ${topicTitle}?`,
+        answer: `Matter establishes a universal connectivity standard, allowing seamless interoperability across Apple Home, Google Home, and Alexa ecosystems.`
+      },
+      {
+        question: `What wireless range and mesh capability does ${topicTitle} offer?`,
+        answer: `Using Thread radio mesh technology, each mains-powered node extends overall signal range and strengthens network stability.`
+      },
+      {
+        question: `How are firmware updates managed across connected devices on ${topicTitle}?`,
+        answer: `Background OTA updates patch security vulnerabilities and deliver new automation features without interrupting active routine schedules.`
+      }
+    ];
+  } else {
+    faqPool = [
+      {
+        question: `What key factors determine the overall build quality of ${topicTitle}?`,
+        answer: `Raw material purity, precision manufacturing tolerances, and compliance with certified safety benchmarks define superior quality.`
+      },
+      {
+        question: `How can I maximize the operational lifespan of ${topicTitle}?`,
+        answer: `Adhere to manufacturer operating limits, conduct periodic inspections, and perform non-abrasive cleaning routines regularly.`
+      },
+      {
+        question: `Are installation accessories and mounting hardware included with ${topicTitle}?`,
+        answer: `Standard packages include essential mounting hardware, but verifying specific structural substrate requirements prior to fitting is recommended.`
+      },
+      {
+        question: `How does modern engineering improve energy efficiency in ${topicTitle}?`,
+        answer: `Updated architectural design reduces thermal loss, minimizes friction, and optimizes resource consumption compared to legacy models.`
+      },
+      {
+        question: `What warranty coverage typically applies to certified ${topicTitle}?`,
+        answer: `Leading manufacturers provide comprehensive multi-year warranties covering structural integrity and core component defects.`
+      },
+      {
+        question: `How do I verify that ${topicTitle} meets local safety and environmental standards?`,
+        answer: `Check for recognized certification stamps such as ISO, CE, or UL on product technical documentation and packaging labels.`
+      }
+    ];
+  }
+
+  const selectedFaqs: { question: string; answer: string }[] = [];
+  const usedIndices = new Set<number>();
+  const primeSeeds = [hashVal, hashVal * 13 + 3, hashVal * 29 + 11, hashVal * 47 + 17];
+
+  for (let i = 0; i < 4; i++) {
+    const seed = Math.abs(primeSeeds[i]);
+    let idx = seed % faqPool.length;
+    let tries = 0;
+    while (usedIndices.has(idx) && tries < faqPool.length) {
+      idx = (idx + 1) % faqPool.length;
+      tries++;
+    }
+    if (!usedIndices.has(idx)) {
+      usedIndices.add(idx);
+      const item = faqPool[idx];
+      selectedFaqs.push({
+        question: item.question.replace(/&/g, "and"),
+        answer: item.answer.replace(/&/g, "and")
+      });
+    }
+  }
+
+  return selectedFaqs;
 }
 
 export async function generateArticleObjectAsync(
