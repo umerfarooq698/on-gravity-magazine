@@ -580,10 +580,26 @@ export async function generateArticleObjectAsync(
   slugOverride?: string
 ): Promise<Article> {
   const cleanKw = rawKeyword.trim();
+  const baseSlug = slugOverride || cleanKw.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  
+  let slug = baseSlug;
+  let hashSeed = cleanKw;
+
+  if (!slugOverride) {
+    const allExisting = getAllArticlesCombined();
+    const existingMatches = allExisting.filter(
+      (a) => a.slug === baseSlug || a.slug.match(new RegExp(`^${baseSlug}-\\d+$`))
+    );
+    if (existingMatches.length > 0) {
+      const nextNum = existingMatches.length + 1;
+      slug = `${baseSlug}-${nextNum}`;
+      hashSeed = `${cleanKw}-${nextNum}-${Date.now()}`;
+    }
+  }
+
   const kwFmt = formatNaturalKeyword(cleanKw);
-  const slug = slugOverride || cleanKw.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   const category = categoryOverride || inferCategoryFromKeyword(cleanKw);
-  const hashVal = getDeterministicHash(cleanKw);
+  const hashVal = getDeterministicHash(hashSeed);
 
   const AUTHORS = [
     { name: "Marcus Vance", role: "Senior Technology Editor", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" },
