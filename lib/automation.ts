@@ -11,33 +11,48 @@ export interface QueueItem {
   generatedArticleSlug?: string;
 }
 
-const CACHE_VERSION_FILE = "on_gravity_articles_cache_v12.json";
+const CACHE_FILES = [
+  "/tmp/on_gravity_articles_cache_permanent.json",
+  "/tmp/on_gravity_articles_cache_v12.json",
+  "/tmp/on_gravity_articles_cache_v11.json",
+  "/tmp/on_gravity_articles_cache_v10.json"
+];
 
 function loadCacheFromDisk(): Article[] {
   if (typeof window !== "undefined") return [];
+  const map = new Map<string, Article>();
   try {
-    const cacheFile = "/tmp/" + CACHE_VERSION_FILE;
     const req = eval("require");
     const fsMod = req("fs");
-    if (fsMod && fsMod.existsSync(cacheFile)) {
-      const data = fsMod.readFileSync(cacheFile, "utf-8");
-      const parsed = JSON.parse(data);
-      if (Array.isArray(parsed)) return parsed;
+    if (fsMod) {
+      for (const cacheFile of CACHE_FILES) {
+        if (fsMod.existsSync(cacheFile)) {
+          const data = fsMod.readFileSync(cacheFile, "utf-8");
+          const parsed = JSON.parse(data);
+          if (Array.isArray(parsed)) {
+            for (const art of parsed) {
+              if (art && art.slug && !map.has(art.slug)) {
+                map.set(art.slug, art);
+              }
+            }
+          }
+        }
+      }
     }
   } catch (e) {
     // Ignore
   }
-  return [];
+  return Array.from(map.values());
 }
 
 function saveCacheToDisk(articles: Article[]) {
   if (typeof window !== "undefined") return;
   try {
-    const cacheFile = "/tmp/" + CACHE_VERSION_FILE;
+    const cacheFile = CACHE_FILES[0];
     const req = eval("require");
     const fsMod = req("fs");
     if (fsMod) {
-      fsMod.writeFileSync(cacheFile, JSON.stringify(articles.slice(0, 100)), "utf-8");
+      fsMod.writeFileSync(cacheFile, JSON.stringify(articles.slice(0, 500)), "utf-8");
     }
   } catch (e) {
     // Ignore
