@@ -7,7 +7,7 @@ import { CATEGORIES } from "@/data/categories";
 import { getCustomArticlesFromStorage } from "@/lib/clientStorage";
 import ArticleCard from "@/components/ArticleCard";
 import Newsletter from "@/components/Newsletter";
-import { Flame, TrendingUp, Sparkles, ArrowRight, BookOpen } from "lucide-react";
+import { Flame, TrendingUp, Sparkles, ArrowRight, BookOpen, Layers } from "lucide-react";
 
 interface HomePageFeedProps {
   initialArticles: Article[];
@@ -51,34 +51,36 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-16">
-      {/* Category Pills Header */}
-      <section className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-zinc-100 dark:border-zinc-900">
-        <span className="text-xs font-bold uppercase tracking-wider text-zinc-400 shrink-0 mr-2 flex items-center gap-1">
+      {/* Editorial Topics Pill Header */}
+      <section className="flex items-center gap-2 overflow-x-auto pb-3 scrollbar-none border-b border-zinc-200 dark:border-zinc-800/80">
+        <span className="text-xs font-extrabold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 shrink-0 mr-2 flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-          Explore Topics:
+          Topics Explorer:
         </span>
         {CATEGORIES.map((cat) => (
           <Link
             key={cat.id}
             href={`/category/${cat.slug}`}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border ${cat.bgLight} hover:scale-105`}
+            className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${cat.bgLight} hover:scale-105 hover:shadow-sm`}
           >
             {cat.name}
           </Link>
         ))}
       </section>
 
-      {/* Hero Showcase Grid */}
+      {/* Hero Cover Story Grid */}
       {heroMain && (
         <section className="space-y-6">
-          <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
-            <div className="flex items-center gap-2">
-              <Flame className="w-5 h-5 text-rose-500" />
-              <h2 className="font-serif text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
-                Cover Stories and Highlights
+          <div className="flex items-center justify-between border-b-2 border-zinc-900 dark:border-zinc-100 pb-3">
+            <div className="flex items-center gap-2.5">
+              <Flame className="w-5 h-5 text-amber-500" />
+              <h2 className="font-serif text-2xl sm:text-3xl font-black tracking-tight text-zinc-900 dark:text-white uppercase">
+                Cover Stories & Features
               </h2>
             </div>
-            <span className="text-xs text-zinc-500 font-medium">Updated Daily</span>
+            <span className="text-xs font-extrabold uppercase tracking-widest text-amber-600 dark:text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
+              Daily Edition
+            </span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -96,12 +98,12 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
         </section>
       )}
 
-      {/* Trending News Bar */}
+      {/* Trending Ranked Leaderboard Bar */}
       {trendingArticles.length > 0 && (
-        <section className="bg-amber-500/10 dark:bg-amber-950/20 border border-amber-500/20 rounded-2xl p-6">
-          <div className="flex items-center gap-2 mb-4">
+        <section className="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent dark:from-amber-950/30 dark:via-amber-950/10 dark:to-transparent border border-amber-500/30 rounded-3xl p-6 sm:p-8 space-y-6">
+          <div className="flex items-center gap-2.5 border-b border-amber-500/20 pb-3">
             <TrendingUp className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-            <h3 className="font-serif text-lg font-bold text-zinc-900 dark:text-amber-300">
+            <h3 className="font-serif text-xl font-bold tracking-tight text-zinc-900 dark:text-amber-300 uppercase">
               Trending Across On Gravity
             </h3>
           </div>
@@ -111,13 +113,13 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
               <Link
                 key={item.id}
                 href={`/${item.slug}`}
-                className="group flex gap-4 items-start"
+                className="group flex gap-4 items-start p-3 rounded-xl hover:bg-amber-500/10 transition-colors"
               >
-                <span className="font-serif text-3xl font-black text-amber-500/40 group-hover:text-amber-500 transition-colors">
+                <span className="font-serif text-4xl font-black text-amber-500/40 group-hover:text-amber-500 transition-colors shrink-0">
                   0{idx + 1}
                 </span>
                 <div className="space-y-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-600 dark:text-amber-400">
                     {item.category}
                   </span>
                   <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors leading-snug line-clamp-2">
@@ -130,25 +132,25 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
         </section>
       )}
 
-      {/* Latest Articles Stream */}
+      {/* Latest Dispatches Stream */}
       <section className="space-y-8">
-        <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
-          <div className="flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-blue-500" />
-            <h2 className="font-serif text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
-              Latest Dispatches & Essays
+        <div className="flex items-center justify-between border-b-2 border-zinc-900 dark:border-zinc-100 pb-3">
+          <div className="flex items-center gap-2.5">
+            <BookOpen className="w-5 h-5 text-amber-500" />
+            <h2 className="font-serif text-2xl sm:text-3xl font-black tracking-tight text-zinc-900 dark:text-white uppercase">
+              Latest Dispatches & Reports
             </h2>
           </div>
           <Link
             href="/search"
-            className="text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1"
+            className="text-xs font-extrabold uppercase tracking-wider text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1 bg-amber-500/10 px-3 py-1.5 rounded-full border border-amber-500/20"
           >
-            View All Articles
+            View All ({allArticles.length})
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {recentArticles.map((article) => (
             <ArticleCard key={article.id} article={article} variant="standard" />
           ))}
@@ -156,9 +158,10 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
       </section>
 
       {/* Categories Spotlight */}
-      <section className="space-y-10">
-        <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3">
-          <h2 className="font-serif text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
+      <section className="space-y-8">
+        <div className="flex items-center gap-2.5 border-b-2 border-zinc-900 dark:border-zinc-100 pb-3">
+          <Layers className="w-5 h-5 text-amber-500" />
+          <h2 className="font-serif text-2xl sm:text-3xl font-black tracking-tight text-zinc-900 dark:text-white uppercase">
             Explore By Edition
           </h2>
         </div>
@@ -169,29 +172,29 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
             return (
               <div
                 key={cat.id}
-                className="p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 flex flex-col justify-between space-y-4 hover:border-amber-500/50 transition-colors"
+                className="p-6 rounded-2xl bg-white dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800/80 flex flex-col justify-between space-y-4 hover:border-amber-500/50 transition-all hover:shadow-xl group"
               >
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <span
-                    className={`inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full ${cat.bgLight}`}
+                    className={`inline-block px-3 py-1 text-xs font-extrabold uppercase tracking-wider rounded-full ${cat.bgLight}`}
                   >
                     {cat.name}
                   </span>
-                  <h3 className="font-serif text-lg font-bold text-zinc-900 dark:text-white">
+                  <h3 className="font-serif text-xl font-bold text-zinc-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
                     {cat.name} Edition
                   </h3>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed font-sans">
                     {cat.description}
                   </p>
                 </div>
 
-                <div className="pt-2 border-t border-zinc-200/60 dark:border-zinc-800 flex items-center justify-between text-xs">
-                  <span className="text-zinc-500 font-medium">{catArticles.length} Articles</span>
+                <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-xs">
+                  <span className="text-zinc-500 font-semibold">{catArticles.length} Published</span>
                   <Link
                     href={`/category/${cat.slug}`}
                     className="font-bold text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1"
                   >
-                    Browse Category →
+                    Browse →
                   </Link>
                 </div>
               </div>
