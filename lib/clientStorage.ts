@@ -2,7 +2,7 @@
 
 import { Article } from "@/data/articles";
 
-const STORAGE_KEY = "og_custom_published_articles_v7";
+const STORAGE_KEY = "og_custom_published_articles_v8";
 
 export function getCustomArticlesFromStorage(): Article[] {
   if (typeof window === "undefined") return [];
