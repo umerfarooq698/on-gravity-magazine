@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Metadata } from "next";
 import { getArticleBySlug, ARTICLES } from "@/data/articles";
 import { getCategoryBySlug } from "@/data/categories";
+import { getAuthorSlug } from "@/data/authors";
 import ArticleCard from "@/components/ArticleCard";
 import Newsletter from "@/components/Newsletter";
 import { formatMetaDescription } from "@/lib/meta";
@@ -217,7 +218,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
           {/* Meta Bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 py-4 border-y border-zinc-200 dark:border-zinc-800 text-xs text-zinc-500">
-            <div className="flex items-center gap-3">
+            <Link
+              href={`/author/${getAuthorSlug(article.author.name)}`}
+              className="flex items-center gap-3 group/author hover:opacity-80 transition-opacity"
+            >
               <Image
                 src={article.author.avatar}
                 alt={article.author.name}
@@ -226,12 +230,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 className="rounded-full object-cover border border-zinc-300 dark:border-zinc-700"
               />
               <div>
-                <div className="font-bold text-zinc-900 dark:text-white text-sm">
+                <div className="font-bold text-zinc-900 dark:text-white text-sm group-hover/author:text-amber-500 transition-colors">
                   {article.author.name}
                 </div>
                 <div className="text-zinc-500 text-[11px]">{article.author.role}</div>
               </div>
-            </div>
+            </Link>
 
             <div className="flex items-center gap-4 text-zinc-500 font-medium">
               <span className="flex items-center gap-1">
@@ -405,25 +409,36 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </div>
 
         {/* Author Bio Box */}
-        <div className="p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 flex items-center gap-5">
-          <Image
-            src={article.author.avatar}
-            alt={article.author.name}
-            width={64}
-            height={64}
-            className="rounded-full object-cover shrink-0"
-          />
-          <div className="space-y-1">
-            <div className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
-              Written by
+        <div className="p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 flex items-center justify-between gap-5">
+          <Link
+            href={`/author/${getAuthorSlug(article.author.name)}`}
+            className="flex items-center gap-5 group/bio hover:opacity-90 transition-opacity flex-1"
+          >
+            <Image
+              src={article.author.avatar}
+              alt={article.author.name}
+              width={64}
+              height={64}
+              className="rounded-full object-cover shrink-0 border-2 border-amber-500/30"
+            />
+            <div className="space-y-1">
+              <div className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                Written by
+              </div>
+              <h4 className="font-serif text-lg font-bold text-zinc-900 dark:text-white group-hover/bio:text-amber-500 transition-colors">
+                {article.author.name}
+              </h4>
+              <p className="text-xs text-zinc-500 leading-relaxed">
+                {article.author.role} at On Gravity Magazine, specializing in in-depth features, investigative series, and editorial columns.
+              </p>
             </div>
-            <h4 className="font-serif text-lg font-bold text-zinc-900 dark:text-white">
-              {article.author.name}
-            </h4>
-            <p className="text-xs text-zinc-500 leading-relaxed">
-              {article.author.role} at On Gravity Magazine, specializing in in-depth features, investigative series, and editorial columns.
-            </p>
-          </div>
+          </Link>
+          <Link
+            href={`/author/${getAuthorSlug(article.author.name)}`}
+            className="hidden sm:inline-flex px-4 py-2 text-xs font-extrabold text-amber-600 dark:text-amber-400 bg-amber-500/10 rounded-full border border-amber-500/30 hover:bg-amber-500/20 transition-colors shrink-0"
+          >
+            View Profile
+          </Link>
         </div>
 
         {/* Related Articles Section */}

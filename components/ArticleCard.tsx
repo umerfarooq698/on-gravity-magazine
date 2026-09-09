@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Article } from "@/data/articles";
 import { getCategoryBySlug } from "@/data/categories";
+import { getAuthorSlug } from "@/data/authors";
 import { Clock, ArrowUpRight, ChevronRight } from "lucide-react";
 
 interface ArticleCardProps {
@@ -58,7 +59,10 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
           </p>
 
           <div className="pt-2 flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <Link
+              href={`/author/${getAuthorSlug(article.author.name)}`}
+              className="flex items-center gap-3 group/author hover:opacity-90 transition-opacity"
+            >
               <Image
                 src={article.author.avatar}
                 alt={article.author.name}
@@ -67,10 +71,12 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
                 className="rounded-full border-2 border-amber-500/60 object-cover"
               />
               <div>
-                <div className="text-xs font-bold text-white">{article.author.name}</div>
+                <div className="text-xs font-bold text-white group-hover/author:text-amber-400 transition-colors">
+                  {article.author.name}
+                </div>
                 <div className="text-[10px] text-zinc-400 font-medium">{article.author.role}</div>
               </div>
-            </div>
+            </Link>
 
             <Link
               href={articleUrl}
@@ -124,7 +130,12 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
           </div>
 
           <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 pt-2 border-t border-zinc-100 dark:border-zinc-800/60">
-            <span className="font-semibold text-zinc-700 dark:text-zinc-300">By {article.author.name}</span>
+            <Link
+              href={`/author/${getAuthorSlug(article.author.name)}`}
+              className="font-semibold text-zinc-700 dark:text-zinc-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+            >
+              By {article.author.name}
+            </Link>
             <span>{article.publishedAt}</span>
           </div>
         </div>
@@ -175,7 +186,10 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
         </div>
 
         <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-xs">
-          <div className="flex items-center gap-2">
+          <Link
+            href={`/author/${getAuthorSlug(article.author.name)}`}
+            className="flex items-center gap-2 group/author hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+          >
             <Image
               src={article.author.avatar}
               alt={article.author.name}
@@ -183,10 +197,10 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
               height={26}
               className="rounded-full object-cover border border-zinc-200 dark:border-zinc-700"
             />
-            <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+            <span className="font-semibold text-zinc-800 dark:text-zinc-200 group-hover/author:text-amber-600 dark:group-hover/author:text-amber-400">
               {article.author.name}
             </span>
-          </div>
+          </Link>
 
           <Link
             href={articleUrl}
