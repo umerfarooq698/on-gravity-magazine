@@ -1074,18 +1074,60 @@ function buildArticleFromQueueItem(item: QueueItem): Article {
   };
 }
 
+export function sanitizeOrMigrateArticle(art: Article): Article {
+  if (!art || !art.slug) return art;
+
+  const cleanKw = art.slug.replace(/-\d+$/, "").replace(/-/g, " ");
+  const kwFmt = formatNaturalKeyword(cleanKw);
+  const tokens = extractKeywordSubTokens(cleanKw);
+  const hashVal = getDeterministicHash(art.slug);
+
+  // Check if FAQs are missing or using old static template
+  const isOldFaq = !art.faqs || art.faqs.length === 0 || 
+    art.faqs.some(f => f.question.includes("What key specifications should I check") || f.question.includes("Why is modern hardware superior"));
+
+  if (isOldFaq) {
+    art.faqs = generateDynamicFaqs(kwFmt.title, tokens, hashVal);
+  }
+
+  // Ensure Title is 55-60 chars and 0 ampersands
+  if (!art.title || art.title.length < 55 || art.title.length > 60 || art.title.includes("&")) {
+    art.title = formatSeoTitle(cleanKw, hashVal);
+    art.metaTitle = `${art.title} | On Gravity Magazine`;
+  }
+
+  // Ensure Meta Description is strictly 140 chars and 0 ampersands
+  if (!art.metaDescription || art.metaDescription.length !== 140 || art.metaDescription.includes("&")) {
+    const rawMeta = art.excerpt || `Editorial report on ${kwFmt.title}`;
+    art.metaDescription = formatMetaDescription(rawMeta, hashVal);
+    art.excerpt = art.metaDescription;
+  }
+
+  // Clean ampersands from content paragraphs
+  if (Array.isArray(art.content)) {
+    art.content = art.content.map(p => p.replace(/&/g, "and"));
+  }
+
+  return art;
+}
+
 export function getAllArticlesCombined(): Article[] {
   const diskArticles = loadCacheFromDisk();
   const map = new Map<string, Article>();
 
   for (const art of [...dynamicArticlesStore, ...diskArticles, ...ARTICLES]) {
-    if (!map.has(art.slug)) map.set(art.slug, art);
+    if (art && art.slug) {
+      const sanitized = sanitizeOrMigrateArticle(art);
+      if (!map.has(sanitized.slug)) map.set(sanitized.slug, sanitized);
+    }
   }
 
   for (const qItem of keywordQueueStore) {
     if (qItem.status === "published" && qItem.generatedArticleSlug) {
       if (!map.has(qItem.generatedArticleSlug)) {
-        map.set(qItem.generatedArticleSlug, buildArticleFromQueueItem(qItem));
+        const built = buildArticleFromQueueItem(qItem);
+        const sanitized = sanitizeOrMigrateArticle(built);
+        map.set(qItem.generatedArticleSlug, sanitized);
       }
     }
   }
@@ -1096,13 +1138,14 @@ export function getAllArticlesCombined(): Article[] {
 export async function getArticleBySlugAsync(slug: string): Promise<Article | undefined> {
   const all = getAllArticlesCombined();
   const found = all.find((a) => a.slug === slug || a.id === slug);
-  if (found) return found;
+  if (found) return sanitizeOrMigrateArticle(found);
 
   const rawKeyword = slug.replace(/-\d+$/, "").replace(/-/g, " ");
   if (!rawKeyword.trim()) return undefined;
 
   try {
-    return await generateArticleObjectAsync(rawKeyword, undefined, slug);
+    const newlyGen = await generateArticleObjectAsync(rawKeyword, undefined, slug);
+    return sanitizeOrMigrateArticle(newlyGen);
   } catch (err) {
     console.error("On-demand article generation failed:", err);
   }
