@@ -17,9 +17,11 @@ const inter = Inter({
   display: "swap",
 });
 
+import { formatMetaDescription } from "@/lib/meta";
+
 export const metadata: Metadata = {
-  title: "On Gravity Magazine | Independent Journalism & Culture",
-  description: "Explore in-depth reporting across Tech, Celebrity, Life Style, Health, Business, News, and Food on On Gravity Magazine.",
+  title: "On Gravity Magazine | Independent Journalism and Culture",
+  description: formatMetaDescription("Explore in-depth reporting across Tech, Celebrity, Life Style, Health, Business, News, and Food on On Gravity Magazine."),
   keywords: ["Magazine", "Blogs", "Tech", "Celebrity", "Lifestyle", "Health", "Business", "News", "Food"],
 };
 

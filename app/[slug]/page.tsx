@@ -23,13 +23,17 @@ interface ArticlePageProps {
   params: Promise<{ slug: string }>;
 }
 
+import { formatMetaDescription } from "@/lib/meta";
+
 export async function generateMetadata({ params }: ArticlePageProps) {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
   if (!article) return { title: "Article Not Found" };
+  const title = (article.metaTitle || `${article.title} | On Gravity Magazine`).replace(/&/g, "and");
+  const description = formatMetaDescription(article.metaDescription || article.excerpt);
   return {
-    title: article.metaTitle || `${article.title} | On Gravity Magazine`,
-    description: article.metaDescription || article.excerpt,
+    title,
+    description,
   };
 }
 
@@ -77,11 +81,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       {/* Article Title Header */}
       <header className="space-y-6">
         <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-black text-zinc-900 dark:text-white tracking-tight leading-[1.15]">
-          {article.title}
+          {article.title.replace(/&/g, "and")}
         </h1>
 
         <p className="text-lg sm:text-xl text-zinc-600 dark:text-zinc-300 font-sans leading-relaxed border-l-4 border-amber-500 pl-4 py-1 italic">
-          {article.excerpt}
+          {article.excerpt.replace(/&/g, "and")}
         </p>
 
         {/* Meta Bar */}
@@ -130,7 +134,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </div>
         {article.imageCaption && (
           <p className="text-center text-xs text-zinc-500 italic pt-1">
-            {article.imageCaption}
+            {article.imageCaption.replace(/&/g, "and")}
           </p>
         )}
       </div>
@@ -140,7 +144,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         {article.content.map((item, index) => {
           const trimmed = item.trim();
           if (trimmed.startsWith("## ")) {
-            const headingText = trimmed.replace(/^##\s+/, "");
+            const headingText = trimmed.replace(/^##\s+/, "").replace(/&/g, "and");
             return (
               <h2
                 key={index}
@@ -151,7 +155,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             );
           }
           if (trimmed.startsWith("### ")) {
-            const headingText = trimmed.replace(/^###\s+/, "");
+            const headingText = trimmed.replace(/^###\s+/, "").replace(/&/g, "and");
             return (
               <h3
                 key={index}

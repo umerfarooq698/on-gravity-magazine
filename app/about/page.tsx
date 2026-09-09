@@ -4,9 +4,11 @@ import Link from "next/link";
 import Newsletter from "@/components/Newsletter";
 import { Sparkles, Target, Award, Users, Globe2 } from "lucide-react";
 
+import { formatMetaDescription } from "@/lib/meta";
+
 export const metadata = {
   title: "About Us | On Gravity Magazine",
-  description: "Learn about the mission, editorial standards, and team behind On Gravity Magazine.",
+  description: formatMetaDescription("Learn about the mission, editorial standards, journalism values, and executive team behind On Gravity Magazine."),
 };
 
 export default function AboutPage() {

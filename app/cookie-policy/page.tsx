@@ -1,9 +1,11 @@
 import React from "react";
 import { Cookie, ShieldAlert } from "lucide-react";
 
+import { formatMetaDescription } from "@/lib/meta";
+
 export const metadata = {
   title: "Cookie Policy | On Gravity Magazine",
-  description: "Cookie policy explaining cookie usage on On Gravity Magazine.",
+  description: formatMetaDescription("Cookie policy explaining tracking cookies, user preferences, and browser consent settings on On Gravity Magazine."),
 };
 
 export default function CookiePolicyPage() {

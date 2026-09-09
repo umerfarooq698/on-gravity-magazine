@@ -14,13 +14,15 @@ interface CategoryPageProps {
 
 export const dynamic = "force-dynamic";
 
+import { formatMetaDescription } from "@/lib/meta";
+
 export async function generateMetadata({ params }: CategoryPageProps) {
   const { slug } = await params;
   const category = getCategoryBySlug(slug);
   if (!category) return { title: "Category Not Found" };
   return {
-    title: `${category.name} | On Gravity Magazine`,
-    description: category.description,
+    title: `${category.name.replace(/&/g, "and")} | On Gravity Magazine`,
+    description: formatMetaDescription(category.description),
   };
 }
 

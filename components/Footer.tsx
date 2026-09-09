@@ -45,7 +45,7 @@ export default function Footer() {
         {/* Pages Column */}
         <div className="space-y-3">
           <h3 className="font-sans text-xs font-bold text-white uppercase tracking-widest border-b border-zinc-800 pb-2">
-            Company & Policies
+            Company and Policies
           </h3>
           <ul className="space-y-2 text-xs font-medium text-zinc-400">
             <li>

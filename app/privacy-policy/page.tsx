@@ -1,9 +1,11 @@
 import React from "react";
 import { ShieldCheck, Lock, FileText } from "lucide-react";
 
+import { formatMetaDescription } from "@/lib/meta";
+
 export const metadata = {
   title: "Privacy Policy | On Gravity Magazine",
-  description: "Privacy policy and data protection guidelines for readers of On Gravity Magazine.",
+  description: formatMetaDescription("Privacy policy and reader data protection guidelines for subscribers of On Gravity Magazine online."),
 };
 
 export default function PrivacyPolicyPage() {

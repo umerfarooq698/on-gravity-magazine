@@ -75,7 +75,7 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
             <div className="flex items-center gap-2">
               <Flame className="w-5 h-5 text-rose-500" />
               <h2 className="font-serif text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
-                Cover Stories & Highlights
+                Cover Stories and Highlights
               </h2>
             </div>
             <span className="text-xs text-zinc-500 font-medium">Updated Daily</span>

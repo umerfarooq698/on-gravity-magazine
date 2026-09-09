@@ -1,4 +1,5 @@
 import { Article, ARTICLES } from "@/data/articles";
+import { formatMetaDescription } from "@/lib/meta";
 
 export interface QueueItem {
   id: string;
@@ -10,7 +11,7 @@ export interface QueueItem {
   generatedArticleSlug?: string;
 }
 
-const CACHE_VERSION_FILE = "on_gravity_articles_cache_v11.json";
+const CACHE_VERSION_FILE = "on_gravity_articles_cache_v12.json";
 
 function loadCacheFromDisk(): Article[] {
   if (typeof window !== "undefined") return [];
@@ -216,50 +217,50 @@ function getDomainKey(kw: string): string {
 
 const DOMAIN_SUFFIXES: Record<string, string[]> = {
   gaming: [
-    ": Sensor Precision, Latency & Weight Balance",
-    ": Optical Tracking, Polling Rates & Ergonomics",
-    ": Ergonomic Grip & Low Latency Performance"
+    ": Sensor Precision, Latency and Weight",
+    ": Optical Tracking, Polling and Ergonomics",
+    ": Ergonomic Grip and Low Latency Control"
   ],
   cold_tap: [
-    ": Installation, Aerator Flow & Leak Control",
-    ": Line Pressure, Aerators & Flow Control",
-    ": Aerator Screen Cleaning & Valve Safety"
+    ": Installation, Aerator Flow and Leak Care",
+    ": Line Pressure, Aerators and Flow Control",
+    ": Aerator Screen Cleaning and Valve Safety"
   ],
   hot_tap: [
-    ": Instant Water Delivery & Heat Safety",
-    ": Thermostatic Valve & Pressure Balance",
-    ": Instant Delivery & Thermal Protection"
+    ": Instant Water Delivery and Heat Safety",
+    ": Thermostatic Valve and Pressure Balance",
+    ": Instant Water Delivery and Thermal Safety"
   ],
   black_tap: [
-    ": PVD Coating Finish & Stain Removal Care",
-    ": Hard Water Protection & Matte Finish Care",
-    ": Non-Abrasive Cleaning & Basin Finish"
+    ": PVD Surface Coating Finish and Stain Care",
+    ": Hard Water Mineral Protection and Finish",
+    ": Non-Abrasive Cleaning and Basin Finish"
   ],
   plumbing: [
-    ": Ceramic Disc Valves & Basin Flow Rates",
-    ": Installation Seals, Pressure & Flow Control",
-    ": Spout Reach & Vessel Clearance Control"
+    ": Ceramic Disc Valves and Basin Flow Rates",
+    ": Installation Seals, Pressure and Control",
+    ": Spout Reach and Vessel Clearance"
   ],
   smarthome: [
-    ": Matter Protocol & Local Hub Automation",
-    ": Mesh Network Range & Device Security",
-    ": Zero-Cloud Latency & Smart Sensor Hubs"
+    ": Matter Protocol and Local Automation",
+    ": Mesh Network Range and Device Security",
+    ": Zero-Cloud Latency and Sensor Hubs"
   ],
   crypto: [
-    ": Liquidity Dynamics & Venture Capital Shifts",
-    ": Asset Allocation & Macro Market Metrics"
+    ": Liquidity Dynamics and Capital Shifts",
+    ": Asset Allocation and Market Metrics"
   ],
   food: [
-    ": Michelin Culinary Craft & Farm Sourcing",
-    ": Artisanal Prep & Recipe Taste Insights"
+    ": Michelin Culinary Craft and Farm Prep",
+    ": Artisanal Prep and Recipe Insights"
   ],
   fashion: [
-    ": Red Carpet Couture & Gala Runway Fashion",
-    ": Runway Style & Designer Look Trends"
+    ": Red Carpet Couture and Gala Fashion",
+    ": Runway Style and Designer Highlights"
   ],
   general: [
-    ": Architectural Specs & Quality Review",
-    ": Technical Features & System Efficiency"
+    ": Architectural Specs and Quality Review",
+    ": Technical Features and System Efficiency"
   ]
 };
 
@@ -270,35 +271,35 @@ const PHRASES_BY_LEN: Record<number, string> = {
   18: ": Performance Review",
   19: ": Technical Analysis",
   20: ": Structural Overview",
-  21: ": Quality & Performance",
+  21: ": Performance and Specs",
   22: ": Architectural Review",
   23: ": Engineering Evaluation",
-  24: ": System Features & Review",
-  25: ": Quality & System Features",
-  26: ": Technical Quality & Design",
-  27: ": Installation & Maintenance",
-  28: ": System Performance & Quality",
+  24: ": System Features Review",
+  25: ": Features and Performance",
+  26: ": System Quality and Design",
+  27: ": Installation and Valve Care",
+  28: ": System Performance and Build",
   29: ": Complete Technical Performance",
-  30: ": Engineering Features & Quality",
-  31: ": Technical Standards & Features",
-  32: ": Technical Engineering & Quality",
-  33: ": System Efficiency & Performance",
-  34: ": Engineering Standards & Features",
-  35: ": System Engineering & Craftsmanship",
+  30: ": System Performance and Quality",
+  31: ": System Standards and Features",
+  32: ": Engineering Standards and Specs",
+  33: ": Technical Efficiency and Quality",
+  34: ": Engineering Standards and Quality",
+  35: ": System Engineering and Performance",
   36: ": Architectural Performance Standards",
-  37: ": Technical Quality & Performance Review",
-  38: ": Real-World Durability & Specifications",
-  39: ": Complete Performance & Quality Analysis",
-  40: ": Architectural & Engineering Standards",
-  41: ": Technical Benchmarks & Feature Analysis",
-  42: ": Technical Performance & System Craftsmanship",
-  43: ": Real-World Engineering & Performance Review",
-  44: ": Architectural Feature & Performance Standards",
-  45: ": Complete Technical & Architectural Standards"
+  37: ": System Engineering and Craftsmanship",
+  38: ": Real-World Durability and Performance",
+  39: ": Complete Performance and System Review",
+  40: ": Architectural and Engineering Review",
+  41: ": Technical Benchmarks and Feature Review",
+  42: ": Technical Performance and System Craft",
+  43: ": Real-World Engineering and System Review",
+  44: ": Architectural Feature and System Standards",
+  45: ": Complete Technical and Architectural Setup"
 };
 
 export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string {
-  const clean = rawKeyword.trim();
+  const clean = rawKeyword.replace(/&/g, "and").trim();
   let kwWords = clean.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
   
   if (kwWords.length >= 55 && kwWords.length <= 60) {
@@ -336,7 +337,7 @@ export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string 
     }
   }
 
-  return (kwWords + ": Technical Performance & System Craftsmanship").slice(0, 57);
+  return (kwWords + ": Technical Performance and System Craftsmanship").slice(0, 57);
 }
 
 // ----------------------------------------------------
@@ -345,74 +346,74 @@ export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string 
 
 const SHORT_H2_MAP: Record<string, string[]> = {
   gaming: [
-    "## Optical Sensor Precision & 1:1 Tracking",
-    "## 2.4GHz Wireless Latency & Polling Rates",
-    "## Ergonomic Weight & Grip Dynamics",
-    "## Optical Switches & Debounce Care",
+    "## Optical Sensor Precision and 1:1 Tracking",
+    "## 2.4GHz Wireless Latency and Polling Rates",
+    "## Ergonomic Weight and Grip Dynamics",
+    "## Optical Switches and Debounce Care",
     "## Virgin-Grade PTFE Skate Maintenance"
   ],
   cold_tap: [
-    "## Water Line Pressure & Aerator Flow",
-    "## Ceramic Disc Cartridges & Anti-Whistle",
-    "## Under-Sink Hose & Valve Connections",
-    "## Winter Frost Protection & Pipe Care",
-    "## Aerator Scale Cleaning & Vinegar Care"
+    "## Water Line Pressure and Aerator Flow",
+    "## Ceramic Disc Cartridges and Anti-Whistle",
+    "## Under-Sink Hose and Valve Connections",
+    "## Winter Frost Protection and Pipe Care",
+    "## Aerator Scale Cleaning and Vinegar Care"
   ],
   hot_tap: [
     "## Thermostatic Anti-Scald Safety Valves",
-    "## Boiler Tank Pressure & Instant Delivery",
-    "## Thermal Expansion & Relief Engineering",
+    "## Boiler Tank Pressure and Instant Delivery",
+    "## Thermal Expansion and Relief Engineering",
     "## Braided Stainless Hose Connections"
   ],
   black_tap: [
-    "## PVD Matte Finish & Hard Water Protection",
-    "## Non-Abrasive Cleaning & Microfiber Care",
+    "## PVD Matte Finish and Hard Water Protection",
+    "## Non-Abrasive Cleaning and Microfiber Care",
     "## Solid Brass Anti-Corrosion Engineering",
-    "## Basin Spout Height & Vessel Clearance"
+    "## Basin Spout Height and Vessel Clearance"
   ],
   plumbing: [
-    "## Water Line Pressure & Aerator Flow Rates",
-    "## Ceramic Disc Valve Sealing & Cartridges",
+    "## Water Line Pressure and Aerator Flow Rates",
+    "## Ceramic Disc Valve Sealing and Cartridges",
     "## Under-Sink Isolation Valve Setup",
-    "## Leak Prevention & Gasket Seals"
+    "## Leak Prevention and Gasket Seals"
   ],
   smarthome: [
-    "## Matter & Thread Wireless Antennas",
+    "## Matter and Thread Wireless Antennas",
     "## Zero-Cloud Local Rule Execution",
-    "## IoT Network Encryption & Range",
+    "## IoT Network Encryption and Range",
     "## Multi-Sensor Automation Triggers"
   ],
   crypto: [
-    "## Venture Capital & Liquidity Trends",
+    "## Venture Capital and Liquidity Trends",
     "## Smart Contract Security Architecture",
     "## Macroeconomic Asset Allocation",
     "## Zero-Knowledge Cryptography Models"
   ],
   food: [
     "## Farm-to-Table Zero-Waste Culinary Prep",
-    "## Michelin Sourcing & Plating Aesthetics",
+    "## Michelin Sourcing and Plating Aesthetics",
     "## Artisanal Coffee Extraction Pressure",
     "## Organic Ingredient Storage Rules"
   ],
   fashion: [
-    "## Met Gala Haute Couture & Silhouettes",
+    "## Met Gala Haute Couture and Silhouettes",
     "## Red Carpet Runway Craftsmanship",
-    "## Sustainable Silk & Vintage Archival Care",
-    "## Celebrity Style & Designer Trends"
+    "## Sustainable Silk and Vintage Archival Care",
+    "## Celebrity Style and Designer Trends"
   ],
   general: [
-    "## Structural Engineering & Material Quality",
-    "## Real-World Usability & Ergonomics",
-    "## Performance Benchmarks & Service Life",
-    "## Maintenance Protocols & Best Practices"
+    "## Structural Engineering and Material Quality",
+    "## Real-World Usability and Ergonomics",
+    "## Performance Benchmarks and Service Life",
+    "## Maintenance Protocols and Best Practices"
   ]
 };
 
 const SHORT_H3_MAP: Record<string, string[]> = {
-  gaming: ["### DPI Sensitivity & Lift-Off Distance", "### Dongle Placement & Signal Range"],
+  gaming: ["### DPI Sensitivity and Lift-Off Distance", "### Dongle Placement and Signal Range"],
   cold_tap: ["### Aerator Screen Cleaning Steps", "### Shutoff Valve Adjustment Guide"],
   hot_tap: ["### Thermostatic Valve Calibration", "### Relief Valve Safety Checks"],
-  black_tap: ["### Microfiber Drying Routine", "### Deck Plate Sealing & Gaskets"],
+  black_tap: ["### Microfiber Drying Routine", "### Deck Plate Sealing and Gaskets"],
   plumbing: ["### Cartridge Replacement Steps", "### Pressure Relief Valve Checks"],
   smarthome: ["### Thread Border Router Setup", "### Local Automation Logic"],
   crypto: ["### Security Audit Verification", "### Liquidity Pool Dynamics"],
@@ -431,18 +432,20 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
   const h2List = SHORT_H2_MAP[domainKey] || SHORT_H2_MAP.general;
   const h3List = SHORT_H3_MAP[domainKey] || SHORT_H3_MAP.general;
 
-  let excerpt = `An in-depth editorial evaluation of ${kwFmt.topic}, exploring technical benchmarks, real-world utility, and market trends.`;
+  let excerptRaw = `An in-depth editorial evaluation of ${kwFmt.topic}, exploring technical benchmarks, real-world utility, and market trends.`;
   if (tokens.isGaming) {
-    excerpt = `High-performance gaming mice demand sub-millisecond wireless responsiveness, ultra-lightweight shell ergonomics, and optical tracking precision.`;
+    excerptRaw = `High-performance gaming mice demand sub-millisecond wireless responsiveness, ultra-lightweight shell ergonomics, and optical tracking precision.`;
   } else if (tokens.isCold && tokens.isTap) {
-    excerpt = `Operating under constant line pressure, bathroom cold water taps demand frost-resistant supply lines, anti-whistle valves, and low-flow aerators.`;
+    excerptRaw = `Operating under constant line pressure, bathroom cold water taps demand frost-resistant supply lines, anti-whistle valves, and low-flow aerators.`;
   } else if (tokens.isHot && tokens.isTap) {
-    excerpt = `Engineered for thermal expansion resilience and anti-scald safety, instant hot water taps combine boiler integration with precise temperature control.`;
+    excerptRaw = `Engineered for thermal expansion resilience and anti-scald safety, instant hot water taps combine boiler integration with precise temperature control.`;
   } else if (tokens.isBlack && tokens.isTap) {
-    excerpt = `Combining bold architectural contrast with electroplated PVD surface resilience, matte black taps require non-abrasive care and microfiber maintenance.`;
+    excerptRaw = `Combining bold architectural contrast with electroplated PVD surface resilience, matte black taps require non-abrasive care and microfiber maintenance.`;
   } else if (tokens.isSmartHome) {
-    excerpt = `Exploring smart home hubs with multi-protocol Matter and Thread antenna arrays, local rule execution engines, and zero-cloud-latency security.`;
+    excerptRaw = `Exploring smart home hubs with multi-protocol Matter and Thread antenna arrays, local rule execution engines, and zero-cloud-latency security.`;
   }
+
+  const excerpt = formatMetaDescription(excerptRaw);
 
   const paragraphs: string[] = [];
 
@@ -494,7 +497,7 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
     paragraphs.push(`High-performance gaming mice combine ultra-lightweight shell ergonomics with pixel-perfect optical tracking and sub-millisecond wireless responsiveness. Selecting a gaming mouse requires evaluating sensor architecture, switch durability, mouse weight, and glide dynamics.`);
     paragraphs.push(`Modern optical sensors like the PixArt 3395 capture thousands of surface images per second using infrared LED illumination, translating physical mouse movement into cursor movement with 1:1 precision. Advanced sensors eliminate hardware smoothing, angle snapping, and acceleration.`);
 
-    paragraphs.push(h3List[0] || "### DPI Sensitivity & Lift-Off Distance");
+    paragraphs.push(h3List[0] || "### DPI Sensitivity and Lift-Off Distance");
     paragraphs.push(`While manufacturers advertise extreme sensitivity figures up to 30,000 DPI, competitive esports players prefer 800 or 1600 DPI. Lower DPI combined with low in-game sensitivity provides superior control for precise crosshair adjustments in competitive shooter titles.`);
 
     paragraphs.push(h2List[1]);
@@ -530,8 +533,8 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
     paragraphs.push(`Following structured care protocols extends equipment service life, protects internal components, and guarantees smooth, trouble-free utility.`);
   }
 
-  // Add Conclusion & Summary before FAQs
-  paragraphs.push("## Conclusion & Summary");
+  // Add Conclusion and Summary before FAQs
+  paragraphs.push("## Conclusion and Summary");
   if (tokens.isCold && tokens.isTap) {
     paragraphs.push(`Investing in a well-engineered bathroom cold tap equipped with ceramic disc cartridges and low-flow aerators ensures efficient water control and reliable performance. Following routine aerator maintenance and winter pipe care protects your plumbing setup for years to come.`);
   } else if (tokens.isBlack && tokens.isTap) {
@@ -585,7 +588,7 @@ export async function generateArticleObjectAsync(
   const AUTHORS = [
     { name: "Marcus Vance", role: "Senior Technology Editor", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" },
     { name: "Elena Rostova", role: "Pop Culture Lead", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" },
-    { name: "Sophia Chen", role: "Lifestyle & Wellness Columnist", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80" },
+    { name: "Sophia Chen", role: "Lifestyle and Wellness Columnist", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80" },
     { name: "David Sterling", role: "Chief Economics Analyst", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" },
     { name: "Camilla Dupuis", role: "Culinary Editor", avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" },
   ];
@@ -693,7 +696,7 @@ function buildArticleFromQueueItem(item: QueueItem): Article {
   const AUTHORS = [
     { name: "Marcus Vance", role: "Senior Technology Editor", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" },
     { name: "Elena Rostova", role: "Pop Culture Lead", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" },
-    { name: "Sophia Chen", role: "Lifestyle & Wellness Columnist", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80" },
+    { name: "Sophia Chen", role: "Lifestyle and Wellness Columnist", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80" },
   ];
   const author = AUTHORS[hashVal % AUTHORS.length];
   const { title, excerpt, paragraphs, faqs } = generateDynamicDomainContent(cleanKw, category, hashVal);
