@@ -533,10 +533,7 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
     `## Core Architectural Features of ${kwTitle}`,
     `## Understanding ${kwTitle} Engineering and Specifications`,
     `## Essential Composition and Standards for ${kwTitle}`,
-    `## Design Versatility and Craftsmanship in ${kwTitle}`,
-    `## Structural Integrity and Material Science of ${kwTitle}`,
-    `## Premium Material Grades and Manufacturing for ${kwTitle}`,
-    `## Technical Specifications and Material Quality of ${kwTitle}`
+    `## Design Versatility and Craftsmanship in ${kwTitle}`
   ];
   const h2_1 = h2_1_options[hashVal % h2_1_options.length];
 
@@ -544,9 +541,7 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
     `### ${kwTitle} Surface Finish Inspection`,
     `### Structural Tolerance and Load Verification`,
     `### Technical Specification Checklist`,
-    `### Quality Assurance and Material Certification`,
-    `### Dimension Precision and Alignment Protocol`,
-    `### Pre-Installation Inspection Guidelines`
+    `### Quality Assurance and Material Certification`
   ];
   const h3_1 = h3_1_options[(hashVal + 1) % h3_1_options.length];
 
@@ -554,142 +549,211 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
     `## Practical Utility and Everyday Performance`,
     `## Ergonomics and Spatial Integration of ${kwTitle}`,
     `## Operational Efficiency and Functional Design`,
-    `## Practical Application and Real-World Use of ${kwTitle}`,
-    `## User Experience and System Integration`,
-    `## Modern Ergonomics and Spatial Harmony`,
-    `## Aesthetic Impact and Functional Utility of ${kwTitle}`,
-    `## Spatial Dynamics and Integration Best Practices`
+    `## Practical Application and Real-World Use of ${kwTitle}`
   ];
   const h2_2 = h2_2_options[(hashVal + 2) % h2_2_options.length];
+
+  const h3_2_options = [
+    `### Spatial Alignment and Dimension Clearance`,
+    `### Layout Optimization and Ergonomic Flow`,
+    `### Aesthetic Harmony and Surface Finish Matching`
+  ];
+  const h3_2 = h3_2_options[(hashVal + 3) % h3_2_options.length];
 
   const h2_3_options = [
     `## Performance Benchmarks and Long-Term Durability`,
     `## Comparative Stress Testing and Material Strength`,
     `## Environmental Resilience and Lifetime Expectations`,
-    `## Load Distribution and Resistance Standards`,
-    `## Technical Efficiency and Wear Resistance`,
-    `## Long-Term Cost Efficiency and Reliability`,
-    `## Durability Analysis under Daily Operating Stress`,
-    `## Lifecycle Expectations and Hardware Performance`
+    `## Load Distribution and Resistance Standards`
   ];
-  const h2_3 = h2_3_options[(hashVal + 3) % h2_3_options.length];
+  const h2_3 = h2_3_options[(hashVal + 4) % h2_3_options.length];
+
+  const h3_3_options = [
+    `### Thermal Cycling and Moisture Protection`,
+    `### Accelerated Wear Testing Results`,
+    `### Environmental Exposure and Seal Longevity`
+  ];
+  const h3_3 = h3_3_options[(hashVal + 5) % h3_3_options.length];
 
   const h2_4_options = [
     `## Routine Maintenance and Protective Care`,
     `## Cleaning Protocols and Surface Preservation`,
-    `## Long-Term Care and Preventive Maintenance`,
-    `## Service Life Optimization for ${kwTitle}`,
-    `## Inspection Schedules and Seal Care Protocols`,
-    `## Preserving Finish and Structural Quality`,
-    `## Surface Cleaning and Preventative Care Protocols`,
-    `## Upkeep Standards for Maximum Longevity`
+    `## Long-Term Care and Preventive Maintenance`
   ];
-  const h2_4 = h2_4_options[(hashVal + 4) % h2_4_options.length];
+  const h2_4 = h2_4_options[(hashVal + 6) % h2_4_options.length];
+
+  const h2_5_options = [
+    `## Professional Installation Best Practices and Cost Value`,
+    `## Substrate Preparation and Mounting Guidelines for ${kwTitle}`,
+    `## Long-Term Investment Value and Warranty Assurance`
+  ];
+  const h2_5 = h2_5_options[(hashVal + 7) % h2_5_options.length];
 
   const paragraphs: string[] = [];
 
-  // Intro Paragraph Matrix (6 variations)
-  const introVars = [
+  // Intro Paragraphs (2 rich paragraphs)
+  const introVars1 = [
     `Evaluating the technical architecture, component craftsmanship, and practical utility of ${topicTitle} requires examining core operational parameters, material density, and surface longevity. Making an informed hardware or material selection ensures long-term service reliability, elevated aesthetic value, and seamless daily performance across residential or commercial environments.`,
     `Selecting high-grade ${topicTitle} plays a pivotal role in modern design, functional efficiency, and structural performance. Understanding key manufacturing standards, installation requirements, and long-term durability metrics enables homeowners and trade professionals to make well-founded investment decisions.`,
     `The modern approach to ${topicTitle} combines refined visual appeal with cutting-edge engineering principles. By prioritizing superior raw material selection and rigorous testing protocols, current market iterations deliver exceptional resistance to daily wear while enhancing spatial ergonomics.`,
-    `Analyzing the technical specifications and practical benefits of ${topicTitle} highlights significant advancements in material formulation, surface sealants, and user-centric design. Selecting certified options guarantees optimal operational stability and lasting aesthetic harmony.`,
-    `Investing in premium ${topicTitle} involves balancing aesthetic preferences with rigorous engineering standards. From structural load capacity to non-abrasive surface finishes, modern configurations offer versatile solutions tailored to demanding usage demands.`,
-    `A comprehensive editorial review of ${topicTitle} demonstrates how material innovation and precision manufacturing transform everyday spaces. Highlighting key installation guidelines and performance benchmarks ensures sustained functionality and minimal maintenance requirements.`
+    `Analyzing the technical specifications and practical benefits of ${topicTitle} highlights significant advancements in material formulation, surface sealants, and user-centric design. Selecting certified options guarantees optimal operational stability and lasting aesthetic harmony.`
   ];
-  paragraphs.push(introVars[hashVal % introVars.length]);
+  const introVars2 = [
+    `Furthermore, comprehensive market developments in ${topicTitle} emphasize reduced maintenance overhead and superior environmental adaptability. Integrating advanced manufacturing methods ensures that components maintain dimensional accuracy, structural rigidity, and color stability even under challenging environmental exposure.`,
+    `In addition to aesthetic elegance, certified ${topicTitle} undergoes stringent quality verification to satisfy international safety and performance benchmarks. Trade experts recommend evaluating load capacity, surface finish resilience, and installation clearance prior to final specification.`,
+    `Architectural designers and engineering professionals consistently prioritize ${topicTitle} configurations that offer balanced functional performance and ease of maintenance. Detailed technical evaluation safeguards long-term capital investment while streamlining routine service protocols.`
+  ];
+  paragraphs.push(introVars1[hashVal % introVars1.length]);
+  paragraphs.push(introVars2[(hashVal + 1) % introVars2.length]);
 
-  // Section 1: H2_1 + Body 1 + Body 2
+  // Section 1: H2_1 + 3 Body + H3_1 + 2 Body
   paragraphs.push(h2_1);
-  const sec1P1Vars = [
+  const sec1P1 = [
     `Assessing the structural composition and material density of ${topicTitle} is essential for ensuring long-term resilience under continuous operational stress. Advanced manufacturing processes utilize high-purity raw materials and specialized heat treatments that prevent early material fatigue and surface degradation.`,
     `At the core of high-performance ${topicTitle} lies a commitment to material integrity and precision engineering. Incorporating dense composite layers and anti-corrosive treatments safeguards the assembly against environmental moisture, thermal expansion, and mechanical shock.`,
-    `Quality craftsmanship in ${topicTitle} begins with rigorous raw material vetting and strict manufacturing tolerances. Utilizing premium grade alloys or high-fired ceramics guarantees uniform structural strength and superior resistance against surface scratching.`,
-    `Modern technical standards for ${topicTitle} demand certified compliance with environmental and structural safety protocols. Advanced surface sealants and dense core backing prevent moisture penetration and preserve physical stability over years of service.`
+    `Quality craftsmanship in ${topicTitle} begins with rigorous raw material vetting and strict manufacturing tolerances. Utilizing premium grade alloys or high-fired ceramics guarantees uniform structural strength and superior resistance against surface scratching.`
   ];
-  paragraphs.push(sec1P1Vars[(hashVal + 1) % sec1P1Vars.length]);
-
-  const sec1P2Vars = [
-    `Selecting certified configurations for ${topicTitle} guarantees compliance with international safety and environmental benchmarks. Rigorous factory stress testing confirms consistent load distribution and structural integrity even under demanding conditions.`,
+  const sec1P2 = [
+    `Selecting certified configurations for ${topicTitle} guarantees compliance with international safety and environmental benchmarks. Rigorous factory stress testing confirms consistent load distribution and structural integrity even under demanding commercial conditions.`,
     `Furthermore, opting for standardized ${topicTitle} ensures hassle-free compatibility with existing sub-structures and mounting hardware. Precision manufacturing eliminates dimensional variance, streamlining initial fitting and reducing overall labor overhead.`,
-    `Adhering to recognized industry standards during the manufacturing of ${topicTitle} mitigates risks of structural misalignment or premature wear. Verified material certifications provide trade installers with complete confidence in long-term field performance.`,
-    `High-caliber manufacturing for ${topicTitle} emphasizes uniform grain alignment and protective surface sealers. These measures inhibit moisture absorption and prevent chemical erosion over decades of continuous use.`
+    `Adhering to recognized industry standards during the manufacturing of ${topicTitle} mitigates risks of structural misalignment or premature wear. Verified material certifications provide trade installers with complete confidence in long-term field performance.`
   ];
-  paragraphs.push(sec1P2Vars[(hashVal + 2) % sec1P2Vars.length]);
+  const sec1P3 = [
+    `Engineered for demanding environment applications, modern ${topicTitle} incorporates specialized protective topcoats that repel chemical stains and moisture penetration. This structural barrier protects internal substrate layers from gradual erosion and micro-fractures over decades of active service.`,
+    `In addition, raw material refinement in high-tier ${topicTitle} eliminates internal void pockets, resulting in maximum impact absorption and structural stability. Installers benefit from reduced material loss during cutting, shaping, and precision fitting.`
+  ];
+  paragraphs.push(sec1P1[hashVal % sec1P1.length]);
+  paragraphs.push(sec1P2[(hashVal + 1) % sec1P2.length]);
+  paragraphs.push(sec1P3[(hashVal + 2) % sec1P3.length]);
 
-  // Subsection 1: H3_1 + Body
   paragraphs.push(h3_1);
-  const sec1H3Vars = [
+  const sec1H3P1 = [
     `Prior to initial installation or assembly of ${topicTitle}, perform a thorough visual and dimensional inspection. Verifying surface levelness, edge alignment, and seal integrity prevents subtle installation flaws and guarantees seamless integration.`,
-    `Before finalizing the placement of ${topicTitle}, inspect all contact surfaces and mounting points for micro-imperfections. Ensuring clean, debris-free sub-layers promotes optimal adhesion and prevents unneeded stress concentrations.`,
+    `Before finalizing the placement of ${topicTitle}, inspect all contact surfaces and mounting points for micro-imperfections. Ensuring clean, debris-free sub-layers promotes optimal adhesion and prevents unneeded stress concentrations.`
+  ];
+  const sec1H3P2 = [
     `Conducting a comprehensive pre-assembly checklist for ${topicTitle} helps identify any structural clearance issues early. Checking component tolerances and fastener torque limits preserves warranty coverage and ensures long-term safety.`,
     `Careful preparation before fitting ${topicTitle} includes evaluating environmental humidity and substrate flatness. Achieving proper baseline conditions eliminates flex and guarantees rigid, durable installation.`
   ];
-  paragraphs.push(sec1H3Vars[(hashVal + 3) % sec1H3Vars.length]);
+  paragraphs.push(sec1H3P1[(hashVal + 3) % sec1H3P1.length]);
+  paragraphs.push(sec1H3P2[(hashVal + 4) % sec1H3P2.length]);
 
-  // Section 2: H2_2 + Body 1 + Body 2
+  // Section 2: H2_2 + 3 Body + H3_2 + 2 Body
   paragraphs.push(h2_2);
-  const sec2P1Vars = [
+  const sec2P1 = [
     `User ergonomics and intuitive design shape the real-world efficiency of ${topicTitle}. Products engineered with user-centric contours reduce physical strain during daily interaction, enhancing precision and overall operational comfort across residential and commercial settings.`,
     `Integrating ${topicTitle} into existing layout schemes requires careful consideration of spatial proportions and visual balance. Modern options offer streamlined profiles that complement diverse architectural styles while maximizing functional space.`,
-    `Practical usability remains a cornerstone of high-caliber ${topicTitle} design. Ergonomic contours combined with tactile responsiveness provide an intuitive user experience that elevates everyday utility.`,
-    `Modern engineering for ${topicTitle} emphasizes seamless functional flow and spatial harmony. Designing with user comfort in mind reduces operational friction and improves overall satisfaction.`
+    `Practical usability remains a cornerstone of high-caliber ${topicTitle} design. Ergonomic contours combined with tactile responsiveness provide an intuitive user experience that elevates everyday utility.`
   ];
-  paragraphs.push(sec2P1Vars[(hashVal + 4) % sec2P1Vars.length]);
-
-  const sec2P2Vars = [
+  const sec2P2 = [
     `Achieving seamless integration of ${topicTitle} within a broader interior or architectural framework demands attention to detail regarding color harmony, tactile textures, and clearance dimensions. Well-designed products blend effortless aesthetics with uncompromised utility.`,
     `When evaluating layout configurations for ${topicTitle}, trade professionals emphasize maintaining adequate operational clearance and accessible service access. Streamlined geometry ensures smooth movement and simplifies routine surface cleaning.`,
-    `Modern design trends emphasize clean geometry and versatile finish options for ${topicTitle}. Whether deployed in minimalist contemporary environments or classic traditional spaces, well-engineered units enhance overall ambient value.`,
+    `Modern design trends emphasize clean geometry and versatile finish options for ${topicTitle}. Whether deployed in minimalist contemporary environments or classic traditional spaces, well-engineered units enhance overall ambient value.`
+  ];
+  const sec2P3 = [
+    `Furthermore, spatial harmony achieved with ${topicTitle} enhances property value by creating visual continuity across adjacent room transitions. High-quality finishes reflect light naturally, creating an open, expansive atmosphere.`,
     `Refined aesthetic finishes on ${topicTitle} resist fingerprinting and smudging, keeping surfaces visually immaculate with minimal daily effort. Versatile mounting options allow custom tailoring to match specific design layouts.`
   ];
-  paragraphs.push(sec2P2Vars[(hashVal + 5) % sec2P2Vars.length]);
+  paragraphs.push(sec2P1[hashVal % sec2P1.length]);
+  paragraphs.push(sec2P2[(hashVal + 1) % sec2P2.length]);
+  paragraphs.push(sec2P3[(hashVal + 2) % sec2P3.length]);
 
-  // Section 3: H2_3 + Body 1 + Body 2
+  paragraphs.push(h3_2);
+  const sec2H3P1 = [
+    `Optimizing spatial clearances around ${topicTitle} guarantees comfortable daily operation and unhindered maintenance access. Architectural guidelines recommend measuring minimum boundary distances before securing permanent fasteners.`,
+    `Proper alignment of ${topicTitle} within functional zones mitigates physical wear on adjacent fixtures. Precision layout planning prevents awkward corner overlaps and streamlines routine surface wiping.`
+  ];
+  const sec2H3P2 = [
+    `Selecting complementary color palettes and surface textures for ${topicTitle} creates a unified aesthetic theme throughout the living space. Neutral undertones offer timeless appeal while supporting future decor modifications.`,
+    `Combining textured or satin finishes on ${topicTitle} adds visual depth and tactile richness to interior spaces. Quality surface treatments maintain color vibrancy without fading under direct ambient lighting.`
+  ];
+  paragraphs.push(sec2H3P1[(hashVal + 3) % sec2H3P1.length]);
+  paragraphs.push(sec2H3P2[(hashVal + 4) % sec2H3P2.length]);
+
+  // Section 3: H2_3 + 3 Body + H3_3 + 2 Body
   paragraphs.push(h2_3);
-  const sec3P1Vars = [
+  const sec3P1 = [
     `Comparative performance benchmarks demonstrate distinct advantages when adopting updated standards for ${topicTitle}. Refined engineering minimizes operational friction, optimizes resource consumption, and extends total service life compared to legacy alternatives.`,
     `Under rigorous accelerated life testing, high-caliber ${topicTitle} retains its structural form and surface finish despite repeated thermal cycling and mechanical load. This resilience translates directly into reduced replacement frequency and lower long-term cost.`,
-    `Evaluating stress resistance metrics reveals that modern ${topicTitle} offers superior tensile strength and impact absorption. Specialized protective coatings protect underlying materials against discoloration and chemical staining.`,
-    `Engineered for demanding service conditions, ${topicTitle} exhibits outstanding wear resistance under daily commercial or residential usage. Superior material density protects against impact micro-cracks.`
+    `Evaluating stress resistance metrics reveals that modern ${topicTitle} offers superior tensile strength and impact absorption. Specialized protective coatings protect underlying materials against discoloration and chemical staining.`
   ];
-  paragraphs.push(sec3P1Vars[(hashVal + 6) % sec3P1Vars.length]);
-
-  const sec3P2Vars = [
+  const sec3P2 = [
     `Long-term field data confirms that investing in well-crafted ${topicTitle} yields significant dividends in maintenance savings and operational uptime. Robust construction safeguards internal mechanisms against degradation from environmental exposure.`,
     `Thermal stability testing confirms that ${topicTitle} maintains dimensional accuracy across wide temperature gradients. High structural stability prevents warping, joint cracking, or sealant separation over decades of continuous use.`,
-    `By meeting stringent durability benchmarks, ${topicTitle} provides dependable performance under heavy daily traffic or high-frequency usage. Quality manufacturing guarantees that structural integrity remains intact throughout the product lifecycle.`,
-    `Structural analysis highlights that high-density manufacturing lowers maintenance intervals for ${topicTitle}. Reinforced structural ribs and precision-machined joints absorb shock loads without deformities.`
+    `By meeting stringent durability benchmarks, ${topicTitle} provides dependable performance under heavy daily traffic or high-frequency usage. Quality manufacturing guarantees that structural integrity remains intact throughout the product lifecycle.`
   ];
-  paragraphs.push(sec3P2Vars[(hashVal + 7) % sec3P2Vars.length]);
+  const sec3P3 = [
+    `Industrial grade stress testing validates that ${topicTitle} resists impact chipping and surface micro-cracking under heavy point loads. Dense internal matrix structures distribute mechanical forces evenly across the entire surface.`,
+    `Environmental exposure evaluations highlight that high-tier ${topicTitle} prevents ultraviolet degradation and surface oxidation, maintaining factory-fresh luster across years of active service.`
+  ];
+  paragraphs.push(sec3P1[hashVal % sec3P1.length]);
+  paragraphs.push(sec3P2[(hashVal + 1) % sec3P2.length]);
+  paragraphs.push(sec3P3[(hashVal + 2) % sec3P3.length]);
 
-  // Section 4: H2_4 + Body 1 + Body 2
+  paragraphs.push(h3_3);
+  const sec3H3P1 = [
+    `Thermal shock resistance in ${topicTitle} prevents micro-fissure formation during rapid temperature shifts. High thermal endurance makes these units exceptionally reliable in demanding residential and commercial environments.`,
+    `Moisture impermeability ratings confirm that ${topicTitle} inhibits sub-surface water pooling, safeguarding building subfloors against rot and mold cultivation.`
+  ];
+  const sec3H3P2 = [
+    `Extended environmental exposure trials prove that protective topcoats on ${topicTitle} neutralize acidic and alkaline airborne pollutants. Surrounding materials remain protected against chemical degradation.`,
+    `Rigorous wear cycle analysis demonstrates that high-grade ${topicTitle} preserves surface friction ratings over extensive usage cycles, guaranteeing consistent slip safety.`
+  ];
+  paragraphs.push(sec3H3P1[(hashVal + 3) % sec3H3P1.length]);
+  paragraphs.push(sec3H3P2[(hashVal + 4) % sec3H3P2.length]);
+
+  // Section 4: H2_4 + 3 Body
   paragraphs.push(h2_4);
-  const sec4P1Vars = [
+  const sec4P1 = [
     `Establishing a regular cleaning schedule using mild, non-abrasive agents protects surface sealants and prevents corrosive mineral or grime buildup on ${topicTitle}. Promptly drying standing moisture preserves pristine surface luster.`,
     `To maintain the pristine condition of ${topicTitle}, avoid aggressive chemical cleaners, acidic sprays, or harsh scouring pads that strip protective coatings. Gentle microfiber care combined with neutral pH cleansers ensures the finish remains unblemished.`,
-    `Preventative maintenance protocols for ${topicTitle} focus on routine surface cleaning and periodic seal inspections. Early removal of surface contaminants prevents stubborn staining and preserves physical finish clarity.`,
-    `Simple routine cleaning practices significantly extend the attractive appearance of ${topicTitle}. Utilizing soft cotton cloths and mild soap solutions prevents micro-abrasions on clear topcoats.`
+    `Preventative maintenance protocols for ${topicTitle} focus on routine surface cleaning and periodic seal inspections. Early removal of surface contaminants prevents stubborn staining and preserves physical finish clarity.`
   ];
-  paragraphs.push(sec4P1Vars[(hashVal + 8) % sec4P1Vars.length]);
-
-  const sec4P2Vars = [
+  const sec4P2 = [
     `Conducting periodic structural inspections every six to twelve months allows early detection of minor seal wear or joint loosening on ${topicTitle}. Replacing worn gaskets or fasteners promptly protects surrounding building structures and maintains full warranty coverage.`,
     `Inspecting underlying mounting seals and hardware connections guarantees that ${topicTitle} operates at peak safety levels. Timely servicing prevents minor wear from expanding into costly structural repairs.`,
-    `Adhering to manufacturer care guidelines guarantees that ${topicTitle} retains both its functional capabilities and high resale value. Simple preventative routines ensure reliable performance for years to come.`,
-    `Regular technical maintenance for ${topicTitle} preserves system integrity and prevents unneeded hardware downtime. Documenting periodic service checks ensures full compliance with warranty terms.`
+    `Adhering to manufacturer care guidelines guarantees that ${topicTitle} retains both its functional capabilities and high resale value. Simple preventative routines ensure reliable performance for years to come.`
   ];
-  paragraphs.push(sec4P2Vars[(hashVal + 9) % sec4P2Vars.length]);
+  const sec4P3 = [
+    `In addition, applying specialized protective seal conditioners every twelve to eighteen months reinforces original factory coatings on ${topicTitle}. Routine conditioning extends surface hydrophobic qualities and simplifies stain removal.`,
+    `Documenting maintenance logs and service checks for ${topicTitle} supports warranty claims and demonstrates diligent property care during resale appraisals.`
+  ];
+  paragraphs.push(sec4P1[hashVal % sec4P1.length]);
+  paragraphs.push(sec4P2[(hashVal + 1) % sec4P2.length]);
+  paragraphs.push(sec4P3[(hashVal + 2) % sec4P3.length]);
 
-  // Conclusion Section (MUST BE BEFORE FAQs)
+  // Section 5: H2_5 + 3 Body
+  paragraphs.push(h2_5);
+  const sec5P1 = [
+    `Proper substrate preparation and rigorous adherence to manufacturer mounting specs ensure optimal installation longevity for ${topicTitle}. Ensuring structural sub-layers are flat, clean, and load-certified prevents future flex and joint displacement.`,
+    `Engaging certified trade professionals for fitting ${topicTitle} guarantees correct torque settings, seal placement, and expansion joint spacing. Professional execution protects full warranty benefits and eliminates post-installation rework.`
+  ];
+  const sec5P2 = [
+    `Evaluating total cost of ownership reveals that investing in premium ${topicTitle} delivers superior financial value over time. Reduced service frequency and minimal replacement costs offset initial purchase price differentials within the first few years.`,
+    `Furthermore, choosing standardized replacement components for ${topicTitle} guarantees easy sourcing and low labor overhead during future maintenance updates.`
+  ];
+  const sec5P3 = [
+    `Ultimately, high-grade ${topicTitle} represents a strategic investment in structural quality and spatial elegance. Certified materials provide peace of mind while elevating overall property standards.`,
+    `By combining precision engineering with timeless visual design, ${topicTitle} delivers enduring performance that satisfies demanding trade standards and elevated homeowner expectations.`
+  ];
+  paragraphs.push(sec5P1[hashVal % sec5P1.length]);
+  paragraphs.push(sec5P2[(hashVal + 1) % sec5P2.length]);
+  paragraphs.push(sec5P3[(hashVal + 2) % sec5P3.length]);
+
+  // Conclusion Section (MUST STAY BEFORE FAQs)
   paragraphs.push("## Conclusion and Summary");
-  const conclusionVars = [
+  const conclusionVars1 = [
     `In conclusion, choosing high-quality ${topicTitle} relies on evaluating structural design, material craftsmanship, and practical utility. Consistent care, non-abrasive maintenance, and adherence to technical operating limits preserve peak performance and long-term durability.`,
     `Ultimately, investing in well-engineered ${topicTitle} delivers long-term durability, structural integrity, and superior spatial aesthetics. Proper care, surface protection, and timely maintenance ensure that your setup remains pristine and fully functional over years of regular use.`,
     `To summarize, the long-term success of any ${topicTitle} installation hinges on material selection, spatial ergonomics, and preventive upkeep. Following expert recommendations safeguards your investment and elevates the overall quality of your space.`,
     `In summary, selecting premium ${topicTitle} requires a balanced evaluation of material quality, installation precision, and maintenance routine. By adhering to recommended technical guidelines and routine inspection schedules, users can maximize product lifespan while maintaining optimal performance.`
   ];
-  paragraphs.push(conclusionVars[(hashVal + 10) % conclusionVars.length]);
+  const conclusionVars2 = [
+    `By prioritizing certified manufacturing standards, verified load capacities, and regular inspection protocols, trade professionals and homeowners can feel completely confident in their material selection. Quality craftsmanship combined with diligent care ensures that ${topicTitle} remains an outstanding asset for years to come.`,
+    `Taking a comprehensive approach to selection, fitting, and upkeep guarantees that your ${topicTitle} installation maintains peak efficiency, aesthetic beauty, and structural safety throughout its extended lifecycle.`
+  ];
+  paragraphs.push(conclusionVars1[hashVal % conclusionVars1.length]);
+  paragraphs.push(conclusionVars2[(hashVal + 1) % conclusionVars2.length]);
 
   // Dynamic FAQs Matrix
   const faqs = generateDynamicFaqs(topicTitle, tokens, hashVal);
@@ -1103,9 +1167,17 @@ export function sanitizeOrMigrateArticle(art: Article): Article {
     art.excerpt = art.metaDescription;
   }
 
-  // Clean ampersands from content paragraphs
+  // Clean ampersands from content paragraphs and ensure length is 1200-1500 words
   if (Array.isArray(art.content)) {
     art.content = art.content.map(p => p.replace(/&/g, "and"));
+    const bodyWords = art.content.filter(p => !p.startsWith("#")).join(" ").split(/\s+/).filter(w => w.length > 0).length;
+    if (bodyWords < 1100) {
+      const gen = generateDynamicDomainContent(cleanKw, art.category || "life-style", hashVal);
+      art.content = gen.paragraphs;
+    }
+  } else {
+    const gen = generateDynamicDomainContent(cleanKw, art.category || "life-style", hashVal);
+    art.content = gen.paragraphs;
   }
 
   return art;
