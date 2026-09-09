@@ -23,6 +23,7 @@ export default function Header() {
   const PAGE_LINKS = [
     { name: "About Us", href: "/about" },
     { name: "Contact Us", href: "/contact" },
+    { name: "Auto-Blog Admin", href: "/admin/auto-blog" },
     { name: "Privacy Policy", href: "/privacy-policy" },
     { name: "Cookie Policy", href: "/cookie-policy" },
   ];
@@ -52,7 +53,13 @@ export default function Header() {
             </Link>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <Link
+              href="/admin/auto-blog"
+              className="text-[11px] font-bold uppercase tracking-wider text-amber-400 hover:text-amber-300 transition-all px-2.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 hidden sm:inline-block"
+            >
+              Auto-Blog Admin
+            </Link>
             <Link
               href="/search"
               className="flex items-center gap-1.5 hover:text-white transition-colors"
