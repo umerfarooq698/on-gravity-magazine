@@ -4,50 +4,89 @@ export function formatMetaDescription(raw: string): string {
 
   if (str.length === TARGET && !str.includes("&")) return str;
 
-  const suffixes = [
-    ". Read full report.",                        // 18
-    ". Read full report now.",                    // 22
-    ". Read complete report.",                    // 22
-    ". Read full review online.",                 // 24
-    ". Read complete report now.",                // 25
-    ". Read full editorial report.",              // 28
-    ". Read complete editorial report.",          // 32
-    ". Read full technical report online.",       // 36
-    ". Read complete editorial review online.",   // 40
-    ". Read full technical analysis on Gravity.", // 42
-    ". Read complete editorial analysis online.", // 42
-    ". Read full technical breakdown on Gravity.",// 44
-    ". Read complete editorial report on Gravity.",// 44
-    ". Read complete technical report on Gravity.",// 44
-    ". Read full editorial breakdown on Gravity.",// 44
-    ". Read complete editorial analysis on Gravity.",// 46
-    ". Read full technical analysis on On Gravity.",// 46
-    ". Read complete technical breakdown on Gravity.",// 48
-    ". Read full editorial analysis on Gravity news.",// 48
-    ". Read complete editorial report on Gravity mag.",// 49
-    ". Read complete editorial report on Gravity site.",// 50
-    ". Read full technical breakdown on Gravity news.",// 50
-    ". Read complete editorial analysis on Gravity site.",// 52
-    ". Read full technical breakdown on Gravity Magazine.",// 54
-    ". Read complete editorial analysis on Gravity Magazine.",// 56
-    ". Read full technical breakdown on On Gravity Magazine.",// 57
-    ". Read complete editorial coverage on On Gravity Magazine."// 58
-  ];
+  const suffixesByLen: Record<number, string> = {
+    14: ". Read report.",
+    15: ". Read summary.",
+    16: ". Read guide now.",
+    17: ". Read analysis.",
+    18: ". Read full report.",
+    19: ". Read full article.",
+    20: ". Read full overview.",
+    21: ". Read complete guide.",
+    22: ". Read complete report.",
+    23: ". Read full review now.",
+    24: ". Read full review online.",
+    25: ". Read complete report now.",
+    26: ". Read complete guide online.",
+    27: ". Read full editorial review.",
+    28: ". Read full editorial report.",
+    29: ". Read complete editorial guide.",
+    30: ". Read full technical evaluation.",
+    31: ". Read complete technical report.",
+    32: ". Read complete editorial report.",
+    33: ". Read full technical guide online.",
+    34: ". Read complete technical analysis.",
+    35: ". Read full technical review online.",
+    36: ". Read full technical report online.",
+    37: ". Read complete technical report online.",
+    38: ". Read complete editorial review online.",
+    39: ". Read complete technical guide on site.",
+    40: ". Read complete editorial review on site.",
+    41: ". Read full technical analysis on Gravity.",
+    42: ". Read complete editorial analysis online.",
+    43: ". Read full technical review on Gravity.",
+    44: ". Read complete editorial report on Gravity.",
+    45: ". Read full technical evaluation on Gravity.",
+    46: ". Read complete editorial analysis on Gravity.",
+    47: ". Read full technical breakdown on Gravity.",
+    48: ". Read complete technical breakdown on Gravity.",
+    49: ". Read complete editorial report on Gravity mag.",
+    50: ". Read complete editorial report on Gravity site.",
+    51: ". Read full technical breakdown on Gravity site.",
+    52: ". Read complete editorial analysis on Gravity site.",
+    53: ". Read full technical breakdown on Gravity mag.",
+    54: ". Read full technical breakdown on Gravity Magazine.",
+    55: ". Read complete technical breakdown on Gravity mag.",
+    56: ". Read complete editorial analysis on Gravity Magazine.",
+    57: ". Read full technical breakdown on On Gravity Magazine.",
+    58: ". Read complete editorial coverage on On Gravity Magazine.",
+    59: ". Read full technical evaluation on On Gravity Magazine.",
+    60: ". Read complete technical evaluation on On Gravity Magazine.",
+    61: ". Read full editorial analysis report on On Gravity Magazine.",
+    62: ". Read complete technical breakdown report on Gravity Mag.",
+    63: ". Read complete editorial analysis report on On Gravity Magazine.",
+    64: ". Read complete technical evaluation report on On Gravity Mag.",
+    65: ". Read complete technical analysis report on On Gravity Magazine.",
+    66: ". Read full technical analysis report on On Gravity Magazine online.",
+    67: ". Read complete technical evaluation report on On Gravity Magazine now.",
+    68: ". Read full technical analysis overview report on On Gravity Magazine.",
+    69: ". Read complete technical evaluation overview report on On Gravity Mag.",
+    70: ". Read complete technical analysis overview report on On Gravity Magazine."
+  };
 
   const words = str.split(" ");
   for (let i = words.length; i >= 1; i--) {
     const candidateBase = words.slice(0, i).join(" ").trim().replace(/[.,!?;:]$/, "");
     const needed = TARGET - candidateBase.length;
-    const foundSuffix = suffixes.find((s) => s.length === needed);
-    if (foundSuffix) {
-      return candidateBase + foundSuffix;
+    if (suffixesByLen[needed]) {
+      const res = candidateBase + suffixesByLen[needed];
+      if (res.length === TARGET && !res.includes("&")) return res;
     }
   }
 
-  let sub = words.slice(0, 15).join(" ").replace(/[.,!?;:]$/, "");
-  const fill = ". Read full editorial analysis on On Gravity Magazine.";
-  let combined = (sub.slice(0, TARGET - fill.length) + fill);
-  if (combined.length > TARGET) combined = combined.slice(0, TARGET);
-  while (combined.length < TARGET) combined += ".";
-  return combined;
+  let base = str.slice(0, 95).trim().replace(/[.,!?;:]$/, "");
+  const needed = TARGET - base.length;
+  if (suffixesByLen[needed]) {
+    const res = base + suffixesByLen[needed];
+    if (res.length === TARGET && !res.includes("&")) return res;
+  }
+
+  const filler = ". Read complete editorial analysis on On Gravity Magazine.";
+  let candidate = base + filler;
+  if (candidate.length > TARGET) {
+    candidate = candidate.slice(0, TARGET - 1) + ".";
+  } else if (candidate.length < TARGET) {
+    candidate = candidate + ".".repeat(TARGET - candidate.length);
+  }
+  return candidate.replace(/&/g, "and");
 }
