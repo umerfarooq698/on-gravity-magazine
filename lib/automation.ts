@@ -707,4 +707,19 @@ export async function getArticleBySlugAsync(slug: string): Promise<Article | und
 
 export function clearPublishedStore() {
   dynamicArticlesStore = [];
+  if (typeof window === "undefined") {
+    try {
+      const req = eval("require");
+      const fsMod = req("fs");
+      if (fsMod) {
+        for (const cacheFile of CACHE_FILES) {
+          if (fsMod.existsSync(cacheFile)) {
+            fsMod.unlinkSync(cacheFile);
+          }
+        }
+      }
+    } catch (e) {
+      // Ignore
+    }
+  }
 }
