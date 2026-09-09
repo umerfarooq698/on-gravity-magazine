@@ -29,7 +29,7 @@ export const ARTICLES: Article[] = [
   {
     id: "art-elon-musk",
     slug: "elon-musk",
-    title: "Elon Musk: First-Principles Engineering, Vertical Integration, and Strategic Capital Allocation",
+    title: "Elon Musk: First-Principles Engineering & Strategy 2026",
     excerpt: "An investigative analysis into the operational philosophy, software architecture, and high-velocity iteration cycles driving ventures under Elon Musk.",
     metaTitle: "Elon Musk: First-Principles Engineering & Strategy | On Gravity Magazine",
     metaDescription: "In-depth executive feature exploring Elon Musk's technology leadership, manufacturing throughput, and vertical integration strategy.",
@@ -82,7 +82,7 @@ export const ARTICLES: Article[] = [
   {
     id: "art-bathtub-drain",
     slug: "bathtub-drain",
-    title: "Bathtub Drain Assemblies: Flow Rates, Waterproof Seals, and Mechanical Clog Prevention",
+    title: "Bathtub Drain: Flow Rates, Seals & Clog Removal 2026",
     excerpt: "A comprehensive practical guide to residential bathtub drain installation, P-trap clearance, flange seals, and maintenance standards.",
     metaTitle: "Bathtub Drain Maintenance & Installation Guide | On Gravity Magazine",
     metaDescription: "Expert guide on bathtub drain assemblies, P-trap seals, unclogging techniques, and preventing subfloor water damage.",
@@ -135,7 +135,7 @@ export const ARTICLES: Article[] = [
   {
     id: "art-bathroom-tub",
     slug: "bathroom-tub",
-    title: "Bathroom Tub Ergonomics: Acrylic vs Cast Iron Basins, Hydrotherapy, and Waterproof Care",
+    title: "Bathroom Tub Ergonomics: Acrylic vs Cast Iron Guide 2026",
     excerpt: "An in-depth review of freestanding and alcove bathroom tubs, material thermal retention, subfloor structural loads, and luxury design.",
     metaTitle: "Bathroom Tub Materials & Ergonomic Installation | On Gravity Magazine",
     metaDescription: "Comprehensive evaluation of modern bathroom tubs, acrylic vs cast iron, subfloor reinforcement, and hydrotherapy jets.",
@@ -188,7 +188,7 @@ export const ARTICLES: Article[] = [
   {
     id: "art-samsung-tv",
     slug: "samsung-tv",
-    title: "Samsung TV Panel Benchmarks: Quantum Dot Peak Brightness, 120Hz VRR Gaming, and Tizen OS",
+    title: "Samsung TV: Panel Brightness, 120Hz VRR & Specs 2026",
     excerpt: "An expert hardware evaluation of Samsung TV display technology, local dimming zones, Neo QLED luminance, and smart home OS performance.",
     metaTitle: "Samsung TV Display & Gaming Benchmarks 2026 | On Gravity Magazine",
     metaDescription: "In-depth hardware review of Samsung TV panels, Quantum Dot luminance, 120Hz VRR latency, and Tizen OS features.",
@@ -241,7 +241,7 @@ export const ARTICLES: Article[] = [
   {
     id: "art-1",
     slug: "ai-generative-revolution-2026",
-    title: "The Next Frontier of AI: Beyond Human Creativity and Autonomous Systems",
+    title: "The Next Frontier of AI: Autonomous Agents & Future 2026",
     excerpt: "How generative intelligence and multimodal agents are reshaping software engineering, creative arts, and global industry workflows.",
     metaTitle: "The Next Frontier of AI: Autonomous Agents & Future | On Gravity Magazine",
     metaDescription: "In-depth analysis of how multimodal AI agents and generative intelligence are transforming global industries in 2026.",
@@ -269,7 +269,7 @@ export const ARTICLES: Article[] = [
   {
     id: "art-2",
     slug: "hollywood-met-gala-red-carpet-2026",
-    title: "Inside the Gala: Cinema Icons and High-Fashion Legends Steal the Night",
+    title: "Inside the Gala: Cinema Icons & Fashion Trends 2026",
     excerpt: "A front-row look at the most breathtaking red carpet couture, unexpected reunions, and viral celebrity moments of the season.",
     metaTitle: "Inside the Gala: 2026 Red Carpet Fashion & Highlights | On Gravity Magazine",
     metaDescription: "Front row coverage of the most stunning red carpet outfits, cinema icons, and viral celebrity highlights at the 2026 Gala.",
@@ -297,7 +297,7 @@ export const ARTICLES: Article[] = [
   {
     id: "art-3",
     slug: "mindful-living-work-life-harmony",
-    title: "The Art of Slow Living: Reclaiming Calm in a Fast-Paced Digital Era",
+    title: "The Art of Slow Living: Reclaiming Calm & Balance 2026",
     excerpt: "Simple habits, ergonomic spaces, and intentional routines that help restore focus, balance, and deep personal fulfillment.",
     metaTitle: "The Art of Slow Living & Mindful Wellness | On Gravity Magazine",
     metaDescription: "Discover how slow living habits and intentional boundaries restore mental focus, peace, and work-life balance.",
