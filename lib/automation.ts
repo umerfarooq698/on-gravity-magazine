@@ -15,7 +15,7 @@ function loadCacheFromDisk(): Article[] {
   try {
     const fs = require("fs");
     const path = require("path");
-    const cacheFile = path.join("/tmp", "on_gravity_articles_cache.json");
+    const cacheFile = path.join("/tmp", "on_gravity_articles_cache_v5.json");
     if (fs.existsSync(cacheFile)) {
       const data = fs.readFileSync(cacheFile, "utf-8");
       const parsed = JSON.parse(data);
@@ -32,7 +32,7 @@ function saveCacheToDisk(articles: Article[]) {
   try {
     const fs = require("fs");
     const path = require("path");
-    const cacheFile = path.join("/tmp", "on_gravity_articles_cache.json");
+    const cacheFile = path.join("/tmp", "on_gravity_articles_cache_v5.json");
     fs.writeFileSync(cacheFile, JSON.stringify(articles.slice(0, 50)), "utf-8");
   } catch (e) {
     // Ignore
