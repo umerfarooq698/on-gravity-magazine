@@ -258,94 +258,124 @@ const DOMAIN_SUFFIXES: Record<string, string[]> = {
   tiles: [
     ": Porcelain Surface Density and Installation",
     ": Grout Line Expansion and Slip Resistance",
-    ": Water Absorption and Surface Finish Care"
+    ": Water Absorption and Surface Finish Care",
+    ": Ceramic Material Density and Sealing Care",
+    ": Slip Resistance Ratings and Installation",
+    ": Surface Finish Care and Substrate Testing",
+    ": Substrate Moisture Protection and Care",
+    ": Wall and Floor Surface Quality Standards"
   ],
   gaming: [
     ": Sensor Precision, Latency and Weight",
     ": Optical Tracking, Polling and Ergonomics",
-    ": Ergonomic Grip and Low Latency Control"
+    ": Ergonomic Grip and Low Latency Control",
+    ": Sub-Millisecond Responsiveness and Skates",
+    ": Optical Switches and Debounce Delay Care",
+    ": Wireless Signal Range and Sensor Tuning"
   ],
   cold_tap: [
     ": Installation, Aerator Flow and Leak Care",
     ": Line Pressure, Aerators and Flow Control",
-    ": Aerator Screen Cleaning and Valve Safety"
+    ": Aerator Screen Cleaning and Valve Safety",
+    ": Ceramic Disc Cartridges and Pressure Care",
+    ": Hose Connection Sealing and Frost Care"
   ],
   hot_tap: [
     ": Instant Water Delivery and Heat Safety",
     ": Thermostatic Valve and Pressure Balance",
-    ": Instant Water Delivery and Thermal Safety"
+    ": Instant Water Delivery and Thermal Safety",
+    ": Boiler Integration and Anti-Scald Control"
   ],
   black_tap: [
     ": PVD Surface Coating Finish and Stain Care",
     ": Hard Water Mineral Protection and Finish",
-    ": Non-Abrasive Cleaning and Basin Finish"
+    ": Non-Abrasive Cleaning and Basin Finish",
+    ": Microfiber Upkeep and Electroplated Finish"
   ],
   plumbing: [
     ": Ceramic Disc Valves and Basin Flow Rates",
     ": Installation Seals, Pressure and Control",
-    ": Spout Reach and Vessel Clearance"
+    ": Spout Reach and Vessel Clearance",
+    ": Strainer Seals and P-Trap Flow Velocity"
   ],
   smarthome: [
     ": Matter Protocol and Local Automation",
     ": Mesh Network Range and Device Security",
-    ": Zero-Cloud Latency and Sensor Hubs"
+    ": Zero-Cloud Latency and Sensor Hubs",
+    ": Thread Antenna Range and Rule Execution"
   ],
   crypto: [
     ": Liquidity Dynamics and Capital Shifts",
-    ": Asset Allocation and Market Metrics"
+    ": Asset Allocation and Market Metrics",
+    ": Smart Contract Audits and Protocol Yield"
   ],
   food: [
     ": Michelin Culinary Craft and Farm Prep",
-    ": Artisanal Prep and Recipe Insights"
+    ": Artisanal Prep and Recipe Insights",
+    ": Gourmet Flavor Sourcing and Plating Specs"
   ],
   fashion: [
     ": Red Carpet Couture and Gala Fashion",
-    ": Runway Style and Designer Highlights"
+    ": Runway Style and Designer Highlights",
+    ": Atelier Craftsmanship and Archival Care"
   ],
   general: [
     ": Architectural Specs and Quality Review",
-    ": Technical Features and System Efficiency"
+    ": Technical Features and System Efficiency",
+    ": Structural Engineering and Quality Review",
+    ": Performance Benchmarks and Feature Review",
+    ": Modern Design Features and Quality Review"
   ]
 };
 
-const PHRASES_BY_LEN: Record<number, string> = {
-  15: ": System Review",
-  16: ": Tech Evaluation",
-  17: ": System Analytics",
-  18: ": Performance Review",
-  19: ": Technical Analysis",
-  20: ": Structural Overview",
-  21: ": Performance and Specs",
-  22: ": Architectural Review",
-  23: ": Engineering Evaluation",
-  24: ": System Features Review",
-  25: ": Features and Performance",
-  26: ": System Quality and Design",
-  27: ": Installation and Valve Care",
-  28: ": System Performance and Build",
-  29: ": Complete Technical Performance",
-  30: ": System Performance and Quality",
-  31: ": System Standards and Features",
-  32: ": Engineering Standards and Specs",
-  33: ": Technical Efficiency and Quality",
-  34: ": Engineering Standards and Quality",
-  35: ": System Engineering and Performance",
-  36: ": Architectural Performance Standards",
-  37: ": System Engineering and Craftsmanship",
-  38: ": Real-World Durability and Performance",
-  39: ": Complete Performance and System Review",
-  40: ": Architectural and Engineering Review",
-  41: ": Technical Benchmarks and Feature Review",
-  42: ": Technical Performance and System Craft",
-  43: ": Real-World Engineering and System Review",
-  44: ": Architectural Feature and System Standards",
-  45: ": Complete Technical and Architectural Setup"
+const PHRASES_BY_LEN: Record<number, string[]> = {
+  15: [": System Review", ": Technical Specs", ": Performance Check", ": Quality Analysis", ": Features Review"],
+  16: [": Tech Evaluation", ": System Analytics", ": Design Evaluation", ": Structural Specs", ": Benchmark Review"],
+  17: [": System Analytics", ": Technical Features", ": Build Quality Check", ": Performance Review", ": Engineering Check"],
+  18: [": Performance Review", ": Architectural Build", ": System Specs Review", ": Technical Benchmark", ": Quality Analysis Check"],
+  19: [": Technical Analysis", ": Engineering Overview", ": Performance Analytics", ": Structural Evaluation", ": System Features Check"],
+  20: [": Structural Overview", ": Material Quality Check", ": Engineering Benchmarks", ": Technical Specs Review", ": Performance Analytics"],
+  21: [": Performance and Specs", ": Architectural Overview", ": Technical System Review", ": Structural Specs Check", ": Quality and Efficiency"],
+  22: [": Architectural Review", ": Engineering Standards", ": Material Quality Review", ": System Features Overview", ": Technical Performance Check"],
+  23: [": Engineering Evaluation", ": Technical Specifications", ": Performance Benchmarks", ": Material Density Review", ": Architectural Standards"],
+  24: [": System Features Review", ": Material Engineering Check", ": Performance and Quality", ": Technical System Analysis", ": Structural Specifications"],
+  25: [": Features and Performance", ": Engineering Specifications", ": Material Quality and Specs", ": Architectural Build Review", ": Technical System Overview"],
+  26: [": System Quality and Design", ": Technical Feature Analysis", ": Structural Engineering Check", ": Performance Benchmarks Review", ": Material Selection Standards"],
+  27: [": Installation and Valve Care", ": Technical Efficiency Review", ": Structural Performance Specs", ": Material Quality and Design", ": Engineering Specs Overview"],
+  28: [": System Performance and Build", ": Technical Feature Evaluation", ": Material Standards and Review", ": Structural Quality Analytics", ": Architectural Design Review"],
+  29: [": Complete Technical Performance", ": Engineering Standards Overview", ": Material Quality and Performance", ": Structural Features Evaluation", ": Architectural Specs Breakdown"],
+  30: [": System Performance and Quality", ": Architectural Features and Specs", ": Technical Engineering Overview", ": Material Standards and Quality", ": Durability Benchmarks and Build"],
+  31: [": System Standards and Features", ": Architectural Quality and Specs", ": Technical Engineering Standards", ": Structural Integrity and Design", ": Material Performance Benchmarks"],
+  32: [": Engineering Standards and Specs", ": Technical Efficiency and Design", ": Material Quality and Specs Review", ": Structural Integrity and Review", ": Architectural Performance Check"],
+  33: [": Technical Efficiency and Quality", ": Structural Integrity and Build", ": Material Density and Finish Care", ": Architectural Standards and Specs", ": Performance Benchmarks and Quality"],
+  34: [": Engineering Standards and Quality", ": Material Performance and Build Care", ": Surface Resilience and Finish Care", ": Structural Quality and Specs Review", ": Precision Engineering and System"],
+  35: [": System Engineering and Performance", ": Material Craftsmanship and Quality", ": Surface Durability and Specs Review", ": Technical Performance and Review", ": Structural Integrity and Finish Care"],
+  36: [": Architectural Performance Standards", ": Technical Engineering and Features", ": Structural Integrity and Specs Check", ": Material Durability and Build Quality", ": Engineering Quality and System Review"],
+  37: [": System Engineering and Craftsmanship", ": Architectural Specs and Build Quality", ": Technical Performance and Quality Check", ": Structural Engineering and Specs Review", ": Material Resilience and Performance Check"],
+  38: [": Real-World Durability and Performance", ": Architectural Feature and Quality Review", ": Technical Specifications and Build Quality", ": Structural Integrity and System Features", ": Engineering Standards and Build Performance"],
+  39: [": Complete Performance and System Review", ": Architectural Engineering and Quality Check", ": Technical Feature and Performance Review", ": Structural Integrity and Material Quality", ": Engineering Standards and System Overview"],
+  40: [": Architectural and Engineering Review", ": Technical Specifications and Feature Review", ": Structural Performance and Build Quality", ": Material Engineering and Quality Overview", ": Real-World Durability and System Review"],
+  41: [": Technical Benchmarks and Feature Review", ": Architectural Integrity and Quality Review", ": Structural Engineering and Specs Overview", ": Material Quality and System Performance Check", ": Complete Engineering and System Analytics"],
+  42: [": Technical Performance and System Craft", ": Architectural Features and Quality Specs", ": Structural Integrity and Feature Analytics", ": Real-World Engineering and Performance Check", ": Complete Material Quality and System Review"],
+  43: [": Real-World Engineering and System Review", ": Architectural Standards and Quality Specs", ": Technical Specifications and System Overview", ": Structural Performance and Feature Analytics", ": Complete Engineering Standards and Specs"],
+  44: [": Architectural Feature and System Standards", ": Technical Specifications and Performance Check", ": Structural Engineering and Material Analytics", ": Real-World Durability and System Standards", ": Complete Material Quality and System Review"],
+  45: [": Complete Technical and Architectural Setup", ": Architectural Performance and Quality Specs", ": Technical Specifications and System Analytics", ": Structural Integrity and Performance Review", ": Real-World Engineering and Quality Standards"]
 };
+
+const PREFIX_OPTIONS = [
+  "Modern ",
+  "Premium ",
+  "Advanced ",
+  "Essential ",
+  "Innovative ",
+  "High-Grade ",
+  "Precision "
+];
 
 export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string {
   const clean = rawKeyword.replace(/&/g, "and").replace(/\s+/g, " ").trim();
   let kwWords = clean.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-  
+
   if (kwWords.length >= 55 && kwWords.length <= 60 && !kwWords.includes("&")) {
     return kwWords;
   }
@@ -361,24 +391,52 @@ export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string 
   const domainKey = getDomainKey(clean);
   const domainSuffixes = DOMAIN_SUFFIXES[domainKey] || DOMAIN_SUFFIXES.general;
 
+  const candidatePool: string[] = [];
+
+  // 1. Domain Suffix candidates
   for (let i = 0; i < domainSuffixes.length; i++) {
-    const candidate = `${kwWords}${domainSuffixes[(hashVal + i) % domainSuffixes.length]}`;
-    if (candidate.length >= 55 && candidate.length <= 60) {
-      return candidate.replace(/&/g, "and");
+    const s = domainSuffixes[(hashVal + i) % domainSuffixes.length];
+    candidatePool.push(`${kwWords}${s}`);
+  }
+
+  // 2. Prefix + kwWords + Domain Suffix candidates
+  for (let pIdx = 0; pIdx < PREFIX_OPTIONS.length; pIdx++) {
+    const prefix = PREFIX_OPTIONS[(hashVal + pIdx) % PREFIX_OPTIONS.length];
+    for (let sIdx = 0; sIdx < domainSuffixes.length; sIdx++) {
+      const s = domainSuffixes[(hashVal + sIdx) % domainSuffixes.length];
+      candidatePool.push(`${prefix}${kwWords}${s}`);
     }
   }
 
+  // 3. Length-matched phrases candidates
   const needed = 57 - kwWords.length;
   for (let offset = 0; offset <= 4; offset++) {
     const tryLengths = [needed + offset, needed - offset];
     for (const len of tryLengths) {
       if (PHRASES_BY_LEN[len]) {
-        const candidate = kwWords + PHRASES_BY_LEN[len];
-        if (candidate.length >= 55 && candidate.length <= 60) {
-          return candidate.replace(/&/g, "and");
+        const phrases = PHRASES_BY_LEN[len];
+        for (let p = 0; p < phrases.length; p++) {
+          const phrase = phrases[(hashVal + p) % phrases.length];
+          candidatePool.push(`${kwWords}${phrase}`);
+
+          for (let prefIdx = 0; prefIdx < PREFIX_OPTIONS.length; prefIdx++) {
+            const prefix = PREFIX_OPTIONS[(hashVal + prefIdx) % PREFIX_OPTIONS.length];
+            const neededWithPrefix = 57 - (prefix.length + kwWords.length);
+            if (PHRASES_BY_LEN[neededWithPrefix]) {
+              const prefixPhrases = PHRASES_BY_LEN[neededWithPrefix];
+              const pPhrase = prefixPhrases[(hashVal + p) % prefixPhrases.length];
+              candidatePool.push(`${prefix}${kwWords}${pPhrase}`);
+            }
+          }
         }
       }
     }
+  }
+
+  const validCandidates = candidatePool.filter(c => c.length >= 55 && c.length <= 60 && !c.includes("&"));
+
+  if (validCandidates.length > 0) {
+    return validCandidates[hashVal % validCandidates.length];
   }
 
   const fallback = (kwWords + ": Technical Performance and System Craftsmanship").slice(0, 57);
