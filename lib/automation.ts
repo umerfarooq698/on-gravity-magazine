@@ -460,20 +460,72 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
   const topicTitle = kwFmt.topic.replace(/&/g, "and");
   const kwTitle = kwFmt.title.replace(/&/g, "and");
 
-  // Meta Excerpt Synthesis
-  let rawExcerpt = `An in-depth editorial evaluation of ${topicTitle}, exploring technical benchmarks, real-world utility, and market trends.`;
-  if (tokens.isBathroom || tokens.isTiles) {
-    rawExcerpt = `Comprehensive technical evaluation of ${topicTitle}, detailing porcelain density, slip resistance ratings, and installation standards.`;
-  } else if (tokens.isCold && tokens.isTap) {
-    rawExcerpt = `Operating under constant line pressure, bathroom cold water taps demand frost-resistant supply lines, anti-whistle valves, and low-flow aerators.`;
+  // Dynamic Meta Excerpt Synthesis (Pools per domain token)
+  let rawExcerptPool: string[] = [
+    `An in-depth editorial evaluation of ${topicTitle}, exploring technical benchmarks, real-world utility, and market trends.`,
+    `Analyzing current design innovations and performance standards of ${topicTitle} across residential and commercial settings.`,
+    `A detailed editorial review of ${topicTitle}, covering material quality, structural specifications, and long-term durability metrics.`,
+    `Examining the practical benefits, technical features, and routine maintenance protocols required for high-grade ${topicTitle}.`,
+    `Exploring architectural integration, ergonomics, and material specifications for ${topicTitle} in modern interior spaces.`,
+    `Comprehensive technical guide to ${topicTitle}, detailing manufacturing quality, installation standards, and lifetime resilience.`
+  ];
+
+  if (tokens.isCold && tokens.isTap) {
+    rawExcerptPool = [
+      `Operating under constant line pressure, bathroom cold water taps demand frost-resistant supply lines, anti-whistle valves, and low-flow aerators.`,
+      `Evaluating cold water tap assemblies for bathrooms, focusing on brass body integrity, ceramic disc valves, and pressure control.`,
+      `Technical specifications for bathroom cold taps, covering aerator flow rates, thread connections, and leak prevention protocols.`,
+      `A complete operational overview of bathroom cold taps, analyzing water conservation features, valve lifespan, and installation care.`,
+      `Exploring durability and flow velocity in bathroom cold taps, detailing non-corrosive cartridge design and structural sealing.`
+    ];
+  } else if (tokens.isHot && tokens.isTap) {
+    rawExcerptPool = [
+      `Instant water delivery and heat safety dictate bathroom hot tap performance, requiring thermostatic controls and anti-scald valves.`,
+      `Technical analysis of bathroom hot taps, covering boiler integration, thermal insulation, and precise temperature regulation.`,
+      `Evaluating safety features and heat dissipation in hot water taps, focusing on ceramic cartridges and scalding protection.`,
+      `A comprehensive review of modern hot taps, detailing pressure balance valves, flow aerators, and energy-efficient water delivery.`,
+      `Examining hot water tap installations, highlighting supply line heat ratings, internal valve seals, and spout insulation.`
+    ];
   } else if (tokens.isBlack && tokens.isTap) {
-    rawExcerpt = `Combining bold architectural contrast with electroplated PVD surface resilience, matte black taps require non-abrasive care and microfiber maintenance.`;
+    rawExcerptPool = [
+      `Combining bold architectural contrast with electroplated PVD surface resilience, matte black taps require non-abrasive care and microfiber maintenance.`,
+      `Technical guide to matte black bathroom taps, analyzing PVD coating adhesion, hard water mineral resistance, and finish upkeep.`,
+      `Exploring design elegance and finish durability in matte black taps, detailing scratch-resistant layers and gentle cleaning care.`,
+      `A detailed review of matte black tapware, covering electroplating standards, spout clearance, and long-term surface protection.`,
+      `Assessing architectural matte black taps, focusing on corrosion resistance, neutral cleaning protocols, and valve performance.`
+    ];
+  } else if (tokens.isBathroom || tokens.isTiles) {
+    rawExcerptPool = [
+      `Comprehensive technical evaluation of ${topicTitle}, detailing porcelain density, slip resistance ratings, and installation standards.`,
+      `Exploring material selection and surface durability for ${topicTitle}, covering installation guidelines, slip resistance, and maintenance.`,
+      `An architectural review of ${topicTitle}, analyzing structural load capacity, substrate preparation, and moisture protection.`,
+      `Detailed technical specification of ${topicTitle}, examining wear resilience, ceramic material density, and surface care standards.`,
+      `Evaluating ${topicTitle} across modern interior design standards, highlighting grout seal integrity, tile density, and cleaning routines.`,
+      `A comprehensive guide to ${topicTitle}, detailing slip ratings, thermal resistance, surface finishing, and long-term care protocols.`,
+      `Analyzing spatial harmony and technical features of ${topicTitle}, focusing on substrate integrity, moisture control, and material density.`,
+      `In-depth editorial report on ${topicTitle}, covering material selection benchmarks, installation specs, and routine maintenance care.`
+    ];
   } else if (tokens.isGaming) {
-    rawExcerpt = `High-performance gaming hardware demands sub-millisecond responsiveness, ergonomic shell design, optical tracking precision, and switch durability.`;
+    rawExcerptPool = [
+      `High-performance gaming hardware demands sub-millisecond responsiveness, ergonomic shell design, optical tracking precision, and switch durability.`,
+      `Technical analysis of gaming peripherals, examining sensor polling rates, optical switch debounce delay, and ergonomic weight balance.`,
+      `Evaluating precision tracking and latency in modern gaming gear, detailing PTFE skate friction, DPI customization, and switch lifespan.`,
+      `A comprehensive review of gaming hardware specifications, covering optical sensor accuracy, ergonomic grip, and signal stability.`,
+      `Exploring competitive gaming peripherals, focusing on low-latency wireless transmission, switch actuation force, and shell integrity.`
+    ];
   } else if (tokens.isSmartHome) {
-    rawExcerpt = `Exploring smart home automation hubs with multi-protocol Matter and Thread antenna arrays, local rule execution engines, and zero-cloud security.`;
+    rawExcerptPool = [
+      `Exploring smart home automation hubs with multi-protocol Matter and Thread antenna arrays, local rule execution engines, and zero-cloud security.`,
+      `Technical breakdown of smart home automation hubs, covering mesh network range, local automation speed, and encryption protocols.`,
+      `Evaluating smart home control centers, analyzing device interoperability, Thread radio coverage, and local event processing.`,
+      `A complete guide to smart home automation hubs, detailing zero-cloud latency, multi-protocol bridges, and system security specs.`,
+      `Examining local automation engines in smart hubs, focusing on Matter protocol support, sensor pairing speed, and network stability.`
+    ];
   }
-  const excerpt = formatMetaDescription(rawExcerpt);
+
+  const excerptHashSeed = Math.abs(hashVal * 31 + 7);
+  const rawExcerpt = rawExcerptPool[excerptHashSeed % rawExcerptPool.length];
+  const excerpt = formatMetaDescription(rawExcerpt, Math.abs(hashVal * 97 + 13));
 
   // Dynamic Headings Selection
   const h2_1_options = [
@@ -681,11 +733,9 @@ export async function generateArticleObjectAsync(
     if (existingMatches.length > 0) {
       const nextNum = existingMatches.length + 1;
       slug = `${baseSlug}-${nextNum}`;
-      hashSeed = `${cleanKw}-${nextNum}-${Date.now()}`;
     }
-  } else {
-    hashSeed = `${cleanKw}-${slugOverride}-${Date.now()}`;
   }
+  hashSeed = `${cleanKw}-${slug}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
 
   const kwFmt = formatNaturalKeyword(cleanKw);
   const category = categoryOverride || inferCategoryFromKeyword(cleanKw);
@@ -701,7 +751,37 @@ export async function generateArticleObjectAsync(
   const author = AUTHORS[hashVal % AUTHORS.length];
 
   const image = await fetchUniqueUnsplashImage(cleanKw, category);
-  const { title, excerpt, paragraphs, faqs } = generateDynamicDomainContent(cleanKw, category, hashVal);
+  const allExisting = getAllArticlesCombined();
+  const existingTitles = new Set(allExisting.map((a) => a.title));
+  const existingMetas = new Set(allExisting.map((a) => a.metaDescription));
+
+  let attempt = 0;
+  let title = "";
+  let excerpt = "";
+  let paragraphs: string[] = [];
+  let faqs: { question: string; answer: string }[] = [];
+  let currentHash = hashVal;
+
+  while (attempt < 50) {
+    const gen = generateDynamicDomainContent(cleanKw, category, currentHash);
+    if (!existingTitles.has(gen.title) && !existingMetas.has(gen.excerpt)) {
+      title = gen.title;
+      excerpt = gen.excerpt;
+      paragraphs = gen.paragraphs;
+      faqs = gen.faqs;
+      break;
+    }
+    attempt++;
+    currentHash = getDeterministicHash(`${hashSeed}-attempt-${attempt}-${Math.random()}`);
+  }
+
+  if (!title) {
+    const fallbackGen = generateDynamicDomainContent(cleanKw, category, hashVal + Date.now());
+    title = fallbackGen.title;
+    excerpt = fallbackGen.excerpt;
+    paragraphs = fallbackGen.paragraphs;
+    faqs = fallbackGen.faqs;
+  }
 
   const resultArticle: Article = {
     id: `auto-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -797,7 +877,7 @@ function buildArticleFromQueueItem(item: QueueItem): Article {
   const kwFmt = formatNaturalKeyword(cleanKw);
   const category = item.category || inferCategoryFromKeyword(cleanKw);
   const slug = item.generatedArticleSlug || cleanKw.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-  const hashVal = getDeterministicHash(cleanKw);
+  const hashVal = getDeterministicHash(`${cleanKw}-${slug}-${item.id}`);
 
   const AUTHORS = [
     { name: "Marcus Vance", role: "Senior Technology Editor", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" },
