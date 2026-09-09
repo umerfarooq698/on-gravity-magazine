@@ -602,19 +602,31 @@ Return ONLY a valid JSON object matching this schema:
   "tags": ["Tag1", "Tag2", "Tag3", "Tag4"]
 }`;
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-      }),
-    });
+    const modelsToTry = ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-2.0-flash"];
+    let rawText = "";
 
-    if (!response.ok) return null;
+    for (const modelName of modelsToTry) {
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+          }),
+        });
 
-    const data = await response.json();
-    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        if (response.ok) {
+          const data = await response.json();
+          rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+          if (rawText) break;
+        }
+      } catch (err) {
+        // Try next model
+      }
+    }
+
+    if (!rawText) return null;
 
     const cleanedText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
     const parsed = JSON.parse(cleanedText);
