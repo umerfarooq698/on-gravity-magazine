@@ -10,7 +10,7 @@ export interface QueueItem {
   generatedArticleSlug?: string;
 }
 
-const CACHE_VERSION_FILE = "on_gravity_articles_cache_v9.json";
+const CACHE_VERSION_FILE = "on_gravity_articles_cache_v10.json";
 
 function loadCacheFromDisk(): Article[] {
   if (typeof window !== "undefined") return [];
@@ -197,7 +197,7 @@ function inferCategoryFromKeyword(keyword: string): string {
 }
 
 // ----------------------------------------------------
-// STRICT 55-60 CHAR SEO TITLE GENERATOR & DOMAIN ENGINE
+// STRICT 55-60 CHAR SEO TITLE GENERATOR
 // ----------------------------------------------------
 
 function getDomainKey(kw: string): string {
@@ -339,123 +339,97 @@ export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string 
   return (kwWords + ": Complete Technical Feature & Quality Guide 2026").slice(0, 57);
 }
 
-function cleanKeywordForHeading(kw: string): string {
-  let lower = kw.toLowerCase().trim();
-  if (lower.startsWith("best ")) lower = lower.replace(/^best\s+/, "");
-  const words = lower.split(/\s+/);
-  const last = words[words.length - 1];
-  if (last === "tap") words[words.length - 1] = "Taps";
-  else if (last === "mouse") words[words.length - 1] = "Mice";
-  else if (!last.endsWith("s")) words[words.length - 1] = last.charAt(0).toUpperCase() + last.slice(1) + "s";
-  else words[words.length - 1] = last.charAt(0).toUpperCase() + last.slice(1);
+// ----------------------------------------------------
+// SHORT HEADINGS & HIGHLY INFORMATIVE PARAGRAPH ENGINE
+// ----------------------------------------------------
 
-  return words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-}
-
-const DOMAIN_SUB_ANGLES: Record<string, string[]> = {
+const SHORT_H2_MAP: Record<string, string[]> = {
   gaming: [
-    "Optical Sensor DPI Resolution and 1:1 Motion Tracking",
-    "2.4GHz Ultra-Low Latency Wireless Response",
-    "Ergonomic Weight Distribution for Palm vs Claw Grips",
-    "Infrared Optical Switch Actuation and Debounce Elimination",
-    "Virgin-Grade PTFE Skate Glide Dynamics",
-    "On-Board Memory Profile Mapping and Polling Rates"
+    "## Optical Sensor Precision & 1:1 Tracking",
+    "## 2.4GHz Wireless Latency & Polling Rates",
+    "## Ergonomic Weight & Grip Dynamics",
+    "## Optical Switches & Debounce Care",
+    "## Virgin-Grade PTFE Skate Maintenance"
   ],
   cold_tap: [
-    "Water Line Pressure Balancing and Aerator GPM Rates",
-    "Anti-Whistle Valve Cartridge Engineering",
-    "Ceramic Disc Friction and Drip-Free Isolation",
-    "Under-Sink Isolation Valve Hose Connections",
-    "Frost-Resistant Water Line Supply Dynamics"
+    "## Water Line Pressure & Aerator Flow",
+    "## Ceramic Disc Cartridges & Anti-Whistle",
+    "## Under-Sink Hose & Valve Connections",
+    "## Winter Frost Protection & Pipe Care",
+    "## Aerator Scale Cleaning & Vinegar Care"
   ],
   hot_tap: [
-    "Thermostatic Scald Protection & Anti-Scald Cartridges",
-    "Instant Water Boiler Tank Integration & Pressure",
-    "Thermal Expansion Relief Valve Engineering",
-    "Under-Sink Hot Water Line Connections & Braided Hoses"
+    "## Thermostatic Anti-Scald Safety Valves",
+    "## Boiler Tank Pressure & Instant Delivery",
+    "## Thermal Expansion & Relief Engineering",
+    "## Braided Stainless Hose Connections"
   ],
   black_tap: [
-    "Electroplated PVD Finish Resilience Against Hard Water",
-    "Microfiber Finish Care & Non-Abrasive Cleaning Rules",
-    "Brass Body Anti-Corrosion & Atomized Electroplating",
-    "Countertop Basin Spout Clearance & Mounting Hardware"
+    "## PVD Matte Finish & Hard Water Protection",
+    "## Non-Abrasive Cleaning & Microfiber Care",
+    "## Solid Brass Anti-Corrosion Engineering",
+    "## Basin Spout Height & Vessel Clearance"
   ],
   plumbing: [
-    "Water Line Pressure Balancing and Aerator GPM Rates",
-    "Ceramic Disc Cartridge Friction and Drip-Free Sealing",
-    "Thermostatic Temperature Regulation & Safety Valves",
-    "Under-Sink Isolation Valve Assemblies & Hose Clearance"
+    "## Water Line Pressure & Aerator Flow Rates",
+    "## Ceramic Disc Valve Sealing & Cartridges",
+    "## Under-Sink Isolation Valve Setup",
+    "## Leak Prevention & Gasket Seals"
   ],
   smarthome: [
-    "Matter and Thread Protocol Wireless Antennas",
-    "Zero-Cloud Latency and Local Rule Execution",
-    "Dedicated IoT Network Encryption and Signal Range",
-    "Multi-Sensor Automation Triggers and Voice Assistant Sync"
+    "## Matter & Thread Wireless Antennas",
+    "## Zero-Cloud Local Rule Execution",
+    "## IoT Network Encryption & Range",
+    "## Multi-Sensor Automation Triggers"
   ],
   crypto: [
-    "Venture Capital Liquidity & Market Volatility",
-    "Blockchain Smart Contract Security Architecture",
-    "Macroeconomic Asset Allocation & Clean Energy Models"
+    "## Venture Capital & Liquidity Trends",
+    "## Smart Contract Security Architecture",
+    "## Macroeconomic Asset Allocation",
+    "## Zero-Knowledge Cryptography Models"
   ],
   food: [
-    "Farm-to-Table Zero-Waste Culinary Techniques",
-    "Michelin Ingredient Sourcing & Plating Aesthetics",
-    "Artisanal Coffee Extraction Pressure & Bean Roast Profiles"
+    "## Farm-to-Table Zero-Waste Culinary Prep",
+    "## Michelin Sourcing & Plating Aesthetics",
+    "## Artisanal Coffee Extraction Pressure",
+    "## Organic Ingredient Storage Rules"
   ],
   fashion: [
-    "Red Carpet Haute Couture & Met Gala Silhouettes",
-    "Runway Fashion Architecture & Material Craftsmanship",
-    "Celebrity Style Trends & Luxury Designer Collaborations"
+    "## Met Gala Haute Couture & Silhouettes",
+    "## Red Carpet Runway Craftsmanship",
+    "## Sustainable Silk & Vintage Archival Care",
+    "## Celebrity Style & Designer Trends"
   ],
   general: [
-    "Technical Specifications & Structural Material Quality",
-    "Real-World Operational Efficiency & Ergonomics",
-    "Comparative Performance Benchmarks & Longevity"
+    "## Structural Engineering & Material Quality",
+    "## Real-World Usability & Ergonomics",
+    "## Performance Benchmarks & Service Life",
+    "## Maintenance Protocols & Best Practices"
   ]
 };
 
-const ANGLES = [
-  "Optimizing", "Engineering Standards for", "Real-World Performance of",
-  "Solving Common Issues with", "Comparative Analysis of", "Installation & Maintenance Guidelines for"
-];
-
-function generateDynamicHeadingsAndPattern(keyword: string, hashVal: number) {
-  const cleanKw = keyword.trim();
-  const headingKw = cleanKeywordForHeading(cleanKw);
-  const domainKey = getDomainKey(cleanKw);
-  const subAngles = DOMAIN_SUB_ANGLES[domainKey] || DOMAIN_SUB_ANGLES.general;
-  
-  const patternIndex = (hashVal % 6) + 1; // 1 to 6
-  const h2Count = 4 + (hashVal % 3); // 4 to 6 H2s
-  
-  const usedSubAngles = new Set<string>();
-  const h2List: string[] = [];
-
-  for (let i = 0; i < h2Count; i++) {
-    const angle = ANGLES[(hashVal + i * 3) % ANGLES.length];
-    let subAngle = subAngles[(hashVal + i * 2) % subAngles.length];
-    if (usedSubAngles.has(subAngle)) {
-      subAngle = subAngles[(hashVal + i * 2 + 1) % subAngles.length];
-    }
-    usedSubAngles.add(subAngle);
-    h2List.push(`## ${angle} ${headingKw}: ${subAngle}`);
-  }
-
-  const h3Count = 2 + (hashVal % 2); // 2 or 3 H3s
-  const h3List: string[] = [];
-  for (let j = 0; j < h3Count; j++) {
-    const subAngle = subAngles[(hashVal + j * 4 + 3) % subAngles.length];
-    h3List.push(`### Technical Focus: ${subAngle}`);
-  }
-
-  return { h2List, h3List, patternIndex, domainKey };
-}
+const SHORT_H3_MAP: Record<string, string[]> = {
+  gaming: ["### DPI Sensitivity & Lift-Off Distance", "### Dongle Placement & Signal Range"],
+  cold_tap: ["### Aerator Screen Cleaning Steps", "### Shutoff Valve Adjustment Guide"],
+  hot_tap: ["### Thermostatic Valve Calibration", "### Relief Valve Safety Checks"],
+  black_tap: ["### Microfiber Drying Routine", "### Deck Plate Sealing & Gaskets"],
+  plumbing: ["### Cartridge Replacement Steps", "### Pressure Relief Valve Checks"],
+  smarthome: ["### Thread Border Router Setup", "### Local Automation Logic"],
+  crypto: ["### Security Audit Verification", "### Liquidity Pool Dynamics"],
+  food: ["### Extraction Pressure Benchmarks", "### Plating Precision Methods"],
+  fashion: ["### Atelier Craftsmanship Rules", "### Archival Fabric Preservation"],
+  general: ["### System Inspection Checklist", "### Routine Service Schedules"]
+};
 
 function generateDynamicDomainContent(keyword: string, category: string, hashVal: number): { title: string; excerpt: string; paragraphs: string[]; faqs: { question: string; answer: string }[] } {
   const kwFmt = formatNaturalKeyword(keyword);
   const tokens = extractKeywordSubTokens(keyword);
   const title = formatSeoTitle(keyword, hashVal);
-  const { h2List, h3List, patternIndex } = generateDynamicHeadingsAndPattern(keyword, hashVal);
+  const cleanKw = keyword.trim();
+  const domainKey = getDomainKey(cleanKw);
+
+  const h2List = SHORT_H2_MAP[domainKey] || SHORT_H2_MAP.general;
+  const h3List = SHORT_H3_MAP[domainKey] || SHORT_H3_MAP.general;
 
   let excerpt = `An in-depth editorial evaluation of ${kwFmt.topic}, exploring technical benchmarks, real-world utility, and market trends.`;
   if (tokens.isGaming) {
@@ -470,58 +444,92 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
     excerpt = `Exploring smart home hubs with multi-protocol Matter and Thread antenna arrays, local rule execution engines, and zero-cloud-latency security.`;
   }
 
-  // Interleave paragraphs dynamically based on structural Pattern (1 to 6)
   const paragraphs: string[] = [];
 
-  // Paragraph 1: Intro
-  paragraphs.push(`Evaluating the technical architecture and real-world utility of ${kwFmt.topic} requires examining core component specifications, user ergonomics, and long-term durability standards. Whether integrating new fixtures or upgrading existing hardware, making an informed selection ensures seamless daily performance.`);
+  // Paragraph 1: Rich Comprehensive Intro
+  paragraphs.push(`Evaluating the technical architecture, component craftsmanship, and practical utility of ${kwFmt.topic} requires examining core operational specifications, maintenance requirements, and user ergonomics. Making an informed hardware selection ensures long-term service reliability, high efficiency, and seamless daily performance.`);
 
-  if (patternIndex === 1) {
-    // Pattern 1: Deep Tech Review
-    if (h2List[0]) paragraphs.push(h2List[0]);
-    paragraphs.push(`Modern engineering standards for ${kwFmt.topic} prioritize precision manufacturing, low operational friction, and high energy or fluid efficiency. Built with premium materials, key internal components withstand continuous daily use without physical degradation.`);
-    if (h3List[0]) paragraphs.push(h3List[0]);
-    paragraphs.push(`Calibrating secondary hardware settings optimizes responsiveness and prolongs service life. Routine inspections every few months prevent minor wear points from impacting overall system reliability.`);
-    if (h2List[1]) paragraphs.push(h2List[1]);
-    paragraphs.push(`Real-world field testing demonstrates how ${kwFmt.topic} integrates into modern user workflows. Low-maintenance operation and intuitive control interfaces ensure consistent results across diverse conditions.`);
-    if (h2List[2]) paragraphs.push(h2List[2]);
-    paragraphs.push(`Comparing contemporary iterations against legacy alternatives reveals substantial gains in structural resilience, tactile response, and ecological sustainability.`);
-    if (h3List[1]) paragraphs.push(h3List[1]);
-    paragraphs.push(`Proper installation procedures and accurate depth clearance measurements eliminate fitting stress and prevent premature seal or joint failure.`);
-    if (h2List[3]) paragraphs.push(h2List[3]);
-    paragraphs.push(`Investing in top-tier ${kwFmt.topic} delivers an optimal balance of functional performance, refined aesthetics, and long-term satisfaction.`);
-  } else if (patternIndex === 2) {
-    // Pattern 2: Architectural & Design Guide
-    if (h2List[0]) paragraphs.push(h2List[0]);
-    paragraphs.push(`Aesthetic integration and spatial proportion are pivotal when selecting ${kwFmt.topic}. Pairing sleek metallic or matte finishes with complementary architectural elements creates a cohesive visual statement across the entire room.`);
-    if (h2List[1]) paragraphs.push(h2List[1]);
-    paragraphs.push(`Surface treatments like electroplated PVD coatings bond atomically to brass or alloy bodies, resisting scratches, tarnishing, and chemical discoloration over years of daily exposure.`);
-    if (h3List[0]) paragraphs.push(h3List[0]);
-    paragraphs.push(`Wiping surfaces dry with a soft microfiber cloth and mild dish soap preserves protective coatings, preventing mineral spot buildup without abrasive scrubbing.`);
-    if (h2List[2]) paragraphs.push(h2List[2]);
-    paragraphs.push(`Behind-the-wall rough-in depth planning and precise tile alignment guarantee that valve assemblies and mounting plates fit flush without awkward gaps.`);
-    if (h3List[1]) paragraphs.push(h3List[1]);
-    paragraphs.push(`Coordinating hardware finishes across cabinet pulls, mounting brackets, and primary fixtures establishes a harmonious design motif.`);
-    if (h2List[3]) paragraphs.push(h2List[3]);
-    paragraphs.push(`Exploring ${kwFmt.topic} unlocks endless creative potential, transforming everyday utility into timeless architectural design.`);
+  if (tokens.isCold && tokens.isTap) {
+    paragraphs.push(h2List[0]);
+    paragraphs.push(`Standard domestic water lines operate between 40 and 60 PSI of static pressure. High-grade bathroom cold water taps incorporate low-flow aerators that inject air into the stream, creating a full, splash-free wash pattern while maintaining an efficient flow rate of 1.2 to 1.5 gallons per minute (GPM).`);
+    paragraphs.push(`Over months of regular use, dissolved minerals like calcium and magnesium carbonate accumulate inside the aerator wire mesh. This scale causes side-spraying, uneven flow, or reduced pressure. Cleaning the aerator is simple: unscrew the spout housing, soak the mesh screen in warm white vinegar for 30 minutes to dissolve mineral deposits, and rinse thoroughly before reinstalling.`);
+    
+    paragraphs.push(h3List[0] || "### Aerator Screen Cleaning Steps");
+    paragraphs.push(`Always verify that the rubber aerator washer is properly aligned inside the spout threading during reassembly. Hand-tighten the housing firmly to prevent slow perimeter drips while operating under full line pressure.`);
+
+    paragraphs.push(h2List[1]);
+    paragraphs.push(`Modern cold taps feature quarter-turn ceramic disc cartridges engineered with high-hardness alumina ceramic plates. As the tap handle turns, the polished ceramic plates slide past each other, opening or closing the fluid passage instantly without physical rubber washer compression.`);
+    paragraphs.push(`High-pitched whistling noises during tap operation usually indicate water velocity turbulence across a partially opened ceramic disc or a vibrating shutoff valve under high line pressure. Adjusting the under-sink shutoff valve or replacing worn internal cartridge seals eliminates acoustic vibration immediately.`);
+
+    paragraphs.push(h2List[2]);
+    paragraphs.push(`Connecting under-sink plumbing correctly prevents hidden water leaks inside vanity cabinets. Cold water taps connect to isolation shutoff valves using 3/8-inch female compression flexible braided stainless steel supply lines. Hand-tighten coupling nuts first, then apply a quarter turn with an adjustable wrench to seal without damaging internal rubber O-rings.`);
+    paragraphs.push(`Positioning a catch bucket beneath shutoff valves during cartridge replacement prevents residual line water from spilling onto wooden cabinet floors, protecting vanity structures from moisture damage.`);
+
+    paragraphs.push(h2List[3]);
+    paragraphs.push(`Cold water pipes routed along exterior uninsulated walls face freezing risks during severe winter cold snaps. Water expanding as it freezes inside metallic pipes can rupture joints or crack valve bodies. Installing foam pipe insulation sleeves along exposed cold supply lines provides essential thermal protection.`);
+    paragraphs.push(`During sub-zero weather snaps, opening vanity cabinet doors allows ambient room heat to reach under-sink plumbing. Leaving cold taps running at a microscopic trickle maintains continuous fluid motion, preventing ice crystals from locking the line solid.`);
+
+  } else if (tokens.isBlack && tokens.isTap) {
+    paragraphs.push(h2List[0]);
+    paragraphs.push(`Matte black taps deliver striking architectural contrast and modern visual appeal to contemporary bathrooms. Producing a resilient matte black surface requires Physical Vapor Deposition (PVD) electroplating, where titanium or zirconium particles bond atomically to solid brass in a vacuum chamber.`);
+    paragraphs.push(`Hard water minerals represent the main maintenance challenge for dark fixtures, as white calcium spots show clearly against matte surfaces. Avoid cleaning matte black taps with acidic descalers, bleach, or aggressive chemical sprays that can strip the protective clear coat and turn black surfaces dull or cloudy.`);
+
+    paragraphs.push(h3List[0] || "### Microfiber Drying Routine");
+    paragraphs.push(`Establishing a quick daily drying routine preserves the pristine matte look. Wiping the handle and spout dry with a soft microfiber cloth after each use removes standing water droplets before minerals can dry into permanent rings.`);
+
+    paragraphs.push(h2List[1]);
+    paragraphs.push(`Clean matte black fixtures weekly using warm water mixed with a few drops of mild liquid dish soap. Gently wipe down the faucet spout and base using a non-abrasive microfiber towel or soft sponge, then rinse thoroughly with fresh water and buff dry immediately.`);
+    paragraphs.push(`Never scrub matte black taps with abrasive green scouring pads, steel wool, or hard bristle brushes. Micro-scratches caused by abrasive cleaning strip the matte PVD sheen, exposing raw metal beneath to air and moisture.`);
+
+    paragraphs.push(h2List[2]);
+    paragraphs.push(`Beneath the matte exterior, high-end taps feature lead-free solid brass valve bodies. Solid brass offers outstanding corrosion resistance against chlorinated municipal water and withstands heavy internal line pressures over decades of daily family use.`);
+    paragraphs.push(`Lead-free brass waterways ensure that cold and hot water passing through the fixture remains pure, clean, and free from metallic taste or harmful lead leaching.`);
+
+    paragraphs.push(h2List[3]);
+    paragraphs.push(`Selecting proper spout height and reach prevents water splashing over countertop rims. For standard undermount basins, a spout height of 4 to 6 inches provides comfortable hand-washing space while containing water spray inside the sink.`);
+    paragraphs.push(`When pairing a matte black tap with a tall freestanding vessel sink, select a tall vessel tap offering 9 to 11 inches of spout clearance. Position the spout so water drops directly over the drain opening.`);
+
+  } else if (tokens.isGaming) {
+    paragraphs.push(h2List[0]);
+    paragraphs.push(`High-performance gaming mice combine ultra-lightweight shell ergonomics with pixel-perfect optical tracking and sub-millisecond wireless responsiveness. Selecting a gaming mouse requires evaluating sensor architecture, switch durability, mouse weight, and glide dynamics.`);
+    paragraphs.push(`Modern optical sensors like the PixArt 3395 capture thousands of surface images per second using infrared LED illumination, translating physical mouse movement into cursor movement with 1:1 precision. Advanced sensors eliminate hardware smoothing, angle snapping, and acceleration.`);
+
+    paragraphs.push(h3List[0] || "### DPI Sensitivity & Lift-Off Distance");
+    paragraphs.push(`While manufacturers advertise extreme sensitivity figures up to 30,000 DPI, competitive esports players prefer 800 or 1600 DPI. Lower DPI combined with low in-game sensitivity provides superior control for precise crosshair adjustments in competitive shooter titles.`);
+
+    paragraphs.push(h2List[1]);
+    paragraphs.push(`Modern 2.4GHz wireless gaming mice deliver latency equal to or faster than traditional wired mice. Frequency-hopping wireless protocols transmit data packets every 1 millisecond at standard 1000Hz polling rates.`);
+    paragraphs.push(`To prevent wireless signal interference from Wi-Fi routers, place the USB wireless dongle within 20cm of your mousepad using the included extension cable. High-polling modes (2000Hz to 8000Hz) further reduce input delay down to 0.125ms for ultra-smooth motion on high-refresh-rate 240Hz monitors.`);
+
+    paragraphs.push(h2List[2]);
+    paragraphs.push(`Mouse weight directly affects wrist stamina and aiming velocity during intense gaming sessions. Ultra-lightweight mice weighing under 60 grams reduce movement inertia, allowing faster flick-shots and effortless direction changes without wrist fatigue.`);
+    paragraphs.push(`Match mouse shape to your grip style: palm grip players benefit from ergonomic contoured shells supporting the entire hand, claw grip gamers prefer medium hump profiles for palm contact, and fingertip users require compact symmetrical mice.`);
+
+    paragraphs.push(h2List[3]);
+    paragraphs.push(`Optical mouse switches use infrared light beams for actuation rather than physical metal contacts. This eliminates mechanical wear and prevents double-clicking issues while executing clicks in under 0.2 milliseconds.`);
+    paragraphs.push(`Virgin-grade PTFE (Teflon) skates on the mouse underside ensure frictionless glide across cloth or glass pads. Wiping PTFE feet periodically with isopropyl alcohol removes dust and maintains smooth tracking motion.`);
+
   } else {
-    // Patterns 3 to 6: Versatile Layouts
-    for (let k = 0; k < h2List.length; k++) {
-      paragraphs.push(h2List[k]);
-      paragraphs.push(`Key operational considerations for ${kwFmt.topic} focus on component longevity, user ergonomics, and low maintenance overhead. High-quality construction materials prevent premature wear while delivering effortless control.`);
-      if (k === 1 && h3List[0]) {
-        paragraphs.push(h3List[0]);
-        paragraphs.push(`Fine-tuning internal calibration settings ensures smooth actuation and consistent output during peak operational demands.`);
-      }
-      if (k === 3 && h3List[1]) {
-        paragraphs.push(h3List[1]);
-        paragraphs.push(`Adhering to recommended service protocols preserves warranty coverage and keeps internal mechanisms running dripless and friction-free.`);
-      }
-    }
-    paragraphs.push(`Selecting high-caliber ${kwFmt.topic} provides peace of mind, combining technical innovation with dependable daily utility.`);
+    paragraphs.push(h2List[0]);
+    paragraphs.push(`Evaluating ${cleanKw} requires examining component craftsmanship, structural design, user ergonomics, and long-term operational performance. Selecting high-caliber hardware guarantees reliable service, efficiency, and overall satisfaction.`);
+    paragraphs.push(`High-quality manufacturing materials form the foundation of dependable engineering. Premium brass, stainless alloys, and reinforced polymers prevent physical degradation and mechanical wear under continuous daily use.`);
+
+    paragraphs.push(h3List[0] || "### System Inspection Checklist");
+    paragraphs.push(`Proper material selection ensures resistance against environmental stress, temperature fluctuations, and surface friction, protecting hardware investments for years to come.`);
+
+    paragraphs.push(h2List[1]);
+    paragraphs.push(`User ergonomics and intuitive design shape real-world operational efficiency. Products engineered with user-centric controls reduce physical strain, enhance precision, and streamline daily routines.`);
+    paragraphs.push(`Testing hardware under practical conditions highlights key performance trade-offs between compact sizing, power efficiency, and long-term comfort, helping buyers select ideal configurations.`);
+
+    paragraphs.push(h2List[2]);
+    paragraphs.push(`Comparing modern engineering benchmarks against legacy standards demonstrates substantial gains in energy efficiency, speed, and durability. Advanced manufacturing techniques reduce maintenance overhead while optimizing performance.`);
+    paragraphs.push(`Adhering to recommended operating limits and load specifications prevents premature component fatigue, maintaining consistent output throughout the product lifecycle.`);
+
+    paragraphs.push(h2List[3]);
+    paragraphs.push(`Routine maintenance and preventative inspections preserve peak functionality. Inspecting key wear points every few months, applying appropriate lubricants, and replacing worn seals promptly protects manufacturer warranties.`);
+    paragraphs.push(`Following structured care protocols extends equipment service life, protects internal components, and guarantees smooth, trouble-free utility.`);
   }
 
-  // Generate 100% topic-tailored FAQs
   let faqs = [
     { question: `What key specifications should I check when choosing ${kwFmt.topic}?`, answer: `Focus on build material quality, technical compatibility, energy or fluid efficiency, and manufacturer warranty coverage before making your selection.` },
     { question: `How do I maintain peak performance for ${kwFmt.topic} over time?`, answer: `Follow non-abrasive cleaning protocols, conduct routine inspections every few months, and replace worn internal seals or components promptly.` },
