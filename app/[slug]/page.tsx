@@ -292,6 +292,51 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 </h3>
               );
             }
+
+            // Parse markdown links [text](url) for 1 external & 2 internal links
+            const parts: (string | React.ReactNode)[] = [];
+            const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+            let lastIndex = 0;
+            let match;
+
+            while ((match = regex.exec(item)) !== null) {
+              if (match.index > lastIndex) {
+                parts.push(item.substring(lastIndex, match.index));
+              }
+              const linkText = match[1];
+              const linkUrl = match[2];
+              const isExternal = linkUrl.startsWith("http://") || linkUrl.startsWith("https://");
+
+              if (isExternal) {
+                parts.push(
+                  <a
+                    key={match.index}
+                    href={linkUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-amber-600 dark:text-amber-400 font-bold underline hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+                  >
+                    {linkText}
+                  </a>
+                );
+              } else {
+                parts.push(
+                  <Link
+                    key={match.index}
+                    href={linkUrl}
+                    className="text-amber-600 dark:text-amber-400 font-bold underline hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+                  >
+                    {linkText}
+                  </Link>
+                );
+              }
+              lastIndex = regex.lastIndex;
+            }
+
+            if (lastIndex < item.length) {
+              parts.push(item.substring(lastIndex));
+            }
+
             return (
               <p
                 key={index}
@@ -301,7 +346,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                     : ""
                 }
               >
-                {item}
+                {parts.length > 0 ? parts.map((part, idx) => (typeof part === "string" ? part : <React.Fragment key={idx}>{part}</React.Fragment>)) : item}
               </p>
             );
           })}

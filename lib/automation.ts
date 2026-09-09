@@ -447,6 +447,41 @@ export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string 
 // DYNAMIC MULTI-MATRIX UNIQUENESS CONTENT GENERATOR
 // ----------------------------------------------------
 
+function getExternalReferenceUrl(keyword: string): { url: string; text: string } {
+  const kw = keyword.toLowerCase();
+  const kwFmt = formatNaturalKeyword(keyword);
+
+  if (kw.includes("tile") || kw.includes("flooring") || kw.includes("paving")) {
+    return { url: "https://en.wikipedia.org/wiki/Tile", text: `${kwFmt.topic} material specifications` };
+  }
+  if (kw.includes("tap") || kw.includes("faucet") || kw.includes("plumbing") || kw.includes("shower")) {
+    return { url: "https://en.wikipedia.org/wiki/Tap_(valve)", text: `${kwFmt.topic} plumbing standards` };
+  }
+  if (kw.includes("bathroom") || kw.includes("toilet") || kw.includes("seat") || kw.includes("tub")) {
+    return { url: "https://en.wikipedia.org/wiki/Bathroom", text: `${kwFmt.topic} architectural guidelines` };
+  }
+  if (kw.includes("mouse") || kw.includes("gaming") || kw.includes("keyboard") || kw.includes("pc")) {
+    return { url: "https://en.wikipedia.org/wiki/Computer_mouse", text: `${kwFmt.topic} hardware benchmarks` };
+  }
+  if (kw.includes("smart") || kw.includes("hub") || kw.includes("automation")) {
+    return { url: "https://en.wikipedia.org/wiki/Home_automation", text: `${kwFmt.topic} protocol documentation` };
+  }
+  if (kw.includes("crypto") || kw.includes("stock") || kw.includes("invest") || kw.includes("capital")) {
+    return { url: "https://en.wikipedia.org/wiki/Cryptocurrency", text: `${kwFmt.topic} market research` };
+  }
+  if (kw.includes("food") || kw.includes("dining") || kw.includes("chef") || kw.includes("coffee")) {
+    return { url: "https://en.wikipedia.org/wiki/Culinary_arts", text: `${kwFmt.topic} culinary guides` };
+  }
+  if (kw.includes("fashion") || kw.includes("gala") || kw.includes("carpet") || kw.includes("style")) {
+    return { url: "https://en.wikipedia.org/wiki/Haute_couture", text: `${kwFmt.topic} design archives` };
+  }
+  if (kw.includes("sleep") || kw.includes("health") || kw.includes("fitness") || kw.includes("wellness")) {
+    return { url: "https://en.wikipedia.org/wiki/Circadian_rhythm", text: `${kwFmt.topic} wellness research` };
+  }
+
+  return { url: "https://en.wikipedia.org/wiki/Industrial_design", text: `${kwFmt.topic} technical reference` };
+}
+
 function generateDynamicDomainContent(keyword: string, category: string, hashVal: number): {
   title: string;
   excerpt: string;
@@ -459,6 +494,18 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
   const title = formatSeoTitle(cleanKw, hashVal);
   const topicTitle = kwFmt.topic.replace(/&/g, "and");
   const kwTitle = kwFmt.title.replace(/&/g, "and");
+
+  const extRef = getExternalReferenceUrl(cleanKw);
+  const catSlug = category || "life-style";
+  const catName = catSlug.replace(/-/g, " ").toUpperCase();
+
+  const internalRelatedOptions = [
+    { title: "Bathroom Seat Ergonomics and Fitting", slug: "bathroom-seat" },
+    { title: "Bathroom Cold Water Supply Taps", slug: "bathroom-cold-tap" },
+    { title: "Smart Home Automation Protocol Hubs", slug: "smart-home-hub" },
+    { title: "First-Principles Technology Feature", slug: "elon-musk" },
+  ];
+  const relArt = internalRelatedOptions[hashVal % internalRelatedOptions.length];
 
   // Dynamic Meta Excerpt Synthesis (Pools per domain token)
   let rawExcerptPool: string[] = [
@@ -591,7 +638,7 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
 
   const paragraphs: string[] = [];
 
-  // Intro Paragraphs (2 rich paragraphs)
+  // Intro Paragraphs (2 rich paragraphs - Includes Internal Link 1)
   const introVars1 = [
     `Evaluating the technical architecture, component craftsmanship, and practical utility of ${topicTitle} requires examining core operational parameters, material density, and surface longevity. Making an informed hardware or material selection ensures long-term service reliability, elevated aesthetic value, and seamless daily performance across residential or commercial environments.`,
     `Selecting high-grade ${topicTitle} plays a pivotal role in modern design, functional efficiency, and structural performance. Understanding key manufacturing standards, installation requirements, and long-term durability metrics enables homeowners and trade professionals to make well-founded investment decisions.`,
@@ -599,14 +646,14 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
     `Analyzing the technical specifications and practical benefits of ${topicTitle} highlights significant advancements in material formulation, surface sealants, and user-centric design. Selecting certified options guarantees optimal operational stability and lasting aesthetic harmony.`
   ];
   const introVars2 = [
-    `Furthermore, comprehensive market developments in ${topicTitle} emphasize reduced maintenance overhead and superior environmental adaptability. Integrating advanced manufacturing methods ensures that components maintain dimensional accuracy, structural rigidity, and color stability even under challenging environmental exposure.`,
-    `In addition to aesthetic elegance, certified ${topicTitle} undergoes stringent quality verification to satisfy international safety and performance benchmarks. Trade experts recommend evaluating load capacity, surface finish resilience, and installation clearance prior to final specification.`,
-    `Architectural designers and engineering professionals consistently prioritize ${topicTitle} configurations that offer balanced functional performance and ease of maintenance. Detailed technical evaluation safeguards long-term capital investment while streamlining routine service protocols.`
+    `Furthermore, comprehensive market developments in ${topicTitle} emphasize reduced maintenance overhead and superior environmental adaptability. Integrating advanced manufacturing methods ensures that components maintain dimensional accuracy, structural rigidity, and color stability even under challenging environmental exposure. For related coverage, explore our [${catName} Edition](/category/${catSlug}).`,
+    `In addition to aesthetic elegance, certified ${topicTitle} undergoes stringent quality verification to satisfy international safety and performance benchmarks. Trade experts recommend evaluating load capacity, surface finish resilience, and installation clearance prior to final specification. For additional perspective, consult our [${catName} Edition](/category/${catSlug}).`,
+    `Architectural designers and engineering professionals consistently prioritize ${topicTitle} configurations that offer balanced functional performance and ease of maintenance. Detailed technical evaluation safeguards long-term capital investment while streamlining routine service protocols in the [${catName} Edition](/category/${catSlug}).`
   ];
   paragraphs.push(introVars1[hashVal % introVars1.length]);
   paragraphs.push(introVars2[(hashVal + 1) % introVars2.length]);
 
-  // Section 1: H2_1 + 3 Body + H3_1 + 2 Body
+  // Section 1: H2_1 + 3 Body + H3_1 + 2 Body (Includes External Link)
   paragraphs.push(h2_1);
   const sec1P1 = [
     `Assessing the structural composition and material density of ${topicTitle} is essential for ensuring long-term resilience under continuous operational stress. Advanced manufacturing processes utilize high-purity raw materials and specialized heat treatments that prevent early material fatigue and surface degradation.`,
@@ -614,9 +661,9 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
     `Quality craftsmanship in ${topicTitle} begins with rigorous raw material vetting and strict manufacturing tolerances. Utilizing premium grade alloys or high-fired ceramics guarantees uniform structural strength and superior resistance against surface scratching.`
   ];
   const sec1P2 = [
-    `Selecting certified configurations for ${topicTitle} guarantees compliance with international safety and environmental benchmarks. Rigorous factory stress testing confirms consistent load distribution and structural integrity even under demanding commercial conditions.`,
-    `Furthermore, opting for standardized ${topicTitle} ensures hassle-free compatibility with existing sub-structures and mounting hardware. Precision manufacturing eliminates dimensional variance, streamlining initial fitting and reducing overall labor overhead.`,
-    `Adhering to recognized industry standards during the manufacturing of ${topicTitle} mitigates risks of structural misalignment or premature wear. Verified material certifications provide trade installers with complete confidence in long-term field performance.`
+    `Selecting certified configurations for ${topicTitle} guarantees compliance with international safety and environmental benchmarks. Rigorous factory stress testing confirms consistent load distribution and structural integrity even under demanding commercial conditions. For verified industry benchmarks, inspect the [${extRef.text}](${extRef.url}).`,
+    `Furthermore, opting for standardized ${topicTitle} ensures hassle-free compatibility with existing sub-structures and mounting hardware. Precision manufacturing eliminates dimensional variance, streamlining initial fitting and reducing overall labor overhead. Review verified [${extRef.text}](${extRef.url}) for detailed technical parameters.`,
+    `Adhering to recognized industry standards during the manufacturing of ${topicTitle} mitigates risks of structural misalignment or premature wear. Verified material certifications, such as [${extRef.text}](${extRef.url}), provide trade installers with complete confidence in long-term field performance.`
   ];
   const sec1P3 = [
     `Engineered for demanding environment applications, modern ${topicTitle} incorporates specialized protective topcoats that repel chemical stains and moisture penetration. This structural barrier protects internal substrate layers from gradual erosion and micro-fractures over decades of active service.`,
@@ -740,7 +787,7 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
   paragraphs.push(sec5P2[(hashVal + 1) % sec5P2.length]);
   paragraphs.push(sec5P3[(hashVal + 2) % sec5P3.length]);
 
-  // Conclusion Section (MUST STAY BEFORE FAQs)
+  // Conclusion Section (MUST STAY BEFORE FAQs - Includes Internal Link 2)
   paragraphs.push("## Conclusion and Summary");
   const conclusionVars1 = [
     `In conclusion, choosing high-quality ${topicTitle} relies on evaluating structural design, material craftsmanship, and practical utility. Consistent care, non-abrasive maintenance, and adherence to technical operating limits preserve peak performance and long-term durability.`,
@@ -749,8 +796,8 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
     `In summary, selecting premium ${topicTitle} requires a balanced evaluation of material quality, installation precision, and maintenance routine. By adhering to recommended technical guidelines and routine inspection schedules, users can maximize product lifespan while maintaining optimal performance.`
   ];
   const conclusionVars2 = [
-    `By prioritizing certified manufacturing standards, verified load capacities, and regular inspection protocols, trade professionals and homeowners can feel completely confident in their material selection. Quality craftsmanship combined with diligent care ensures that ${topicTitle} remains an outstanding asset for years to come.`,
-    `Taking a comprehensive approach to selection, fitting, and upkeep guarantees that your ${topicTitle} installation maintains peak efficiency, aesthetic beauty, and structural safety throughout its extended lifecycle.`
+    `By prioritizing certified manufacturing standards, verified load capacities, and regular inspection protocols, trade professionals and homeowners can feel completely confident in their material selection. Quality craftsmanship combined with diligent care ensures that ${topicTitle} remains an outstanding asset for years to come. For additional reading on complementary installations, consult our analysis on [${relArt.title}](/${relArt.slug}).`,
+    `Taking a comprehensive approach to selection, fitting, and upkeep guarantees that your ${topicTitle} installation maintains peak efficiency, aesthetic beauty, and structural safety throughout its extended lifecycle. Readers can also review our detailed guide on [${relArt.title}](/${relArt.slug}).`
   ];
   paragraphs.push(conclusionVars1[hashVal % conclusionVars1.length]);
   paragraphs.push(conclusionVars2[(hashVal + 1) % conclusionVars2.length]);
@@ -1184,11 +1231,14 @@ export function sanitizeOrMigrateArticle(art: Article): Article {
     art.excerpt = art.metaDescription;
   }
 
-  // Clean ampersands from content paragraphs and ensure length is 1200-1500 words
+  // Clean ampersands from content paragraphs and ensure length is 1200-1500 words with links
   if (Array.isArray(art.content)) {
     art.content = art.content.map(p => p.replace(/&/g, "and"));
+    const fullText = art.content.join(" ");
     const bodyWords = art.content.filter(p => !p.startsWith("#")).join(" ").split(/\s+/).filter(w => w.length > 0).length;
-    if (bodyWords < 1100) {
+    const hasExternalLink = fullText.includes("http://") || fullText.includes("https://");
+
+    if (bodyWords < 1100 || !hasExternalLink) {
       const gen = generateDynamicDomainContent(cleanKw, art.category || "life-style", hashVal);
       art.content = gen.paragraphs;
     }
