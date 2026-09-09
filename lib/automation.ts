@@ -128,12 +128,13 @@ export function extractKeywordSubTokens(keyword: string) {
   const kw = keyword.toLowerCase();
   return {
     isTiles: kw.includes("tile") || kw.includes("flooring") || kw.includes("paving") || kw.includes("porcelain") || kw.includes("ceramic") || kw.includes("slate") || kw.includes("marble") || kw.includes("granite"),
+    isBathroom: kw.includes("bathroom") || kw.includes("toilet") || kw.includes("seat") || kw.includes("vanity") || kw.includes("basin") || kw.includes("shower") || kw.includes("tub") || kw.includes("sink") || kw.includes("drain"),
     isIdea: kw.includes("idea") || kw.includes("design") || kw.includes("inspiration") || kw.includes("style") || kw.includes("concept") || kw.includes("decor"),
     isCold: kw.includes("cold"),
     isHot: kw.includes("hot") || kw.includes("boiling") || kw.includes("warm"),
     isBlack: kw.includes("black") || kw.includes("dark") || kw.includes("matte"),
     isGold: kw.includes("gold") || kw.includes("brass") || kw.includes("bronze") || kw.includes("copper"),
-    isTap: kw.includes("tap") || kw.includes("faucet") || kw.includes("mixer") || kw.includes("spout") || kw.includes("basin") || kw.includes("shower") || kw.includes("tub") || kw.includes("drain") || kw.includes("plumbing"),
+    isTap: kw.includes("tap") || kw.includes("faucet") || kw.includes("mixer") || kw.includes("spout") || kw.includes("plumbing"),
     isGaming: kw.includes("gaming") || kw.includes("mouse") || kw.includes("keyboard") || kw.includes("gpu") || kw.includes("headset") || kw.includes("console") || kw.includes("pc"),
     isSmartHome: kw.includes("smart") || kw.includes("hub") || kw.includes("automation") || kw.includes("iot") || kw.includes("sensor"),
     isTv: kw.includes("tv") || kw.includes("television") || kw.includes("display") || kw.includes("screen") || kw.includes("samsung") || kw.includes("oled") || kw.includes("qled"),
@@ -178,7 +179,7 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string): Prom
     }
   }
 
-  if (tokens.isTiles) return { url: `https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`, caption: `Editorial photograph of ceramic and porcelain tile installation for ${keyword}.`, alt: `Bathroom tile interior design` };
+  if (tokens.isBathroom || tokens.isTiles) return { url: `https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`, caption: `Editorial photograph of bathroom interior and fixtures for ${keyword}.`, alt: `Modern bathroom interior setup` };
   if (tokens.isGaming) return { url: `https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`, caption: `Editorial photograph of gaming hardware for ${keyword}.`, alt: `Black computer gaming mouse` };
   if (tokens.isBlack && tokens.isTap) return { url: `https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`, caption: `Editorial photograph of matte black bathroom tap.`, alt: `Matte black bathroom tap` };
   if (tokens.isCold && tokens.isTap) return { url: `https://images.unsplash.com/photo-1623111771733-d3ab4d26ce41?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`, caption: `Editorial photograph of cold water supply tap.`, alt: `Silver bathroom cold tap` };
@@ -194,19 +195,43 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string): Prom
     food: ["photo-1555396273-367ea4eb4db5", "photo-1504674900247-0877df9cc836"],
     news: ["photo-1470071459604-3b5ec3a7fe05", "photo-1585829365295-ab7cd400c167"],
   };
-  const pool = categoryPhotoPools[category] || categoryPhotoPools["tech"];
+  const pool = categoryPhotoPools[category] || categoryPhotoPools["life-style"];
   const selectedPhotoId = pool[hashVal % pool.length];
   return { url: `https://images.unsplash.com/${selectedPhotoId}?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`, caption: `Editorial photograph highlighting ${keyword}.`, alt: `Photograph of ${keyword}` };
 }
 
 function inferCategoryFromKeyword(keyword: string): string {
   const kw = keyword.toLowerCase();
-  if (kw.includes("celebrity") || kw.includes("actor") || kw.includes("fashion") || kw.includes("gala")) return "celebrity";
-  if (kw.includes("lifestyle") || kw.includes("life-style") || kw.includes("home") || kw.includes("bathtub") || kw.includes("faucet") || kw.includes("tap") || kw.includes("tile")) return "life-style";
-  if (kw.includes("health") || kw.includes("sleep") || kw.includes("fitness") || kw.includes("wellness")) return "health";
-  if (kw.includes("business") || kw.includes("crypto") || kw.includes("stock") || kw.includes("market") || kw.includes("musk")) return "business";
-  if (kw.includes("food") || kw.includes("dining") || kw.includes("chef") || kw.includes("coffee")) return "food";
-  if (kw.includes("news") || kw.includes("climate") || kw.includes("policy") || kw.includes("global")) return "news";
+  if (kw.includes("celebrity") || kw.includes("actor") || kw.includes("fashion") || kw.includes("gala") || kw.includes("style")) return "celebrity";
+  if (
+    kw.includes("lifestyle") ||
+    kw.includes("life-style") ||
+    kw.includes("home") ||
+    kw.includes("bathroom") ||
+    kw.includes("toilet") ||
+    kw.includes("seat") ||
+    kw.includes("bathtub") ||
+    kw.includes("faucet") ||
+    kw.includes("tap") ||
+    kw.includes("tile") ||
+    kw.includes("vanity") ||
+    kw.includes("basin") ||
+    kw.includes("shower") ||
+    kw.includes("mirror") ||
+    kw.includes("sink") ||
+    kw.includes("kitchen") ||
+    kw.includes("sofa") ||
+    kw.includes("bed") ||
+    kw.includes("chair") ||
+    kw.includes("table") ||
+    kw.includes("decor") ||
+    kw.includes("furniture") ||
+    kw.includes("interior")
+  ) return "life-style";
+  if (kw.includes("health") || kw.includes("sleep") || kw.includes("fitness") || kw.includes("wellness") || kw.includes("skin") || kw.includes("diet") || kw.includes("workout")) return "health";
+  if (kw.includes("business") || kw.includes("crypto") || kw.includes("stock") || kw.includes("market") || kw.includes("musk") || kw.includes("invest") || kw.includes("money") || kw.includes("finance")) return "business";
+  if (kw.includes("food") || kw.includes("dining") || kw.includes("chef") || kw.includes("coffee") || kw.includes("recipe") || kw.includes("dish") || kw.includes("culinary")) return "food";
+  if (kw.includes("news") || kw.includes("climate") || kw.includes("policy") || kw.includes("global") || kw.includes("accord") || kw.includes("world")) return "news";
   return "tech";
 }
 
@@ -379,8 +404,8 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
 
   // Meta Excerpt Synthesis
   let rawExcerpt = `An in-depth editorial evaluation of ${topicTitle}, exploring technical benchmarks, real-world utility, and market trends.`;
-  if (tokens.isTiles) {
-    rawExcerpt = `Comprehensive technical evaluation of ${topicTitle}, detailing porcelain density, slip resistance ratings, and grout joint installation standards.`;
+  if (tokens.isBathroom || tokens.isTiles) {
+    rawExcerpt = `Comprehensive technical evaluation of ${topicTitle}, detailing porcelain density, slip resistance ratings, and installation standards.`;
   } else if (tokens.isCold && tokens.isTap) {
     rawExcerpt = `Operating under constant line pressure, bathroom cold water taps demand frost-resistant supply lines, anti-whistle valves, and low-flow aerators.`;
   } else if (tokens.isBlack && tokens.isTap) {

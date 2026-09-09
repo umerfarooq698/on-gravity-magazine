@@ -5,6 +5,19 @@ export function formatMetaDescription(raw: string): string {
   if (str.length === TARGET && !str.includes("&")) return str;
 
   const suffixesByLen: Record<number, string> = {
+    1: ".",
+    2: "..",
+    3: "...",
+    4: "....",
+    5: " now.",
+    6: " site.",
+    7: " online.",
+    8: " report.",
+    9: " article.",
+    10: " now site.",
+    11: " full info.",
+    12: " read report.",
+    13: " read summary.",
     14: ". Read report.",
     15: ". Read summary.",
     16: ". Read guide now.",
@@ -61,7 +74,12 @@ export function formatMetaDescription(raw: string): string {
     67: ". Read complete technical evaluation report on On Gravity Magazine now.",
     68: ". Read full technical analysis overview report on On Gravity Magazine.",
     69: ". Read complete technical evaluation overview report on On Gravity Mag.",
-    70: ". Read complete technical analysis overview report on On Gravity Magazine."
+    70: ". Read complete technical analysis overview report on On Gravity Magazine.",
+    71: ". Read full complete technical analysis overview report on On Gravity Mag.",
+    72: ". Read complete technical analysis and review report on On Gravity Magazine.",
+    73: ". Read full complete technical evaluation breakdown report on On Gravity Mag.",
+    74: ". Read complete technical analysis breakdown report on On Gravity Magazine.",
+    75: ". Read full technical evaluation and breakdown report on On Gravity Magazine."
   };
 
   const words = str.split(" ");
