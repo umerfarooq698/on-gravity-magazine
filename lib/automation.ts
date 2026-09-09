@@ -273,36 +273,45 @@ async function fetchArticleFromGeminiApi(keyword: string): Promise<{
   const apiKey = getGeminiApiKey();
   if (!apiKey) return null;
 
-  try {
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [
-          {
-            role: "user",
-            parts: [
-              {
-                text: `${GEMINI_ARTICLE_PROMPT}\n\nSubmitted Keyword / Topic: "${keyword}"`
-              }
-            ]
-          }
-        ]
-      })
-    });
+  const candidateModels = [
+    "gemini-3.5-flash-lite",
+    "gemini-3.6-flash",
+    "gemini-3.5-flash"
+  ];
 
-    if (!response.ok) return null;
+  for (const modelName of candidateModels) {
+    try {
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [
+                {
+                  text: `${GEMINI_ARTICLE_PROMPT}\n\nSubmitted Keyword / Topic: "${keyword}"`
+                }
+              ]
+            }
+          ]
+        })
+      });
 
-    const data = await response.json();
-    const candidateText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!candidateText || typeof candidateText !== "string") return null;
+      if (!response.ok) continue;
 
-    return parseGeminiMarkdownArticle(candidateText, keyword);
-  } catch (error) {
-    console.error("Gemini API call failed:", error);
-    return null;
+      const data = await response.json();
+      const candidateText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (candidateText && typeof candidateText === "string") {
+        return parseGeminiMarkdownArticle(candidateText, keyword);
+      }
+    } catch (error) {
+      console.error(`Gemini API call failed for model ${modelName}:`, error);
+    }
   }
+
+  return null;
 }
 
 function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
