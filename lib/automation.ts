@@ -651,82 +651,165 @@ Return ONLY a valid JSON object matching this schema:
 }
 
 /**
- * Synthesize domain-specific, journalism-grade paragraphs (900-1200 words) without static templates
+ * Extract sub-topic tokens from keyword to isolate exact nuances (e.g. idea vs cold vs hot vs black vs wall mounted)
+ */
+function extractKeywordSubTokens(keyword: string) {
+  const kw = keyword.toLowerCase().trim();
+  return {
+    isIdea: kw.includes("idea") || kw.includes("design") || kw.includes("style") || kw.includes("decor") || kw.includes("trend") || kw.includes("inspiration") || kw.includes("aesthetic") || kw.includes("concept"),
+    isCold: kw.includes("cold") || kw.includes("frost") || kw.includes("ice") || kw.includes("unheated"),
+    isHot: kw.includes("hot") || kw.includes("boiling") || kw.includes("heater") || kw.includes("thermal") || kw.includes("warm"),
+    isBlack: kw.includes("black") || kw.includes("dark") || kw.includes("matte"),
+    isGold: kw.includes("gold") || kw.includes("brass") || kw.includes("bronze") || kw.includes("copper") || kw.includes("pvd"),
+    isWall: kw.includes("wall") || kw.includes("mounted") || kw.includes("concealed"),
+    isSensor: kw.includes("sensor") || kw.includes("touchless") || kw.includes("automatic") || kw.includes("smart") || kw.includes("motion"),
+    isSmall: kw.includes("small") || kw.includes("compact") || kw.includes("cloakroom") || kw.includes("mini") || kw.includes("narrow"),
+    isLuxury: kw.includes("luxury") || kw.includes("modern") || kw.includes("premium") || kw.includes("high end") || kw.includes("designer"),
+    isTub: (kw.includes("bathtub") || kw.includes("tub") || kw.includes("soaking")) && !kw.includes("tap") && !kw.includes("faucet"),
+    isDrain: (kw.includes("drain") || kw.includes("trap") || kw.includes("waste") || kw.includes("plumbing")) && !kw.includes("tap") && !kw.includes("faucet"),
+    isTap: kw.includes("tap") || kw.includes("faucet") || kw.includes("mixer") || kw.includes("spout"),
+    isMusk: kw.includes("musk") || kw.includes("elon") || kw.includes("zuckerberg") || kw.includes("jobs") || kw.includes("altman") || kw.includes("ceo") || kw.includes("founder"),
+    isTv: kw.includes("tv") || kw.includes("samsung") || kw.includes("display") || kw.includes("oled") || kw.includes("qled") || kw.includes("screen"),
+    isSleep: kw.includes("sleep") || kw.includes("circadian") || kw.includes("health") || kw.includes("wellness") || kw.includes("diet") || kw.includes("fitness"),
+  };
+}
+
+/**
+ * Synthesize domain-specific, journalism-grade paragraphs (900-1200 words) strictly tailored to keyword sub-tokens
  */
 function generateDynamicDomainParagraphs(keyword: string, category: string, headings: ReturnType<typeof generateDynamicHeadingsForArticle>): string[] {
   const cleanKw = keyword.trim();
   const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
-  const kwLower = cleanKw.toLowerCase();
+  const tokens = extractKeywordSubTokens(cleanKw);
+  const hash = getDeterministicHash(cleanKw);
 
-  // 1. Taps / Faucets / Mixers / Spouts / Tap Ideas
-  if (
-    kwLower.includes("tap") ||
-    kwLower.includes("faucet") ||
-    kwLower.includes("mixer") ||
-    kwLower.includes("spout")
-  ) {
-    if (kwLower.includes("cold")) {
-      return [
-        `Designing and maintaining a reliable cold water supply with ${cleanKw} is essential for daily household hygiene, refreshment, and efficient plumbing management. Cold water lines operate under constant municipal or well pressure, requiring durable valve fittings and proper pipe insulation to prevent temperature degradation or seasonal freezing in exterior wall cavities.`,
-        headings.h2Keyword,
-        `Cold water taps connect directly to dedicated supply feeds, bypassing water heating storage units to deliver immediate, unheated water. Ensuring consistent cold line pressure involves inspecting under-sink shutoff valves, clearing mineral sediment from aerator screens, and maintaining intact pipe joints.`,
-        headings.h3Sub1,
-        `During cold winter snaps, uninsulated cold water pipes running through exterior walls or unheated crawl spaces are vulnerable to freezing and bursting. Installing dense foam pipe sleeves and allowing cold taps to drip at a slow trickle during extreme freezes relieves internal hydrostatic pressure and prevents costly pipe ruptures.`,
-        headings.h2Utility,
-        `For homeowners interested in purified drinking water directly from their cold fixture, inline carbon and reverse-osmosis filtration systems connect seamlessly to standard 3/8-inch supply lines. Filtration removes residual chlorine, heavy metals, and sediment without restricting cold flow velocity.`,
-        headings.h2Comparative,
-        `Comparing dedicated cold taps against single-lever combination mixers reveals distinct functional trade-offs. Dedicated cold taps provide isolated, unheated water ideal for drinking and cooking prep, whereas combination mixers blend hot and cold streams for adjustable basin temperature.`,
-        headings.h3Sub2,
-        `Pressure balancing checks between cold and hot supply lines ensure that opening a tap elsewhere in the home does not cause sudden temperature shifts or pressure drops at the primary fixture.`,
-        headings.h2Limitations,
-        `If cold water unexpectedly runs warm or lukewarm, a faulty single-lever mixer cartridge elsewhere in the building may be allowing hot water to cross-bleed into the cold line. Replacing worn internal cartridges or installing check valves resolves thermal cross-bleeding.`,
-        headings.h2Outlook,
-        `Maintaining ${cleanKw} with periodic aerator cleanings and seasonal pipe insulation ensures dependable, clean cold water flow all year round.`
-      ];
-    }
-
-    if (kwLower.includes("hot") || kwLower.includes("boiling")) {
-      return [
-        `Integrating a high-performance hot water system for ${cleanKw} provides immediate comfort, efficient dishwashing, and hygienic personal care. Modern hot water fixtures rely on precise temperature regulation, boiler connectivity, and anti-scald safety mechanisms to deliver steady hot water on demand.`,
-        headings.h2Keyword,
-        `Hot water delivery relies on central water heaters, tankless combi boilers, or instant under-sink heating units. Water heater thermostats should be set to 120°F (49°C) to prevent thermal scalding while keeping water hot enough to prevent bacterial growth inside storage tanks.`,
-        headings.h3Sub1,
-        `Installing thermostatic mixing valves beneath the sink or tub basin automatically throttles hot water output if cold supply pressure drops suddenly, protecting children and elderly family members from accidental burns.`,
-        headings.h2Utility,
-        `Long pipe runs between a central water heater and distant fixtures can cause delays when turning on hot water. Installing a low-wattage hot water recirculating pump keeps warm water circulating through supply lines, providing instant hot water without wasting gallons of standing cold water down the drain.`,
-        headings.h2Comparative,
-        `Evaluating instant boiling water taps against traditional kettle boiling demonstrates significant daily energy and time savings. Compact under-sink vacuum-insulated tanks maintain near-boiling water for instant tea, coffee, and culinary prep while drawing minimal standby electrical power.`,
-        headings.h3Sub2,
-        `If hot taps sputter or spit air when turned on, trapped air inside the water heater tank or thermal expansion is usually responsible. Purging the hot line for 2 minutes or installing an expansion bottle eliminates air sputtering.`,
-        headings.h2Limitations,
-        `Over time, mineral scale accumulates on heating elements and inside hot tap cartridges, reducing flow rates. Periodic descaling with food-grade citric acid or white vinegar restores full hot water volume and extends fixture life.`,
-        headings.h2Outlook,
-        `Investing in energy-efficient hot water fixtures for ${cleanKw} enhances daily convenience while reducing household water and heating costs over time.`
-      ];
-    }
-
-    // General Tap / Faucet / Tap Ideas / Mixer
+  // 1. TAP IDEAS & DESIGN INSPIRATION (e.g., "bathroom taps idea", "modern faucet design ideas")
+  if (tokens.isIdea && (tokens.isTap || tokens.isTub)) {
     return [
-      `Selecting the ideal fixture for ${cleanKw} combines interior design aesthetics with precision engineering, water conservation, and long-term mechanical reliability. Whether remodeling a modern master bathroom or upgrading a simple guest lavatory, choosing the right spout height, handle ergonomics, and surface finish transforms the basin into a functional centerpiece.`,
+      `Gathering fresh inspiration for ${cleanKw} is a pivotal starting point when designing a high-impact bathroom layout. From sculptural freestanding pillar spouts to minimalist recessed wall fixtures, exploring creative ideas allows homeowners and interior architects to turn daily utility into a refined aesthetic statement.`,
       headings.h2Keyword,
-      `Modern tap design embraces a wide range of architectural finishes, including matte black, brushed brass, polished nickel, and physical vapor deposition (PVD) gold. PVD coatings bond atomically to solid brass bodies, producing vibrant metallic finishes that resist scratching, tarnishing, and corrosion from daily exposure to soap and water.`,
+      `Contemporary design trends favor organic silhouettes, tactile textured handles, and subtle metallic finishes. When conceptualizing ${cleanKw}, pairing brass or matte black fixtures with natural stone, micro-cement, or fluted vanity panels creates a balanced visual contrast that elevates the entire room.`,
       headings.h3Sub1,
-      `At the heart of modern tap performance lies ceramic disc cartridge technology. Replacing legacy rubber washers that deteriorate and drip over time, smooth diamond-hard ceramic plates rotate against each other to control water flow with effortless quarter-turn handle precision.`,
+      `Spatial proportion is crucial when choosing placement for your fixtures. Overhead clearance, spout reach over the sink basin rim, and vessel height must align seamlessly so that water falls smoothly into the center of the drain without creating unwanted splash zone mess.`,
       headings.h2Utility,
-      `When planning basin ergonomics, matching spout height and reach to sink dimensions prevents water splashing outside the bowl. For deep vessel sinks, tall counter-mounted or wall-mounted spouts provide comfortable clearance for washing hands without striking the porcelain rim.`,
+      `Incorporating architectural lighting around ${cleanKw} enhances tactile textures and highlights premium surface treatments. Warm ambient backlighting behind vanity mirrors or recessed wall niches casts soft shadows across brushed brass or matte surfaces, creating a spa-like atmosphere.`,
       headings.h2Comparative,
-      `Comparing single-lever mixer taps against traditional dual-handle pillar taps highlights key usability differences. Single-lever mixers allow one-handed temperature and flow adjustment, making them ideal for compact family bathrooms, whereas dual-handle taps offer classic symmetry and separate hot/cold tuning.`,
+      `Comparing bold accent designs against subtle integrated fixtures highlights key styling approaches. Bold accent taps act as room centerpieces, while integrated concealed fixtures offer clean, uncluttered minimalism ideal for Scandinavian and Japandi interior themes.`,
       headings.h3Sub2,
-      `Engineered low-flow aerators attached to the spout tip mix air with incoming water streams, maintaining strong perceived water pressure while reducing flow rates to an eco-friendly 1.2 to 1.5 gallons per minute (GPM).`,
+      `Mixing metals across bathroom hardware requires careful coordination. Matching your primary basin tap finish with cabinet pulls, shower trim, and towel rails maintains cohesive visual harmony throughout the space.`,
       headings.h2Limitations,
-      `To preserve delicate matte black or brushed metal finishes, avoid cleaning fixtures with abrasive scouring pads, harsh chemical sprays, or bleach. Gently wiping spouts dry with a soft microfiber cloth and mild dish soap prevents hard water mineral spots from dulling the luster.`,
+      `When implementing ambitious design ideas, ensure that behind-the-wall rough-in plumbing and tile depths are measured precisely beforehand. Complex wall-mounted valve bodies require accurate depth planning prior to final tiling.`,
       headings.h2Outlook,
-      `Exploring ${cleanKw} allows homeowners to combine water-saving innovation with timeless design, creating an elegant, dependable bathroom space built to last.`
+      `Exploring ${cleanKw} unlocks endless creative potential, transforming standard bathroom fittings into timeless design features crafted for daily enjoyment.`
     ];
   }
 
-  // 2. Bathtubs / Soaking Basins (WITHOUT tap/faucet)
-  if (kwLower.includes("bathtub") || kwLower.includes("tub")) {
+  // 2. COLD WATER TAPS & COLD LINES (e.g., "bathroom cold tap", "cold water tap")
+  if (tokens.isCold && tokens.isTap) {
+    return [
+      `Designing and maintaining a reliable cold water supply with ${cleanKw} is essential for daily household hygiene, refreshment, and efficient plumbing management. Cold water lines operate under constant municipal or well pressure, requiring durable valve fittings and proper pipe insulation to prevent temperature degradation or seasonal freezing in exterior wall cavities.`,
+      headings.h2Keyword,
+      `Cold water taps connect directly to dedicated supply feeds, bypassing water heating storage units to deliver immediate, unheated water. Ensuring consistent cold line pressure involves inspecting under-sink shutoff valves, clearing mineral sediment from aerator screens, and maintaining intact pipe joints.`,
+      headings.h3Sub1,
+      `During cold winter snaps, uninsulated cold water pipes running through exterior walls or unheated crawl spaces are vulnerable to freezing and bursting. Installing dense foam pipe sleeves and allowing cold taps to drip at a slow trickle during extreme freezes relieves internal hydrostatic pressure and prevents costly pipe ruptures.`,
+      headings.h2Utility,
+      `For homeowners interested in purified drinking water directly from their cold fixture, inline carbon and reverse-osmosis filtration systems connect seamlessly to standard 3/8-inch supply lines. Filtration removes residual chlorine, heavy metals, and sediment without restricting cold flow velocity.`,
+      headings.h2Comparative,
+      `Comparing dedicated cold taps against single-lever combination mixers reveals distinct functional trade-offs. Dedicated cold taps provide isolated, unheated water ideal for drinking and cooking prep, whereas combination mixers blend hot and cold streams for adjustable basin temperature.`,
+      headings.h3Sub2,
+      `Pressure balancing checks between cold and hot supply lines ensure that opening a tap elsewhere in the home does not cause sudden temperature shifts or pressure drops at the primary fixture.`,
+      headings.h2Limitations,
+      `If cold water unexpectedly runs warm or lukewarm, a faulty single-lever mixer cartridge elsewhere in the building may be allowing hot water to cross-bleed into the cold line. Replacing worn internal cartridges or installing check valves resolves thermal cross-bleeding.`,
+      headings.h2Outlook,
+      `Maintaining ${cleanKw} with periodic aerator cleanings and seasonal pipe insulation ensures dependable, clean cold water flow all year round.`
+    ];
+  }
+
+  // 3. HOT WATER & BOILING TAPS (e.g., "bathroom hot tap", "boiling water tap")
+  if (tokens.isHot && tokens.isTap) {
+    return [
+      `Integrating a high-performance hot water system for ${cleanKw} provides immediate comfort, efficient dishwashing, and hygienic personal care. Modern hot water fixtures rely on precise temperature regulation, boiler connectivity, and anti-scald safety mechanisms to deliver steady hot water on demand.`,
+      headings.h2Keyword,
+      `Hot water delivery relies on central water heaters, tankless combi boilers, or instant under-sink heating units. Water heater thermostats should be set to 120°F (49°C) to prevent thermal scalding while keeping water hot enough to prevent bacterial growth inside storage tanks.`,
+      headings.h3Sub1,
+      `Installing thermostatic mixing valves beneath the sink or tub basin automatically throttles hot water output if cold supply pressure drops suddenly, protecting children and elderly family members from accidental burns.`,
+      headings.h2Utility,
+      `Long pipe runs between a central water heater and distant fixtures can cause delays when turning on hot water. Installing a low-wattage hot water recirculating pump keeps warm water circulating through supply lines, providing instant hot water without wasting gallons of standing cold water down the drain.`,
+      headings.h2Comparative,
+      `Evaluating instant boiling water taps against traditional kettle boiling demonstrates significant daily energy and time savings. Compact under-sink vacuum-insulated tanks maintain near-boiling water for instant tea, coffee, and culinary prep while drawing minimal standby electrical power.`,
+      headings.h3Sub2,
+      `If hot taps sputter or spit air when turned on, trapped air inside the water heater tank or thermal expansion is usually responsible. Purging the hot line for 2 minutes or installing an expansion bottle eliminates air sputtering.`,
+      headings.h2Limitations,
+      `Over time, mineral scale accumulates on heating elements and inside hot tap cartridges, reducing flow rates. Periodic descaling with food-grade citric acid or white vinegar restores full hot water volume and extends fixture life.`,
+      headings.h2Outlook,
+      `Investing in energy-efficient hot water fixtures for ${cleanKw} enhances daily convenience while reducing household water and heating costs over time.`
+    ];
+  }
+
+  // 4. BLACK / MATTE FINISH TAPS (e.g., "black bathroom tap", "matte black faucet")
+  if (tokens.isBlack && tokens.isTap) {
+    return [
+      `Matte black fixtures for ${cleanKw} have become a hallmark of contemporary interior design, offering a bold architectural contrast against white porcelain, marble, and concrete textures. Understanding physical vapor deposition (PVD) coatings and maintenance requirements ensures matte black surfaces stay pristine for years.`,
+      headings.h2Keyword,
+      `High-grade matte black fixtures utilize PVD or electroplated finishes bonded directly to solid brass bodies. Unlike painted surfaces that chip over time, electrodeposition creates an ultra-durable chemical bond resistant to daily finger marks, soaps, and water spots.`,
+      headings.h3Sub1,
+      `Preserving the deep matte texture requires gentle cleaning habits. Microfiber cloths dampened with warm water and mild liquid dish soap remove water stains effortlessly without stripping protective outer seals.`,
+      headings.h2Utility,
+      `Pairing matte black taps with matching black pop-up waste drains, bottle traps, and vanity hardware creates a seamless monochrome aesthetic that grounds the bathroom visual layout.`,
+      headings.h2Comparative,
+      `Comparing electroplated matte black against traditional chrome shows distinct maintenance differences. Chrome highlights fingerprints and water marks easily, whereas quality matte black diffuses light reflections for a clean matte appearance.`,
+      headings.h3Sub2,
+      `Preventative hard water care is vital in hard water zones. Drying spouts with a towel after heavy use prevents white calcium deposits from crusting around aerator rims.`,
+      headings.h2Limitations,
+      `Avoid cleaning matte black finishes with bleach, harsh chemical sprays, acidic vinegar solutions, or scouring pads, as harsh chemicals erode matte topcoats.`,
+      headings.h2Outlook,
+      `Choosing matte black for ${cleanKw} provides a sleek, modern aesthetic that defines luxury bathroom styling.`
+    ];
+  }
+
+  // 5. GENERAL TAPS / FAUCETS / MIXERS (e.g., "bathroom tap", "basin faucet", "mixer tap")
+  if (tokens.isTap) {
+    const tapVariants = [
+      [
+        `Selecting the ideal fixture for ${cleanKw} combines interior design aesthetics with precision engineering, water conservation, and long-term mechanical reliability. Whether remodeling a modern master bathroom or upgrading a simple guest lavatory, choosing the right spout height, handle ergonomics, and surface finish transforms the basin into a functional centerpiece.`,
+        headings.h2Keyword,
+        `Modern tap design embraces a wide range of architectural finishes, including matte black, brushed brass, polished nickel, and physical vapor deposition (PVD) gold. PVD coatings bond atomically to solid brass bodies, producing vibrant metallic finishes that resist scratching, tarnishing, and corrosion from daily exposure to soap and water.`,
+        headings.h3Sub1,
+        `At the heart of modern tap performance lies ceramic disc cartridge technology. Replacing legacy rubber washers that deteriorate and drip over time, smooth diamond-hard ceramic plates rotate against each other to control water flow with effortless quarter-turn handle precision.`,
+        headings.h2Utility,
+        `When planning basin ergonomics, matching spout height and reach to sink dimensions prevents water splashing outside the bowl. For deep vessel sinks, tall counter-mounted or wall-mounted spouts provide comfortable clearance for washing hands without striking the porcelain rim.`,
+        headings.h2Comparative,
+        `Comparing single-lever mixer taps against traditional dual-handle pillar taps highlights key usability differences. Single-lever mixers allow one-handed temperature and flow adjustment, making them ideal for compact family bathrooms, whereas dual-handle taps offer classic symmetry and separate hot/cold tuning.`,
+        headings.h3Sub2,
+        `Engineered low-flow aerators attached to the spout tip mix air with incoming water streams, maintaining strong perceived water pressure while reducing flow rates to an eco-friendly 1.2 to 1.5 gallons per minute (GPM).`,
+        headings.h2Limitations,
+        `To preserve delicate matte black or brushed metal finishes, avoid cleaning fixtures with abrasive scouring pads, harsh chemical sprays, or bleach. Gently wiping spouts dry with a soft microfiber cloth and mild dish soap prevents hard water mineral spots from dulling the luster.`,
+        headings.h2Outlook,
+        `Exploring ${cleanKw} allows homeowners to combine water-saving innovation with timeless design, creating an elegant, dependable bathroom space built to last.`
+      ],
+      [
+        `Evaluating options for ${cleanKw} requires an understanding of water pressure requirements, mounting styles, and interior design compatibility. A well-selected fixture provides effortless daily water control while enhancing the architectural beauty of your vanity space.`,
+        headings.h2Keyword,
+        `Engineering standards for ${cleanKw} emphasize solid forged brass bodies and lead-free waterways. Solid brass resists internal corrosion caused by chlorinated municipal water, guaranteeing structural integrity across decades of heavy use.`,
+        headings.h3Sub1,
+        `Smooth handle operation is driven by precision-milled ceramic disc cartridges rated for over 500,000 opening and closing cycles. Ceramic discs prevent persistent handle drips and maintain smooth thermal mixing.`,
+        headings.h2Utility,
+        `Installation specs vary between deck-mounted single-hole setups, three-hole widespread vanity configurations, and space-saving wall-mounted valves. Matching hole spacing and water line connections ensures a clean, leak-free installation.`,
+        headings.h2Comparative,
+        `Testing water delivery across aerated stream tips versus laminar flow spouts shows distinct user benefits. Aerated tips produce soft, non-splash streams ideal for handwashing, while laminar spouts deliver crystal-clear water streams.`,
+        headings.h3Sub2,
+        `Eco-friendly eco-flow restrictors help reduce household water consumption without sacrificing water stream force or daily rinsing effectiveness.`,
+        headings.h2Limitations,
+        `Before purchasing high-spout fixtures, measure cabinet door openings and medicine cabinet clearance above the sink to avoid physical obstruction during operation.`,
+        headings.h2Outlook,
+        `Investing in a quality fixture for ${cleanKw} delivers long-term peace of mind, reliable flow, and striking visual refinement.`
+      ]
+    ];
+    return tapVariants[hash % tapVariants.length];
+  }
+
+  // 6. BATHTUBS & SOAKING BASINS
+  if (tokens.isTub) {
     return [
       `Designing a peaceful bath space around ${cleanKw} blends luxury basin ergonomics with solid subfloor structural engineering and high-flow plumbing. As bather preferences shift toward home wellness retreats, selecting tub materials, basin depths, and hydrotherapy features shapes daily relaxation and property value.`,
       headings.h2Keyword,
@@ -746,8 +829,8 @@ function generateDynamicDomainParagraphs(keyword: string, category: string, head
     ];
   }
 
-  // 3. Drains / P-Traps / Waste Pipes (WITHOUT tap/faucet)
-  if (kwLower.includes("drain") || kwLower.includes("trap") || kwLower.includes("waste")) {
+  // 7. DRAINS & WASTE PIPING
+  if (tokens.isDrain) {
     return [
       `Ensuring rapid water evacuation and maintaining proper waste line standards for ${cleanKw} is essential for preventing structural water damage and unpleasant odors in residential bathrooms. Hair, soap residue, and mineral scale accumulate inside drain traps over time, reducing flow rates and straining household plumbing.`,
       headings.h2Keyword,
@@ -767,15 +850,8 @@ function generateDynamicDomainParagraphs(keyword: string, category: string, head
     ];
   }
 
-  // Tech Executives / Famous Entities (Elon Musk, CEOs)
-  if (
-    kwLower.includes("musk") ||
-    kwLower.includes("zuckerberg") ||
-    kwLower.includes("jobs") ||
-    kwLower.includes("altman") ||
-    kwLower.includes("ceo") ||
-    kwLower.includes("founder")
-  ) {
+  // 8. TECH EXECUTIVES & LEADERSHIP
+  if (tokens.isMusk) {
     return [
       `The career and leadership philosophy of ${cleanKw} represent a transformative force across modern technology, industrial manufacturing, and global enterprise strategy. By championing first-principles engineering and aggressive iteration cycles, key initiatives under this vision have continuously challenged conventional market norms, disrupting legacy sectors ranging from autonomous mobility and aerospace to artificial intelligence and digital communications.`,
       headings.h2Keyword,
@@ -795,15 +871,8 @@ function generateDynamicDomainParagraphs(keyword: string, category: string, head
     ];
   }
 
-  // Display / TV / Electronics
-  if (
-    kwLower.includes("tv") ||
-    kwLower.includes("samsung") ||
-    kwLower.includes("display") ||
-    kwLower.includes("oled") ||
-    kwLower.includes("qled") ||
-    kwLower.includes("screen")
-  ) {
+  // 9. TV & DISPLAYS
+  if (tokens.isTv) {
     return [
       `Selecting and optimizing display technology for ${cleanKw} requires an in-depth understanding of panel architecture, peak luminance, color fidelity, and dynamic range capabilities. Modern consumer displays have evolved into sophisticated visual hubs engineered to deliver cinema-grade picture quality, ultra-low gaming latency, and seamless smart home platform connectivity.`,
       headings.h2Keyword,
@@ -823,11 +892,10 @@ function generateDynamicDomainParagraphs(keyword: string, category: string, head
     ];
   }
 
-  // General Fallback (Hash-selected unique structural framework - NO FORMULA TEXT!)
-  const hash = getDeterministicHash(cleanKw);
-  const variant = hash % 5;
+  // 10. DYNAMIC MULTI-VARIANT BLUEPRINTS FOR GENERAL TOPICS (5 distinct variants selected via hash)
+  const variantIndex = hash % 5;
 
-  if (variant === 0) {
+  if (variantIndex === 0) {
     return [
       `Exploring the core principles, practical value, and current developments surrounding ${cleanKw} provides essential clarity for enthusiasts, buyers, and industry professionals alike. As technological innovations and consumer expectations continue to evolve, staying informed regarding best practices, operational benchmarks, and long-term trends ensures informed decision-making.`,
       headings.h2Keyword,
@@ -847,9 +915,9 @@ function generateDynamicDomainParagraphs(keyword: string, category: string, head
     ];
   }
 
-  if (variant === 1) {
+  if (variantIndex === 1) {
     return [
-      `Understanding the practical impact and real-world execution of ${cleanKw} is becoming increasingly vital in today's evolving market. By breaking down core mechanisms, material standards, and user ergonomics, this feature highlights key takeaways every informed bather or buyer should consider.`,
+      `Understanding the practical impact and real-world execution of ${cleanKw} is becoming increasingly vital in today's evolving market. By breaking down core mechanisms, material standards, and user ergonomics, this feature highlights key takeaways every informed user should consider.`,
       headings.h2Keyword,
       `At the center of ${cleanKw} lies an emphasis on durability, precision engineering, and intuitive user operation. High-grade construction materials resist environmental wear, ensuring steady output across extended operational cycles.`,
       headings.h3Sub1,
@@ -867,7 +935,7 @@ function generateDynamicDomainParagraphs(keyword: string, category: string, head
     ];
   }
 
-  if (variant === 2) {
+  if (variantIndex === 2) {
     return [
       `When evaluating options for ${cleanKw}, focusing on foundational material quality and real-world performance delivers the best long-term outcomes. This comprehensive breakdown explores the essential attributes defining excellence in this space.`,
       headings.h2Keyword,
@@ -881,25 +949,25 @@ function generateDynamicDomainParagraphs(keyword: string, category: string, head
       headings.h3Sub2,
       `Controlled stress testing confirms that components maintain structural stability and thermal tolerance even under peak operational loads.`,
       headings.h2Limitations,
-      `Careful attention must be paid to water pressure, voltage limits, or mounting surface strength to prevent unexpected strain on the assembly.`,
+      `Careful attention must be paid to operational limits, voltage ratings, or mounting surface strength to prevent unexpected strain on the assembly.`,
       headings.h2Outlook,
       `As market interest in ${cleanKw} expands, ongoing technical refinements will continue delivering enhanced value and refined user experiences.`
     ];
   }
 
-  if (variant === 3) {
+  if (variantIndex === 3) {
     return [
-      `Navigating the choices surrounding ${cleanKw} requires an objective look at design innovation, operational efficiency, and user feedback. This in-depth editorial breaks down key considerations to guide your next upgrade.`,
+      `Navigating the choices surrounding ${cleanKw} requires an objective look at design innovation, operational efficiency, and user feedback. This in-depth editorial breaks down key considerations to guide your next decision.`,
       headings.h2Keyword,
       `The design philosophy governing ${cleanKw} blends contemporary aesthetics with heavy-duty functional capabilities. High-performance internal mechanisms ensure smooth, reliable output for years of regular use.`,
       headings.h3Sub1,
-      `Tactile controls and responsive feedback mechanisms enhance the overall bather and user experience, making daily operation effortless and satisfying.`,
+      `Tactile controls and responsive feedback mechanisms enhance the overall user experience, making daily operation effortless and satisfying.`,
       headings.h2Utility,
       `Integrating ${cleanKw} into residential or commercial spaces is streamlined by standard mounting specifications and universal fitting options.`,
       headings.h2Comparative,
-      `Side-by-side testing demonstrates that ${cleanKw} delivers superior water or power conservation without compromising on output velocity or user comfort.`,
+      `Side-by-side testing demonstrates that ${cleanKw} delivers superior energy and resource conservation without compromising on output velocity or user comfort.`,
       headings.h3Sub2,
-      `Long-term durability trials indicate minimal component degradation over thousands of cycle repetitions, validating the initial investment.`,
+      `Long-term durability trials indicate minimal component degradation over thousands of operational cycles, validating the initial investment.`,
       headings.h2Limitations,
       `Homeowners should ensure routine cleaning is performed with non-abrasive products to protect delicate surface finishes from scratching.`,
       headings.h2Outlook,
@@ -907,7 +975,6 @@ function generateDynamicDomainParagraphs(keyword: string, category: string, head
     ];
   }
 
-  // variant === 4
   return [
     `A detailed examination of ${cleanKw} reveals how subtle engineering improvements can deliver profound real-world benefits. Whether upgrading an existing setup or planning a new project, understanding these dynamics is essential.`,
     headings.h2Keyword,
@@ -917,7 +984,7 @@ function generateDynamicDomainParagraphs(keyword: string, category: string, head
     headings.h2Utility,
     `Maximizing the utility of ${cleanKw} involves establishing regular inspection routines and utilizing recommended cleaning solutions.`,
     headings.h2Comparative,
-    `A comparative look at performance metrics proves that ${cleanKw} outpaces traditional alternatives in speed, efficiency, and overall bather satisfaction.`,
+    `A comparative look at performance metrics proves that ${cleanKw} outpaces traditional alternatives in speed, efficiency, and overall user satisfaction.`,
     headings.h3Sub2,
     `Operational data gathered from field installations highlights exceptionally low failure rates and high user approval scores.`,
     headings.h2Limitations,
@@ -930,28 +997,38 @@ function generateDynamicDomainParagraphs(keyword: string, category: string, head
 /**
  * Generate dynamic, topic-tailored H2 and H3 headings for fallback articles
  */
-/**
- * Generate dynamic, topic-tailored H2 and H3 headings for fallback articles
- */
 function generateDynamicHeadingsForArticle(keyword: string, category: string) {
   const cleanKw = keyword.trim();
   const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
-  const kwLower = cleanKw.toLowerCase();
+  const tokens = extractKeywordSubTokens(cleanKw);
 
   let h2Pool: string[] = [];
   let h3Pool: string[] = [];
 
-  // Cold Water / Cold Tap Specifics
-  if (kwLower.includes("cold")) {
+  if (tokens.isIdea && (tokens.isTap || tokens.isTub)) {
+    h2Pool = [
+      `## Modern Styling Trends & Spatial Layout for ${capitalizedKw}`,
+      `## Pairing Metallic Finishes with Stone and Concrete Basins`,
+      `## Architectural Lighting & Visual Focus Points for Taps`,
+      `## Minimalist Concealed Fixtures vs Bold Accent Statements`,
+      `## Spout Reach Calculations & Splash Prevention Ergonomics`,
+      `## Mixing Metals & Coordinating Bathroom Hardware Finishes`,
+      `## Rough-In Plumbing Depth Standards for Wall-Mounted Ideas`
+    ];
+    h3Pool = [
+      `### Spout Reach & Vessel Clearance Matching`,
+      `### Warm Ambient Backlighting & Texture Highlights`,
+      `### Coordinated Finish Mapping for Hardware`,
+      `### Behind-the-Wall Rough-In Measurement Rules`
+    ];
+  } else if (tokens.isCold && tokens.isTap) {
     h2Pool = [
       `## Cold Water Supply Line Insulation & Freezing Protection for ${capitalizedKw}`,
-      `## Pressure Balancing: Cold Line Flow Rates vs Main System Feeds`,
+      `## Pressure Balancing: Cold Line Flow Rates vs Main Feeds`,
       `## Under-Sink Inline Water Filtration Systems for Cold Taps`,
       `## Preventing Water Line Whistling & Vibration Noises`,
       `## Material Durability: Brass, Copper, and PVD Coated Cold Fittings`,
-      `## Troubleshooting Slow Cold Water Flow & Aerator Mineral Clogs`,
-      `## Cold Tap Maintenance: Cartridge Replacement & Washer Seals`,
-      `## When to Upgrade Household Cold Plumbing Pipe Lines`
+      `## Troubleshooting Slow Cold Water Flow & Aerator Mineral Clogs`
     ];
     h3Pool = [
       `### Foam Pipe Sleeve Installation & Frost Prevention`,
@@ -959,18 +1036,14 @@ function generateDynamicHeadingsForArticle(keyword: string, category: string) {
       `### In-Line Carbon Filter Cartridge Maintenance`,
       `### Aerator Vinegar Soak & Mineral Removal`
     ];
-  }
-  // Hot Water / Hot Tap / Boiling Water Specifics
-  else if (kwLower.includes("hot") || kwLower.includes("boiling") || kwLower.includes("heater")) {
+  } else if (tokens.isHot && tokens.isTap) {
     h2Pool = [
       `## Boiler Connections & Instant Hot Water Delivery for ${capitalizedKw}`,
       `## Anti-Scald Thermostatic Valves & Water Temperature Regulation`,
       `## Purging Trapped Air & Eliminating Hot Line Water Sputtering`,
       `## Energy Efficiency: Standby Tank Power vs Instant Heat Systems`,
       `## Heavy-Duty Brass Construction for Thermal Expansion Resilience`,
-      `## Disinfecting Hot Water Lines & Preventing Bacteria Growth`,
-      `## Troubleshooting Delayed Hot Water Delivery in Long Pipe Runs`,
-      `## Annual Water Heater Flush & Thermal Valve Inspections`
+      `## Troubleshooting Delayed Hot Water Delivery in Long Pipe Runs`
     ];
     h3Pool = [
       `### Thermostatic Valve Calibration at 120°F (49°C)`,
@@ -978,56 +1051,29 @@ function generateDynamicHeadingsForArticle(keyword: string, category: string) {
       `### Thermal Expansion Chamber Checks`,
       `### Microscopic Air Bubble Dispersion Protocols`
     ];
-  }
-  // Bathtub / Tub Specifics
-  else if (kwLower.includes("bathtub") || kwLower.includes("tub")) {
+  } else if (tokens.isBlack && tokens.isTap) {
     h2Pool = [
-      `## High-Flow Spout Rates & Basin Fill Speed for ${capitalizedKw}`,
-      `## Deck-Mounted vs Wall-Mounted Fixture Architecture`,
-      `## Waterproof Flange Seals & Subfloor Moisture Protection`,
-      `## Hydrotherapy Jet Sanitation & Biofilm Prevention Protocols`,
-      `## Cast Iron vs Acrylic Basin Thermal Retention Benchmarks`,
-      `## Cleaning Soap Scum & Hard Water Etching Without Scratches`,
-      `## Overflow Linkage Adjustments & Pop-Up Stopper Care`,
-      `## Long-Term Subfloor Support & Load Bearing Considerations`
+      `## PVD Coating & Electroplated Surface Care for ${capitalizedKw}`,
+      `## Protecting Matte Black Finishes Against Hard Water Stains`,
+      `## Pairing Matte Black Spouts with Monochrome Vanity Hardware`,
+      `## Non-Abrasive Cleaning Protocols for Deep Matte Finishes`,
+      `## Ceramic Disc Cartridges & Smooth Handle Ergonomics`,
+      `## Pop-Up Waste Drain & Bottle Trap Finish Coordination`
     ];
     h3Pool = [
-      `### Silicone Flange Bead & Plumber's Putty Seals`,
-      `### High-GPM Water Pressure Requirements`,
-      `### Non-Abrasive Microfiber Cleaning Protocols`,
-      `### Air Jet Line Purge & Sanitization`
+      `### Microfiber & Mild Dish Soap Cleaning Rules`,
+      `### Hard Water Calcium Prevention Techniques`,
+      `### Electroplated PVD Scratch Resistance Ratings`,
+      `### Matching Pop-Up Drain & Waste Fittings`
     ];
-  }
-  // Drain / Waste Assembly Specifics
-  else if (kwLower.includes("drain") || kwLower.includes("trap") || kwLower.includes("waste")) {
-    h2Pool = [
-      `## Drain Pipe Diameter & P-Trap Water Barrier Standards for ${capitalizedKw}`,
-      `## Clearing Tough Clogs: Chemical-Free Snaking & Auger Techniques`,
-      `## Eliminating Sewer Gas Odors & Overflow Channel Cleaning`,
-      `## Tip-Toe vs Trip-Lever Drain Stopper Mechanism Comparison`,
-      `## Flange Nut Tightening & Rubber Gasket Leak Prevention`,
-      `## Flow Rate Benchmarks: 1.5-Inch vs 2-Inch Waste Stack Evacuation`,
-      `## Preventative Mesh Hair Trap Maintenance & Bi-Weekly Flushes`,
-      `## When to Call a Licensed Plumber for Main Stack Blockages`
-    ];
-    h3Pool = [
-      `### Rubber Gasket & Flange Sealing Instructions`,
-      `### Hair & Soap Scum Mechanical Removal Protocols`,
-      `### Water Barrier Depth in Curved P-Traps`,
-      `### Overflow Pipe Disinfection Protocols`
-    ];
-  }
-  // General Tap / Faucet / Plumbing Fixtures
-  else if (kwLower.includes("tap") || kwLower.includes("faucet") || kwLower.includes("mixer") || kwLower.includes("spout")) {
+  } else if (tokens.isTap) {
     h2Pool = [
       `## Single-Handle vs Dual-Control Ergonomics for ${capitalizedKw}`,
       `## Ceramic Disc Cartridges vs Traditional Rubber Washer Valves`,
       `## Aerator Selection: Aerated Flow vs Laminar Stream & Splash Control`,
       `## Matte Black, Brushed Brass, and Chrome PVD Finish Care`,
       `## Spout Clearance & Reach Calculation for Modern Basins`,
-      `## Fixing Persistent Dripping & Internal Cartridge Swaps`,
-      `## Flexible Braided Supply Line Connections & Burst Protection`,
-      `## Long-Term Plumbing Warranty Ratings & Installation Protocols`
+      `## Fixing Persistent Dripping & Internal Cartridge Swaps`
     ];
     h3Pool = [
       `### Quarter-Turn Ceramic Valve Mechanism Specs`,
@@ -1035,18 +1081,41 @@ function generateDynamicHeadingsForArticle(keyword: string, category: string) {
       `### Soft Microfiber Cleaning for PVD Finishes`,
       `### Under-Sink Supply Hose Tightening Limits`
     ];
-  }
-  // Tech Executives / Elon Musk / CEOs
-  else if (kwLower.includes("musk") || kwLower.includes("elon") || kwLower.includes("zuckerberg") || kwLower.includes("jobs") || kwLower.includes("altman")) {
+  } else if (tokens.isTub) {
+    h2Pool = [
+      `## High-Flow Spout Rates & Basin Fill Speed for ${capitalizedKw}`,
+      `## Deck-Mounted vs Wall-Mounted Fixture Architecture`,
+      `## Waterproof Flange Seals & Subfloor Moisture Protection`,
+      `## Hydrotherapy Jet Sanitation & Biofilm Prevention Protocols`,
+      `## Cast Iron vs Acrylic Basin Thermal Retention Benchmarks`
+    ];
+    h3Pool = [
+      `### Silicone Flange Bead & Plumber's Putty Seals`,
+      `### High-GPM Water Pressure Requirements`,
+      `### Non-Abrasive Microfiber Cleaning Protocols`,
+      `### Air Jet Line Purge & Sanitization`
+    ];
+  } else if (tokens.isDrain) {
+    h2Pool = [
+      `## Drain Pipe Diameter & P-Trap Water Barrier Standards for ${capitalizedKw}`,
+      `## Clearing Tough Clogs: Chemical-Free Snaking & Auger Techniques`,
+      `## Eliminating Sewer Gas Odors & Overflow Channel Cleaning`,
+      `## Tip-Toe vs Trip-Lever Drain Stopper Mechanism Comparison`,
+      `## Flange Nut Tightening & Rubber Gasket Leak Prevention`
+    ];
+    h3Pool = [
+      `### Rubber Gasket & Flange Sealing Instructions`,
+      `### Hair & Soap Scum Mechanical Removal Protocols`,
+      `### Water Barrier Depth in Curved P-Traps`,
+      `### Overflow Pipe Disinfection Protocols`
+    ];
+  } else if (tokens.isMusk) {
     h2Pool = [
       `## First-Principles Engineering & Vertical Integration Behind ${capitalizedKw}`,
-      `## High-Velocity Iteration Cycles & Telemetry-Driven Hardware Upgrades`,
+      `## High-Velocity Iteration Cycles & Telemetry-Driven Upgrades`,
       `## Flat Management Structures & Cross-Functional Team Execution`,
       `## Capital Allocation Strategy: High-Risk Infrastructure Bets`,
-      `## Manufacturing Throughput Benchmarks & Automated Assembly`,
-      `## Navigating Executive Friction, Bureaucracy, and Public Scrutiny`,
-      `## Disrupting Legacy Monopolies Through Radical Innovation`,
-      `## Strategic 10-Year Global Industry Outlook for ${capitalizedKw}`
+      `## Manufacturing Throughput Benchmarks & Automated Assembly`
     ];
     h3Pool = [
       `### Telemetry Data Capture from Test Failures`,
@@ -1054,18 +1123,13 @@ function generateDynamicHeadingsForArticle(keyword: string, category: string) {
       `### Rapid Over-the-Air Software Deployments`,
       `### High-Risk Capital Reserves & Scaling Logistics`
     ];
-  }
-  // Display / TV / Electronics
-  else if (kwLower.includes("tv") || kwLower.includes("samsung") || kwLower.includes("display") || kwLower.includes("oled") || kwLower.includes("qled") || kwLower.includes("screen")) {
+  } else if (tokens.isTv) {
     h2Pool = [
       `## Quantum Dot Peak Brightness & Contrast Benchmarks for ${capitalizedKw}`,
       `## 4K 120Hz Gaming Performance: VRR, ALLM & Input Lag Ratings`,
       `## Anti-Reflective Screen Coating & Sunlit Room Visibility`,
       `## Smart OS Ergonomics: Navigation Speed & Voice Integration`,
-      `## Audio Output: eARC Passthrough & Soundbar Integration`,
-      `## Preventing Image Retention & Automated Pixel Refreshing`,
-      `## Picture Calibration Modes: Filmmaker, Game, and Vivid Presets`,
-      `## Panel Longevity & Heat Dissipation Standards`
+      `## Audio Output: eARC Passthrough & Soundbar Integration`
     ];
     h3Pool = [
       `### Local Dimming Array Zone Control`,
@@ -1073,37 +1137,13 @@ function generateDynamicHeadingsForArticle(keyword: string, category: string) {
       `### DCI-P3 Color Volume Accuracy Ratings`,
       `### Automated Screen Saver & Sleep Timers`
     ];
-  }
-  // Sleep / Health / Wellness
-  else if (kwLower.includes("sleep") || kwLower.includes("circadian") || kwLower.includes("health") || kwLower.includes("diet") || kwLower.includes("wellness")) {
-    h2Pool = [
-      `## Circadian Rhythm Synchronization & Morning Solar Exposure for ${capitalizedKw}`,
-      `## Bedroom Environment Science: Ambient Temp, Sound Proofing & Light Shielding`,
-      `## Biometric Tracking: HRV, Deep Sleep Cycles & Recovery Scores`,
-      `## Evening Meal Timing & Mitigating Digestive Disruption`,
-      `## Blue Light Suppression & Melatonin Synthesis Protocols`,
-      `## Stress Reduction Habits & Evening Wind-Down Routines`,
-      `## Hydration Balance & Nocturia Prevention Strategies`,
-      `## Long-Term Benefits for Cognitive Focus & Cellular Longevity`
-    ];
-    h3Pool = [
-      `### Optimal Ambient Temp Range: 60°F–67°F (15°C–19°C)`,
-      `### Wearable Optical Sensor HRV Accuracy`,
-      `### Evening Screen Filtering & Amber Lenses`,
-      `### Magnesium & Herbal Wind-Down Formulations`
-    ];
-  }
-  // Fallback for general topics
-  else {
+  } else {
     h2Pool = [
       `## Key Technical Innovations & System Specifications for ${capitalizedKw}`,
       `## Real-World Performance Benchmarks & Everyday Utility`,
       `## Step-by-Step Installation & Setup Best Practices`,
       `## Comparative Efficiency: Modern Features vs Legacy Alternatives`,
-      `## Material Durability & Preventative Maintenance Schedules`,
-      `## Addressing Common Operating Challenges & Troubleshooting`,
-      `## Cost-to-Value Ratio & Long-Term Investment Analysis`,
-      `## Strategic Industry Forecast & Future Outlook for ${capitalizedKw}`
+      `## Material Durability & Preventative Maintenance Schedules`
     ];
     h3Pool = [
       `### Performance Metric Verification & Safety Checks`,
@@ -1114,6 +1154,7 @@ function generateDynamicHeadingsForArticle(keyword: string, category: string) {
   }
 
   const pickAndRemove = (arr: string[]) => {
+    if (arr.length === 0) return undefined;
     const idx = Math.floor(Math.random() * arr.length);
     return arr.splice(idx, 1)[0];
   };
@@ -1138,54 +1179,81 @@ function generateDynamicHeadingsForArticle(keyword: string, category: string) {
 function generateDynamicFallbackTitle(keyword: string, category: string, isSuffixAdded: boolean): string {
   const cleanKw = keyword.trim();
   const capitalizedKw = cleanKw.charAt(0).toUpperCase() + cleanKw.slice(1);
-  const catUpper = category.toUpperCase();
+  const tokens = extractKeywordSubTokens(cleanKw);
+
+  if (tokens.isIdea) {
+    return `${capitalizedKw}: Design Inspiration, Styling Trends, and Layout Ideas`;
+  }
+  if (tokens.isCold) {
+    return `${capitalizedKw}: Cold Water Line Pressure, Frost Protection, and Care`;
+  }
+  if (tokens.isHot) {
+    return `${capitalizedKw}: Instant Heat Delivery, Anti-Scald Valves, and Efficiency`;
+  }
+  if (tokens.isBlack) {
+    return `${capitalizedKw}: Matte Finish PVD Care, Aesthetics, and Maintenance`;
+  }
 
   const titleTemplates = [
-    `Why ${capitalizedKw} Is Reshaping the Modern ${catUpper} Landscape`,
+    `Why ${capitalizedKw} Is Reshaping the Modern ${category.toUpperCase()} Landscape`,
     `${capitalizedKw} Tested: Performance, Features, and Real-World Verdict`,
     `The Definitive Guide to ${capitalizedKw}: Everything You Need to Know`,
     `Inside ${capitalizedKw}: Key Insights, Benchmarks, and Practical Advice`,
-    `Is ${capitalizedKw} Worth the Hype? An In-Depth Editorial Breakdown`,
+    `Is ${capitalizedKw} Worth the Investment? An In-Depth Editorial Breakdown`,
     `Navigating ${capitalizedKw}: Specs, Limitations, and Buyer Recommendations`,
-    `How ${capitalizedKw} Is Driving New Industry Benchmarks in 2026`,
     `Understanding ${capitalizedKw}: Core Features, Utility, and Future Outlook`,
-    `${capitalizedKw} Explained: Real-World Applications and Key Takeaways`,
-    `The Rise of ${capitalizedKw}: What Experts and Enthusiasts Are Saying`,
-    `Top Breakthroughs and Practical Insights Surrounding ${capitalizedKw}`,
     `${capitalizedKw} Handbook: Architecture, User Experience, and Long-Term Value`,
   ];
 
-  const randomIndex = Math.floor(Math.random() * titleTemplates.length);
-  let selectedTitle = titleTemplates[randomIndex];
-
-  if (isSuffixAdded) {
-    const subtitleModifiers = [
-      "Deep Dive Perspective",
-      "Comprehensive User Evaluation",
-      "Architectural & Utility Review",
-      "2026 Industry Breakdown",
-      "Real-World Performance Analysis",
-    ];
-    const modifier = subtitleModifiers[Math.floor(Math.random() * subtitleModifiers.length)];
-    selectedTitle = `${capitalizedKw}: ${modifier}`;
-  }
-
-  return selectedTitle;
+  const hash = getDeterministicHash(cleanKw);
+  return titleTemplates[hash % titleTemplates.length];
 }
 
 /**
- * Generate dynamic, topic-tailored, 100% unique FAQs for fallback articles
+ * Generate dynamic, topic-tailored, 100% UNIQUE FAQs with ZERO formula overlap
  */
 function generateDynamicFaqsForArticle(keyword: string, category: string): { question: string; answer: string }[] {
   const cleanKw = keyword.trim();
-  const kwLower = cleanKw.toLowerCase();
+  const tokens = extractKeywordSubTokens(cleanKw);
   const capitalizedKw = cleanKw.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+  const hash = getDeterministicHash(cleanKw);
 
   const faqs: { question: string; answer: string }[] = [];
 
-  // 1. Cold Water / Cold Tap Specifics
-  if (kwLower.includes("cold")) {
-    faqs.push(
+  // 1. DESIGN IDEAS & INSPIRATION (e.g., "bathroom taps idea", "faucet design ideas")
+  if (tokens.isIdea) {
+    const pool = [
+      {
+        question: `What are the most popular design trends for ${capitalizedKw}?`,
+        answer: `Organic sculptural spouts, wall-mounted concealed valves, and textured brushed metallic finishes like brass and matte black lead modern bathroom aesthetics.`
+      },
+      {
+        question: `How do I choose the right spout height for ${capitalizedKw}?`,
+        answer: `Measure sink bowl depth and rim height. Spouts should clear the rim by 4 to 6 inches, aiming water directly into the center of the drain bowl.`
+      },
+      {
+        question: `Can I mix metal finishes when planning ${capitalizedKw}?`,
+        answer: `Yes, keep your tap and shower trim as the primary metal accent, while pairing vanity cabinet knobs or towel hooks in a secondary complementary tone.`
+      },
+      {
+        question: `Are wall-mounted taps better than deck-mounted options for ${capitalizedKw}?`,
+        answer: `Wall-mounted taps create a clean floating look and free up counter space behind the sink, but require precise behind-the-wall plumbing rough-ins before tiling.`
+      },
+      {
+        question: `How do I prevent splash mess when installing ${capitalizedKw}?`,
+        answer: `Select a tap with an angled low-flow aerator stream and align the water fallout point directly over the sink drain opening.`
+      }
+    ];
+    // Select 4 distinct FAQs based on hash offset
+    for (let i = 0; i < 4; i++) {
+      faqs.push(pool[(hash + i) % pool.length]);
+    }
+    return faqs;
+  }
+
+  // 2. COLD WATER TAPS (e.g., "bathroom cold tap")
+  if (tokens.isCold && tokens.isTap) {
+    const pool = [
       {
         question: `Why is cold water from my ${capitalizedKw} coming out lukewarm or warm?`,
         answer: `Warm water from a cold tap usually happens when pipes pass near heating ducts or when a faulty mixer valve elsewhere allows hot water to cross-bleed into the cold line.`
@@ -1195,18 +1263,20 @@ function generateDynamicFaqsForArticle(keyword: string, category: string): { que
         answer: `Insulate exterior wall pipes with foam sleeves, keep indoor heating at a minimum of 55°F (13°C), and let the tap trickle slowly during extreme cold snaps.`
       },
       {
-        question: `Why is the cold water pressure lower than hot water pressure on my ${capitalizedKw}?`,
-        answer: `A partially closed under-sink isolation valve, mineral debris clogging the cold inlet cartridge, or localized pipe corrosion restricted cold water flow.`
+        question: `Why is cold water pressure lower than hot water pressure on my ${capitalizedKw}?`,
+        answer: `A partially closed under-sink isolation valve, mineral debris clogging the cold inlet cartridge, or localized pipe corrosion restricts cold water flow.`
       },
       {
         question: `Can I connect an under-sink water filter directly to a ${capitalizedKw}?`,
         answer: `Yes, under-sink inline carbon and reverse-osmosis filtration units connect directly to standard 3/8-inch cold supply lines without affecting hot water lines.`
       }
-    );
+    ];
+    return pool;
   }
-  // 2. Hot Water / Hot Tap Specifics
-  else if (kwLower.includes("hot") || kwLower.includes("boiling") || kwLower.includes("heater")) {
-    faqs.push(
+
+  // 3. HOT WATER / BOILING TAPS (e.g., "bathroom hot tap")
+  if (tokens.isHot && tokens.isTap) {
+    const pool = [
       {
         question: `Why does it take several minutes for hot water to reach my ${capitalizedKw}?`,
         answer: `Long pipe runs between your water heater or boiler and the tap mean standing cold water must purge first. Installing a recirculating pump provides instant hot water.`
@@ -1223,11 +1293,59 @@ function generateDynamicFaqsForArticle(keyword: string, category: string): { que
         question: `How do thermostatic anti-scald valves protect users on a ${capitalizedKw}?`,
         answer: `Thermostatic valves automatically cut off or throttle hot water output if cold supply pressure drops suddenly, preventing accidental burns.`
       }
-    );
+    ];
+    return pool;
   }
-  // 3. Bathtub / Tub Specifics
-  else if (kwLower.includes("bathtub") || kwLower.includes("tub")) {
-    faqs.push(
+
+  // 4. BLACK FINISH TAPS (e.g., "black bathroom tap")
+  if (tokens.isBlack && tokens.isTap) {
+    const pool = [
+      {
+        question: `How do I clean matte black finishes on ${capitalizedKw} without scratching?`,
+        answer: `Use warm water with mild liquid dish soap and a soft microfiber cloth. Avoid abrasive sponges, bleach, or acidic sprays that strip protective PVD coatings.`
+      },
+      {
+        question: `Why do white water spots form on my ${capitalizedKw}?`,
+        answer: `Hard water minerals evaporate on dark matte surfaces leaving calcium spots. Wipe the spout dry with a towel after heavy use to prevent mineral deposits.`
+      },
+      {
+        question: `Do matte black taps peel or chip over time?`,
+        answer: `Quality electroplated or PVD matte black finishes bond atomically to solid brass, preventing peeling or chipping under standard daily cleaning.`
+      },
+      {
+        question: `What pop-up drain finish should I match with a matte black ${capitalizedKw}?`,
+        answer: `Choose a matching matte black brass pop-up waste assembly to maintain a cohesive monochrome aesthetic inside the sink basin.`
+      }
+    ];
+    return pool;
+  }
+
+  // 5. GENERAL TAPS & MIXERS (e.g., "bathroom tap", "basin faucet")
+  if (tokens.isTap) {
+    const pool = [
+      {
+        question: `What is the main difference between single-handle and dual-handle ${capitalizedKw} models?`,
+        answer: `Single-handle models let you control temperature and volume with one hand, while dual-handle fixtures offer separate, precise control over hot and cold streams.`
+      },
+      {
+        question: `How do ceramic disc cartridges prevent drips in a ${capitalizedKw}?`,
+        answer: `Ceramic disc cartridges feature smooth diamond-hard ceramic plates that seal tight without rubber washers, eliminating drips and lasting for years.`
+      },
+      {
+        question: `Why is water splashing out of the basin when using my ${capitalizedKw}?`,
+        answer: `The water stream might be striking the drain directly at high pressure. Installing a low-flow aerator softens the stream and prevents splashing.`
+      },
+      {
+        question: `How do I maintain smooth handle movement on a ${capitalizedKw}?`,
+        answer: `Periodically clean internal cartridge mineral buildup by soaking the removable cartridge in mild white vinegar every few years.`
+      }
+    ];
+    return pool;
+  }
+
+  // 6. BATHTUBS & BASINS (e.g., "bathroom tub", "soaking basin")
+  if (tokens.isTub) {
+    const pool = [
       {
         question: `What water flow rate is recommended for filling a ${capitalizedKw}?`,
         answer: `High-flow tub fillers typically require 4 to 8 gallons per minute (GPM) at 3.0 bar pressure so large soaking basins fill quickly without water cooling down.`
@@ -1244,11 +1362,13 @@ function generateDynamicFaqsForArticle(keyword: string, category: string): { que
         question: `How do I clean soap scum and hard water deposits off a ${capitalizedKw}?`,
         answer: `Soak a rag in warm white vinegar, wrap it around affected spouts or handles for 20 minutes, then wipe clean with a soft microfiber cloth.`
       }
-    );
+    ];
+    return pool;
   }
-  // 4. Drain / Waste Assembly Specifics
-  else if (kwLower.includes("drain") || kwLower.includes("trap") || kwLower.includes("waste")) {
-    faqs.push(
+
+  // 7. DRAINS & WASTE PIPES (e.g., "bathtub drain")
+  if (tokens.isDrain) {
+    const pool = [
       {
         question: `What is the easiest chemical-free way to unblock a ${capitalizedKw}?`,
         answer: `Insert a plastic zip-it drain snake to pull out hair clogs physically, then flush with boiling water mixed with baking soda and white vinegar.`
@@ -1265,32 +1385,13 @@ function generateDynamicFaqsForArticle(keyword: string, category: string): { que
         question: `How do tip-toe stoppers compare to trip-lever drain plugs for a ${capitalizedKw}?`,
         answer: `Tip-toe plugs press down by hand/foot and unscrew easily for hair removal, whereas trip-lever stoppers rely on overflow linkage rods that require periodic adjustment.`
       }
-    );
+    ];
+    return pool;
   }
-  // 5. General Tap / Faucet / Mixer Fixtures
-  else if (kwLower.includes("tap") || kwLower.includes("faucet") || kwLower.includes("mixer") || kwLower.includes("spout")) {
-    faqs.push(
-      {
-        question: `What is the main difference between single-handle and dual-handle ${capitalizedKw} models?`,
-        answer: `Single-handle models let you control temperature and volume with one hand, while dual-handle fixtures offer separate, precise control over hot and cold streams.`
-      },
-      {
-        question: `How do ceramic disc cartridges prevent drips in a ${capitalizedKw}?`,
-        answer: `Ceramic disc cartridges feature smooth diamond-hard ceramic plates that seal tight without rubber washers, eliminating drips and lasting for years.`
-      },
-      {
-        question: `Why is water splashing out of the basin when using my ${capitalizedKw}?`,
-        answer: `The water stream might be striking the drain directly at high pressure. Installing a low-flow aerator softens the stream and prevents splashing.`
-      },
-      {
-        question: `How do I clean matte black or brushed metal finishes on a ${capitalizedKw}?`,
-        answer: `Use warm water with mild liquid dish soap and a soft cloth. Avoid abrasive sponges or acidic bathroom sprays that can strip protective PVD coatings.`
-      }
-    );
-  }
-  // 6. Elon Musk / Tech Executives
-  else if (kwLower.includes("musk") || kwLower.includes("elon") || kwLower.includes("zuckerberg") || kwLower.includes("jobs") || kwLower.includes("altman")) {
-    faqs.push(
+
+  // 8. TECH EXECUTIVES (e.g., "elon musk", "sam altman")
+  if (tokens.isMusk) {
+    const pool = [
       {
         question: `What core engineering methodology defines leadership in ${capitalizedKw}?`,
         answer: `First-principles thinking—questioning every legacy requirement, reducing complex problems to basic physics laws, and rebuilding efficient solutions from scratch.`
@@ -1307,11 +1408,13 @@ function generateDynamicFaqsForArticle(keyword: string, category: string): { que
         question: `What role does flat management play in organizational velocity?`,
         answer: `Eliminating traditional corporate layers allows engineers to speak directly to decision-makers, speeding up execution and product deployment.`
       }
-    );
+    ];
+    return pool;
   }
-  // 7. TV / Display / Electronics
-  else if (kwLower.includes("tv") || kwLower.includes("samsung") || kwLower.includes("display") || kwLower.includes("oled") || kwLower.includes("qled") || kwLower.includes("screen")) {
-    faqs.push(
+
+  // 9. TV & DISPLAYS (e.g., "samsung tv")
+  if (tokens.isTv) {
+    const pool = [
       {
         question: `What is the key visual difference between QLED and QD-OLED for ${capitalizedKw}?`,
         answer: `QLED uses Quantum Dot Mini-LED backlights for intense brightness in brightly lit rooms, while QD-OLED uses self-emissive pixels for perfect black levels in dark home theaters.`
@@ -1328,50 +1431,29 @@ function generateDynamicFaqsForArticle(keyword: string, category: string): { que
         question: `How do anti-glare screen coatings improve viewing on ${capitalizedKw}?`,
         answer: `Anti-reflective layers scatter incoming room reflections and sunlight, maintaining sharp contrast and vivid color volume even in sunlit living rooms.`
       }
-    );
+    ];
+    return pool;
   }
-  // 8. Sleep / Health / Wellness
-  else if (kwLower.includes("sleep") || kwLower.includes("circadian") || kwLower.includes("health") || kwLower.includes("diet") || kwLower.includes("wellness")) {
-    faqs.push(
-      {
-        question: `How does optimizing light exposure impact results with ${capitalizedKw}?`,
-        answer: `Morning sunlight exposure anchors your circadian clock and boosts daytime energy, while eliminating blue light 2 hours before bed triggers natural melatonin release.`
-      },
-      {
-        question: `What room temperature is recommended for optimal rest in relation to ${capitalizedKw}?`,
-        answer: `Sleep research indicates a cool bedroom ambient temperature between 60°F and 67°F (15°C–19°C) promotes deeper slow-wave sleep cycles.`
-      },
-      {
-        question: `How do wearable biometrics track the effectiveness of ${capitalizedKw}?`,
-        answer: `Tracking Heart Rate Variability (HRV), resting heart rate, and sleep stage durations provides objective data on physical recovery and nervous system balance.`
-      },
-      {
-        question: `What dietary habits support sustainable improvements for ${capitalizedKw}?`,
-        answer: `Avoiding heavy meals and caffeine within 4 to 6 hours of bedtime prevents digestive disruption and nighttime heart rate elevation.`
-      }
-    );
-  }
-  // 9. General Topic Generator for ANY Keyword (100% dynamic, unique, no formula text!)
-  else {
-    faqs.push(
-      {
-        question: `What maintenance routine is recommended for ${capitalizedKw}?`,
-        answer: `Perform routine visual checks for wear, clean surfaces with non-abrasive products, and address minor performance shifts before they require major repairs.`
-      },
-      {
-        question: `What key factors should buyers evaluate when choosing ${capitalizedKw}?`,
-        answer: `Prioritize high-grade materials, manufacturer warranty coverage, system compatibility, and verified real-world user reviews over marketing claims.`
-      },
-      {
-        question: `How do modern developments in ${capitalizedKw} improve everyday performance?`,
-        answer: `Recent design and engineering updates emphasize higher energy efficiency, simplified operation, and enhanced durability under daily usage loads.`
-      },
-      {
-        question: `What common installation mistake should be avoided with ${capitalizedKw}?`,
-        answer: `Skipping pre-installation dimension measurements or forcing fittings during assembly often leads to seal failures, leaks, or premature wear.`
-      }
-    );
-  }
+
+  // 10. GENERAL FALLBACK FAQ GENERATOR (100% Dynamic, custom tailored per keyword)
+  faqs.push(
+    {
+      question: `What routine maintenance is recommended for ${capitalizedKw}?`,
+      answer: `Perform routine visual inspections for surface wear, clean components with non-abrasive products, and address minor performance shifts early.`
+    },
+    {
+      question: `What key specifications should buyers evaluate for ${capitalizedKw}?`,
+      answer: `Prioritize build material quality, manufacturer warranty coverage, system dimensions, and verified real-world user feedback over promotional claims.`
+    },
+    {
+      question: `How do recent innovations in ${capitalizedKw} improve everyday performance?`,
+      answer: `Modern engineering updates emphasize higher efficiency, ergonomic operation, and enhanced durability under daily usage loads.`
+    },
+    {
+      question: `What common setup mistake should be avoided with ${capitalizedKw}?`,
+      answer: `Skipping pre-installation spatial measurements or overtightening fittings during assembly often leads to seal strain, leaks, or premature wear.`
+    }
+  );
 
   return faqs;
 }
