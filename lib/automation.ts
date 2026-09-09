@@ -10,16 +10,16 @@ export interface QueueItem {
   generatedArticleSlug?: string;
 }
 
-const CACHE_VERSION_FILE = "on_gravity_articles_cache_v8.json";
+const CACHE_VERSION_FILE = "on_gravity_articles_cache_v9.json";
 
 function loadCacheFromDisk(): Article[] {
   if (typeof window !== "undefined") return [];
   try {
-    const fs = require("fs");
-    const path = require("path");
-    const cacheFile = path.join("/tmp", CACHE_VERSION_FILE);
-    if (fs.existsSync(cacheFile)) {
-      const data = fs.readFileSync(cacheFile, "utf-8");
+    const cacheFile = "/tmp/" + CACHE_VERSION_FILE;
+    const req = eval("require");
+    const fsMod = req("fs");
+    if (fsMod && fsMod.existsSync(cacheFile)) {
+      const data = fsMod.readFileSync(cacheFile, "utf-8");
       const parsed = JSON.parse(data);
       if (Array.isArray(parsed)) return parsed;
     }
@@ -32,10 +32,12 @@ function loadCacheFromDisk(): Article[] {
 function saveCacheToDisk(articles: Article[]) {
   if (typeof window !== "undefined") return;
   try {
-    const fs = require("fs");
-    const path = require("path");
-    const cacheFile = path.join("/tmp", CACHE_VERSION_FILE);
-    fs.writeFileSync(cacheFile, JSON.stringify(articles.slice(0, 100)), "utf-8");
+    const cacheFile = "/tmp/" + CACHE_VERSION_FILE;
+    const req = eval("require");
+    const fsMod = req("fs");
+    if (fsMod) {
+      fsMod.writeFileSync(cacheFile, JSON.stringify(articles.slice(0, 100)), "utf-8");
+    }
   } catch (e) {
     // Ignore
   }
@@ -195,15 +197,160 @@ function inferCategoryFromKeyword(keyword: string): string {
 }
 
 // ----------------------------------------------------
-// DYNAMIC HEADING & MULTI-LAYOUT SYNTHESIZER ENGINE
+// STRICT 55-60 CHAR SEO TITLE GENERATOR & DOMAIN ENGINE
 // ----------------------------------------------------
 
-const ANGLES = [
-  "Deconstructing", "Architectural Review of", "Optimizing", "Mastering",
-  "The Science Behind", "Unpacking", "Real-World Testing of", "Engineering Standards for",
-  "Solving Common Issues with", "Design Trends & Spatial Harmony for", "Comparative Analysis of",
-  "Performance Benchmarks for", "Installation Guidelines for", "Preventative Care Rules for"
-];
+function getDomainKey(kw: string): string {
+  const lower = kw.toLowerCase();
+  if (lower.includes("mouse") || lower.includes("gaming") || lower.includes("keyboard")) return "gaming";
+  if (lower.includes("cold")) return "cold_tap";
+  if (lower.includes("hot")) return "hot_tap";
+  if (lower.includes("black") || lower.includes("matte")) return "black_tap";
+  if (lower.includes("tap") || lower.includes("faucet") || lower.includes("tub") || lower.includes("drain")) return "plumbing";
+  if (lower.includes("smart") || lower.includes("hub") || lower.includes("tv")) return "smarthome";
+  if (lower.includes("crypto") || lower.includes("market") || lower.includes("musk")) return "crypto";
+  if (lower.includes("food") || lower.includes("coffee")) return "food";
+  if (lower.includes("fashion") || lower.includes("gala")) return "fashion";
+  return "general";
+}
+
+const DOMAIN_SUFFIXES: Record<string, string[]> = {
+  gaming: [
+    ": Sensor DPI, Latency & Weight Specs 2026",
+    ": Optical Tracking & Polling Rates 2026",
+    ": Ergonomic Grip & Wireless Review 2026"
+  ],
+  cold_tap: [
+    ": Installation, Aerators & Flow Care 2026",
+    ": Cold Line Pressure & Freezing Care 2026",
+    ": Aerator Cleaning & Isolation Valves 2026"
+  ],
+  hot_tap: [
+    ": Instant Hot Water & Anti-Scald Care 2026",
+    ": Thermostatic Valve & Pressure Guide 2026",
+    ": Instant Delivery & Thermal Safety 2026"
+  ],
+  black_tap: [
+    ": PVD Coating, Care & Stain Removal 2026",
+    ": Hard Water Protection & Finish Care 2026",
+    ": Non-Abrasive Cleaning & Basin Specs 2026"
+  ],
+  plumbing: [
+    ": Ceramic Disc Valves & Aerators 2026",
+    ": Installation, Seals & Flow Care 2026",
+    ": Spout Reach & Vessel Clearance 2026"
+  ],
+  smarthome: [
+    ": Matter Protocol & Local Automation 2026",
+    ": Mesh Network Range & Device Security 2026",
+    ": Zero-Cloud Latency & IoT Setup 2026"
+  ],
+  crypto: [
+    ": Market Liquidity & Venture Trends 2026",
+    ": Asset Allocation & Macro Metrics 2026"
+  ],
+  food: [
+    ": Michelin Culinary & Farm Sourcing 2026",
+    ": Artisanal Prep & Recipe Insights 2026"
+  ],
+  fashion: [
+    ": Red Carpet Couture & Gala Fashion 2026",
+    ": Runway Style & Designer Trends 2026"
+  ],
+  general: [
+    ": Architectural Specs & Buyer Guide 2026",
+    ": Technical Features & Service Guide 2026"
+  ]
+};
+
+const PHRASES_BY_LEN: Record<number, string> = {
+  15: ": Review & Specs",
+  16: ": Complete Review",
+  17: ": Tech Specs 2026",
+  18: ": Performance 2026",
+  19: ": 2026 Buyer Insights",
+  20: ": Technical Review 2026",
+  21: ": Quality & Specs 2026",
+  22: ": Architectural Review",
+  23: ": 2026 Engineering Guide",
+  24: ": Technical Feature Guide",
+  25: ": Performance & Specs 2026",
+  26: ": Architectural Specs Guide",
+  27: ": Installation & Care 2026",
+  28: ": Technical Performance 2026",
+  29: ": 2026 Complete Tech Insights",
+  30: ": System Performance & Care 2026",
+  31: ": Engineering Standards & Specs",
+  32: ": Complete Technical Review 2026",
+  33: ": Real-World Performance & Specs",
+  34: ": Architectural Standards & Care 2026",
+  35: ": Complete Engineering & Care Guide 2026",
+  36: ": Architectural Performance Specs 2026",
+  37: ": Technical Feature & Quality Guide 2026",
+  38: ": Real-World Durability & Spec Review 2026",
+  39: ": Complete Performance & Technical Guide 2026",
+  40: ": Architectural Engineering Standards 2026",
+  41: ": Technical Benchmarks & Feature Review 2026",
+  42: ": Complete Architectural & Care Guide 2026",
+  43: ": Real-World Engineering & Performance Guide",
+  44: ": Architectural Feature & Performance Standards",
+  45: ": Complete Technical & Architectural Spec Guide 2026"
+};
+
+export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string {
+  const clean = rawKeyword.trim();
+  let kwWords = clean.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+  
+  if (kwWords.length >= 55 && kwWords.length <= 60) {
+    return kwWords;
+  }
+  if (kwWords.length > 60) {
+    let sub = kwWords.slice(0, 58);
+    const spaceIdx = sub.lastIndexOf(" ");
+    if (spaceIdx >= 55) {
+      return sub.slice(0, spaceIdx);
+    }
+    return sub.slice(0, 57);
+  }
+
+  const domainKey = getDomainKey(clean);
+  const domainSuffixes = DOMAIN_SUFFIXES[domainKey] || DOMAIN_SUFFIXES.general;
+
+  for (let i = 0; i < domainSuffixes.length; i++) {
+    const candidate = `${kwWords}${domainSuffixes[(hashVal + i) % domainSuffixes.length]}`;
+    if (candidate.length >= 55 && candidate.length <= 60) {
+      return candidate;
+    }
+  }
+
+  const needed = 57 - kwWords.length;
+  for (let offset = 0; offset <= 3; offset++) {
+    const tryLengths = [needed + offset, needed - offset];
+    for (const len of tryLengths) {
+      if (PHRASES_BY_LEN[len]) {
+        const candidate = kwWords + PHRASES_BY_LEN[len];
+        if (candidate.length >= 55 && candidate.length <= 60) {
+          return candidate;
+        }
+      }
+    }
+  }
+
+  return (kwWords + ": Complete Technical Feature & Quality Guide 2026").slice(0, 57);
+}
+
+function cleanKeywordForHeading(kw: string): string {
+  let lower = kw.toLowerCase().trim();
+  if (lower.startsWith("best ")) lower = lower.replace(/^best\s+/, "");
+  const words = lower.split(/\s+/);
+  const last = words[words.length - 1];
+  if (last === "tap") words[words.length - 1] = "Taps";
+  else if (last === "mouse") words[words.length - 1] = "Mice";
+  else if (!last.endsWith("s")) words[words.length - 1] = last.charAt(0).toUpperCase() + last.slice(1) + "s";
+  else words[words.length - 1] = last.charAt(0).toUpperCase() + last.slice(1);
+
+  return words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+}
 
 const DOMAIN_SUB_ANGLES: Record<string, string[]> = {
   gaming: [
@@ -214,59 +361,67 @@ const DOMAIN_SUB_ANGLES: Record<string, string[]> = {
     "Virgin-Grade PTFE Skate Glide Dynamics",
     "On-Board Memory Profile Mapping and Polling Rates"
   ],
+  cold_tap: [
+    "Water Line Pressure Balancing and Aerator GPM Rates",
+    "Anti-Whistle Valve Cartridge Engineering",
+    "Ceramic Disc Friction and Drip-Free Isolation",
+    "Under-Sink Isolation Valve Hose Connections",
+    "Frost-Resistant Water Line Supply Dynamics"
+  ],
+  hot_tap: [
+    "Thermostatic Scald Protection & Anti-Scald Cartridges",
+    "Instant Water Boiler Tank Integration & Pressure",
+    "Thermal Expansion Relief Valve Engineering",
+    "Under-Sink Hot Water Line Connections & Braided Hoses"
+  ],
+  black_tap: [
+    "Electroplated PVD Finish Resilience Against Hard Water",
+    "Microfiber Finish Care & Non-Abrasive Cleaning Rules",
+    "Brass Body Anti-Corrosion & Atomized Electroplating",
+    "Countertop Basin Spout Clearance & Mounting Hardware"
+  ],
   plumbing: [
     "Water Line Pressure Balancing and Aerator GPM Rates",
-    "Electroplated PVD Finish Resilience Against Hard Water",
-    "Ceramic Disc Cartridge Friction and Leak-Free Sealing",
-    "Thermostatic Scald Protection and Temperature Regulation",
-    "Spout Reach Calculations and Basin Clearance Standards",
-    "Under-Sink Isolation Valve Connections and Hose Assemblies"
+    "Ceramic Disc Cartridge Friction and Drip-Free Sealing",
+    "Thermostatic Temperature Regulation & Safety Valves",
+    "Under-Sink Isolation Valve Assemblies & Hose Clearance"
   ],
   smarthome: [
     "Matter and Thread Protocol Wireless Antennas",
     "Zero-Cloud Latency and Local Rule Execution",
     "Dedicated IoT Network Encryption and Signal Range",
-    "Voice Assistant Triggers and Multi-Sensor Automation",
-    "Display Refresh Rates and Peak Luminance Calibration"
+    "Multi-Sensor Automation Triggers and Voice Assistant Sync"
   ],
   crypto: [
-    "Venture Capital Flows and Market Liquidity",
-    "Blockchain Protocol Security and Smart Contracts",
-    "Clean Energy Infrastructure Investment Models",
-    "Macroeconomic Metrics and Strategic Asset Allocation"
+    "Venture Capital Liquidity & Market Volatility",
+    "Blockchain Smart Contract Security Architecture",
+    "Macroeconomic Asset Allocation & Clean Energy Models"
   ],
   food: [
-    "Farm-to-Table Ingredient Sourcing and Zero-Waste Prep",
-    "Michelin Culinary Techniques and Plating Artistry",
-    "Artisanal Coffee Extraction Pressure and Bean Profiles"
+    "Farm-to-Table Zero-Waste Culinary Techniques",
+    "Michelin Ingredient Sourcing & Plating Aesthetics",
+    "Artisanal Coffee Extraction Pressure & Bean Roast Profiles"
   ],
   fashion: [
-    "Red Carpet Runway Couture and Visual Statement Design",
-    "Haute Couture Craftsmanship and Met Gala Silhouettes",
-    "Celebrity Style Trends and Designer Collaborations"
+    "Red Carpet Haute Couture & Met Gala Silhouettes",
+    "Runway Fashion Architecture & Material Craftsmanship",
+    "Celebrity Style Trends & Luxury Designer Collaborations"
   ],
   general: [
-    "Technical Architecture and Structural Material Quality",
-    "Real-World Operational Efficiency and Usability",
-    "Comparative Performance Metrics and Service Longevity",
-    "Implementation Guidelines and System Calibration"
+    "Technical Specifications & Structural Material Quality",
+    "Real-World Operational Efficiency & Ergonomics",
+    "Comparative Performance Benchmarks & Longevity"
   ]
 };
 
-function getDomainKey(kw: string): string {
-  const lower = kw.toLowerCase();
-  if (lower.includes("mouse") || lower.includes("gaming") || lower.includes("keyboard")) return "gaming";
-  if (lower.includes("tap") || lower.includes("faucet") || lower.includes("tub") || lower.includes("drain")) return "plumbing";
-  if (lower.includes("smart") || lower.includes("hub") || lower.includes("tv") || lower.includes("display")) return "smarthome";
-  if (lower.includes("crypto") || lower.includes("market") || lower.includes("invest") || lower.includes("musk")) return "crypto";
-  if (lower.includes("food") || lower.includes("coffee") || lower.includes("dining")) return "food";
-  if (lower.includes("gala") || lower.includes("fashion") || lower.includes("carpet") || lower.includes("celebrity")) return "fashion";
-  return "general";
-}
+const ANGLES = [
+  "Optimizing", "Engineering Standards for", "Real-World Performance of",
+  "Solving Common Issues with", "Comparative Analysis of", "Installation & Maintenance Guidelines for"
+];
 
 function generateDynamicHeadingsAndPattern(keyword: string, hashVal: number) {
   const cleanKw = keyword.trim();
-  const kwWords = cleanKw.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+  const headingKw = cleanKeywordForHeading(cleanKw);
   const domainKey = getDomainKey(cleanKw);
   const subAngles = DOMAIN_SUB_ANGLES[domainKey] || DOMAIN_SUB_ANGLES.general;
   
@@ -283,7 +438,7 @@ function generateDynamicHeadingsAndPattern(keyword: string, hashVal: number) {
       subAngle = subAngles[(hashVal + i * 2 + 1) % subAngles.length];
     }
     usedSubAngles.add(subAngle);
-    h2List.push(`## ${angle} ${kwWords}: ${subAngle}`);
+    h2List.push(`## ${angle} ${headingKw}: ${subAngle}`);
   }
 
   const h3Count = 2 + (hashVal % 2); // 2 or 3 H3s
@@ -299,17 +454,8 @@ function generateDynamicHeadingsAndPattern(keyword: string, hashVal: number) {
 function generateDynamicDomainContent(keyword: string, category: string, hashVal: number): { title: string; excerpt: string; paragraphs: string[]; faqs: { question: string; answer: string }[] } {
   const kwFmt = formatNaturalKeyword(keyword);
   const tokens = extractKeywordSubTokens(keyword);
+  const title = formatSeoTitle(keyword, hashVal);
   const { h2List, h3List, patternIndex } = generateDynamicHeadingsAndPattern(keyword, hashVal);
-
-  const titlePrefixes = [
-    `Evaluating ${kwFmt.title}: Performance, Specifications & Verdict`,
-    `The Complete ${kwFmt.title} Guide: Design, Function & Durability`,
-    `Deconstructing ${kwFmt.title}: Benchmarks, Care & Ergonomics`,
-    `Mastering ${kwFmt.title}: Installation, Maintenance & Features`,
-    `Inside ${kwFmt.title}: Architectural Quality & Real-World Results`,
-    `${kwFmt.title} Evaluated: Technology Evolution & User Guide`
-  ];
-  const title = titlePrefixes[hashVal % titlePrefixes.length];
 
   let excerpt = `An in-depth editorial evaluation of ${kwFmt.topic}, exploring technical benchmarks, real-world utility, and market trends.`;
   if (tokens.isGaming) {
@@ -376,12 +522,31 @@ function generateDynamicDomainContent(keyword: string, category: string, hashVal
   }
 
   // Generate 100% topic-tailored FAQs
-  const faqs = [
+  let faqs = [
     { question: `What key specifications should I check when choosing ${kwFmt.topic}?`, answer: `Focus on build material quality, technical compatibility, energy or fluid efficiency, and manufacturer warranty coverage before making your selection.` },
     { question: `How do I maintain peak performance for ${kwFmt.topic} over time?`, answer: `Follow non-abrasive cleaning protocols, conduct routine inspections every few months, and replace worn internal seals or components promptly.` },
     { question: `Why is modern hardware superior to legacy alternatives for ${kwFmt.topic}?`, answer: `Modern iterations incorporate advanced materials and refined engineering, offering higher efficiency, longer durability, and smoother operation.` },
     { question: `Where can I find additional technical guides for ${kwFmt.topic}?`, answer: `Consult manufacturer documentation, specialized technical reviews, and editorial dispatches on On Gravity Magazine for expert advice.` }
   ];
+
+  if (tokens.isGaming) {
+    faqs = [
+      { question: `What DPI and polling rate is optimal for competitive gaming mice?`, answer: `For FPS and competitive gaming, 1600 DPI combined with a 1000Hz to 4000Hz polling rate provides optimal tracking accuracy and minimal input latency.` },
+      { question: `How do I maintain and clean PTFE skates on a gaming mouse?`, answer: `Wipe PTFE skates gently with an isopropyl alcohol swab to remove dust and oils, ensuring frictionless glide across cloth or glass mousepads.` },
+      { question: `Are optical switches better than traditional mechanical mouse switches?`, answer: `Optical switches use infrared light beams for actuation, eliminating physical contact wear and preventing double-clicking issues over millions of clicks.` }
+    ];
+  } else if (tokens.isCold && tokens.isTap) {
+    faqs = [
+      { question: `Why is water flow restricted in a bathroom cold tap?`, answer: `Mineral scale buildup in the aerator screen or a partially closed under-sink isolation valve is usually responsible. Clean aerator mesh in vinegar to restore full flow.` },
+      { question: `What standard flow rate (GPM) should a cold tap have?`, answer: `Water-saving bathroom cold taps operate between 1.2 and 1.5 GPM, delivering comfortable pressure while conserving household water.` },
+      { question: `How do I stop a bathroom cold tap from making a whistling noise?`, answer: `Whistling is caused by high water pressure vibrating worn ceramic discs. Replace the internal cartridge and check isolation valve adjustments.` }
+    ];
+  } else if (tokens.isBlack && tokens.isTap) {
+    faqs = [
+      { question: `How do I clean matte black taps without damaging the finish?`, answer: `Clean with warm water and mild dish soap using a soft microfiber cloth. Avoid bleach, acidic descalers, or scouring pads that strip electroplated PVD layers.` },
+      { question: `Do matte black taps show water spots and limescale easily?`, answer: `Hard water can leave white mineral spots. Drying the tap with a soft cloth after use prevents mineral buildup and keeps the finish pristine.` }
+    ];
+  }
 
   return { title, excerpt, paragraphs, faqs };
 }
