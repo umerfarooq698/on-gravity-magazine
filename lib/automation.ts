@@ -14,21 +14,48 @@ export interface QueueItem {
 // ============================================================================
 // SINGLE GEMINI ARTICLE GENERATION PROMPT (EXACT USER SPECIFICATION)
 // ============================================================================
-export const GEMINI_ARTICLE_PROMPT = `Write a complete, original, publication-ready article about the submitted keyword or topic.
+export const GEMINI_ARTICLE_PROMPT = `Write a complete, original, publication-ready article of 1100–1400 words.
 
-Understand what the reader is actually looking for and cover the topic thoroughly without unnecessary repetition or filler.
+Requirements:
 
-Create a natural article structure specifically for the topic. Headings must be relevant to the subject and should not follow the same pattern across every article.
+* Create a clear, engaging title relevant to the topic.
+* Start with a short introduction that speaks directly to the reader.
+* Focus on genuinely useful information that helps the reader understand, compare, decide, solve a problem, or take action.
+* Organize the article with relevant H2 and H3 headings.
+* Build the structure specifically around the submitted topic. Do not reuse the same headings or article structure for every topic.
+* Every section must cover a new point. Do not explain the same idea again in another section.
+* Do not repeat facts, examples, advice, definitions, conclusions, sentences, or arguments just to increase word count.
+* Before producing the final output, check the entire article for overlapping ideas and remove or merge repetitive sections.
+* Naturally use the supplied primary and secondary keywords where contextually relevant.
+* Use keywords in suitable headings when natural, but never force them.
+* Do not follow a fixed keyword-density percentage. Prioritize natural language, topical relevance, and readability.
+* Write like a knowledgeable local person explaining the subject to a friend.
+* Keep the tone conversational, informative, natural, and professional.
+* Vary sentence length, paragraph length, wording, and sentence structure.
+* Use mostly well-developed paragraphs.
+* Use bullet points only when they genuinely make information easier to understand, such as features, steps, comparisons, checks, or specifications.
+* Do not overload the article with lists.
+* Keep paragraphs focused and avoid filler.
+* Do not mention AI or the content-generation process.
+* Do not include meta commentary or discuss how the article was written.
+* Do not include phrases such as “as an AI” or “this article.”
+* Do not use unnatural search-related phrases as headings or filler.
+* Add 3–4 relevant FAQs at the end.
+* Keep each FAQ answer short, direct, useful, and non-repetitive.
+* FAQs must answer useful questions that were not already fully answered in the main content.
 
-Write in clear, natural, human-sounding English. Use useful explanations, practical details, examples where relevant, and accurate information.
+Important originality rule:
 
-Avoid repeating the same idea in different sections. Every section must add new information.
+Treat every generated article as a new piece of content. Do not copy wording, paragraph patterns, introductions, conclusions, heading sequences, examples, or explanations from previously generated articles. Even when topics are similar, approach each article according to its specific subject and reader intent.
 
-Use the main topic naturally throughout the article without forcing it into every heading or paragraph.
+Final quality check before output:
 
-The article should have a strong title, useful introduction, well-organized sections, and a concise conclusion or FAQs only when they genuinely fit the topic.
-
-Return only the finished article that can be published directly on the website. Do not include notes, instructions, commentary, explanations, planning text, or anything intended for the developer.`;
+1. Remove repeated ideas.
+2. Remove filler added only to reach the word count.
+3. Merge sections that discuss substantially the same point.
+4. Make sure each heading introduces distinct information.
+5. Make sure the article reads naturally from beginning to end.
+6. Return only the finished publishable article.`;
 
 const CACHE_FILES = [
   "/tmp/on_gravity_articles_cache_permanent.json",
