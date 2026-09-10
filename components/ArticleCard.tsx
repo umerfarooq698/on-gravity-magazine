@@ -50,10 +50,6 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
             </Link>
           </h2>
 
-          <p className="text-slate-100 text-sm sm:text-base line-clamp-2 max-w-2xl leading-relaxed font-sans font-medium">
-            {article.excerpt}
-          </p>
-
           <div className="pt-2 flex items-center justify-between">
             <Link
               href={`/author/${getAuthorSlug(article.author.name)}`}
@@ -115,10 +111,6 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
             <h3 className="font-sans text-base sm:text-lg font-black text-slate-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors leading-snug uppercase">
               <Link href={articleUrl}>{article.title}</Link>
             </h3>
-
-            <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed font-sans">
-              {article.excerpt}
-            </p>
           </div>
 
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800/80">
@@ -167,10 +159,6 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
           <h3 className="font-sans text-base sm:text-lg font-black text-slate-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors leading-snug uppercase">
             <Link href={articleUrl}>{article.title}</Link>
           </h3>
-
-          <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed font-sans">
-            {article.excerpt}
-          </p>
         </div>
 
         <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
