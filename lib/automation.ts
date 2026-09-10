@@ -336,10 +336,9 @@ function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
       continue;
     }
 
-    // Detect FAQ section
+    // Detect FAQ section - DO NOT push FAQ headings/lines into main paragraphs
     if (line.toLowerCase().includes("frequently asked questions") || line.toLowerCase() === "## faqs" || line.toLowerCase().startsWith("## faq")) {
       inFaqs = true;
-      paragraphs.push("## Frequently Asked Questions");
       continue;
     }
 
@@ -351,14 +350,10 @@ function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
           currentFaqQ = "";
         }
         currentFaqQ = line.replace(/^###\s+|^#+\s+|\*\*Q:\*\*\s*|^Q:\s*/, "");
-        paragraphs.push(`### ${currentFaqQ}`);
-      } else if (currentFaqQ && !line.startsWith("###")) {
+      } else if (currentFaqQ) {
         const ans = line.replace(/^\*\*A:\*\*\s*|^A:\s*/, "").replace(/&/g, "and");
         faqs.push({ question: currentFaqQ.replace(/&/g, "and"), answer: ans });
-        paragraphs.push(ans);
         currentFaqQ = "";
-      } else {
-        paragraphs.push(line.replace(/&/g, "and"));
       }
       continue;
     }
@@ -400,20 +395,13 @@ function generateTopicFallbackArticle(keyword: string, hashVal: number) {
     `* Practical Ergonomics: Maximizes user comfort and functional efficiency.`,
     `* Maintenance & Care: Simple upkeep routines preserve performance over time.`,
     `## Conclusion`,
-    `In summary, selecting the ideal setup for ${topicRaw} comes down to balancing verified build quality, user requirements, and practical long-term value. Investing in a well-reviewed configuration guarantees superior performance and peace of mind.`,
-    `## Frequently Asked Questions`,
-    `### Q: What is the most important factor when choosing ${topicRaw}?`,
-    `Focus on core build quality, verified specifications, and how well it meets your specific daily requirements.`,
-    `### Q: How do I ensure long-term reliability for ${topicRaw}?`,
-    `Follow standard manufacturer guidelines and perform periodic maintenance checks to prevent unnecessary wear.`,
-    `### Q: Is upgrading to a higher tier of ${topicRaw} worth it?`,
-    `Higher tier models typically offer enhanced durability, better materials, and superior overall performance.`
+    `In summary, selecting the ideal setup for ${topicRaw} comes down to balancing verified build quality, user requirements, and practical long-term value. Investing in a well-reviewed configuration guarantees superior performance and peace of mind.`
   ];
 
   const faqs = [
-    { question: `What is the most important factor when choosing ${topicRaw}?`, answer: `Focus on core build quality, verified specifications, and how well it meets your specific daily requirements.` },
-    { question: `How do I ensure long-term reliability for ${topicRaw}?`, answer: `Follow standard manufacturer guidelines and perform periodic maintenance checks to prevent unnecessary wear.` },
-    { question: `Is upgrading to a higher tier of ${topicRaw} worth it?`, answer: `Higher tier models typically offer enhanced durability, better materials, and superior overall performance.` }
+    { question: `What is the most important factor when choosing ${topicRaw}?`, answer: `Focus on core build quality and how well it fits your daily requirements.` },
+    { question: `How do I ensure long-term reliability for ${topicRaw}?`, answer: `Follow standard guidelines and conduct periodic maintenance checks.` },
+    { question: `Is upgrading to a higher tier of ${topicRaw} worth it?`, answer: `Higher tier models offer better durability, materials, and long-term performance.` }
   ];
 
   return { title, excerpt, paragraphs, faqs };

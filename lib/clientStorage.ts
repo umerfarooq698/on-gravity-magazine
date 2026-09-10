@@ -2,7 +2,7 @@
 
 import { Article } from "@/data/articles";
 
-const PERMANENT_STORAGE_KEY = "og_custom_articles_v3";
+const PERMANENT_STORAGE_KEY = "og_custom_articles_v4";
 
 export function getCustomArticlesFromStorage(): Article[] {
   if (typeof window === "undefined") return [];

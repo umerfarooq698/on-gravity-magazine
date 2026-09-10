@@ -272,7 +272,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         {/* Reading Body with Magazine Drop-Caps */}
         <div className="prose prose-lg dark:prose-invert max-w-none space-y-6 font-serif text-zinc-800 dark:text-zinc-200 text-lg leading-relaxed">
-          {article.content.map((item, index) => {
+          {article.content
+            .filter((item) => {
+              const lower = item.toLowerCase().trim();
+              return (
+                !lower.includes("frequently asked questions") &&
+                !lower.startsWith("## faq") &&
+                !lower.startsWith("### faq") &&
+                !lower.startsWith("### q:") &&
+                !lower.startsWith("q:")
+              );
+            })
+            .map((item, index) => {
             const trimmed = item.trim();
             if (trimmed.startsWith("## ")) {
               const headingText = trimmed.replace(/^##\s+/, "").replace(/&/g, "and");
