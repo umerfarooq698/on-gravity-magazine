@@ -45,12 +45,6 @@ export default function Header() {
 
           <div className="flex items-center gap-3">
             <Link
-              href="/admin/auto-blog"
-              className="text-[11px] font-black uppercase tracking-wider text-white bg-red-600 hover:bg-red-700 transition-all px-2.5 py-1 rounded-xs shadow-xs hidden sm:inline-block"
-            >
-              Auto-Blog Admin
-            </Link>
-            <Link
               href="/search"
               className="flex items-center gap-1 hover:text-red-400 transition-colors font-bold uppercase text-[11px] tracking-wider"
             >

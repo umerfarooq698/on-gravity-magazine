@@ -195,14 +195,8 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
               No Published Articles Found
             </h3>
             <p className="text-xs text-slate-500 max-w-md mx-auto">
-              All articles have been cleared. You can generate new publication-ready articles from the Auto-Blog Admin panel.
+              Please check back later for the latest news dispatches and feature updates.
             </p>
-            <Link
-              href="/admin/auto-blog"
-              className="inline-block bg-red-600 hover:bg-red-700 text-white font-black uppercase text-xs px-6 py-3 rounded-xs shadow-md"
-            >
-              Go to Auto-Blog Admin →
-            </Link>
           </div>
         )}
       </section>

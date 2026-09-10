@@ -59,11 +59,6 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/admin/auto-blog" className="text-red-500 hover:underline transition-colors font-black">
-                Auto-Blog Admin
-              </Link>
-            </li>
-            <li>
               <Link href="/privacy-policy" className="hover:text-red-500 transition-colors">
                 Privacy Policy
               </Link>
