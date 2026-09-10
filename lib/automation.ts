@@ -31,8 +31,9 @@ STRICT ARTICLE STRUCTURE & WORD COUNT INSTRUCTIONS:
    - DO NOT include any year (e.g. DO NOT write "2026" or "(2026)").
    - DO NOT overuse the word "Guide". Vary title styles across reviews, secrets, honest breakdowns, performance checks, and expert advice.
 
-3. UNIQUE SEO META SUMMARY / EXCERPT:
-   - Immediately after the title, output "EXCERPT: [Write a unique, punchy 140-155 character meta description summarizing the specific topic, value proposition, and key takeaway]".
+3. UNIQUE 140-CHARACTER SEO META SUMMARY / EXCERPT:
+   - Immediately after the title, output "EXCERPT: [Write a completely fresh, 100% unique, punchy meta description of EXACTLY 135 to 140 characters summarizing the topic]".
+   - DO NOT repeat meta descriptions. Even for identical or similar keywords, generate a brand new angle, focus, or value proposition every single time.
 
 4. H2 & H3 OUTLINE HIERARCHY:
    - Step 1: Generate comprehensive H2 headings ("## [H2 Main Section Title]").
