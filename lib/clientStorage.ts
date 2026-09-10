@@ -80,3 +80,21 @@ export function saveCustomArticleToStorage(article: Article): void {
     console.error("Failed to save article to localStorage:", e);
   }
 }
+
+export function clearCustomArticlesFromStorage(): void {
+  if (typeof window === "undefined") return;
+  try {
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+      const key = localStorage.key(i);
+      if (
+        key &&
+        (key.startsWith("og_custom") || key.startsWith("og_articles") || key.startsWith("on_gravity"))
+      ) {
+        localStorage.removeItem(key);
+      }
+    }
+    window.dispatchEvent(new Event("og_articles_updated"));
+  } catch (e) {
+    console.error("Failed to clear articles from localStorage:", e);
+  }
+}

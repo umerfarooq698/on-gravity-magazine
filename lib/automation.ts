@@ -534,6 +534,10 @@ export async function generateArticleObjectAsync(
 
 export function getKeywordQueue(): QueueItem[] { return keywordQueueStore; }
 
+export function clearKeywordQueue(): void {
+  keywordQueueStore = [];
+}
+
 export function addKeywordsToQueue(keywordsText: string, defaultCategory?: string): QueueItem[] {
   const lines = keywordsText.split("\n").map((l) => l.trim()).filter((l) => l.length > 0);
   const newItems: QueueItem[] = lines.map((kw, i) => ({

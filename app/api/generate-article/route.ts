@@ -1,11 +1,28 @@
 import { NextResponse } from "next/server";
-import { publishSpecificKeywordAsync, publishQueueItemByIdAsync, addKeywordsToQueue, getKeywordQueue } from "@/lib/automation";
+import { publishSpecificKeywordAsync, publishQueueItemByIdAsync, addKeywordsToQueue, getKeywordQueue, clearPublishedStore, clearKeywordQueue } from "@/lib/automation";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { keyword, keywords, category, action, id, existingSlugs } = body;
     const clientSlugsList = Array.isArray(existingSlugs) ? existingSlugs : [];
+
+    if (action === "clear-published") {
+      clearPublishedStore();
+      return NextResponse.json({
+        success: true,
+        message: "All published articles cleared from server memory and disk cache.",
+      });
+    }
+
+    if (action === "clear-queue") {
+      clearKeywordQueue();
+      return NextResponse.json({
+        success: true,
+        message: "Keyword queue cleared.",
+        queue: [],
+      });
+    }
 
     if (action === "bulk-add" && keywords) {
       const added = addKeywordsToQueue(keywords, category);

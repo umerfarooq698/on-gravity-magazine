@@ -6,7 +6,7 @@ import Image from "next/image";
 import { CATEGORIES } from "@/data/categories";
 import { Article, ARTICLES } from "@/data/articles";
 import { QueueItem } from "@/lib/automation";
-import { getCustomArticlesFromStorage, saveCustomArticleToStorage } from "@/lib/clientStorage";
+import { getCustomArticlesFromStorage, saveCustomArticleToStorage, clearCustomArticlesFromStorage } from "@/lib/clientStorage";
 import Logo from "@/components/Logo";
 import {
   LayoutDashboard,
