@@ -12,50 +12,42 @@ export interface QueueItem {
 }
 
 // ============================================================================
-// SINGLE GEMINI ARTICLE GENERATION PROMPT (EXACT USER SPECIFICATION)
+// SINGLE GEMINI ARTICLE GENERATION PROMPT (STRICT USER SPECIFICATIONS)
 // ============================================================================
-export const GEMINI_ARTICLE_PROMPT = `Write a complete, original, publication-ready article of 1100–1400 words.
+export const GEMINI_ARTICLE_PROMPT = `You are a top-tier editorial writer and journalist for On Gravity Magazine.
 
-Requirements:
+Your objective is to write a unique, publication-ready article based on the submitted keyword/topic.
 
-* Create a clear, engaging title relevant to the topic.
-* Start with a short introduction that speaks directly to the reader.
-* Focus on genuinely useful information that helps the reader understand, compare, decide, solve a problem, or take action.
-* Organize the article with relevant H2 and H3 headings.
-* Build the structure specifically around the submitted topic. Do not reuse the same headings or article structure for every topic.
-* Every section must cover a new point. Do not explain the same idea again in another section.
-* Do not repeat facts, examples, advice, definitions, conclusions, sentences, or arguments just to increase word count.
-* Before producing the final output, check the entire article for overlapping ideas and remove or merge repetitive sections.
-* Naturally use the supplied primary and secondary keywords where contextually relevant.
-* Use keywords in suitable headings when natural, but never force them.
-* Do not follow a fixed keyword-density percentage. Prioritize natural language, topical relevance, and readability.
-* Write like a knowledgeable local person explaining the subject to a friend.
-* Keep the tone conversational, informative, natural, and professional.
-* Vary sentence length, paragraph length, wording, and sentence structure.
-* Use mostly well-developed paragraphs.
-* Use bullet points only when they genuinely make information easier to understand, such as features, steps, comparisons, checks, or specifications.
-* Do not overload the article with lists.
-* Keep paragraphs focused and avoid filler.
-* Do not mention AI or the content-generation process.
-* Do not include meta commentary or discuss how the article was written.
-* Do not include phrases such as “as an AI” or “this article.”
-* Do not use unnatural search-related phrases as headings or filler.
-* Add 3–4 relevant FAQs at the end.
-* Keep each FAQ answer short, direct, useful, and non-repetitive.
-* FAQs must answer useful questions that were not already fully answered in the main content.
+STRICT WRITING & STRUCTURE INSTRUCTIONS:
 
-Important originality rule:
+1. TITLE GENERATION:
+   - First, generate a clear, catchy, highly relevant title specifically created for the submitted keyword/topic.
+   - Start the title directly with "# ". Do NOT use generic titles like "Everything You Need to Know". Make it specific to the keyword.
 
-Treat every generated article as a new piece of content. Do not copy wording, paragraph patterns, introductions, conclusions, heading sequences, examples, or explanations from previously generated articles. Even when topics are similar, approach each article according to its specific subject and reader intent.
+2. OUTLINE & HEADINGS (H2 & H3):
+   - Organize the article into 3 to 5 main sections using "## " for H2 headings.
+   - Include 1 to 2 nested sub-sections under EACH H2 heading using "### " for H3 subheadings.
+   - Design the outlines specifically around the submitted topic. Never reuse generic outlines.
 
-Final quality check before output:
+3. DETAILED CONTENT:
+   - Write comprehensive, detailed, informative, non-repetitive paragraphs directly under every H2 and H3 heading.
+   - Do NOT output a separate outline list before the article. Write the full text directly.
+   - Vary sentence lengths and paragraph structures. Avoid fluff, filler, or repeating points.
 
-1. Remove repeated ideas.
-2. Remove filler added only to reach the word count.
-3. Merge sections that discuss substantially the same point.
-4. Make sure each heading introduces distinct information.
-5. Make sure the article reads naturally from beginning to end.
-6. Return only the finished publishable article.`;
+4. CONCLUSION:
+   - Include a dedicated "## Conclusion" section at the end summarizing key takeaways, expert recommendations, and final verdict.
+
+5. FREQUENTLY ASKED QUESTIONS (FAQs):
+   - Include a dedicated "## Frequently Asked Questions" section at the very end containing 2 to 3 FAQs.
+   - Format each FAQ clearly as:
+     ### Q: [Question]
+     A: [Detailed Answer]
+
+6. ORIGINALITY:
+   - Every single generated article must be completely fresh, distinct, and unique.
+   - Do not include meta-commentary, AI references, or prompt explanations.
+
+Start directly with # [Generated Title].`;
 
 const CACHE_FILES = [
   "/tmp/on_gravity_articles_cache_permanent.json",
@@ -263,7 +255,7 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string): Prom
 }
 
 // ============================================================================
-// CALL GEMINI API WITH ONLY THE EXACT USER-REQUESTED PROMPT
+// CALL GEMINI API WITH MULTI-MODEL FAILOVER AND DYNAMIC RANDOM SEED
 // ============================================================================
 async function fetchArticleFromGeminiApi(keyword: string): Promise<{
   title: string;
@@ -275,10 +267,14 @@ async function fetchArticleFromGeminiApi(keyword: string): Promise<{
   if (!apiKey) return null;
 
   const candidateModels = [
-    "gemini-3.5-flash-lite",
     "gemini-3.6-flash",
-    "gemini-3.5-flash"
+    "gemini-3.5-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-3.1-flash-lite",
+    "gemini-2.5-flash"
   ];
+
+  const randomRunId = Math.random().toString(36).substring(2, 9);
 
   for (const modelName of candidateModels) {
     try {
@@ -292,11 +288,15 @@ async function fetchArticleFromGeminiApi(keyword: string): Promise<{
               role: "user",
               parts: [
                 {
-                  text: `${GEMINI_ARTICLE_PROMPT}\n\nSubmitted Keyword / Topic: "${keyword}"`
+                  text: `${GEMINI_ARTICLE_PROMPT}\n\nSubmitted Keyword / Topic: "${keyword}"\n[Run ID: ${randomRunId}]`
                 }
               ]
             }
-          ]
+          ],
+          generationConfig: {
+            temperature: 0.75,
+            topP: 0.95
+          }
         })
       });
 
@@ -304,8 +304,11 @@ async function fetchArticleFromGeminiApi(keyword: string): Promise<{
 
       const data = await response.json();
       const candidateText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (candidateText && typeof candidateText === "string") {
-        return parseGeminiMarkdownArticle(candidateText, keyword);
+      if (candidateText && typeof candidateText === "string" && candidateText.trim().length > 100) {
+        const parsed = parseGeminiMarkdownArticle(candidateText, keyword);
+        if (parsed && parsed.paragraphs.length >= 3) {
+          return parsed;
+        }
       }
     } catch (error) {
       console.error(`Gemini API call failed for model ${modelName}:`, error);
@@ -327,27 +330,35 @@ function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
-    if (!title && (line.startsWith("# ") || line.startsWith("Title:"))) {
+    // Extract title from # Heading or Title: line
+    if (!title && (line.startsWith("# ") || line.toLowerCase().startsWith("title:"))) {
       title = line.replace(/^#\s+|^Title:\s*/i, "").replace(/&/g, "and");
       continue;
     }
 
+    // Detect FAQ section
     if (line.toLowerCase().includes("frequently asked questions") || line.toLowerCase() === "## faqs" || line.toLowerCase().startsWith("## faq")) {
       inFaqs = true;
+      paragraphs.push("## Frequently Asked Questions");
       continue;
     }
 
     if (inFaqs) {
-      if (line.startsWith("### ") || line.startsWith("**Q:") || line.startsWith("Q:")) {
+      if (line.startsWith("### Q:") || line.startsWith("Q:") || line.startsWith("### ") || line.startsWith("**Q:")) {
         if (currentFaqQ && lines[i + 1]) {
           const ans = lines[i + 1].replace(/^\*\*A:\*\*\s*|^A:\s*/, "").replace(/&/g, "and");
           faqs.push({ question: currentFaqQ.replace(/&/g, "and"), answer: ans });
           currentFaqQ = "";
         }
         currentFaqQ = line.replace(/^###\s+|^#+\s+|\*\*Q:\*\*\s*|^Q:\s*/, "");
+        paragraphs.push(`### ${currentFaqQ}`);
       } else if (currentFaqQ && !line.startsWith("###")) {
-        faqs.push({ question: currentFaqQ.replace(/&/g, "and"), answer: line.replace(/^\*\*A:\*\*\s*|^A:\s*/, "").replace(/&/g, "and") });
+        const ans = line.replace(/^\*\*A:\*\*\s*|^A:\s*/, "").replace(/&/g, "and");
+        faqs.push({ question: currentFaqQ.replace(/&/g, "and"), answer: ans });
+        paragraphs.push(ans);
         currentFaqQ = "";
+      } else {
+        paragraphs.push(line.replace(/&/g, "and"));
       }
       continue;
     }
@@ -357,10 +368,10 @@ function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
 
   if (!title) {
     const kwFmt = formatNaturalKeyword(keyword);
-    title = `Essential Guide to ${kwFmt.title}`;
+    title = `Essential Editorial Guide to ${kwFmt.title}`;
   }
 
-  const firstBodyPara = paragraphs.find(p => !p.startsWith("#")) || `An in-depth editorial guide to ${keyword}.`;
+  const firstBodyPara = paragraphs.find(p => !p.startsWith("#")) || `An in-depth editorial guide covering ${keyword}.`;
   const excerpt = firstBodyPara.replace(/&/g, "and").slice(0, 160);
 
   return { title, excerpt, paragraphs, faqs: faqs.length > 0 ? faqs : undefined };
@@ -368,81 +379,42 @@ function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
 
 function generateTopicFallbackArticle(keyword: string, hashVal: number) {
   const kwFmt = formatNaturalKeyword(keyword);
-  const topicTitle = kwFmt.topic.replace(/&/g, "and");
-  const category = inferCategoryFromKeyword(keyword);
+  const topicTitle = kwFmt.title.replace(/&/g, "and");
+  const topicRaw = kwFmt.raw.replace(/&/g, "and");
 
-  let title = `Everything You Need to Know About ${kwFmt.title}`;
-  let excerpt = `An in-depth editorial guide exploring ${topicTitle}, featuring practical advice, performance benchmarks, and expert recommendations.`;
-  let paragraphs: string[] = [];
-  let faqs: { question: string; answer: string }[] = [];
+  const title = `The Complete Guide to ${topicTitle}: Analysis, Specifications, and Key Insights`;
+  const excerpt = `An in-depth editorial report exploring ${topicRaw}, covering essential features, real-world utility, and practical recommendations.`;
 
-  const isLaptop = keyword.toLowerCase().includes("laptop") || keyword.toLowerCase().includes("computer") || keyword.toLowerCase().includes("pc");
-  const isToy = keyword.toLowerCase().includes("toy") || keyword.toLowerCase().includes("kid") || keyword.toLowerCase().includes("child");
+  const paragraphs: string[] = [
+    `Exploring ${topicRaw} requires a clear understanding of its core capabilities, design quality, and practical value in daily use. Whether you are evaluating options for personal use, professional work, or making an informed decision, having structured guidance ensures you choose with total confidence.`,
+    `## Key Features and Core Specifications of ${topicTitle}`,
+    `Understanding the essential aspects of ${topicRaw} starts with assessing its primary specifications and performance standards. High-grade construction and reliable design make all the difference in delivering long-term satisfaction.`,
+    `### Quality Craftsmanship and Materials`,
+    `When analyzing ${topicRaw}, material quality and build integrity are critical factors. Superior construction ensures enhanced durability, lower maintenance needs, and reliable daily operation.`,
+    `### Performance Efficiency and Real-World Usability`,
+    `Real-world performance relies on how seamlessly ${topicRaw} integrates into your daily workflow or lifestyle. Prioritize setups that offer intuitive operation, ergonomics, and modern features.`,
+    `## Comparative Analysis and Practical Application`,
+    `To make the best choice regarding ${topicRaw}, compare key models, configurations, and user feedback. Evaluating performance metrics alongside cost gives a realistic picture of overall value.`,
+    `### Key Factors to Check Before Deciding`,
+    `* Build & Hardware Quality: Ensures long-lasting reliability under regular use.`,
+    `* Practical Ergonomics: Maximizes user comfort and functional efficiency.`,
+    `* Maintenance & Care: Simple upkeep routines preserve performance over time.`,
+    `## Conclusion`,
+    `In summary, selecting the ideal setup for ${topicRaw} comes down to balancing verified build quality, user requirements, and practical long-term value. Investing in a well-reviewed configuration guarantees superior performance and peace of mind.`,
+    `## Frequently Asked Questions`,
+    `### Q: What is the most important factor when choosing ${topicRaw}?`,
+    `Focus on core build quality, verified specifications, and how well it meets your specific daily requirements.`,
+    `### Q: How do I ensure long-term reliability for ${topicRaw}?`,
+    `Follow standard manufacturer guidelines and perform periodic maintenance checks to prevent unnecessary wear.`,
+    `### Q: Is upgrading to a higher tier of ${topicRaw} worth it?`,
+    `Higher tier models typically offer enhanced durability, better materials, and superior overall performance.`
+  ];
 
-  if (isLaptop) {
-    title = `Navigating ${kwFmt.title}: Performance, Specifications, and Buyer Guide`;
-    excerpt = `A comprehensive overview of ${topicTitle}, evaluating processing power, display quality, real-world battery life, and overall value.`;
-    paragraphs = [
-      `Navigating the modern computing landscape for ${topicTitle} can quickly get confusing with all the technical jargon, hardware specs, and configuration options available today. Whether you are upgrading your daily work machine, picking a laptop for school, or looking for high-performance portability, getting clear guidance makes your buying decision effortless.`,
-      `## Processing Power and Thermal Architecture`,
-      `Performance starts with the core silicon under the hood. Modern laptops balance processor clock speeds with efficient thermal design to ensure high performance without loud fan noise or overheating. Pay close attention to multi-core benchmarks and thermal dissipation headroom when evaluating your daily workload.`,
-      `### Key Hardware Specifications to Evaluate`,
-      `* System RAM: 16GB is the modern baseline for smooth multitasking and future-proof productivity.`,
-      `* SSD Storage: High-speed NVMe drives ensure fast boot times and instant application launches.`,
-      `* Display Fidelity: IPS or OLED panels offer vibrant color accuracy and wide viewing angles.`,
-      `* Battery Efficiency: Look for high watt-hour ratings that sustain full working days off the wall charger.`,
-      `## Real-World Usability: Keyboard, Trackpad, and Build Quality`,
-      `Specs on paper don't tell the full story—tactile feel and daily usability matter just as much. A well-engineered chassis constructed from aluminum or reinforced alloys provides durability against daily wear, while key travel and trackpad responsiveness directly affect typing comfort over long working sessions.`,
-      `## Final Verdict: Finding Your Ideal Configuration`,
-      `Ultimately, choosing the right ${topicTitle} comes down to balancing processing needs, battery portability, and display quality. Investing in a balanced setup ensures reliable long-term performance and seamless software execution.`
-    ];
-    faqs = [
-      { question: `What is the most important spec when buying ${topicTitle}?`, answer: `Focus on RAM (at least 16GB) and high-speed NVMe SSD storage for snappy everyday multitasking.` },
-      { question: `How long should a good ${topicTitle} last?`, answer: `With proper care and modern hardware specs, a quality laptop typically delivers 4 to 6 years of reliable service.` },
-      { question: `Is battery life more important than raw speed?`, answer: `For portability and mobile work, efficient power management is often far more useful than peak benchmark scores.` }
-    ];
-  } else if (isToy) {
-    title = `Choosing the Best ${kwFmt.title}: Safety, Engagement, and Growth`;
-    excerpt = `A practical guide for parents and gift-givers on choosing ${topicTitle}, focusing on child safety, age-appropriate fun, and creative development.`;
-    paragraphs = [
-      `Selecting the right ${topicTitle} for growing children can feel overwhelming given the endless choices on store shelves today. Beyond bright colors and entertainment value, parents and caregivers want options that encourage imagination, support developmental milestones, and stand up to energetic play.`,
-      `## Developmental Benefits and Open-Ended Play`,
-      `The best playthings engage a child's natural curiosity and problem-solving skills. Open-ended designs that allow kids to build, create, or imagine storylines foster independent thinking and fine motor development far better than single-function electronic novelties.`,
-      `### Essential Safety and Quality Checks`,
-      `* Non-Toxic Materials: Ensure paints, plastics, and fabrics are certified BPA-free and lead-safe.`,
-      `* Age-Appropriate Design: Verify age ratings to avoid small parts that pose choking hazards for toddlers.`,
-      `* Structural Durability: Look for sturdy seams, reinforced joints, and impact-resistant materials.`,
-      `* Easy Maintenance: Machine-washable fabrics and wipeable surfaces simplify routine cleanup.`,
-      `## Balancing Fun and Educational Value`,
-      `Finding the sweet spot between entertainment and learning keeps children coming back to play day after day. Look for toys that encourage active physical movement, social sharing with friends, or hands-on tactile exploration.`,
-      `## Final Summary: Making a Thoughtful Choice`,
-      `Investing in high-quality, safe, and engaging options for ${topicTitle} creates lasting childhood memories while supporting healthy growth and creative exploration.`
-    ];
-    faqs = [
-      { question: `How do I know if ${topicTitle} is safe for my child's age?`, answer: `Always check manufacturer age labels and safety certification marks (such as ASTM or CE) on the packaging.` },
-      { question: `Are non-electronic options better for child development?`, answer: `Simple, non-electronic items encourage active imagination and open-ended creative play.` },
-      { question: `How do I clean and sanitize ${topicTitle} safely?`, answer: `Wipe hard plastic surfaces with mild soap and warm water; washable plush items can be laundered on gentle cycle.` }
-    ];
-  } else {
-    paragraphs = [
-      `If you've been exploring ${topicTitle} lately, having reliable and practical information helps you navigate choices with total confidence. In this guide, we break down what really matters—from core features and practical applications to long-term quality and user recommendations.`,
-      `## Understanding the Essentials of ${topicTitle}`,
-      `Quality starts at the foundation. Before committing to a purchase or project, take time to evaluate key specifications, material craftsmanship, and overall functional utility. Focusing on proven quality ensures long-term satisfaction.`,
-      `### Key Features to Prioritize`,
-      `* Quality Craftsmanship: Ensures long-term reliability and resistance against early wear.`,
-      `* Practical Ergonomics: Designed for intuitive, seamless integration into your daily routine.`,
-      `* Ease of Upkeep: Simple care guidelines ensure effortless long-term performance.`,
-      `## Comparing Options for Your Specific Needs`,
-      `Finding the ideal match isn't just about choosing top specifications—it's about selecting what aligns best with your lifestyle, space, and personal preferences. Compare models and read user feedback before deciding.`,
-      `## Final Recommendation`,
-      `By balancing verified craftsmanship, real-world utility, and practical maintenance, you can choose ${topicTitle} with total confidence and enjoy reliable value for years to come.`
-    ];
-    faqs = [
-      { question: `What should I consider first when evaluating ${topicTitle}?`, answer: `Focus on core build quality, user feedback, and how well it fits your specific daily requirements.` },
-      { question: `How do I maintain ${topicTitle} long-term?`, answer: `Follow basic manufacturer guidelines and conduct periodic checks to prevent wear before it starts.` },
-      { question: `Is premium quality worth the extra cost for ${topicTitle}?`, answer: `Investing in higher craftsmanship typically yields superior durability, performance, and peace of mind.` }
-    ];
-  }
+  const faqs = [
+    { question: `What is the most important factor when choosing ${topicRaw}?`, answer: `Focus on core build quality, verified specifications, and how well it meets your specific daily requirements.` },
+    { question: `How do I ensure long-term reliability for ${topicRaw}?`, answer: `Follow standard manufacturer guidelines and perform periodic maintenance checks to prevent unnecessary wear.` },
+    { question: `Is upgrading to a higher tier of ${topicRaw} worth it?`, answer: `Higher tier models typically offer enhanced durability, better materials, and superior overall performance.` }
+  ];
 
   return { title, excerpt, paragraphs, faqs };
 }
