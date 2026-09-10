@@ -2,62 +2,24 @@
 
 import { Article } from "@/data/articles";
 
-const PERMANENT_STORAGE_KEY = "og_custom_articles_permanent_v1";
+const PERMANENT_STORAGE_KEY = "og_custom_articles_v3";
 
 export function getCustomArticlesFromStorage(): Article[] {
   if (typeof window === "undefined") return [];
   try {
-    const map = new Map<string, Article>();
-
-    // 1. Check primary permanent key
-    const primaryRaw = localStorage.getItem(PERMANENT_STORAGE_KEY);
-    if (primaryRaw) {
-      try {
-        const parsed = JSON.parse(primaryRaw);
-        if (Array.isArray(parsed)) {
-          for (const art of parsed) {
-            if (art && art.slug && !map.has(art.slug)) {
-              map.set(art.slug, art);
-            }
-          }
-        }
-      } catch (e) {}
-    }
-
-    // 2. Scan all legacy keys in localStorage to recover any previously created articles
-    for (let i = 0; i < localStorage.length; i++) {
+    // Purge all old legacy storage keys (v1, permanent_v1, etc.)
+    for (let i = localStorage.length - 1; i >= 0; i--) {
       const key = localStorage.key(i);
-      if (
-        key &&
-        key !== PERMANENT_STORAGE_KEY &&
-        (key.startsWith("og_custom") || key.startsWith("og_articles") || key.startsWith("on_gravity"))
-      ) {
-        try {
-          const raw = localStorage.getItem(key);
-          if (raw) {
-            const parsed = JSON.parse(raw);
-            if (Array.isArray(parsed)) {
-              for (const art of parsed) {
-                if (art && art.slug && !map.has(art.slug)) {
-                  map.set(art.slug, art);
-                }
-              }
-            }
-          }
-        } catch (e) {}
+      if (key && key !== PERMANENT_STORAGE_KEY && (key.startsWith("og_") || key.startsWith("on_gravity"))) {
+        localStorage.removeItem(key);
       }
     }
 
-    const allCustom = Array.from(map.values());
-
-    // Save consolidated articles back to permanent key if migrated
-    if (allCustom.length > 0) {
-      try {
-        localStorage.setItem(PERMANENT_STORAGE_KEY, JSON.stringify(allCustom.slice(0, 500)));
-      } catch (e) {}
+    const primaryRaw = localStorage.getItem(PERMANENT_STORAGE_KEY);
+    if (primaryRaw) {
+      const parsed = JSON.parse(primaryRaw);
+      if (Array.isArray(parsed)) return parsed;
     }
-
-    return allCustom;
   } catch (e) {
     console.error("Failed to load articles from localStorage:", e);
   }

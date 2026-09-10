@@ -150,11 +150,29 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {recentArticles.map((article) => (
-            <ArticleCard key={article.id} article={article} variant="standard" />
-          ))}
-        </div>
+        {allArticles.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {recentArticles.map((article) => (
+              <ArticleCard key={article.id} article={article} variant="standard" />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 bg-zinc-50 dark:bg-zinc-900/30 rounded-3xl border border-dashed border-zinc-300 dark:border-zinc-800 space-y-4">
+            <BookOpen className="w-12 h-12 text-zinc-400 mx-auto" />
+            <h3 className="font-serif text-xl font-bold text-zinc-800 dark:text-zinc-200">
+              No Published Articles Found
+            </h3>
+            <p className="text-xs text-zinc-500 max-w-md mx-auto">
+              All articles have been cleared. You can generate new publication-ready articles from the Auto-Blog Admin panel.
+            </p>
+            <Link
+              href="/admin/auto-blog"
+              className="inline-block bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-6 py-2.5 rounded-xl text-xs transition-colors"
+            >
+              Go to Auto-Blog Admin →
+            </Link>
+          </div>
+        )}
       </section>
 
       {/* Categories Spotlight */}
