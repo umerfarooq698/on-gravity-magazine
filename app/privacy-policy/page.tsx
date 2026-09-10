@@ -89,8 +89,8 @@ export default function PrivacyPolicyPage() {
           </h2>
           <p>
             For privacy inquiries or data requests, please contact our privacy desk at:{" "}
-            <a href="mailto:privacy@ongravitymagazine.com" className="text-amber-600 dark:text-amber-400 font-semibold hover:underline">
-              privacy@ongravitymagazine.com
+            <a href="mailto:admin.ongravitymagazine@gmail.com" className="text-amber-600 dark:text-amber-400 font-semibold hover:underline">
+              admin.ongravitymagazine@gmail.com
             </a>
           </p>
         </section>

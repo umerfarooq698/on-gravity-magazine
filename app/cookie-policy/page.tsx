@@ -76,8 +76,8 @@ export default function CookiePolicyPage() {
           </h2>
           <p>
             For questions regarding cookie management, email us at:{" "}
-            <a href="mailto:support@ongravitymagazine.com" className="text-amber-600 dark:text-amber-400 font-semibold hover:underline">
-              support@ongravitymagazine.com
+            <a href="mailto:admin.ongravitymagazine@gmail.com" className="text-amber-600 dark:text-amber-400 font-semibold hover:underline">
+              admin.ongravitymagazine@gmail.com
             </a>
           </p>
         </section>
