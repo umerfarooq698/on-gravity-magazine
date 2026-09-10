@@ -131,6 +131,19 @@ const getUnsplashAccessKey = () => process.env.UNSPLASH_ACCESS_KEY || "FLqjxtnt8
 
 let dynamicArticlesStore: Article[] = [];
 let keywordQueueStore: QueueItem[] = [];
+let autoPublishingActive = false;
+
+export function isAutoPublishingActive(): boolean {
+  return autoPublishingActive;
+}
+
+export function stopAutoPublishing(): void {
+  autoPublishingActive = false;
+}
+
+export function startAutoPublishing(): void {
+  autoPublishingActive = true;
+}
 
 function getDeterministicHash(str: string): number {
   let hash = 0;
