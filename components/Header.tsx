@@ -4,46 +4,94 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
+import { ARTICLES, Article } from "@/data/articles";
 import { CATEGORIES } from "@/data/categories";
+import { getCustomArticlesFromStorage } from "@/lib/clientStorage";
 import Logo from "@/components/Logo";
-import { Search, Sun, Moon, Menu, X, Radio } from "lucide-react";
+import { Search, Sun, Moon, Menu, X, Radio, ChevronRight, ChevronLeft } from "lucide-react";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [breakingArticles, setBreakingArticles] = useState<Article[]>([]);
+  const [tickerIndex, setTickerIndex] = useState(0);
+
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
+
+    const loadArticles = () => {
+      const custom = getCustomArticlesFromStorage();
+      const combined = [...custom, ...ARTICLES];
+      const map = new Map<string, Article>();
+      combined.forEach((art) => {
+        if (art && art.slug && !map.has(art.slug)) {
+          map.set(art.slug, art);
+        }
+      });
+      const top6 = Array.from(map.values()).slice(0, 6);
+      setBreakingArticles(top6);
+    };
+
+    loadArticles();
+
+    const handleUpdate = () => loadArticles();
+    window.addEventListener("og_articles_updated", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+
+    return () => {
+      window.removeEventListener("og_articles_updated", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
   }, []);
 
-  const todayDate = "Tuesday, Sept 8, 2026";
+  useEffect(() => {
+    if (breakingArticles.length <= 1) return;
+    const timer = setInterval(() => {
+      setTickerIndex((prev) => (prev + 1) % breakingArticles.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [breakingArticles]);
 
+  const todayDate = "Friday, Sept 11, 2026";
+  const currentArticle = breakingArticles[tickerIndex] || ARTICLES[0];
 
   return (
     <header className="w-full transition-colors duration-200 sticky top-0 z-50 shadow-md">
       {/* FOX News Style Top Utility Bar */}
       <div className="bg-[#001933] text-slate-200 text-xs py-1.5 px-4 sm:px-8 border-b border-slate-800">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <span className="font-semibold text-slate-300 hidden sm:inline uppercase text-[11px] tracking-wider">
+          <div className="flex items-center gap-3 overflow-hidden flex-1">
+            <span className="font-semibold text-slate-300 hidden sm:inline uppercase text-[11px] tracking-wider shrink-0">
               {todayDate}
             </span>
-            <span className="hidden sm:inline text-slate-600">|</span>
+            <span className="hidden sm:inline text-slate-600 shrink-0">|</span>
             <div className="flex items-center gap-1.5 bg-red-600 text-white font-extrabold px-2 py-0.5 rounded-xs uppercase text-[10px] tracking-widest shrink-0">
               <Radio className="w-3 h-3 animate-pulse" />
               BREAKING
             </div>
-            <Link
-              href="/bathroom-taps"
-              className="hover:underline text-white font-semibold truncate max-w-xs sm:max-w-md transition-colors"
-            >
-              Selecting the Ideal Bathroom Taps: Styles, Finishes & Flow Performance
-            </Link>
+            
+            {/* Dynamic Rotating Top 6 Articles Ticker */}
+            <div className="flex items-center gap-2 overflow-hidden flex-1">
+              <Link
+                key={currentArticle?.id || tickerIndex}
+                href={`/${currentArticle?.slug || ''}`}
+                className="hover:underline text-white font-semibold truncate max-w-xs sm:max-w-xl transition-all duration-500 animate-fade-in block"
+              >
+                {currentArticle?.title}
+              </Link>
+              
+              {breakingArticles.length > 1 && (
+                <div className="hidden md:flex items-center gap-1 text-[10px] text-slate-400 shrink-0">
+                  <span>({tickerIndex + 1}/{breakingArticles.length})</span>
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             <Link
               href="/search"
               className="flex items-center gap-1 hover:text-red-400 transition-colors font-bold uppercase text-[11px] tracking-wider"
@@ -123,8 +171,6 @@ export default function Header() {
                 </Link>
               );
             })}
-
-            {/* Categories links end */}
           </div>
         </div>
       </nav>
