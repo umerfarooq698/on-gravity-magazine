@@ -29,8 +29,8 @@ export const ARTICLES: Article[] = [
   {
     "id": "art-half-moon-light-lamp",
     "slug": "half-moon-light-lamp",
-    "title": "Half Moon Light Lamp: 5 Essential Secrets Before You Buy",
-    "metaTitle": "Half Moon Light Lamp: 5 Essential Secrets Before You Buy | On Gravity Magazine",
+    "title": "Half Moon Light Lamp Ergonomics and Studio Lighting Setup",
+    "metaTitle": "Half Moon Light Lamp Ergonomics and Studio Lighting Setup | On Gravity Magazine",
     "metaDescription": "An in-depth review of half moon light lamps, exploring arch lighting precision, LED brightness dimming, and lash desk aesthetics.",
     "excerpt": "An in-depth review of half moon light lamps, exploring arch lighting precision, LED brightness dimming, and lash desk aesthetics.",
     "content": [

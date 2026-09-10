@@ -30,7 +30,7 @@ STRICT ARTICLE STRUCTURE & WORD COUNT INSTRUCTIONS:
    - CRITICAL LENGTH RULE: The title MUST be strictly between 55 and 60 characters long (excluding "# ").
    - Incorporate the primary keyword naturally ANYWHERE in the title (beginning, middle, or end).
    - DO NOT include any year (e.g. DO NOT write "2026" or "(2026)").
-   - DO NOT overuse the word "Guide". Vary title styles across reviews, secrets, honest breakdowns, performance checks, and expert advice.
+   - CRITICAL TITLE DIVERSITY MANDATE: DO NOT use repetitive title formulas like "5 Essential Secrets Before You Buy" across articles! Every article MUST have a unique, fresh title angle (e.g. Ergonomics & Studio Setup, Performance Specs & Pricing, Honest Breakdown & Insights, Feature Checks & Workflows, Technical Analysis & Choice).
 
 3. UNIQUE 140-CHARACTER SEO META SUMMARY / EXCERPT:
    - Immediately after the title, output "EXCERPT: [Write a completely fresh, 100% unique, punchy meta description of EXACTLY 135 to 140 characters summarizing the topic]".
@@ -188,11 +188,16 @@ export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string 
   let kwWords = clean.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 
   const highCtrTemplates = [
-    `${kwWords} Review: 5 Must-Know Secrets Before You Buy`,
-    `Is ${kwWords} Worth It? Performance Specs, Pricing and Verdict`,
-    `${kwWords} Analysis: Key Features, Top Models and Honest Verdict`,
-    `${kwWords} Breakdown: Performance Checks and Expert Advice`,
-    `Essential ${kwWords} Insights: Real Testing and Buyer Choice`
+    `${kwWords} Ergonomics and Studio Lighting Setup`,
+    `Why ${kwWords} Precision Matters for Daily Use`,
+    `${kwWords} Performance Specs and Workstation Uses`,
+    `An Honest Breakdown of ${kwWords} Key Features`,
+    `${kwWords} Aesthetics, Lumens and Salon Workflows`,
+    `How to Choose the Right ${kwWords} for Your Space`,
+    `${kwWords} Technical Specifications and Real Review`,
+    `Is ${kwWords} Worth It? Performance Checks Tested`,
+    `Essential ${kwWords} Feature Analysis and Specs`,
+    `${kwWords} Placement Guidelines and Studio Comfort`
   ];
 
   return highCtrTemplates[Math.abs(hashVal) % highCtrTemplates.length].replace(/&/g, "and");
