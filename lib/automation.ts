@@ -320,13 +320,16 @@ async function fetchArticleFromGeminiApi(keyword: string): Promise<{
         })
       });
 
-      if (!response.ok) continue;
+      if (!response.ok) {
+        console.warn(`Gemini API returned status ${response.status} for model ${modelName}. Trying next model...`);
+        continue;
+      }
 
       const data = await response.json();
       const candidateText = data.candidates?.[0]?.content?.parts?.[0]?.text;
       if (candidateText && typeof candidateText === "string" && candidateText.trim().length > 100) {
         const parsed = parseGeminiMarkdownArticle(candidateText, keyword);
-        if (parsed && parsed.paragraphs.length >= 3) {
+        if (parsed && parsed.paragraphs.length >= 2) {
           return parsed;
         }
       }
@@ -351,19 +354,16 @@ function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
-    // Extract title from # Heading or Title: line
     if (!title && (line.startsWith("# ") || line.toLowerCase().startsWith("title:"))) {
       title = line.replace(/^#\s+|^Title:\s*/i, "").replace(/&/g, "and");
       continue;
     }
 
-    // Extract explicit EXCERPT: or SUMMARY: or META: line
     if (!explicitExcerpt && (line.toLowerCase().startsWith("excerpt:") || line.toLowerCase().startsWith("summary:") || line.toLowerCase().startsWith("meta:"))) {
       explicitExcerpt = line.replace(/^excerpt:|^summary:|^meta:\s*/i, "").replace(/&/g, "and");
       continue;
     }
 
-    // Detect FAQ section - DO NOT push FAQ headings/lines into main paragraphs
     if (line.toLowerCase().includes("frequently asked questions") || line.toLowerCase() === "## faqs" || line.toLowerCase().startsWith("## faq")) {
       inFaqs = true;
       continue;
@@ -393,7 +393,6 @@ function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
   if (!title) {
     title = formatSeoTitle(keyword);
   } else {
-    // Remove any accidental year numbers (e.g. 2026, (2026)) per user instructions
     title = title.replace(/\s*\(?20\d\d\)?\s*/g, " ").replace(/\s+/g, " ").trim();
   }
 
@@ -407,27 +406,70 @@ function generateTopicFallbackArticle(keyword: string, hashVal: number) {
   const kwFmt = formatNaturalKeyword(keyword);
   const topicTitle = kwFmt.title.replace(/&/g, "and");
   const topicRaw = kwFmt.raw.replace(/&/g, "and");
+  const tokens = extractKeywordSubTokens(keyword);
   const count = extractCountFromKeyword(keyword) || 5;
 
   const title = formatSeoTitle(keyword, hashVal);
-  const excerpt = formatMetaDescription(`A comprehensive editorial breakdown of ${topicRaw}, evaluating top performance metrics, user reviews, and key buying considerations.`);
 
-  const paragraphs: string[] = [
-    `Exploring ${topicRaw} requires a clear understanding of core features, design quality, and practical daily utility. Having structured guidance ensures you make an informed choice with total confidence.`
+  if (tokens.isTap) {
+    if (tokens.isCold) {
+      const coldExcerpt = formatMetaDescription(`Discover everything you need to know about bathroom cold taps, including water pressure guidelines, ceramic disc valves, and anti-corrosive finishes.`);
+      const coldParagraphs = [
+        `Single cold water taps remain an essential fixture in modern cloakrooms, utility rooms, and traditional twin-basin arrangements. Unlike mixer taps that combine hot and cold streams, a dedicated cold tap connects directly to your mains or cold storage supply, delivering immediate unheated water with maximum flow efficiency.`,
+        `## Key Features of High-Performance Cold Taps`,
+        `When selecting a cold tap for your bathroom, solid brass construction with electroplated chrome or matte black finishes provides long-term resistance to rust and mineral buildup. Quarter-turn ceramic disc valves replace old rubber washers, preventing annoying drips and allowing smooth, effortless operation.`,
+        `## Cold Tap Installation & Water Pressure Considerations`,
+        `Most bathroom cold taps operate efficiently across both low-pressure gravity systems (0.2 bar) and high-pressure unvented mains (1.0+ bar). Ensuring proper thread fitting (typically 1/2-inch BSP) and checking spout height relative to basin depth prevents splashback during daily use.`,
+        `## Conclusion`,
+        `Investing in a well-crafted bathroom cold tap guarantees reliable daily utility, leak-free operation, and an elegant accent for compact washrooms.`
+      ];
+      const coldFaqs = [
+        { question: `Can a bathroom cold tap be installed on a high-pressure system?`, answer: `Yes, solid brass cold taps handle both high-pressure mains and low-pressure gravity feeds without issue.` },
+        { question: `Why is my cold tap dripping?`, answer: `Dripping is usually caused by a worn ceramic disc cartridge or degraded washer inside the tap body.` },
+        { question: `What is the standard pipe size for a bathroom cold tap?`, answer: `Standard UK and European basin cold taps use a 1/2-inch BSP connection.` }
+      ];
+      return { title: "Essential Features of a High-Efficiency Bathroom Cold Tap", excerpt: coldExcerpt, paragraphs: coldParagraphs, faqs: coldFaqs };
+    } else {
+      const tapExcerpt = formatMetaDescription(`An in-depth review of bathroom taps, comparing monobloc basin mixers, wall-mounted spouts, and durable brass construction for modern washrooms.`);
+      const tapParagraphs = [
+        `Upgrading your bathroom taps is one of the most impactful ways to elevate both the aesthetic and functional quality of your washroom. From sleek monobloc basin mixers to classic pillar taps and luxurious wall-mounted spouts, choosing the right fixture depends on your plumbing system, basin design, and style preferences.`,
+        `## Monobloc Mixers vs. Pillar Taps`,
+        `Monobloc basin taps blend hot and cold water through a single spout, offering precise temperature control via single or dual levers. Pillar taps, by contrast, feature separate hot and cold spouts, ideal for traditional twin-hole basins or period-style interiors.`,
+        `## Materials, Finishes & Valve Technology`,
+        `High-grade brass bodies plated in brushed nickel, chrome, or architectural matte black ensure exceptional durability against corrosion and hard water stains. Modern quarter-turn ceramic disc technology replaces traditional rubber washers, eliminating drips and guaranteeing smooth handle rotation.`,
+        `## Conclusion`,
+        `Selecting the ideal bathroom taps involves balancing your home water pressure, basin compatibility, and desired architectural finish for lasting beauty and performance.`
+      ];
+      const tapFaqs = [
+        { question: `What is the difference between low pressure and high pressure taps?`, answer: `Low pressure taps feature wider internal waterways to allow strong flow from gravity-fed tanks, while high pressure taps suit combi boilers.` },
+        { question: `How do I prevent water spots on matte black bathroom taps?`, answer: `Clean regularly with a soft microfibre cloth and warm soapy water, avoiding abrasive chemical cleaners.` },
+        { question: `What is a ceramic disc valve in a tap?`, answer: `It uses two rotating ceramic discs that align to control water flow, replacing rubber washers for leak-free durability.` }
+      ];
+      return { title: "Selecting the Ideal Bathroom Taps: Styles, Finishes and Performance", excerpt: tapExcerpt, paragraphs: tapParagraphs, faqs: tapFaqs };
+    }
+  }
+
+  const excerpt = formatMetaDescription(`A comprehensive editorial breakdown of ${topicRaw}, evaluating top performance metrics, user reviews, and key buying considerations.`);
+  const paragraphs: string[] = [];
+  const intros = [
+    `Analyzing ${topicRaw} requires evaluating build specifications, practical daily utility, and long-term value.`,
+    `When evaluating top options for ${topicRaw}, understanding key feature sets and real-world performance is essential.`,
+    `A thorough examination of ${topicRaw} reveals distinct design advantages, performance metrics, and user feedback.`
   ];
+  paragraphs.push(intros[hashVal % intros.length]);
 
   for (let i = 1; i <= count; i++) {
-    paragraphs.push(`## ${i}. Top Selected Choice #${i} for ${topicTitle}`);
-    paragraphs.push(`This featured option excels in build craftsmanship, user satisfaction, and daily reliability. Evaluating its key specifications alongside real-world feedback reveals why it remains a top choice in its category.`);
+    paragraphs.push(`## ${i}. ${topicTitle} Top Feature Analysis #${i}`);
+    paragraphs.push(`This configuration excels in manufacturing quality, operational efficiency, and overall reliability under daily usage conditions.`);
   }
 
   paragraphs.push(`## Conclusion`);
-  paragraphs.push(`In summary, selecting the ideal setup for ${topicRaw} comes down to balancing verified build quality, user requirements, and long-term value.`);
+  paragraphs.push(`In summary, choosing the right setup for ${topicRaw} comes down to identifying your specific space requirements, budget, and long-term performance expectations.`);
 
   const faqs = [
-    { question: `What is the most important factor when choosing ${topicRaw}?`, answer: `Focus on core build quality and how well it fits your daily requirements.` },
-    { question: `How do I ensure long-term reliability for ${topicRaw}?`, answer: `Follow standard guidelines and conduct periodic maintenance checks.` },
-    { question: `Is upgrading to a higher tier of ${topicRaw} worth it?`, answer: `Higher tier models offer better durability, materials, and long-term performance.` }
+    { question: `What should I look for when selecting ${topicRaw}?`, answer: `Focus on material durability, verified user feedback, and compatibility with your existing setup.` },
+    { question: `How can I maintain long-term performance for ${topicRaw}?`, answer: `Perform regular maintenance checks and follow manufacturer care instructions.` },
+    { question: `Is upgrading to a premium model of ${topicRaw} worth the cost?`, answer: `Premium models typically offer superior materials, extended warranties, and better overall durability.` }
   ];
 
   return { title, excerpt, paragraphs, faqs };
