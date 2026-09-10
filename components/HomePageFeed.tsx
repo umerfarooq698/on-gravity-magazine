@@ -116,7 +116,7 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
                     <div className="flex-1 space-y-1">
                       <div className="flex items-center gap-1.5 text-[10px] font-black text-red-600 uppercase tracking-widest">
                         <span>• {item.publishedAt}</span>
-                        <span className="text-slate-400 font-semibold">• {item.category}</span>
+                        <span className="text-slate-700 dark:text-slate-300 font-bold">• {item.category}</span>
                       </div>
                       <h4 className="font-sans font-bold text-xs sm:text-sm text-slate-900 dark:text-slate-100 group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors leading-snug line-clamp-2 uppercase">
                         {item.title}

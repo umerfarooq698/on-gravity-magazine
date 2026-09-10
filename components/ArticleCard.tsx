@@ -147,7 +147,7 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
 
       <div className="p-4 flex flex-col justify-between flex-1 space-y-3">
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-[11px] text-slate-700 dark:text-slate-300 font-bold uppercase tracking-wider">
             <span className="flex items-center gap-1">
               <Clock className="w-3 h-3 text-red-600" />
               {article.readTime}
