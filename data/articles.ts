@@ -1,3 +1,4 @@
+import publishedArticlesData from "./publishedArticles.json";
 import { getAllArticlesCombined, getArticleBySlugAsync } from "@/lib/automation";
 
 export interface Article {
@@ -25,8 +26,7 @@ export interface Article {
   tags: string[];
 }
 
-// ARTICLES is empty by default because all articles are generated directly by Gemini API as per user rules.
-export const ARTICLES: Article[] = [];
+export const ARTICLES: Article[] = publishedArticlesData as Article[];
 
 export async function getArticleBySlug(slug: string): Promise<Article | undefined> {
   return await getArticleBySlugAsync(slug);
