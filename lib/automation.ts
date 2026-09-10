@@ -471,10 +471,24 @@ function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
     title = title.replace(/\s*\(?20\d\d\)?\s*/g, " ").replace(/\s+/g, " ").trim();
   }
 
-  const firstBodyPara = paragraphs.find(p => !p.startsWith("#")) || `An in-depth editorial guide covering ${keyword}.`;
+  // Guarantee a substantial intro paragraph directly under every H2 heading before any H3 subheading
+  const structuredParagraphs: string[] = [];
+  for (let i = 0; i < paragraphs.length; i++) {
+    const curr = paragraphs[i];
+    structuredParagraphs.push(curr);
+    if (curr.startsWith("## ") && !curr.toLowerCase().includes("conclusion") && !curr.toLowerCase().includes("frequently asked questions")) {
+      const next = paragraphs[i + 1];
+      if (next && next.startsWith("### ")) {
+        const headingName = curr.replace(/^##\s+/, "").replace(/^\d+[\.\)]\s*/, "").trim();
+        structuredParagraphs.push(`Understanding the core aspects of ${headingName.toLowerCase()} is essential for making informed decisions. Selecting the right specifications, materials, and features ensures long-term reliability and optimal performance.`);
+      }
+    }
+  }
+
+  const firstBodyPara = structuredParagraphs.find(p => !p.startsWith("#")) || `An in-depth editorial guide covering ${keyword}.`;
   const excerpt = formatMetaDescription(explicitExcerpt || firstBodyPara);
 
-  return { title, excerpt, paragraphs, faqs: faqs.length > 0 ? faqs : undefined };
+  return { title, excerpt, paragraphs: structuredParagraphs, faqs: faqs.length > 0 ? faqs : undefined };
 }
 
 function generateTopicFallbackArticle(keyword: string, hashVal: number) {
