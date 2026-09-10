@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+@variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #fcfcfb;
-  --foreground: #121316;
+  --foreground: #0f172a;
   --accent-gold: #d97706;
 }
 
@@ -14,8 +17,8 @@
 }
 
 .dark {
-  --background: #0e0f12;
-  --foreground: #f0f1f4;
+  --background: #090d16;
+  --foreground: #f8fafc;
 }
 
 body {
@@ -24,6 +27,46 @@ body {
   font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Explicit Dark Mode Article Text & Reading Enhancements */
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: #ffffff !important;
+}
+
+.dark p {
+  color: #e2e8f0 !important;
+}
+
+.dark .prose {
+  color: #e2e8f0 !important;
+}
+
+.dark .prose p {
+  color: #cbd5e1 !important;
+}
+
+.dark .prose strong {
+  color: #ffffff !important;
+}
+
+.dark .prose h2 {
+  color: #ffffff !important;
+  border-color: #dc2626 !important;
+}
+
+.dark .prose h3 {
+  color: #f8fafc !important;
+}
+
+/* Light Mode High-Contrast Article Text */
+h1, h2, h3, h4, h5, h6 {
+  color: #0f172a;
+}
+
+p {
+  color: #334155;
 }
 
 /* Print-style Magazine Header Double Borders */
@@ -33,8 +76,8 @@ body {
 }
 
 .dark .magazine-border-double {
-  border-top: 3px double #27272a;
-  border-bottom: 1px solid #27272a;
+  border-top: 3px double #334155;
+  border-bottom: 1px solid #334155;
 }
 
 /* Custom Scrollbar for Magazine Feed */
