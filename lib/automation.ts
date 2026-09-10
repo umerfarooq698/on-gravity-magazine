@@ -214,20 +214,26 @@ export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string 
   return highCtrTemplates[Math.abs(hashVal) % highCtrTemplates.length].replace(/&/g, "and");
 }
 
-async function fetchUniqueUnsplashImage(keyword: string, category: string): Promise<{ url: string; caption: string; alt: string }> {
+async function fetchUniqueUnsplashImage(keyword: string, category: string, usedUrls: Set<string> = new Set()): Promise<{ url: string; caption: string; alt: string }> {
   const accessKey = getUnsplashAccessKey();
   const cleanKw = keyword.trim().toLowerCase().replace(/&/g, "and");
-  const slugSig = cleanKw.replace(/[^a-z0-9]+/g, "-");
-  const hashVal = getDeterministicHash(cleanKw);
+  const randomPage = Math.floor(Math.random() * 3) + 1;
+  const uniqueSig = `${cleanKw.replace(/[^a-z0-9]+/g, "-")}_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
 
   if (accessKey) {
     try {
-      const apiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keyword)}&per_page=10&orientation=landscape&client_id=${accessKey}`;
+      const apiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keyword)}&per_page=30&page=${randomPage}&orientation=landscape&client_id=${accessKey}`;
       const res = await fetch(apiUrl);
       if (res.ok) {
         const data = await res.json();
         if (data.results && data.results.length > 0) {
-          const photo = data.results[hashVal % data.results.length];
+          const unusedPhotos = data.results.filter((p: any) => {
+            const u = p.urls?.regular || p.urls?.full;
+            return u && !usedUrls.has(u);
+          });
+          const photoList = unusedPhotos.length > 0 ? unusedPhotos : data.results;
+          const randomIndex = Math.floor(Math.random() * photoList.length);
+          const photo = photoList[randomIndex];
           const imgUrl = photo.urls?.regular || photo.urls?.full;
           if (imgUrl) {
             return {
@@ -239,22 +245,72 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string): Prom
         }
       }
     } catch (e) {
-      // Fallback
+      // Fallback below
     }
   }
 
   const categoryPhotoPools: Record<string, string[]> = {
-    "life-style": ["photo-1584622650111-993a426fbf0a", "photo-1507652313519-d4e9174996dd"],
-    tech: ["photo-1615663245857-ac93bb7c39e7", "photo-1593359677879-a4bb92f829d1"],
-    health: ["photo-1506126613408-eca07ce68773", "photo-1540420773420-3366772f4999"],
-    celebrity: ["photo-1492684223066-81342ee5ff30", "photo-1515886657613-9f3515b0c78f"],
-    business: ["photo-1621416894569-0f39ed31d247", "photo-1486406146926-c627a92ad1ab"],
-    food: ["photo-1555396273-367ea4eb4db5", "photo-1504674900247-0877df9cc836"],
-    news: ["photo-1470071459604-3b5ec3a7fe05", "photo-1585829365295-ab7cd400c167"],
+    "life-style": [
+      "photo-1584622650111-993a426fbf0a",
+      "photo-1507652313519-d4e9174996dd",
+      "photo-1552321554-5fefe8c9ef14",
+      "photo-1620626011761-996317b8d101",
+      "photo-1512917774080-9991f1c4c750",
+      "photo-1618221195710-dd6b41faaea6",
+      "photo-1616486338812-3dadae4b4ace",
+      "photo-1600585154340-be6161a56a0c",
+      "photo-1600566753376-12c8ab7fb75b"
+    ],
+    tech: [
+      "photo-1615663245857-ac93bb7c39e7",
+      "photo-1593359677879-a4bb92f829d1",
+      "photo-1517336714731-489689fd1ca8",
+      "photo-1498050108023-c5249f4df085",
+      "photo-1526374965328-7f61d4dc18c5",
+      "photo-1550745165-9bc0b252726f",
+      "photo-1531297484001-80022131f5a1",
+      "photo-1496181133206-80ce9b88a853"
+    ],
+    health: [
+      "photo-1506126613408-eca07ce68773",
+      "photo-1540420773420-3366772f4999",
+      "photo-1571019613454-1cb2f99b2d8b",
+      "photo-1518611012118-696072aa579a",
+      "photo-1498837167922-ddd27525d352"
+    ],
+    celebrity: [
+      "photo-1492684223066-81342ee5ff30",
+      "photo-1515886657613-9f3515b0c78f",
+      "photo-1509631179647-0177331693ae",
+      "photo-1469371670807-013ccf25f16a"
+    ],
+    business: [
+      "photo-1621416894569-0f39ed31d247",
+      "photo-1486406146926-c627a92ad1ab",
+      "photo-1454165804606-c3d57bc86b40",
+      "photo-1507679799987-c73779587ccf"
+    ],
+    food: [
+      "photo-1555396273-367ea4eb4db5",
+      "photo-1504674900247-0877df9cc836",
+      "photo-1495521821757-a1efb6729352"
+    ],
+    news: [
+      "photo-1470071459604-3b5ec3a7fe05",
+      "photo-1585829365295-ab7cd400c167",
+      "photo-1504711434969-e33886168f5c"
+    ]
   };
+
   const pool = categoryPhotoPools[category] || categoryPhotoPools["life-style"];
-  const selectedPhotoId = pool[hashVal % pool.length];
-  return { url: `https://images.unsplash.com/${selectedPhotoId}?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`, caption: `Editorial photograph highlighting ${keyword}.`, alt: `Photograph of ${keyword}` };
+  const randomIndex = Math.floor(Math.random() * pool.length);
+  const selectedPhotoId = pool[randomIndex];
+
+  return {
+    url: `https://images.unsplash.com/${selectedPhotoId}?auto=format&fit=crop&w=1200&q=80&sig=${uniqueSig}`,
+    caption: `Editorial photograph highlighting ${keyword}.`,
+    alt: `Photograph of ${keyword}`
+  };
 }
 
 export function extractCountFromKeyword(keyword: string): number | null {
