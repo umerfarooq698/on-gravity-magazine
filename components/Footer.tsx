@@ -26,7 +26,7 @@ export default function Footer() {
         {/* Categories Column */}
         <div className="space-y-3">
           <h3 className="font-sans text-xs font-black text-white uppercase tracking-widest border-b-2 border-red-600 pb-1.5">
-            NEWS DESKS
+            CATEGORIES
           </h3>
           <ul className="space-y-2 text-xs font-bold uppercase tracking-wider text-slate-300">
             {CATEGORIES.map((cat) => (

@@ -212,7 +212,7 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
         <div className="flex items-center gap-2 border-b-4 border-red-600 pb-2">
           <span className="w-3 h-6 bg-red-600" />
           <h2 className="font-sans text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white uppercase">
-            NEWS DESKS & EDITIONS
+            CATEGORIES
           </h2>
         </div>
 
