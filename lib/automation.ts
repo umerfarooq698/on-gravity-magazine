@@ -59,7 +59,11 @@ STRICT TITLE & WRITING INSTRUCTIONS:
      ### Q: [Short Question]
      A: [Short Answer]
 
-8. ORIGINALITY & NO META-TEXT:
+8. NATURAL INTERNAL LINKING (OPTIONAL):
+   - You may include 1 to 2 markdown internal links like [link text](/target-slug) ONLY if it naturally fits the sentence context for a related article (e.g. [bathroom taps](/bathroom-taps) or [hp laptop](/hp-laptop)).
+   - DO NOT force internal links when not relevant. Internal linking is strictly optional and must only occur when a genuine relation exists.
+
+9. ORIGINALITY & NO META-TEXT:
    - Every single generated article must be completely fresh, distinct, and unique.
    - Do not include meta-commentary, AI references, or prompt explanations.
 

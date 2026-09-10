@@ -10,6 +10,7 @@ import { getAuthorSlug } from "@/data/authors";
 import ArticleCard from "@/components/ArticleCard";
 import Newsletter from "@/components/Newsletter";
 import { formatMetaDescription } from "@/lib/meta";
+import { injectNaturalInternalLinks } from "@/lib/internalLinks";
 import {
   Clock,
   Calendar,
@@ -349,7 +350,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         {/* Reading Body with Fox News Styling */}
         <div className="prose prose-lg dark:prose-invert max-w-none space-y-6 font-sans text-slate-800 dark:text-slate-200 text-lg leading-relaxed">
-          {article.content
+          {injectNaturalInternalLinks(article.content, article.slug)
             .filter((item) => {
               const lower = item.toLowerCase().trim();
               return (
