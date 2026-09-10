@@ -5,6 +5,8 @@ const { execSync } = require('child_process');
 const QUEUE_FILE = path.join(__dirname, '..', 'keywords_queue.json');
 const ARTICLES_FILE = path.join(__dirname, '..', 'data', 'articles.ts');
 
+const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1j0pU46wUz-k676ypU4rzXgaF6ybqjaq5thgMnnW_2v4/export?format=csv";
+
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY || "FLqjxtnt8-eGS9mpiB3-GMOvHhVAqT4_lQxyslYLO0A";
 
@@ -31,6 +33,56 @@ function slugify(text) {
     .replace(/&/g, 'and')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
+}
+
+function parseCsvLines(csvText) {
+  const lines = csvText.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+  const items = [];
+  for (let i = 1; i < lines.length; i++) { // Skip header row
+    const line = lines[i];
+    const parts = line.split(/,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/).map(p => p.replace(/^"|"$/g, '').trim());
+    const keyword = parts[0];
+    const category = parts[1] || 'life-style';
+    if (keyword && keyword.length > 1) {
+      items.push({ keyword, category: category.toLowerCase().replace(/\s+/g, '-') });
+    }
+  }
+  return items;
+}
+
+async function syncWithGoogleSheet(queueData) {
+  try {
+    console.log("Syncing queue with Google Sheet live CSV...");
+    const res = await fetch(GOOGLE_SHEET_CSV_URL);
+    if (res.ok) {
+      const csvText = await res.text();
+      const sheetItems = parseCsvLines(csvText);
+      const existingKeywords = new Set(queueData.map(q => q.keyword.toLowerCase().trim()));
+
+      let addedCount = 0;
+      for (const item of sheetItems) {
+        const cleanKw = item.keyword.toLowerCase().trim();
+        if (!existingKeywords.has(cleanKw)) {
+          queueData.push({
+            id: `kw-${queueData.length + 1}`,
+            keyword: item.keyword,
+            category: item.category || 'life-style',
+            status: 'pending'
+          });
+          existingKeywords.add(cleanKw);
+          addedCount++;
+        }
+      }
+      if (addedCount > 0) {
+        console.log(`Synced ${addedCount} new keyword(s) from Google Sheet into queue!`);
+      } else {
+        console.log("No new keywords found in Google Sheet.");
+      }
+    }
+  } catch (err) {
+    console.warn("Could not sync Google Sheet (using current queue):", err.message);
+  }
+  return queueData;
 }
 
 function extractCountFromKeyword(keyword) {
@@ -299,16 +351,18 @@ function parseGeminiMarkdown(rawText, keyword) {
 async function runAutoPublish() {
   console.log("=== ON GRAVITY CLOUD AUTO-PUBLISHER ===");
 
-  if (!fs.existsSync(QUEUE_FILE)) {
-    console.error("keywords_queue.json not found!");
-    process.exit(1);
+  let queueData = [];
+  if (fs.existsSync(QUEUE_FILE)) {
+    queueData = JSON.parse(fs.readFileSync(QUEUE_FILE, 'utf-8'));
   }
 
-  const queueData = JSON.parse(fs.readFileSync(QUEUE_FILE, 'utf-8'));
+  // 1. Sync live keywords from Google Sheet
+  queueData = await syncWithGoogleSheet(queueData);
+
   const pendingIndex = queueData.findIndex(item => item.status === 'pending');
 
   if (pendingIndex === -1) {
-    console.log("No pending keywords remaining in keywords_queue.json. Auto-publisher finished!");
+    console.log("No pending keywords remaining in keywords_queue.json or Google Sheet. Auto-publisher finished!");
     process.exit(0);
   }
 
