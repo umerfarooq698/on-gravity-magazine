@@ -82,12 +82,6 @@ export default function Header() {
               >
                 {currentArticle?.title}
               </Link>
-              
-              {breakingArticles.length > 1 && (
-                <div className="hidden md:flex items-center gap-1 text-[10px] text-slate-400 shrink-0">
-                  <span>({tickerIndex + 1}/{breakingArticles.length})</span>
-                </div>
-              )}
             </div>
           </div>
 
