@@ -36,18 +36,14 @@ STRICT ARTICLE STRUCTURE & WORD COUNT INSTRUCTIONS:
    - Immediately after the title, output "EXCERPT: [Write a completely fresh, 100% unique, punchy meta description of EXACTLY 135 to 140 characters summarizing the topic]".
    - DO NOT repeat meta descriptions. Even for identical or similar keywords, generate a brand new angle, focus, or value proposition every single time.
 
-4. H2 & H3 OUTLINE HIERARCHY & PARAGRAPH PLACEMENT (CRITICAL):
-   - Step 1: Generate comprehensive H2 headings ("## [H2 Main Section Title]").
-   - Step 2 (MANDATORY): Write a substantial, detailed intro paragraph directly under EVERY H2 heading explaining the main section topic.
-   - Step 3: Next, include relevant H3 sub-headings ("### [H3 Sub-Section Title]") beneath the H2 section.
-   - Step 4: Write a focused sub-paragraph under each H3 heading covering specific technical or practical details.
-   - EVERY HEADING MUST HAVE CONTENT DIRECTLY UNDER IT. NEVER place an H3 heading directly below an H2 heading without a full paragraph between them!
-   - LISTICLE RULE: Use numbers in H2 headings ("## 1. [Item Name]", "## 2. [Item Name]") ONLY if the keyword explicitly specifies a count N (e.g., "5 best...", "6 best...").
-   - NON-LISTICLE RULE: For standard topics without a number in the keyword, DO NOT use numbers in H2 headings! Use clean, natural descriptive headings.
+4. HEADING NUMBERING & HIERARCHY (CRITICAL):
+   - HEADING NUMBERING RULE: For standard informational articles, do NOT use numbered headings such as "1.", "2.", or "3.". Numbered headings should ONLY be used when the target topic or keyword is naturally count-based (e.g., "5 Best Laptops for Students", "7 Ways to Improve Wi-Fi Speed", "10 Common MacBook Problems").
+   - H2 INTRODUCTION RULE: Every main-content H2 section MUST begin with a complete, useful introductory paragraph before any H3 subheadings, bullet points, tables, or lists appear. Do NOT place an H3 immediately after an H2!
+   - H3 SUBHEADINGS RULE: Use H3 headings ONLY when they genuinely help divide a broader H2 topic into useful subtopics. Do NOT create unnecessary H3 headings simply to increase heading count.
 
-5. BULLET POINTS & EDITORIAL VARIETY:
-   - Include bullet points ("- [Key Point/Spec]") ONLY when naturally helpful for the reader (e.g. key specs, feature comparisons, pros/cons, or practical checklists).
-   - In articles where bullet points are not necessary, use paragraph-only narrative prose for natural magazine reading flow. Vary bullet point usage naturally across articles.
+5. BULLET POINTS & EDITORIAL BALANCE:
+   - Use bullet points ONLY where they improve readability, such as: Features, Specifications, Pros and cons, Comparisons, Steps, or Short grouped details.
+   - Do NOT overuse bullet points. Maintain a natural balance between paragraphs, headings, and lists.
 
 6. HIGH-INTENT INFORMATIONAL VALUE:
    - Every article must be deeply informational, well-researched, and highly valuable for readers and visitors.
