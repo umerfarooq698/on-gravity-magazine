@@ -2,10 +2,11 @@ import React from "react";
 
 interface LogoProps {
   size?: "sm" | "md" | "lg";
+  variant?: "light" | "dark" | "auto";
   className?: string;
 }
 
-export default function Logo({ size = "md", className = "" }: LogoProps) {
+export default function Logo({ size = "md", variant = "auto", className = "" }: LogoProps) {
   const titleSizes = {
     sm: "text-lg tracking-tighter font-black",
     md: "text-2xl sm:text-3xl tracking-tighter font-black",
@@ -13,9 +14,15 @@ export default function Logo({ size = "md", className = "" }: LogoProps) {
   };
 
   const badgeSizes = {
-    sm: "text-[9px] px-1.5 py-0.5",
-    md: "text-[11px] sm:text-xs px-2 py-0.5",
-    lg: "text-xs sm:text-sm px-3 py-1",
+    sm: "text-[9px] px-1.5 py-0.5 font-black",
+    md: "text-[11px] sm:text-xs px-2.5 py-0.5 font-black",
+    lg: "text-xs sm:text-sm px-3 py-1 font-black",
+  };
+
+  const textColors = {
+    auto: "text-slate-900 dark:text-white",
+    light: "text-white",
+    dark: "text-slate-900",
   };
 
   return (
@@ -24,10 +31,10 @@ export default function Logo({ size = "md", className = "" }: LogoProps) {
       <div className="w-1.5 sm:w-2 h-7 sm:h-9 bg-red-600 rounded-xs shrink-0 group-hover:scale-y-110 transition-transform" />
 
       <div className="flex items-center gap-2">
-        <span className={`font-sans uppercase text-slate-900 dark:text-white leading-none ${titleSizes[size]}`}>
+        <span className={`font-sans uppercase leading-none ${titleSizes[size]} ${textColors[variant]}`}>
           ON GRAVITY
         </span>
-        <span className={`font-sans uppercase font-black bg-red-600 text-white rounded-sm shadow-xs leading-none tracking-widest ${badgeSizes[size]}`}>
+        <span className={`font-sans uppercase bg-red-600 text-white rounded-xs shadow-xs leading-none tracking-widest ${badgeSizes[size]}`}>
           MAGAZINE
         </span>
       </div>

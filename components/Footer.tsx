@@ -13,7 +13,7 @@ export default function Footer() {
         {/* Brand Column */}
         <div className="lg:col-span-2 space-y-4">
           <Link href="/">
-            <Logo size="md" />
+            <Logo size="md" variant="light" />
           </Link>
           <p className="text-xs text-slate-300 leading-relaxed max-w-sm font-sans">
             On Gravity Magazine delivers fair, fast, and comprehensive national, technological, lifestyle, and business coverage for readers worldwide.

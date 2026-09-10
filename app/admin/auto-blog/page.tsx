@@ -263,7 +263,7 @@ export default function AutoBlogAdminPage() {
         <aside className="w-56 bg-[#1d2327] dark:bg-zinc-900 text-zinc-300 shrink-0 hidden md:flex flex-col justify-between p-2 select-none border-r border-zinc-800">
           <div className="space-y-1">
             <div className="p-3 mb-2 border-b border-zinc-800/80">
-              <Logo size="sm" />
+              <Logo size="sm" variant="light" />
             </div>
 
             <button
