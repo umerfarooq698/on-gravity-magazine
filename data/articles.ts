@@ -27,6 +27,73 @@ export interface Article {
 
 export const ARTICLES: Article[] = [
   {
+    "id": "art-bathroom-tiles-design",
+    "slug": "bathroom-tiles-design",
+    "title": "Bathroom Tiles Design Styles and Modern Interior Concepts",
+    "metaTitle": "Bathroom Tiles Design Styles and Modern Interior Concepts | On Gravity Magazine",
+    "metaDescription": "Discover bathroom tiles design trends, exploring porcelain finishes, anti-slip textures, marble backsplashes, and luxury wall layouts.",
+    "excerpt": "Discover bathroom tiles design trends, exploring porcelain finishes, anti-slip textures, marble backsplashes, and luxury wall layouts.",
+    "content": [
+      "Bathroom tiles design has evolved from basic sanitary tiling into a foundational artistic element of luxury home architecture. Today's interior designers combine material science with geometric layout patterns to create washrooms that feel like serene private spas.",
+      "## Material Performance and Surface Aesthetics",
+      "Selecting the right material foundation determines how well your bathroom tiles withstand humidity, daily cleaning chemicals, and foot traffic. Comparing porcelain, glazed ceramic, and natural stone helps homeowners choose surfaces tailored for longevity.",
+      "### Porcelain Density and Water Resistance",
+      "Porcelain tiles are manufactured from refined clay fired at extreme temperatures, producing an exceptionally dense body with near-zero water absorption. This impervious quality makes porcelain the ideal choice for wet shower enclosures and high-moisture bathroom floors.",
+      "### Hand-Glazed Ceramic and Artisanal Zellige Tiles",
+      "For accent walls and backsplashes, hand-finished ceramic tiles introduce subtle surface variations and rich color depth. Artisanal Zellige tiles feature delicate imperfections that catch light beautifully, adding organic warmth to contemporary vanity walls.",
+      "## Layout Patterns and Architectural Visual Impact",
+      "Beyond material selection, how tiles are arranged dramatically influences the perceived scale and atmosphere of a washroom. Innovative layout geometries transform plain walls into dynamic focal points.",
+      "### Chevron and Herringbone Wall Accent Layouts",
+      "Installing rectangular subway tiles in a chevron or herringbone pattern draws the eye upward, accentuating ceiling height and adding architectural movement. Pairing vibrant blue chevron wall tiles with crisp white porcelain creates striking contrast.",
+      "### Large Format Slabs and Seamless Grout Lines",
+      "Large format porcelain slabs minimize grout joints, creating unbroken, hotel-suite surfaces that are effortless to wipe clean. Fewer grout lines create a clean visual flow that expands compact washrooms.",
+      "- Water Absorption Rating: Impervious porcelain below 0.5% absorption",
+      "- Slip Resistance Scale: R10 and R11 matte finishes for shower zones",
+      "- Grout Joint Width: Micro-grout lines from 1.5mm to 2mm for slab tiles",
+      "- Color Palette Synergy: Cool blue chevron paired with warm brass fixtures",
+      "## Maintenance and Long-Term Grout Sealing",
+      "Preserving the pristine beauty of your bathroom tiles design requires proper grout installation and moisture management. Utilizing epoxy grouts prevents discoloration and keeps tile joints waterproof.",
+      "### Epoxy Grout Selection and Hydrophobic Sealers",
+      "Unlike traditional cementitious grout, epoxy grout is non-porous and resistant to mold growth. Applying hydrophobic sealants over natural stone tiles ensures water beads off without staining the porous surface.",
+      "## Conclusion",
+      "Combining high-performance porcelain floor tiles with creative chevron wall patterns elevates any washroom into a timeless architectural retreat. By balancing slip safety, water resistance, and aesthetic texture, your bathroom tiles design delivers lasting value."
+    ],
+    "faqs": [
+      {
+        "question": "What is the most popular bathroom tiles design for small washrooms?",
+        "answer": "Large format porcelain tiles with minimal grout lines create an expansive visual effect, making small bathrooms appear significantly larger."
+      },
+      {
+        "question": "Are chevron wall tiles difficult to install?",
+        "answer": "Chevron tile installation requires precise laser leveling and 45-degree angle cuts, making professional tile setting recommended for crisp alignment."
+      },
+      {
+        "question": "How do you prevent mold in bathroom tile grout?",
+        "answer": "Applying high-performance epoxy grout or annual fluoropolymer sealants prevents water penetration and mold spore growth."
+      }
+    ],
+    "category": "life-style",
+    "author": {
+      "name": "Sophia Chen",
+      "role": "Lifestyle and Wellness Columnist",
+      "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+    },
+    "publishedAt": "Sep 11, 2026",
+    "readTime": "7 min read",
+    "imageUrl": "https://images.unsplash.com/photo-1782805180032-8d11f057a8dd?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Modern bathroom with blue chevron wall tiles and geometric tile floor design",
+    "imageCaption": "Contemporary bathroom tiles design showcasing chevron wall tiling and geometric floor patterns.",
+    "featured": true,
+    "trending": true,
+    "tags": [
+      "BATHROOM",
+      "TILES",
+      "DESIGN",
+      "INTERIOR",
+      "LIFE-STYLE"
+    ]
+  },
+  {
     "id": "art-character-bathrooms",
     "slug": "character-bathrooms",
     "title": "Character Bathrooms Design Ideas and Architectural Styling",
