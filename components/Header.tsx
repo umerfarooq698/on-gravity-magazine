@@ -20,13 +20,6 @@ export default function Header() {
 
   const todayDate = "Tuesday, Sept 8, 2026";
 
-  const PAGE_LINKS = [
-    { name: "About Us", href: "/about" },
-    { name: "Contact Us", href: "/contact" },
-    { name: "Auto-Blog Admin", href: "/admin/auto-blog" },
-    { name: "Privacy Policy", href: "/privacy-policy" },
-    { name: "Cookie Policy", href: "/cookie-policy" },
-  ];
 
   return (
     <header className="w-full transition-colors duration-200 sticky top-0 z-50 shadow-md">
@@ -137,15 +130,7 @@ export default function Header() {
               );
             })}
 
-            {PAGE_LINKS.map((page) => (
-              <Link
-                key={page.href}
-                href={page.href}
-                className="py-3 px-3 text-[11px] text-slate-300 hover:text-white hover:bg-slate-800 transition-colors ml-auto"
-              >
-                {page.name}
-              </Link>
-            ))}
+            {/* Categories links end */}
           </div>
         </div>
       </nav>
@@ -172,22 +157,6 @@ export default function Header() {
                 className="p-2.5 rounded font-bold text-xs uppercase hover:bg-red-600 text-slate-100"
               >
                 {cat.name}
-              </Link>
-            ))}
-          </div>
-
-          <div className="pt-4 border-t border-slate-700 space-y-2">
-            <div className="font-black text-xs text-slate-400 uppercase tracking-widest px-2">
-              PAGES
-            </div>
-            {PAGE_LINKS.map((page) => (
-              <Link
-                key={page.href}
-                href={page.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="block p-2 rounded text-xs font-semibold text-slate-300 hover:bg-slate-800"
-              >
-                {page.name}
               </Link>
             ))}
           </div>
