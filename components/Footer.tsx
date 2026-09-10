@@ -16,10 +16,10 @@ export default function Footer() {
             <Logo size="md" />
           </Link>
           <p className="text-xs text-slate-300 leading-relaxed max-w-sm font-sans">
-            On Gravity News Network delivers fair, fast, and comprehensive national, technological, lifestyle, and business coverage for readers worldwide.
+            On Gravity Magazine delivers fair, fast, and comprehensive national, technological, lifestyle, and business coverage for readers worldwide.
           </p>
           <div className="pt-2 flex items-center gap-3 text-[11px] text-slate-400 font-semibold uppercase tracking-wider">
-            <span>© {new Date().getFullYear()} ON GRAVITY NEWS. ALL RIGHTS RESERVED.</span>
+            <span>© {new Date().getFullYear()} ON GRAVITY MAGAZINE. ALL RIGHTS RESERVED.</span>
           </div>
         </div>
 
@@ -110,7 +110,7 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-slate-800 py-4 px-4 sm:px-8 bg-[#001226] text-center text-[11px] text-slate-400 font-semibold uppercase tracking-wider">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>ON GRAVITY NEWS • GLOBAL JOURNALISM & BREAKING COVERAGE</p>
+          <p>ON GRAVITY MAGAZINE • GLOBAL JOURNALISM & BREAKING COVERAGE</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="hover:text-white">
               PRIVACY

@@ -28,7 +28,7 @@ export default function Logo({ size = "md", className = "" }: LogoProps) {
           ON GRAVITY
         </span>
         <span className={`font-sans uppercase font-black bg-red-600 text-white rounded-sm shadow-xs leading-none tracking-widest ${badgeSizes[size]}`}>
-          NEWS
+          MAGAZINE
         </span>
       </div>
     </div>
