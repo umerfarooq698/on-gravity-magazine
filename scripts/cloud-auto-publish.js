@@ -38,7 +38,7 @@ function slugify(text) {
 function parseCsvLines(csvText) {
   const lines = csvText.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
   const items = [];
-  for (let i = 1; i < lines.length; i++) { // Skip header row
+  for (let i = 1; i < lines.length; i++) {
     const line = lines[i];
     const parts = line.split(/,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/).map(p => p.replace(/^"|"$/g, '').trim());
     const keyword = parts[0];
@@ -182,37 +182,45 @@ const SYSTEM_PROMPT = `You are an expert SEO editor and senior journalist for On
 
 Your objective is to write a comprehensive, 100% unique, highly SEO-optimized, publication-ready article based on the submitted keyword/topic.
 
-STRICT ARTICLE STRUCTURE & WORD COUNT INSTRUCTIONS:
+STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
 
 1. TARGET ARTICLE WORD COUNT (CRITICAL):
    - Total article length MUST be between 1,000 and 1,200 words.
-   - Provide deep, well-developed, comprehensive paragraphs under every section to hit this word count naturally without fluff.
+   - Provide deep, well-developed, comprehensive text to hit this word count naturally without fluff.
 
-2. CLICKABLE SEO TITLE GENERATION (STRICT 55-60 CHARACTERS):
+2. DYNAMIC PARAGRAPH LENGTH VARIATION (CRITICAL):
+   - DO NOT write uniform 3-line paragraphs throughout the article!
+   - Vary paragraph lengths continuously: alternate between short 1-2 sentence punchy statements, medium 3-4 sentence analytical paragraphs, and longer 5-6 sentence detailed deep dives.
+   - This creates a natural human-like visual and reading rhythm down the page.
+
+3. DYNAMIC SECTION LAYOUT VARIATIONS:
+   - Avoid repetitive heading patterns across articles. Vary layout per section:
+     * Section A: H2 heading followed directly by 2 to 3 paragraphs of varying lengths with NO H3 subheadings.
+     * Section B: H2 heading with an introductory paragraph, followed by 2 distinct H3 subheadings (with 1 short and 1 long paragraph each).
+     * Section C: H2 heading with a detailed paragraph, followed by a bulleted list of key features/takeaways, concluded by a short summary paragraph.
+     * Section D: H2 heading with 1 analytical paragraph and a single punchy takeaway sentence.
+
+4. CLICKABLE SEO TITLE GENERATION (STRICT 55-60 CHARACTERS):
    - Create an irresistible, click-worthy title starting directly with "# ".
    - CRITICAL LENGTH RULE: The title MUST be strictly between 55 and 60 characters long (excluding "# ").
    - Incorporate the primary keyword naturally ANYWHERE in the title.
    - DO NOT include any year (e.g. DO NOT write "2026" or "2025").
    - Replace any "&" with "and".
 
-3. UNIQUE 140-CHARACTER SEO META SUMMARY / EXCERPT:
+5. UNIQUE 140-CHARACTER SEO META SUMMARY / EXCERPT:
    - Immediately after title, output "EXCERPT: [Write a fresh, 100% unique meta description of EXACTLY 135 to 140 characters summarizing the topic]".
 
-4. HEADING NUMBERING & HIERARCHY (CRITICAL):
+6. HEADING NUMBERING & HIERARCHY (CRITICAL):
    - HEADING NUMBERING RULE: For standard informational articles, do NOT use numbered headings such as "1.", "2.", or "3.". Numbered headings should ONLY be used when the target topic or keyword is naturally count-based (e.g., "5 Best Laptops").
    - H2 INTRODUCTION RULE: Every main-content H2 section MUST begin with a complete, useful introductory paragraph before any H3 subheadings, bullet points, tables, or lists appear. Do NOT place an H3 immediately after an H2!
-   - H3 SUBHEADINGS RULE: Use H3 headings ONLY when they genuinely help divide a broader H2 topic into subtopics.
 
-5. BULLET POINTS:
-   - Use bullet points ONLY where they improve readability (Features, Specs, Pros/Cons, Steps).
-
-6. CONCLUSION & FAQS:
+7. CONCLUSION & FAQS:
    - Include a dedicated "## Conclusion" section.
    - Include a dedicated "## Frequently Asked Questions" section with 2-3 FAQs formatted as:
      ### Q: [Short Question]
      A: [Short Answer]
 
-7. NATURAL INTERNAL LINKING:
+8. NATURAL INTERNAL LINKING:
    - Include 1 to 2 natural internal links targeting existing articles (e.g. [bathroom tiles design](/bathroom-tiles-design), [character bathrooms](/character-bathrooms)) when relevant words appear organically.
 
 Start directly with # [Generated Title].`;
@@ -265,24 +273,27 @@ function generateEditorialFallback(keyword) {
   const title = formatSeoTitle(cleanKw, hashVal);
   const excerpt = `Explore the complete guide to ${cleanKw}, covering fundamental specifications, performance standards, interior integrations, and key practical tips.`;
 
+  // Vary paragraph lengths and section structures
   const paragraphs = [
     `Understanding ${cleanKw} has become increasingly essential for modern consumers and industry enthusiasts seeking quality, functionality, and long-term durability. Whether you are exploring options for personal lifestyle upgrades or professional applications, analyzing key features ensures educated decision-making.`,
-    `## Foundational Mechanics and Key Features`,
-    `Evaluating the core architecture of ${cleanKw} reveals how advanced material choices and deliberate design choices impact daily user experience. High-quality standards distinguish superior options from entry-level market alternatives.`,
-    `### Material Integrity and Durability Factors`,
-    `Craftsmanship dictates the operational lifespan and reliability of ${cleanKw}. Premium components reduce wear and tear, maintaining aesthetic and mechanical excellence over extended use in demanding environments.`,
+    `A well-planned approach transforms ordinary setups into extraordinary experiences.`,
+    `## Foundational Mechanics and Key Specifications`,
+    `Evaluating the core architecture of ${cleanKw} reveals how advanced material choices and deliberate engineering impact daily user experience. Premium manufacturing standards distinguish superior options from entry-level market alternatives, giving buyers confidence in their investment over multi-year lifecycles.`,
+    `### Material Integrity and Structural Resilience`,
+    `Craftsmanship dictates the operational lifespan and reliability of ${cleanKw}. Premium components reduce mechanical friction and surface wear, maintaining aesthetic and structural excellence even when subjected to intense daily demands.`,
     `### Functional Ergonomics and Everyday Utility`,
-    `Intuitive user interface design ensures that ${cleanKw} offers effortless operation. Streamlined ergonomics prevent user fatigue while maximizing overall output across diverse usage scenarios.`,
-    `## Strategic Setup and System Integration`,
-    `Integrating ${cleanKw} into existing setups requires careful planning regarding spatial layout, power efficiency, and complementary accessories. Proper installation maximizes performance while maintaining overall safety standards.`,
-    `### Optimization Protocols and Performance Tuning`,
-    `Fine-tuning key settings enables custom performance tailored to individual preferences. Routine checks and regular calibration keep system output consistent over time.`,
-    `- High-performance component density ensuring optimal thermal dissipation`,
-    `- Certified safety standards and low-maintenance operational lifecycle`,
-    `- Versatile compatibility with modern architectural and technological setups`,
-    `- Enhanced surface finishes for superior wear resistance and aesthetic appeal`,
+    `Intuitive user interface design ensures that ${cleanKw} offers effortless operation across diverse scenarios. Streamlined ergonomics prevent user fatigue while maximizing overall output efficiency.`,
+    `## Strategic Setup, Layout and Integration`,
+    `Integrating ${cleanKw} into existing environments requires careful planning regarding spatial layout, power management, and complementary accessories. Proper positioning maximizes performance while maintaining overall safety standards.`,
+    `- High-performance component density ensuring optimal thermal dissipation and efficiency`,
+    `- Certified safety standards paired with low-maintenance operational lifecycles`,
+    `- Versatile compatibility with modern architectural, technological, and interior arrangements`,
+    `- Enhanced surface finishes providing superior wear resistance and captivating aesthetic appeal`,
+    `Fine-tuning key settings enables custom performance tailored to individual workflow preferences. Routine maintenance checks keep system output consistent over time.`,
+    `## Market Evaluation and Longevity Outlook`,
+    `When assessing long-term value, comparing initial acquisition costs against long-term maintenance costs provides an accurate picture of total ownership economics. High-quality builds consistently outperform cheaper alternatives by delivering superior operational reliability without frequent component failures.`,
     `## Conclusion`,
-    `Investing in high-grade ${cleanKw} offers unmatched utility and long-term satisfaction. By prioritizing build quality, ergonomic design, and systematic maintenance, users unlock optimal performance.`
+    `Investing in high-grade ${cleanKw} offers unmatched utility and lasting satisfaction. By prioritizing build quality, ergonomic design, and systematic maintenance, users unlock optimal long-term value.`
   ];
 
   const faqs = [

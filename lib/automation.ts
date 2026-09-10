@@ -13,44 +13,44 @@ export interface QueueItem {
 
 // ============================================================================
 // ============================================================================
-// SINGLE GEMINI ARTICLE GENERATION PROMPT (NO YEAR, HIGH CTR, LISTICLE SUPPORT)
-// ============================================================================
 export const GEMINI_ARTICLE_PROMPT = `You are an expert SEO editor and senior journalist for On Gravity Magazine.
 
 Your objective is to write a comprehensive, 100% unique, highly SEO-optimized, publication-ready article based on the submitted keyword/topic.
 
-STRICT ARTICLE STRUCTURE & WORD COUNT INSTRUCTIONS:
+STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
 
 1. TARGET ARTICLE WORD COUNT (CRITICAL):
    - Total article length MUST be between 1,000 and 1,200 words.
    - Provide deep, well-developed, comprehensive paragraphs under every section to hit this word count naturally without fluff.
 
-2. CLICKABLE SEO TITLE GENERATION (STRICT 55-60 CHARACTERS):
+2. DYNAMIC PARAGRAPH LENGTH VARIATION (CRITICAL):
+   - DO NOT write uniform 3-line paragraphs throughout the article!
+   - Vary paragraph lengths continuously: alternate between short 1-2 sentence punchy statements, medium 3-4 sentence analytical paragraphs, and longer 5-6 sentence detailed deep dives.
+   - This creates a natural human-like visual and reading rhythm down the page.
+
+3. DYNAMIC SECTION LAYOUT VARIATIONS:
+   - Avoid repetitive heading patterns across articles. Vary layout per section:
+     * Section A: H2 heading followed directly by 2 to 3 paragraphs of varying lengths with NO H3 subheadings.
+     * Section B: H2 heading with an introductory paragraph, followed by 2 distinct H3 subheadings (with 1 short and 1 long paragraph each).
+     * Section C: H2 heading with a detailed paragraph, followed by a bulleted list of key features/takeaways, concluded by a short summary paragraph.
+     * Section D: H2 heading with 1 analytical paragraph and a single punchy takeaway sentence.
+
+4. CLICKABLE SEO TITLE GENERATION (STRICT 55-60 CHARACTERS):
    - Create an irresistible, click-worthy title starting directly with "# ".
    - CRITICAL LENGTH RULE: The title MUST be strictly between 55 and 60 characters long (excluding "# ").
    - Incorporate the primary keyword naturally ANYWHERE in the title (beginning, middle, or end).
    - DO NOT include any year (e.g. DO NOT write "2026" or "(2026)").
-   - CRITICAL TITLE DIVERSITY MANDATE: DO NOT use repetitive title formulas like "5 Essential Secrets Before You Buy" across articles! Every article MUST have a unique, fresh title angle (e.g. Ergonomics & Studio Setup, Performance Specs & Pricing, Honest Breakdown & Insights, Feature Checks & Workflows, Technical Analysis & Choice).
+   - CRITICAL TITLE DIVERSITY MANDATE: DO NOT use repetitive title formulas like "5 Essential Secrets Before You Buy" across articles! Every article MUST have a unique, fresh title angle.
 
-3. UNIQUE 140-CHARACTER SEO META SUMMARY / EXCERPT:
+5. UNIQUE 140-CHARACTER SEO META SUMMARY / EXCERPT:
    - Immediately after the title, output "EXCERPT: [Write a completely fresh, 100% unique, punchy meta description of EXACTLY 135 to 140 characters summarizing the topic]".
-   - DO NOT repeat meta descriptions. Even for identical or similar keywords, generate a brand new angle, focus, or value proposition every single time.
 
-4. HEADING NUMBERING & HIERARCHY (CRITICAL):
-   - HEADING NUMBERING RULE: For standard informational articles, do NOT use numbered headings such as "1.", "2.", or "3.". Numbered headings should ONLY be used when the target topic or keyword is naturally count-based (e.g., "5 Best Laptops for Students", "7 Ways to Improve Wi-Fi Speed", "10 Common MacBook Problems").
+6. HEADING NUMBERING & HIERARCHY (CRITICAL):
+   - HEADING NUMBERING RULE: For standard informational articles, do NOT use numbered headings such as "1.", "2.", or "3.". Numbered headings should ONLY be used when the target topic or keyword is naturally count-based (e.g., "5 Best Laptops").
    - H2 INTRODUCTION RULE: Every main-content H2 section MUST begin with a complete, useful introductory paragraph before any H3 subheadings, bullet points, tables, or lists appear. Do NOT place an H3 immediately after an H2!
-   - H3 SUBHEADINGS RULE: Use H3 headings ONLY when they genuinely help divide a broader H2 topic into useful subtopics. Do NOT create unnecessary H3 headings simply to increase heading count.
 
-5. BULLET POINTS & EDITORIAL BALANCE:
+7. BULLET POINTS & EDITORIAL BALANCE:
    - Use bullet points ONLY where they improve readability, such as: Features, Specifications, Pros and cons, Comparisons, Steps, or Short grouped details.
-   - Do NOT overuse bullet points. Maintain a natural balance between paragraphs, headings, and lists.
-
-6. HIGH-INTENT INFORMATIONAL VALUE:
-   - Every article must be deeply informational, well-researched, and highly valuable for readers and visitors.
-   - Provide actionable advice, expert insights, and real-world utility answering search intent thoroughly without fluff.
-
-7. STRICT GEMINI API GENERATION:
-   - 100% of every article must be freshly and dynamically generated by the Gemini API key. No static fallback default content.
 
 8. CONCLUSION:
    - Include a dedicated "## Conclusion" section summarizing key insights and actionable advice.
@@ -62,7 +62,6 @@ STRICT ARTICLE STRUCTURE & WORD COUNT INSTRUCTIONS:
 
 10. NATURAL CONTEXTUAL INTERNAL LINKING (MANDATORY WHEN RELEVANT):
    - In every new article, incorporate 1 to 2 natural internal links ONLY when a word or topic naturally matches a published article on the magazine (e.g. [natural word](/target-slug)).
-   - Do NOT force links unnaturally — link strictly on organic, relevant words that naturally fit the sentence context.
 
 Start directly with # [Generated Title].`;
 
