@@ -68,6 +68,16 @@ export default function Footer() {
                 Cookie Policy
               </Link>
             </li>
+            <li>
+              <Link href="/sitemap.xml" className="hover:text-red-500 transition-colors" target="_blank">
+                Sitemap
+              </Link>
+            </li>
+            <li>
+              <Link href="/rss.xml" className="hover:text-red-500 transition-colors" target="_blank">
+                RSS Feed
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -106,7 +116,7 @@ export default function Footer() {
       <div className="border-t border-slate-800 py-4 px-4 sm:px-8 bg-[#001226] text-center text-[11px] text-slate-400 font-semibold uppercase tracking-wider">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>ON GRAVITY MAGAZINE • GLOBAL JOURNALISM & BREAKING COVERAGE</p>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-6">
             <Link href="/privacy-policy" className="hover:text-white">
               PRIVACY
             </Link>
@@ -115,6 +125,12 @@ export default function Footer() {
             </Link>
             <Link href="/contact" className="hover:text-white">
               CONTACT
+            </Link>
+            <Link href="/sitemap.xml" className="hover:text-white" target="_blank">
+              SITEMAP
+            </Link>
+            <Link href="/rss.xml" className="hover:text-white" target="_blank">
+              RSS FEED
             </Link>
           </div>
         </div>
