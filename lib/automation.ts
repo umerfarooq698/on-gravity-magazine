@@ -13,7 +13,7 @@ export interface QueueItem {
 
 // ============================================================================
 // ============================================================================
-// SINGLE GEMINI ARTICLE GENERATION PROMPT (NO YEAR, VARY TITLE TYPES, HIGH CTR)
+// SINGLE GEMINI ARTICLE GENERATION PROMPT (NO YEAR, HIGH CTR, LISTICLE SUPPORT)
 // ============================================================================
 export const GEMINI_ARTICLE_PROMPT = `You are an expert SEO editor and senior journalist for On Gravity Magazine.
 
@@ -29,35 +29,37 @@ STRICT TITLE & WRITING INSTRUCTIONS:
    - Examples of Clickable SEO Titles:
      - Keyword "hp laptop" -> "# 5 Must-Know Secrets Before Buying an HP Laptop"
      - Keyword "dell laptop" -> "# Is the Dell Laptop Worth It? Performance Specs & Real Verdict"
-     - Keyword "toy for kids" -> "# Top Features & Safety Rating of the Best Toy for Kids"
-     - Keyword "cold water tap" -> "# Cold Water Tap Installation: Practical Plumbing Tips & Review"
+     - Keyword "5 best hp laptops" -> "# 5 Best HP Laptops: Performance, Specs & Top Picks"
+     - Keyword "6 best toys for kids" -> "# 6 Best Toys for Kids: Safety Ratings & Fun Features"
    - Make it sound like an engaging magazine cover story that compels readers to click!
 
 2. UNIQUE SEO META SUMMARY / EXCERPT:
    - On the very next line after the title, output "EXCERPT: [Write a unique, punchy 140-155 character meta description summarizing the specific topic, value proposition, and key takeaway of this article]".
    - DO NOT repeat generic sentences. Make the summary 100% unique to this keyword.
 
-3. SEO HEADINGS & OUTLINES (H2 & H3):
-   - Organize the article into 3 to 5 main sections using "## " for H2 headings.
-   - Include 1 to 2 nested sub-sections under EACH H2 heading using "### " for H3 subheadings.
-   - Incorporate secondary LSI keywords and search-intent topics (specifications, buying advice, comparisons, performance, maintenance) in headings.
+3. SEO HEADINGS & LISTICLE OUTLINES:
+   - Organize the article using "## " for H2 headings and "### " for H3 subheadings.
+   - LISTICLE COUNT RULE: If the keyword specifies a number N (e.g., "5 best...", "6 best..."), you MUST create exactly N distinct item headings (e.g., "## 1. [Item Name]", "## 2. [Item Name]" up to "## N. [Item Name]") and write a full, informative paragraph under EACH item!
 
-4. HIGH-INTENT CONTENT & DENSITY:
+4. BULLET POINTS RULE:
+   - Use bullet points ONLY when naturally helpful (e.g. key specs, feature comparisons, pros/cons, or checklists).
+   - DO NOT include bullet points in every single article. Many articles should be paragraph-only for natural editorial reading flow.
+
+5. HIGH-INTENT CONTENT & DENSITY:
    - Write clear, informative, well-developed paragraphs directly under every H2 and H3 heading.
-   - Answer search intent directly in the introduction.
-   - Vary sentence lengths and paragraph structures. Avoid fluff, filler, or repeating points.
+   - Answer search intent directly in the introduction. Avoid fluff, filler, or repeating points.
 
-5. CONCLUSION:
+6. CONCLUSION:
    - Include a dedicated "## Conclusion" section summarizing key insights, final verdict, and actionable advice.
 
-6. FREQUENTLY ASKED QUESTIONS (FAQs):
+7. FREQUENTLY ASKED QUESTIONS (FAQs):
    - Include a dedicated "## Frequently Asked Questions" section at the end with 2 to 3 FAQs.
    - Questions must be short and direct. Answers must be concise (1 to 2 sentences max).
    - Format each FAQ clearly as:
      ### Q: [Short Question]
      A: [Short Answer]
 
-7. ORIGINALITY & NO META-TEXT:
+8. ORIGINALITY & NO META-TEXT:
    - Every single generated article must be completely fresh, distinct, and unique.
    - Do not include meta-commentary, AI references, or prompt explanations.
 
@@ -255,6 +257,16 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string): Prom
   return { url: `https://images.unsplash.com/${selectedPhotoId}?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`, caption: `Editorial photograph highlighting ${keyword}.`, alt: `Photograph of ${keyword}` };
 }
 
+export function extractCountFromKeyword(keyword: string): number | null {
+  const match = keyword.match(/\b(\d+)\s+(best|top|ways|tips|reasons|models|items|choices|features|laptops|toys|products|ideas|things|tricks)\b/i) ||
+                keyword.match(/\b(best|top|ways|tips|reasons|models|items|choices|features|laptops|toys|products|ideas|things|tricks)\s+(\d+)\b/i);
+  if (match) {
+    const num = parseInt(match[1] || match[2], 10);
+    if (num >= 2 && num <= 15) return num;
+  }
+  return null;
+}
+
 // ============================================================================
 // CALL GEMINI API WITH MULTI-MODEL FAILOVER AND DYNAMIC RANDOM SEED
 // ============================================================================
@@ -276,6 +288,13 @@ async function fetchArticleFromGeminiApi(keyword: string): Promise<{
   ];
 
   const randomRunId = Math.random().toString(36).substring(2, 9);
+  const count = extractCountFromKeyword(keyword);
+  let listicleInstruction = "";
+  if (count) {
+    listicleInstruction = `\n\nCRITICAL COUNT INSTRUCTION: The keyword asks for "${count}" items. You MUST create exactly ${count} main item headings (using "## 1. [Item]", "## 2. [Item]" up to "## ${count}. [Item]") and write a full, informative paragraph under EACH of the ${count} item headings!`;
+  }
+
+  const promptText = `${GEMINI_ARTICLE_PROMPT}${listicleInstruction}\n\nSubmitted Keyword / Topic: "${keyword}"\n[Run ID: ${randomRunId}]`;
 
   for (const modelName of candidateModels) {
     try {
@@ -289,7 +308,7 @@ async function fetchArticleFromGeminiApi(keyword: string): Promise<{
               role: "user",
               parts: [
                 {
-                  text: `${GEMINI_ARTICLE_PROMPT}\n\nSubmitted Keyword / Topic: "${keyword}"\n[Run ID: ${randomRunId}]`
+                  text: promptText
                 }
               ]
             }
@@ -386,27 +405,22 @@ function generateTopicFallbackArticle(keyword: string, hashVal: number) {
   const kwFmt = formatNaturalKeyword(keyword);
   const topicTitle = kwFmt.title.replace(/&/g, "and");
   const topicRaw = kwFmt.raw.replace(/&/g, "and");
+  const count = extractCountFromKeyword(keyword) || 5;
 
-  const title = `The Complete Guide to ${topicTitle}: Analysis, Specifications, and Key Insights`;
-  const excerpt = formatMetaDescription(`A comprehensive editorial breakdown of ${topicRaw}, covering hardware benchmarks, real-world utility, and buying recommendations.`);
+  const title = formatSeoTitle(keyword, hashVal);
+  const excerpt = formatMetaDescription(`A comprehensive editorial breakdown of ${topicRaw}, evaluating top performance metrics, user reviews, and key buying considerations.`);
 
   const paragraphs: string[] = [
-    `Exploring ${topicRaw} requires a clear understanding of its core capabilities, design quality, and practical value in daily use. Whether you are evaluating options for personal use, professional work, or making an informed decision, having structured guidance ensures you choose with total confidence.`,
-    `## Key Features and Core Specifications of ${topicTitle}`,
-    `Understanding the essential aspects of ${topicRaw} starts with assessing its primary specifications and performance standards. High-grade construction and reliable design make all the difference in delivering long-term satisfaction.`,
-    `### Quality Craftsmanship and Materials`,
-    `When analyzing ${topicRaw}, material quality and build integrity are critical factors. Superior construction ensures enhanced durability, lower maintenance needs, and reliable daily operation.`,
-    `### Performance Efficiency and Real-World Usability`,
-    `Real-world performance relies on how seamlessly ${topicRaw} integrates into your daily workflow or lifestyle. Prioritize setups that offer intuitive operation, ergonomics, and modern features.`,
-    `## Comparative Analysis and Practical Application`,
-    `To make the best choice regarding ${topicRaw}, compare key models, configurations, and user feedback. Evaluating performance metrics alongside cost gives a realistic picture of overall value.`,
-    `### Key Factors to Check Before Deciding`,
-    `* Build & Hardware Quality: Ensures long-lasting reliability under regular use.`,
-    `* Practical Ergonomics: Maximizes user comfort and functional efficiency.`,
-    `* Maintenance & Care: Simple upkeep routines preserve performance over time.`,
-    `## Conclusion`,
-    `In summary, selecting the ideal setup for ${topicRaw} comes down to balancing verified build quality, user requirements, and practical long-term value. Investing in a well-reviewed configuration guarantees superior performance and peace of mind.`
+    `Exploring ${topicRaw} requires a clear understanding of core features, design quality, and practical daily utility. Having structured guidance ensures you make an informed choice with total confidence.`
   ];
+
+  for (let i = 1; i <= count; i++) {
+    paragraphs.push(`## ${i}. Top Selected Choice #${i} for ${topicTitle}`);
+    paragraphs.push(`This featured option excels in build craftsmanship, user satisfaction, and daily reliability. Evaluating its key specifications alongside real-world feedback reveals why it remains a top choice in its category.`);
+  }
+
+  paragraphs.push(`## Conclusion`);
+  paragraphs.push(`In summary, selecting the ideal setup for ${topicRaw} comes down to balancing verified build quality, user requirements, and long-term value.`);
 
   const faqs = [
     { question: `What is the most important factor when choosing ${topicRaw}?`, answer: `Focus on core build quality and how well it fits your daily requirements.` },
