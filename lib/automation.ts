@@ -509,6 +509,31 @@ function generateTopicFallbackArticle(keyword: string, hashVal: number) {
     }
   }
 
+  if (tokens.isTiles) {
+    const tileExcerpt = formatMetaDescription("Explore expert tips on selecting bathroom tiles across porcelain, ceramic, and natural stone for maximum safety, slip ratings, and design.");
+    const tileParagraphs = [
+      "Bathroom tiles set the tone for your sanctuary. Selecting the right tile material, texture, and scale involves balancing moisture resistance with slip safety and long-term maintenance requirements.",
+      "## 1. Porcelain vs Ceramic Bathroom Tiles",
+      "Porcelain tiles are fired at higher temperatures, making them dense, non-porous, and exceptionally resistant to water absorption. Ceramic tiles are lighter and easier to cut, making them ideal for vertical accent walls and backsplashes.",
+      "## 2. Slip Resistance Ratings (R-Ratings)",
+      "Safety is paramount in wet zone areas like shower floors. Select floor tiles with textured matte finishes rated R10 or higher to ensure firm underfoot grip when surfaces are wet.",
+      "## 3. Large Format Tiles vs Mosaic Textures",
+      "Large format porcelain tiles minimize grout lines, creating an expansive, hotel-suite aesthetic that is easy to wipe clean. Mosaics add rich tactile contrast and natural anti-slip traction under foot.",
+      "## 4. Grout Sealing and Water Resistance",
+      "Proper epoxy grout selection and sealant application prevent moisture infiltration behind tile backer boards, inhibiting mold growth and maintaining pristine grout lines.",
+      "## 5. Lighting and Color Palette Integration",
+      "Pairing light-reflecting glossy wall tiles with warm LED vanity illumination expands small washroom spaces, while dark slate floor tiles ground the room with dramatic elegance.",
+      "## Conclusion",
+      "Combining large format porcelain wall tiles with slip-resistant textured floor tiles provides an optimal blend of low maintenance, safety, and timeless elegance."
+    ];
+    const tileFaqs = [
+      { question: "Which tiles are least slippery when wet in a bathroom?", answer: "Matte porcelain or micro-textured mosaic tiles provide superior slip resistance in wet shower zones." },
+      { question: "Do large format bathroom tiles make small washrooms look bigger?", answer: "Yes, fewer grout lines create an uninterrupted visual flow that expands perceived room size." },
+      { question: "How often should bathroom tile grout be sealed?", answer: "Standard cementitious tile grout should be sealed annually to prevent moisture absorption and staining." }
+    ];
+    return { title: "Complete Breakdown of Bathroom Tiles: Durability, Slip Ratings and Style", excerpt: tileExcerpt, paragraphs: tileParagraphs, faqs: tileFaqs };
+  }
+
   const excerpt = formatMetaDescription(`A comprehensive editorial breakdown of ${topicRaw}, evaluating top performance metrics, user reviews, and key buying considerations.`);
   const paragraphs: string[] = [];
   const intros = [
