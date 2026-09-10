@@ -2,16 +2,29 @@ name: Auto Publish On Gravity Articles
 
 on:
   schedule:
-    # Runs every 6 hours automatically (at 00:00, 06:00, 12:00, 18:00 UTC)
-    - cron: '0 */6 * * *'
+    # Runs every 7 hours automatically in GitHub Cloud
+    - cron: '0 */7 * * *'
   workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
+
+permissions:
+  contents: write
 
 jobs:
   auto-publish-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Call Auto-Publish API
-        run: |
-          echo "Triggering On Gravity Auto-Publish API..."
-          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" "https://on-gravity-magazine.vercel.app/api/cron/publish")
-          echo "$RESPONSE"
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Cloud Auto-Publisher
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+        run: node scripts/cloud-auto-publish.js
