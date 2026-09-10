@@ -30,13 +30,13 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Explicit Dark Mode Article Text & Reading Enhancements */
-.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
-  color: #ffffff !important;
+/* Scope typography enhancements strictly to article prose body */
+.prose {
+  color: #334155;
 }
 
-.dark p {
-  color: #e2e8f0 !important;
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  color: #0f172a;
 }
 
 .dark .prose {
@@ -51,22 +51,12 @@ body {
   color: #ffffff !important;
 }
 
-.dark .prose h2 {
+.dark .prose h1, .dark .prose h2, .dark .prose h3, .dark .prose h4 {
   color: #ffffff !important;
+}
+
+.dark .prose h2 {
   border-color: #dc2626 !important;
-}
-
-.dark .prose h3 {
-  color: #f8fafc !important;
-}
-
-/* Light Mode High-Contrast Article Text */
-h1, h2, h3, h4, h5, h6 {
-  color: #0f172a;
-}
-
-p {
-  color: #334155;
 }
 
 /* Print-style Magazine Header Double Borders */

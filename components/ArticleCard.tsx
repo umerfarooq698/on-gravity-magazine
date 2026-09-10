@@ -44,13 +44,13 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
             <span className="text-xs text-slate-400 font-medium">• {article.publishedAt}</span>
           </div>
 
-          <h2 className="font-sans text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight group-hover:text-red-400 transition-colors uppercase">
-            <Link href={articleUrl}>
+          <h2 className="font-sans text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white group-hover:text-red-400 transition-colors uppercase">
+            <Link href={articleUrl} className="text-white hover:text-red-400">
               {article.title}
             </Link>
           </h2>
 
-          <p className="text-slate-300 text-sm sm:text-base line-clamp-2 max-w-2xl leading-relaxed font-sans font-normal">
+          <p className="text-slate-100 text-sm sm:text-base line-clamp-2 max-w-2xl leading-relaxed font-sans font-medium">
             {article.excerpt}
           </p>
 
