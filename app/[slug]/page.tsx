@@ -255,28 +255,30 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             Back to Home
           </Link>
 
-          {category && (
+          {category && (          <div className="flex items-center gap-3">
             <Link
-              href={`/category/${category.slug}`}
-              className={`px-3.5 py-1 rounded-full uppercase tracking-wider font-bold text-[11px] ${category.bgLight} transition-transform hover:scale-105`}
+              href={`/category/${article.category}`}
+              className="px-3.5 py-1 text-xs font-black uppercase tracking-widest bg-red-600 text-white rounded-xs shadow-xs"
             >
-              {category.name}
+              {category?.name || article.category}
             </Link>
+            <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">• NEWS DESK</span>
+          </div>
           )}
         </div>
 
         {/* Article Title Header */}
         <header className="space-y-6">
-          <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-black text-zinc-900 dark:text-white tracking-tight leading-[1.15]">
+          <h1 className="font-sans text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.15] uppercase">
             {article.title.replace(/&/g, "and")}
           </h1>
 
-          <p className="text-lg sm:text-xl text-zinc-600 dark:text-zinc-300 font-sans leading-relaxed border-l-4 border-amber-500 pl-4 py-1 italic">
+          <p className="text-lg sm:text-xl text-slate-700 dark:text-slate-200 font-sans leading-relaxed border-l-4 border-red-600 pl-4 py-1 font-semibold">
             {article.excerpt.replace(/&/g, "and")}
           </p>
 
           {/* Meta Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 py-4 border-y border-zinc-200 dark:border-zinc-800 text-xs text-zinc-500">
+          <div className="flex flex-wrap items-center justify-between gap-4 py-3 border-y border-slate-200 dark:border-slate-800 text-xs text-slate-500 font-bold uppercase tracking-wider">
             <Link
               href={`/author/${getAuthorSlug(article.author.name)}`}
               className="flex items-center gap-3 group/author hover:opacity-80 transition-opacity"
@@ -284,26 +286,26 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               <Image
                 src={article.author.avatar}
                 alt={article.author.name}
-                width={44}
-                height={44}
-                className="rounded-full object-cover border border-zinc-300 dark:border-zinc-700"
+                width={40}
+                height={40}
+                className="rounded-full object-cover border-2 border-red-600"
               />
               <div>
-                <div className="font-bold text-zinc-900 dark:text-white text-sm group-hover/author:text-amber-500 transition-colors">
+                <div className="font-black text-slate-900 dark:text-white text-sm group-hover/author:text-red-600 transition-colors uppercase">
                   {article.author.name}
                 </div>
-                <div className="text-zinc-500 text-[11px]">{article.author.role}</div>
+                <div className="text-slate-500 text-[10px] font-medium">{article.author.role}</div>
               </div>
             </Link>
 
-            <div className="flex items-center gap-4 text-zinc-500 font-medium">
+            <div className="flex items-center gap-4 text-slate-500">
               <span className="flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-amber-500" />
+                <Calendar className="w-3.5 h-3.5 text-red-600" />
                 {article.publishedAt}
               </span>
               <span>•</span>
               <span className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-amber-500" />
+                <Clock className="w-3.5 h-3.5 text-red-600" />
                 {article.readTime}
               </span>
             </div>
@@ -312,7 +314,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         {/* Main Cover Image */}
         <div className="space-y-2">
-          <div className="relative w-full aspect-16/9 rounded-3xl overflow-hidden shadow-2xl border border-zinc-200/80 dark:border-zinc-800">
+          <div className="relative w-full aspect-16/9 rounded-xs overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800">
             <Image
               src={article.imageUrl}
               alt={article.imageAlt || article.title}
@@ -323,14 +325,14 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             />
           </div>
           {article.imageCaption && (
-            <p className="text-center text-xs text-zinc-500 italic pt-1">
+            <p className="text-center text-xs text-slate-500 italic pt-1">
               {article.imageCaption.replace(/&/g, "and")}
             </p>
           )}
         </div>
 
-        {/* Reading Body with Magazine Drop-Caps */}
-        <div className="prose prose-lg dark:prose-invert max-w-none space-y-6 font-serif text-zinc-800 dark:text-zinc-200 text-lg leading-relaxed">
+        {/* Reading Body with Fox News Styling */}
+        <div className="prose prose-lg dark:prose-invert max-w-none space-y-6 font-sans text-slate-800 dark:text-slate-200 text-lg leading-relaxed">
           {article.content
             .filter((item) => {
               const lower = item.toLowerCase().trim();
@@ -349,7 +351,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 return (
                   <h2
                     key={index}
-                    className="font-serif text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white pt-8 pb-3 border-b border-zinc-200 dark:border-zinc-800 mt-8 mb-4 tracking-tight"
+                    className="font-sans text-2xl sm:text-3xl font-black uppercase text-slate-900 dark:text-white pt-8 pb-2 border-b-2 border-red-600 mt-8 mb-4 tracking-tight"
                   >
                     {parseRichText(headingText)}
                   </h2>
@@ -360,7 +362,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 return (
                   <h3
                     key={index}
-                    className="font-serif text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 pt-6 pb-2 mt-6 mb-3 tracking-tight"
+                    className="font-sans text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 pt-6 pb-2 mt-6 mb-3 tracking-tight"
                   >
                     {parseRichText(headingText)}
                   </h3>
@@ -373,8 +375,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 const bulletContent = trimmed.replace(/^[*\-•]\s*/, "");
                 return (
                   <div key={index} className="flex items-start gap-3 my-3 pl-2 sm:pl-4">
-                    <span className="inline-block w-2 h-2 rounded-full bg-amber-500 mt-2.5 shrink-0" />
-                    <div className="flex-1 font-serif text-zinc-800 dark:text-zinc-200 leading-relaxed">
+                    <span className="inline-block w-2.5 h-2.5 rounded-full bg-red-600 mt-2 shrink-0" />
+                    <div className="flex-1 font-sans text-slate-800 dark:text-slate-200 leading-relaxed">
                       {parseRichText(bulletContent)}
                     </div>
                   </div>
@@ -386,7 +388,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                   key={index}
                   className={
                     index === 0
-                      ? "first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-3 first-letter:font-serif first-letter:text-amber-500 first-letter:leading-none"
+                      ? "first-letter:text-5xl first-letter:font-black first-letter:float-left first-letter:mr-3 first-letter:font-sans first-letter:text-red-600 first-letter:leading-none"
                       : ""
                   }
                 >
@@ -396,12 +398,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             })}
         </div>
 
-        {/* Frequently Asked Questions (FAQ) Section - Google Rich Snippet Verified */}
+        {/* Frequently Asked Questions (FAQ) Section */}
         {article.faqs && article.faqs.length > 0 && (
-          <section className="p-6 sm:p-8 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-6">
-            <div className="flex items-center gap-2 text-zinc-900 dark:text-white font-serif text-xl sm:text-2xl font-bold">
-              <HelpCircle className="w-6 h-6 text-amber-500 shrink-0" />
-              <h3>Frequently Asked Questions</h3>
+          <section className="p-6 sm:p-8 bg-slate-50 dark:bg-slate-900 border-t-4 border-t-red-600 border-x border-b border-slate-200 dark:border-slate-800 space-y-6">
+            <div className="flex items-center gap-2 text-slate-900 dark:text-white font-sans text-xl sm:text-2xl font-black uppercase">
+              <HelpCircle className="w-6 h-6 text-red-600 shrink-0" />
+              <h3>FREQUENTLY ASKED QUESTIONS</h3>
             </div>
             <div className="grid grid-cols-1 gap-4">
               {article.faqs.map((faq, index) => {
@@ -410,13 +412,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 return (
                   <div
                     key={index}
-                    className="p-5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200/60 dark:border-zinc-800/80 space-y-2 shadow-2xs transition-all hover:border-amber-500/40"
+                    className="p-5 rounded-xs bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2 transition-all hover:border-red-600"
                   >
-                    <h4 className="font-sans font-bold text-base text-zinc-900 dark:text-white flex items-start gap-2">
-                      <span className="text-amber-500 font-bold shrink-0">Q:</span>
+                    <h4 className="font-sans font-extrabold text-base text-slate-900 dark:text-white flex items-start gap-2">
+                      <span className="text-red-600 font-black shrink-0">Q:</span>
                       {parseRichText(cleanQ)}
                     </h4>
-                    <div className="font-sans text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed pl-5">
+                    <div className="font-sans text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-5">
                       {parseRichText(cleanA)}
                     </div>
                   </div>
@@ -427,13 +429,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         )}
 
         {/* Highlights Takeaway Box */}
-        <div className="p-6 rounded-2xl bg-amber-500/10 dark:bg-amber-950/20 border border-amber-500/20 space-y-2">
-          <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-xs uppercase tracking-wider">
+        <div className="p-6 bg-slate-900 text-white border-l-4 border-red-600 space-y-2">
+          <div className="flex items-center gap-2 text-red-500 font-black text-xs uppercase tracking-widest">
             <Sparkles className="w-4 h-4" />
-            Editorial Takeaway
+            NEWSROOM TAKEAWAY
           </div>
-          <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 font-sans leading-relaxed">
-            Stay connected with On Gravity Magazine for updates and continuation of this story in upcoming editions.
+          <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
+            Stay connected with On Gravity News for live updates and continuation of breaking developments.
           </p>
         </div>
 
