@@ -60,8 +60,9 @@ STRICT ARTICLE STRUCTURE & WORD COUNT INSTRUCTIONS:
      ### Q: [Short Question]
      A: [Short Answer]
 
-10. NATURAL INTERNAL LINKING (OPTIONAL):
-   - Include 1 to 2 markdown internal links like [link text](/target-slug) ONLY if naturally fitting context.
+10. NATURAL CONTEXTUAL INTERNAL LINKING (MANDATORY WHEN RELEVANT):
+   - In every new article, incorporate 1 to 2 natural internal links ONLY when a word or topic naturally matches a published article on the magazine (e.g. [natural word](/target-slug)).
+   - Do NOT force links unnaturally — link strictly on organic, relevant words that naturally fit the sentence context.
 
 Start directly with # [Generated Title].`;
 
