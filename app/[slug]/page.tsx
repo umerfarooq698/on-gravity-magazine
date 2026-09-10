@@ -404,20 +404,24 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               <h3>Frequently Asked Questions</h3>
             </div>
             <div className="grid grid-cols-1 gap-4">
-              {article.faqs.map((faq, index) => (
-                <div
-                  key={index}
-                  className="p-5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200/60 dark:border-zinc-800/80 space-y-2 shadow-2xs transition-all hover:border-amber-500/40"
-                >
-                  <h4 className="font-sans font-bold text-base text-zinc-900 dark:text-white flex items-start gap-2">
-                    <span className="text-amber-500 font-bold">Q:</span>
-                    {parseRichText(faq.question)}
-                  </h4>
-                  <div className="font-sans text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed pl-5">
-                    {parseRichText(faq.answer)}
+              {article.faqs.map((faq, index) => {
+                const cleanQ = faq.question.replace(/^[\*\s]*(Q|Question)\s*[:\.]?\s*/gi, "").trim();
+                const cleanA = faq.answer.replace(/^[\*\s]*(A|Answer)\s*[:\.]?\s*/gi, "").trim();
+                return (
+                  <div
+                    key={index}
+                    className="p-5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200/60 dark:border-zinc-800/80 space-y-2 shadow-2xs transition-all hover:border-amber-500/40"
+                  >
+                    <h4 className="font-sans font-bold text-base text-zinc-900 dark:text-white flex items-start gap-2">
+                      <span className="text-amber-500 font-bold shrink-0">Q:</span>
+                      {parseRichText(cleanQ)}
+                    </h4>
+                    <div className="font-sans text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed pl-5">
+                      {parseRichText(cleanA)}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
         )}
