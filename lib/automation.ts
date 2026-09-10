@@ -12,38 +12,43 @@ export interface QueueItem {
 }
 
 // ============================================================================
-// SINGLE GEMINI ARTICLE GENERATION PROMPT (STRICT USER SPECIFICATIONS)
+// SINGLE GEMINI ARTICLE GENERATION PROMPT (STRICT SEO & USER SPECIFICATIONS)
 // ============================================================================
-export const GEMINI_ARTICLE_PROMPT = `You are a top-tier editorial writer and journalist for On Gravity Magazine.
+export const GEMINI_ARTICLE_PROMPT = `You are an expert SEO editor and senior journalist for On Gravity Magazine.
 
-Your objective is to write a unique, publication-ready article based on the submitted keyword/topic.
+Your objective is to write a unique, highly SEO-optimized, publication-ready article based on the submitted keyword/topic.
 
-STRICT WRITING & STRUCTURE INSTRUCTIONS:
+STRICT WRITING & SEO INSTRUCTIONS:
 
-1. TITLE GENERATION:
-   - First, generate a clear, catchy, highly relevant title specifically created for the submitted keyword/topic.
-   - Start the title directly with "# ". Do NOT use generic titles like "Everything You Need to Know". Make it specific to the keyword.
+1. SEO TITLE GENERATION:
+   - Generate a click-worthy, search-optimized title (50-60 characters) containing the primary keyword naturally starting with "# ".
+   - Make the title specific to the keyword. Never use generic titles.
 
-2. OUTLINE & HEADINGS (H2 & H3):
+2. UNIQUE SEO META SUMMARY / EXCERPT:
+   - On the very next line after the title, output "EXCERPT: [Write a unique, punchy 140-155 character meta description summarizing the specific topic, value proposition, and key takeaway of this article]".
+   - DO NOT repeat generic sentences. Make the summary 100% unique to this keyword.
+
+3. SEO HEADINGS & OUTLINES (H2 & H3):
    - Organize the article into 3 to 5 main sections using "## " for H2 headings.
    - Include 1 to 2 nested sub-sections under EACH H2 heading using "### " for H3 subheadings.
-   - Design the outlines specifically around the submitted topic. Never reuse generic outlines.
+   - Incorporate secondary LSI keywords and search-intent topics (specifications, buying advice, comparisons, performance, maintenance) in headings.
 
-3. DETAILED CONTENT:
-   - Write comprehensive, detailed, informative, non-repetitive paragraphs directly under every H2 and H3 heading.
-   - Do NOT output a separate outline list before the article. Write the full text directly.
+4. HIGH-INTENT CONTENT & DENSITY:
+   - Write clear, informative, well-developed paragraphs directly under every H2 and H3 heading.
+   - Answer search intent directly in the introduction.
    - Vary sentence lengths and paragraph structures. Avoid fluff, filler, or repeating points.
 
-4. CONCLUSION:
-   - Include a dedicated "## Conclusion" section at the end summarizing key takeaways, expert recommendations, and final verdict.
+5. CONCLUSION:
+   - Include a dedicated "## Conclusion" section summarizing key insights, final verdict, and actionable advice.
 
-5. FREQUENTLY ASKED QUESTIONS (FAQs):
-   - Include a dedicated "## Frequently Asked Questions" section at the very end containing 2 to 3 FAQs.
+6. FREQUENTLY ASKED QUESTIONS (FAQs):
+   - Include a dedicated "## Frequently Asked Questions" section at the end with 2 to 3 FAQs.
+   - Questions must be short and direct. Answers must be concise (1 to 2 sentences max).
    - Format each FAQ clearly as:
-     ### Q: [Question]
-     A: [Detailed Answer]
+     ### Q: [Short Question]
+     A: [Short Answer]
 
-6. ORIGINALITY:
+7. ORIGINALITY & NO META-TEXT:
    - Every single generated article must be completely fresh, distinct, and unique.
    - Do not include meta-commentary, AI references, or prompt explanations.
 
@@ -321,6 +326,7 @@ async function fetchArticleFromGeminiApi(keyword: string): Promise<{
 function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
   const lines = rawText.split("\n").map(l => l.trim()).filter(l => l.length > 0);
   let title = "";
+  let explicitExcerpt = "";
   let paragraphs: string[] = [];
   let faqs: { question: string; answer: string }[] = [];
 
@@ -333,6 +339,12 @@ function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
     // Extract title from # Heading or Title: line
     if (!title && (line.startsWith("# ") || line.toLowerCase().startsWith("title:"))) {
       title = line.replace(/^#\s+|^Title:\s*/i, "").replace(/&/g, "and");
+      continue;
+    }
+
+    // Extract explicit EXCERPT: or SUMMARY: or META: line
+    if (!explicitExcerpt && (line.toLowerCase().startsWith("excerpt:") || line.toLowerCase().startsWith("summary:") || line.toLowerCase().startsWith("meta:"))) {
+      explicitExcerpt = line.replace(/^excerpt:|^summary:|^meta:\s*/i, "").replace(/&/g, "and");
       continue;
     }
 
@@ -367,7 +379,7 @@ function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
   }
 
   const firstBodyPara = paragraphs.find(p => !p.startsWith("#")) || `An in-depth editorial guide covering ${keyword}.`;
-  const excerpt = firstBodyPara.replace(/&/g, "and").slice(0, 160);
+  const excerpt = formatMetaDescription(explicitExcerpt || firstBodyPara);
 
   return { title, excerpt, paragraphs, faqs: faqs.length > 0 ? faqs : undefined };
 }
@@ -378,7 +390,7 @@ function generateTopicFallbackArticle(keyword: string, hashVal: number) {
   const topicRaw = kwFmt.raw.replace(/&/g, "and");
 
   const title = `The Complete Guide to ${topicTitle}: Analysis, Specifications, and Key Insights`;
-  const excerpt = `An in-depth editorial report exploring ${topicRaw}, covering essential features, real-world utility, and practical recommendations.`;
+  const excerpt = formatMetaDescription(`A comprehensive editorial breakdown of ${topicRaw}, covering hardware benchmarks, real-world utility, and buying recommendations.`);
 
   const paragraphs: string[] = [
     `Exploring ${topicRaw} requires a clear understanding of its core capabilities, design quality, and practical value in daily use. Whether you are evaluating options for personal use, professional work, or making an informed decision, having structured guidance ensures you choose with total confidence.`,
