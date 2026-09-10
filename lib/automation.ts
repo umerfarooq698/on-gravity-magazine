@@ -25,9 +25,10 @@ STRICT ARTICLE STRUCTURE & WORD COUNT INSTRUCTIONS:
    - Total article length MUST be between 1,000 and 1,200 words.
    - Provide deep, well-developed, comprehensive paragraphs under every section to hit this word count naturally without fluff.
 
-2. CLICKABLE SEO TITLE GENERATION:
-   - Create an irresistible, click-worthy title (50-65 characters) starting directly with "# ".
-   - Incorporate the primary keyword naturally ANYWHERE in the title.
+2. CLICKABLE SEO TITLE GENERATION (STRICT 55-60 CHARACTERS):
+   - Create an irresistible, click-worthy title starting directly with "# ".
+   - CRITICAL LENGTH RULE: The title MUST be strictly between 55 and 60 characters long (excluding "# ").
+   - Incorporate the primary keyword naturally ANYWHERE in the title (beginning, middle, or end).
    - DO NOT include any year (e.g. DO NOT write "2026" or "(2026)").
    - DO NOT overuse the word "Guide". Vary title styles across reviews, secrets, honest breakdowns, performance checks, and expert advice.
 
@@ -469,6 +470,11 @@ function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
     title = formatSeoTitle(keyword);
   } else {
     title = title.replace(/\s*\(?20\d\d\)?\s*/g, " ").replace(/\s+/g, " ").trim();
+    if (title.length > 60) {
+      const sub = title.slice(0, 58);
+      const lastSpace = sub.lastIndexOf(" ");
+      title = lastSpace > 45 ? sub.slice(0, lastSpace) : sub;
+    }
   }
 
   // Guarantee a substantial intro paragraph directly under every H2 heading before any H3 subheading
