@@ -12,24 +12,26 @@ export interface QueueItem {
 }
 
 // ============================================================================
-// SINGLE GEMINI ARTICLE GENERATION PROMPT (HIGH-CTR CLICKABLE SEO TITLES)
+// ============================================================================
+// SINGLE GEMINI ARTICLE GENERATION PROMPT (NO YEAR, VARY TITLE TYPES, HIGH CTR)
 // ============================================================================
 export const GEMINI_ARTICLE_PROMPT = `You are an expert SEO editor and senior journalist for On Gravity Magazine.
 
 Your objective is to write a unique, highly SEO-optimized, publication-ready article based on the submitted keyword/topic.
 
-STRICT WRITING & SEO INSTRUCTIONS:
+STRICT TITLE & WRITING INSTRUCTIONS:
 
-1. HIGH-CTR CLICKABLE SEO TITLE GENERATION:
-   - Create an irresistible, highly click-worthy, search-optimized title (50-65 characters) starting directly with "# ".
-   - Include the primary keyword naturally near the beginning.
-   - Use high-CTR editorial power phrases such as: "Review (2026)", "5 Must-Know Secrets", "Buyer Guide (2026)", "Tested Specs & Real Truth", "Is It Worth It?", "Before You Buy".
+1. CLICKABLE SEO TITLE GENERATION:
+   - Create an irresistible, click-worthy title (50-65 characters) starting directly with "# ".
+   - Incorporate the primary keyword naturally ANYWHERE in the title (beginning, middle, or end). It does NOT need to be at the start.
+   - DO NOT include any year (e.g. DO NOT write "2026" or "(2026)").
+   - DO NOT overuse the word "Guide". Vary the title formats across reviews, secrets, honest breakdowns, performance checks, and buying advice.
    - Examples of Clickable SEO Titles:
-     - Keyword "hp laptop" -> "# HP Laptop Review (2026): 5 Must-Know Secrets Before You Buy"
-     - Keyword "dell laptop" -> "# Dell Laptop Guide (2026): Performance Specs, Pricing & Real Truth"
-     - Keyword "toy for kids" -> "# Best Toys for Kids (2026): 7 Top-Rated Safe & Fun Choices"
-     - Keyword "cold water tap" -> "# Cold Water Tap Installation: 5 Must-Know Plumbing Tips & Reviews"
-   - Make it sound like a top-tier magazine cover story that compels readers to click!
+     - Keyword "hp laptop" -> "# 5 Must-Know Secrets Before Buying an HP Laptop"
+     - Keyword "dell laptop" -> "# Is the Dell Laptop Worth It? Performance Specs & Real Verdict"
+     - Keyword "toy for kids" -> "# Top Features & Safety Rating of the Best Toy for Kids"
+     - Keyword "cold water tap" -> "# Cold Water Tap Installation: Practical Plumbing Tips & Review"
+   - Make it sound like an engaging magazine cover story that compels readers to click!
 
 2. UNIQUE SEO META SUMMARY / EXCERPT:
    - On the very next line after the title, output "EXCERPT: [Write a unique, punchy 140-155 character meta description summarizing the specific topic, value proposition, and key takeaway of this article]".
@@ -368,8 +370,10 @@ function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
   }
 
   if (!title) {
-    const kwFmt = formatNaturalKeyword(keyword);
-    title = `Essential Editorial Guide to ${kwFmt.title}`;
+    title = formatSeoTitle(keyword);
+  } else {
+    // Remove any accidental year numbers (e.g. 2026, (2026)) per user instructions
+    title = title.replace(/\s*\(?20\d\d\)?\s*/g, " ").replace(/\s+/g, " ").trim();
   }
 
   const firstBodyPara = paragraphs.find(p => !p.startsWith("#")) || `An in-depth editorial guide covering ${keyword}.`;
