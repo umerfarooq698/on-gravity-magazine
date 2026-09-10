@@ -12,7 +12,7 @@ export interface QueueItem {
 }
 
 // ============================================================================
-// SINGLE GEMINI ARTICLE GENERATION PROMPT (STRICT SEO & USER SPECIFICATIONS)
+// SINGLE GEMINI ARTICLE GENERATION PROMPT (HIGH-CTR CLICKABLE SEO TITLES)
 // ============================================================================
 export const GEMINI_ARTICLE_PROMPT = `You are an expert SEO editor and senior journalist for On Gravity Magazine.
 
@@ -20,9 +20,16 @@ Your objective is to write a unique, highly SEO-optimized, publication-ready art
 
 STRICT WRITING & SEO INSTRUCTIONS:
 
-1. SEO TITLE GENERATION:
-   - Generate a click-worthy, search-optimized title (50-60 characters) containing the primary keyword naturally starting with "# ".
-   - Make the title specific to the keyword. Never use generic titles.
+1. HIGH-CTR CLICKABLE SEO TITLE GENERATION:
+   - Create an irresistible, highly click-worthy, search-optimized title (50-65 characters) starting directly with "# ".
+   - Include the primary keyword naturally near the beginning.
+   - Use high-CTR editorial power phrases such as: "Review (2026)", "5 Must-Know Secrets", "Buyer Guide (2026)", "Tested Specs & Real Truth", "Is It Worth It?", "Before You Buy".
+   - Examples of Clickable SEO Titles:
+     - Keyword "hp laptop" -> "# HP Laptop Review (2026): 5 Must-Know Secrets Before You Buy"
+     - Keyword "dell laptop" -> "# Dell Laptop Guide (2026): Performance Specs, Pricing & Real Truth"
+     - Keyword "toy for kids" -> "# Best Toys for Kids (2026): 7 Top-Rated Safe & Fun Choices"
+     - Keyword "cold water tap" -> "# Cold Water Tap Installation: 5 Must-Know Plumbing Tips & Reviews"
+   - Make it sound like a top-tier magazine cover story that compels readers to click!
 
 2. UNIQUE SEO META SUMMARY / EXCERPT:
    - On the very next line after the title, output "EXCERPT: [Write a unique, punchy 140-155 character meta description summarizing the specific topic, value proposition, and key takeaway of this article]".
@@ -192,28 +199,15 @@ export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string 
   const clean = rawKeyword.replace(/&/g, "and").replace(/\s+/g, " ").trim();
   let kwWords = clean.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 
-  if (kwWords.length >= 55 && kwWords.length <= 60 && !kwWords.includes("&")) {
-    return kwWords;
-  }
-  if (kwWords.length > 60) {
-    let sub = kwWords.slice(0, 58);
-    const spaceIdx = sub.lastIndexOf(" ");
-    if (spaceIdx >= 55) return sub.slice(0, spaceIdx);
-    return sub.slice(0, 57);
-  }
-
-  const suffixes = [
-    ": Essential Specifications, Engineering and Overview",
-    ": Complete Architectural Design and Quality Guide",
-    ": Operational Efficiency, Specs and System Guide",
-    ": Practical Application, Standards and Overview",
-    ": Material Quality, Durability and System Review"
+  const highCtrTemplates = [
+    `${kwWords} Review (2026): 5 Must-Know Secrets Before You Buy`,
+    `${kwWords} Buyer Guide (2026): Tested Specs, Pricing and Verdict`,
+    `Is ${kwWords} Worth It? Full Performance and Reliability Review`,
+    `The Ultimate ${kwWords} Guide (2026): Best Features and Real Truth`,
+    `${kwWords} Breakdown: Top Models, Key Specs and Expert Advice`
   ];
-  const s = suffixes[hashVal % suffixes.length];
-  const candidate = (kwWords + s).replace(/&/g, "and");
-  if (candidate.length >= 55 && candidate.length <= 60) return candidate;
 
-  return (kwWords + ": Complete Architectural Specs and System Review").slice(0, 57).replace(/&/g, "and");
+  return highCtrTemplates[Math.abs(hashVal) % highCtrTemplates.length].replace(/&/g, "and");
 }
 
 async function fetchUniqueUnsplashImage(keyword: string, category: string): Promise<{ url: string; caption: string; alt: string }> {
