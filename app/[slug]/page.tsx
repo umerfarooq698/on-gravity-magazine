@@ -78,10 +78,69 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   };
 }
 
-export async function generateStaticParams() {
-  return ARTICLES.map((art) => ({
-    slug: art.slug,
-  }));
+function parseRichText(text: string): React.ReactNode[] {
+  let cleanText = text.replace(/^[\#\s]+/, "").replace(/&/g, "and");
+
+  const regex = /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*/g;
+  const parts: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(cleanText)) !== null) {
+    if (match.index > lastIndex) {
+      const plainSegment = cleanText.substring(lastIndex, match.index).replace(/\*\*/g, "").replace(/\*/g, "");
+      if (plainSegment) {
+        parts.push(plainSegment);
+      }
+    }
+
+    if (match[1] && match[2]) {
+      const linkText = match[1].replace(/\*\*/g, "").replace(/\*/g, "");
+      const linkUrl = match[2];
+      const isExternal = linkUrl.startsWith("http://") || linkUrl.startsWith("https://");
+
+      if (isExternal) {
+        parts.push(
+          <a
+            key={match.index}
+            href={linkUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-amber-600 dark:text-amber-400 font-bold underline hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+          >
+            {linkText}
+          </a>
+        );
+      } else {
+        parts.push(
+          <Link
+            key={match.index}
+            href={linkUrl}
+            className="text-amber-600 dark:text-amber-400 font-bold underline hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+          >
+            {linkText}
+          </Link>
+        );
+      }
+    } else if (match[3]) {
+      parts.push(
+        <strong key={match.index} className="font-bold text-zinc-900 dark:text-white">
+          {match[3]}
+        </strong>
+      );
+    }
+
+    lastIndex = regex.lastIndex;
+  }
+
+  if (lastIndex < cleanText.length) {
+    const plainSegment = cleanText.substring(lastIndex).replace(/\*\*/g, "").replace(/\*/g, "");
+    if (plainSegment) {
+      parts.push(plainSegment);
+    }
+  }
+
+  return parts.length > 0 ? parts : [cleanText.replace(/\*\*/g, "").replace(/\*/g, "")];
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
@@ -284,87 +343,57 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               );
             })
             .map((item, index) => {
-            const trimmed = item.trim();
-            if (trimmed.startsWith("## ")) {
-              const headingText = trimmed.replace(/^##\s+/, "").replace(/&/g, "and");
-              return (
-                <h2
-                  key={index}
-                  className="font-serif text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white pt-8 pb-3 border-b border-zinc-200 dark:border-zinc-800 mt-8 mb-4 tracking-tight"
-                >
-                  {headingText}
-                </h2>
-              );
-            }
-            if (trimmed.startsWith("### ")) {
-              const headingText = trimmed.replace(/^###\s+/, "").replace(/&/g, "and");
-              return (
-                <h3
-                  key={index}
-                  className="font-serif text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 pt-6 pb-2 mt-6 mb-3 tracking-tight"
-                >
-                  {headingText}
-                </h3>
-              );
-            }
-
-            // Parse markdown links [text](url) for 1 external & 2 internal links
-            const parts: (string | React.ReactNode)[] = [];
-            const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
-            let lastIndex = 0;
-            let match;
-
-            while ((match = regex.exec(item)) !== null) {
-              if (match.index > lastIndex) {
-                parts.push(item.substring(lastIndex, match.index));
-              }
-              const linkText = match[1];
-              const linkUrl = match[2];
-              const isExternal = linkUrl.startsWith("http://") || linkUrl.startsWith("https://");
-
-              if (isExternal) {
-                parts.push(
-                  <a
-                    key={match.index}
-                    href={linkUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-amber-600 dark:text-amber-400 font-bold underline hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+              const trimmed = item.trim();
+              if (trimmed.startsWith("## ")) {
+                const headingText = trimmed.replace(/^##\s+/, "").replace(/&/g, "and");
+                return (
+                  <h2
+                    key={index}
+                    className="font-serif text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white pt-8 pb-3 border-b border-zinc-200 dark:border-zinc-800 mt-8 mb-4 tracking-tight"
                   >
-                    {linkText}
-                  </a>
-                );
-              } else {
-                parts.push(
-                  <Link
-                    key={match.index}
-                    href={linkUrl}
-                    className="text-amber-600 dark:text-amber-400 font-bold underline hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
-                  >
-                    {linkText}
-                  </Link>
+                    {parseRichText(headingText)}
+                  </h2>
                 );
               }
-              lastIndex = regex.lastIndex;
-            }
+              if (trimmed.startsWith("### ")) {
+                const headingText = trimmed.replace(/^###\s+/, "").replace(/&/g, "and");
+                return (
+                  <h3
+                    key={index}
+                    className="font-serif text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 pt-6 pb-2 mt-6 mb-3 tracking-tight"
+                  >
+                    {parseRichText(headingText)}
+                  </h3>
+                );
+              }
 
-            if (lastIndex < item.length) {
-              parts.push(item.substring(lastIndex));
-            }
+              const isBullet = /^[*\-•]\s+/.test(trimmed) || /^[*\-•]\s*\*\*/.test(trimmed);
 
-            return (
-              <p
-                key={index}
-                className={
-                  index === 0
-                    ? "first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-3 first-letter:font-serif first-letter:text-amber-500 first-letter:leading-none"
-                    : ""
-                }
-              >
-                {parts.length > 0 ? parts.map((part, idx) => (typeof part === "string" ? part : <React.Fragment key={idx}>{part}</React.Fragment>)) : item}
-              </p>
-            );
-          })}
+              if (isBullet) {
+                const bulletContent = trimmed.replace(/^[*\-•]\s*/, "");
+                return (
+                  <div key={index} className="flex items-start gap-3 my-3 pl-2 sm:pl-4">
+                    <span className="inline-block w-2 h-2 rounded-full bg-amber-500 mt-2.5 shrink-0" />
+                    <div className="flex-1 font-serif text-zinc-800 dark:text-zinc-200 leading-relaxed">
+                      {parseRichText(bulletContent)}
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <p
+                  key={index}
+                  className={
+                    index === 0
+                      ? "first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-3 first-letter:font-serif first-letter:text-amber-500 first-letter:leading-none"
+                      : ""
+                  }
+                >
+                  {parseRichText(item)}
+                </p>
+              );
+            })}
         </div>
 
         {/* Frequently Asked Questions (FAQ) Section - Google Rich Snippet Verified */}
@@ -382,11 +411,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 >
                   <h4 className="font-sans font-bold text-base text-zinc-900 dark:text-white flex items-start gap-2">
                     <span className="text-amber-500 font-bold">Q:</span>
-                    {faq.question}
+                    {parseRichText(faq.question)}
                   </h4>
-                  <p className="font-sans text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed pl-5">
-                    {faq.answer}
-                  </p>
+                  <div className="font-sans text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed pl-5">
+                    {parseRichText(faq.answer)}
+                  </div>
                 </div>
               ))}
             </div>
