@@ -231,9 +231,30 @@ export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string 
   return highCtrTemplates[Math.abs(hashVal) % highCtrTemplates.length].replace(/&/g, "and");
 }
 
+function getUnsplashPhotoId(url: string): string {
+  if (!url) return "";
+  const match = url.match(/photo-([a-zA-Z0-9-]+)/);
+  if (match && match[1]) return match[1];
+  return url;
+}
+
 const GLOBAL_USED_IMAGE_URLS = new Set<string>();
+const GLOBAL_USED_PHOTO_IDS = new Set<string>();
+
+function initializeUsedPhotoIds() {
+  if (GLOBAL_USED_PHOTO_IDS.size === 0) {
+    for (const art of ARTICLES) {
+      if (art.imageUrl) {
+        GLOBAL_USED_IMAGE_URLS.add(art.imageUrl);
+        const id = getUnsplashPhotoId(art.imageUrl);
+        if (id) GLOBAL_USED_PHOTO_IDS.add(id);
+      }
+    }
+  }
+}
 
 async function fetchUniqueUnsplashImage(keyword: string, category: string, usedUrls: Set<string> = new Set()): Promise<{ url: string; caption: string; alt: string }> {
+  initializeUsedPhotoIds();
   const accessKey = getUnsplashAccessKey();
   const cleanKw = keyword.trim().toLowerCase().replace(/&/g, "and");
   const hashVal = getDeterministicHash(`${cleanKw}-${Date.now()}-${Math.random()}`);
@@ -248,15 +269,18 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string, usedU
         const data = await res.json();
         if (data.results && data.results.length > 0) {
           const unusedPhotos = data.results.filter((p: any) => {
-            const u = p.urls?.regular || p.urls?.full;
-            return u && !usedUrls.has(u) && !GLOBAL_USED_IMAGE_URLS.has(u);
+            const raw = p.urls?.regular || p.urls?.full;
+            const pid = p.id || getUnsplashPhotoId(raw);
+            return raw && !usedUrls.has(raw) && !GLOBAL_USED_IMAGE_URLS.has(raw) && !GLOBAL_USED_PHOTO_IDS.has(pid);
           });
           const photoList = unusedPhotos.length > 0 ? unusedPhotos : data.results;
           const photoIndex = hashVal % photoList.length;
           const photo = photoList[photoIndex];
           const rawUrl = photo.urls?.regular || photo.urls?.full;
+          const photoId = photo.id || getUnsplashPhotoId(rawUrl);
           if (rawUrl) {
             GLOBAL_USED_IMAGE_URLS.add(rawUrl);
+            GLOBAL_USED_PHOTO_IDS.add(photoId);
             usedUrls.add(rawUrl);
             const uniqueUrl = rawUrl.includes("?") ? `${rawUrl}&sig=${slugSig}_${Date.now()}` : `${rawUrl}?sig=${slugSig}_${Date.now()}`;
             const altText = (photo.alt_description || photo.description || `Editorial photography for ${cleanKw}`).replace(/&/g, "and");
@@ -328,8 +352,11 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string, usedU
   };
 
   const pool = categoryPhotoPools[category] || categoryPhotoPools["life-style"];
-  const photoIndex = hashVal % pool.length;
-  const selectedPhotoId = pool[photoIndex];
+  const unusedPool = pool.filter(id => !GLOBAL_USED_PHOTO_IDS.has(id));
+  const activePool = unusedPool.length > 0 ? unusedPool : pool;
+  const photoIndex = hashVal % activePool.length;
+  const selectedPhotoId = activePool[photoIndex];
+  GLOBAL_USED_PHOTO_IDS.add(selectedPhotoId);
   const uniqueFallbackUrl = `https://images.unsplash.com/${selectedPhotoId}?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}_${Date.now()}`;
   GLOBAL_USED_IMAGE_URLS.add(uniqueFallbackUrl);
 

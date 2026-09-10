@@ -84,7 +84,7 @@ export const ARTICLES: Article[] = [
     },
     "publishedAt": "Sep 11, 2026",
     "readTime": "6 min read",
-    "imageUrl": "https://images.unsplash.com/photo-1517991104123-1d56a6e81ed9?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
     "imageAlt": "High resolution editorial photography illustrating half moon light lamp - life-style feature",
     "imageCaption": "Professional half moon light lamp delivering shadow-free arc illumination over a modern studio workstation.",
     "featured": true,
