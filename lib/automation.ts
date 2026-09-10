@@ -221,12 +221,13 @@ export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string 
 async function fetchUniqueUnsplashImage(keyword: string, category: string, usedUrls: Set<string> = new Set()): Promise<{ url: string; caption: string; alt: string }> {
   const accessKey = getUnsplashAccessKey();
   const cleanKw = keyword.trim().toLowerCase().replace(/&/g, "and");
-  const randomPage = Math.floor(Math.random() * 3) + 1;
-  const uniqueSig = `${cleanKw.replace(/[^a-z0-9]+/g, "-")}_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+  const hashVal = getDeterministicHash(cleanKw);
+  const slugSig = cleanKw.replace(/[^a-z0-9]+/g, "-");
 
   if (accessKey) {
     try {
-      const apiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keyword)}&per_page=30&page=${randomPage}&orientation=landscape&client_id=${accessKey}`;
+      const pageNum = (hashVal % 3) + 1;
+      const apiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keyword)}&per_page=30&page=${pageNum}&orientation=landscape&client_id=${accessKey}`;
       const res = await fetch(apiUrl);
       if (res.ok) {
         const data = await res.json();
@@ -236,8 +237,8 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string, usedU
             return u && !usedUrls.has(u);
           });
           const photoList = unusedPhotos.length > 0 ? unusedPhotos : data.results;
-          const randomIndex = Math.floor(Math.random() * photoList.length);
-          const photo = photoList[randomIndex];
+          const photoIndex = hashVal % photoList.length;
+          const photo = photoList[photoIndex];
           const imgUrl = photo.urls?.regular || photo.urls?.full;
           if (imgUrl) {
             return {
@@ -307,11 +308,11 @@ async function fetchUniqueUnsplashImage(keyword: string, category: string, usedU
   };
 
   const pool = categoryPhotoPools[category] || categoryPhotoPools["life-style"];
-  const randomIndex = Math.floor(Math.random() * pool.length);
-  const selectedPhotoId = pool[randomIndex];
+  const photoIndex = hashVal % pool.length;
+  const selectedPhotoId = pool[photoIndex];
 
   return {
-    url: `https://images.unsplash.com/${selectedPhotoId}?auto=format&fit=crop&w=1200&q=80&sig=${uniqueSig}`,
+    url: `https://images.unsplash.com/${selectedPhotoId}?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}_${hashVal}`,
     caption: `Editorial photograph highlighting ${keyword}.`,
     alt: `Photograph of ${keyword}`
   };
@@ -714,7 +715,7 @@ function buildArticleFromQueueItem(item: QueueItem): Article {
     author,
     publishedAt: item.publishedAt || item.createdAt,
     readTime: "6 min read",
-    imageUrl: `https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}`,
+    imageUrl: `https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80&sig=${slugSig}_${hashVal}`,
     imageAlt: `Editorial photography for ${title}`,
     imageCaption: `Editorial photograph for ${title}.`,
     featured: true,
