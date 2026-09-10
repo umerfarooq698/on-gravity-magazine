@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Article } from "@/data/articles";
 import { CATEGORIES } from "@/data/categories";
 import { getCustomArticlesFromStorage } from "@/lib/clientStorage";
@@ -101,15 +102,26 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
                   <Link
                     key={item.id}
                     href={`/${item.slug}`}
-                    className="group block pt-3 first:pt-0"
+                    className="group flex gap-3 items-center pt-3 first:pt-0"
                   >
-                    <div className="flex items-center gap-2 text-[10px] font-black text-red-600 uppercase tracking-widest">
-                      <span>• {item.publishedAt}</span>
-                      <span className="text-slate-400">• {item.category}</span>
+                    <div className="relative w-20 h-16 rounded-xs overflow-hidden shrink-0 border border-slate-200 dark:border-slate-800">
+                      <Image
+                        src={item.imageUrl}
+                        alt={item.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="80px"
+                      />
                     </div>
-                    <h4 className="font-sans font-bold text-sm text-slate-900 dark:text-slate-100 group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors leading-snug line-clamp-2 uppercase mt-1">
-                      {item.title}
-                    </h4>
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center gap-1.5 text-[10px] font-black text-red-600 uppercase tracking-widest">
+                        <span>• {item.publishedAt}</span>
+                        <span className="text-slate-400 font-semibold">• {item.category}</span>
+                      </div>
+                      <h4 className="font-sans font-bold text-xs sm:text-sm text-slate-900 dark:text-slate-100 group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors leading-snug line-clamp-2 uppercase">
+                        {item.title}
+                      </h4>
+                    </div>
                   </Link>
                 ))}
               </div>
