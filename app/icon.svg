@@ -1,82 +1,25 @@
-<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <!-- Gold & Celestial Gradients -->
-    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FEF08A" />
-      <stop offset="30%" stop-color="#F59E0B" />
-      <stop offset="70%" stop-color="#D97706" />
-      <stop offset="100%" stop-color="#B45309" />
-    </linearGradient>
-
-    <linearGradient id="orbitGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#6366F1" stop-opacity="0.9" />
-      <stop offset="50%" stop-color="#EC4899" stop-opacity="0.8" />
-      <stop offset="100%" stop-color="#F59E0B" stop-opacity="0.9" />
-    </linearGradient>
-
-    <radialGradient id="coreLight" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#FFFBEB" />
-      <stop offset="60%" stop-color="#F59E0B" />
-      <stop offset="100%" stop-color="#7C2D12" />
-    </radialGradient>
-  </defs>
-
-  <!-- Dark Obsidian Rounded Background Container -->
-  <rect width="120" height="120" rx="30" fill="#09090B" />
-  <rect x="2" y="2" width="116" height="116" rx="28" stroke="url(#goldGrad)" stroke-opacity="0.25" stroke-width="2" fill="none" />
-
-  <!-- Outer Gravitational Ring Halo -->
-  <circle
-    cx="60"
-    cy="60"
-    r="48"
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <!-- Outer Shield / Box -->
+  <rect width="100" height="100" rx="16" fill="#DC2626" />
+  
+  <!-- Dark Navy Inset Box -->
+  <rect x="7" y="7" width="86" height="86" rx="12" fill="#001933" />
+  
+  <!-- Red Gravity Orbital Ring -->
+  <path
+    d="M 22 50 C 22 30, 78 30, 78 50 C 78 70, 22 70, 22 50 Z"
+    stroke="#DC2626"
+    strokeWidth="6"
     fill="none"
-    stroke="url(#goldGrad)"
-    stroke-width="1.5"
-    stroke-dasharray="6 4"
-    opacity="0.5"
+    strokeLinecap="round"
   />
-
-  <!-- Dynamic Elliptical Orbit 1 -->
-  <ellipse
-    cx="60"
-    cy="60"
-    rx="45"
-    ry="16"
-    stroke="url(#orbitGlow)"
-    stroke-width="4.5"
-    stroke-linecap="round"
-    transform="rotate(-30 60 60)"
-  />
-
-  <!-- Dynamic Elliptical Orbit 2 -->
-  <ellipse
-    cx="60"
-    cy="60"
-    rx="45"
-    ry="16"
-    stroke="url(#goldGrad)"
-    stroke-width="3.5"
-    stroke-dasharray="12 8"
-    stroke-linecap="round"
-    transform="rotate(40 60 60)"
-  />
-
-  <!-- Core Luminous Sphere -->
-  <circle cx="60" cy="60" r="20" fill="url(#coreLight)" />
-
-  <!-- Monogram 'G' with Gravitational Arc -->
+  
+  <!-- Bold White 'G' Monogram -->
   <path
-    d="M67 50C64.5 45.5 59.5 43.5 53.5 46.5C45.5 50.5 43 61 47 68.5C51 76 61 77 67.5 73C72 70 74 63.5 73.5 58.5H54"
-    stroke="#FFFFFF"
-    stroke-width="6"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    d="M 68 38 C 62 30, 42 30, 36 42 C 28 54, 34 70, 52 70 C 65 70, 68 60, 68 52 L 50 52 L 50 44 L 76 44 L 76 56 C 76 72, 58 78, 44 78 C 24 78, 18 58, 26 40 C 34 22, 60 22, 74 32 Z"
+    fill="#FFFFFF"
   />
 
-  <!-- Four-Point Radiant Star Flare at top right -->
-  <path
-    d="M84 32 L86 24 L88 32 L96 34 L88 36 L86 44 L84 36 L76 34 Z"
-    fill="url(#goldGrad)"
-  />
+  <!-- Gold Star Accent -->
+  <polygon points="76,22 79,29 86,29 80,33 82,40 76,35 70,40 72,33 66,29 73,29" fill="#F59E0B" />
 </svg>
