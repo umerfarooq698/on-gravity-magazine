@@ -77,44 +77,11 @@ const CACHE_FILES = [
 ];
 
 function loadCacheFromDisk(): Article[] {
-  if (typeof window !== "undefined") return [];
-  const map = new Map<string, Article>();
-  try {
-    const req = eval("require");
-    const fsMod = req("fs");
-    if (fsMod) {
-      for (const cacheFile of CACHE_FILES) {
-        if (fsMod.existsSync(cacheFile)) {
-          const data = fsMod.readFileSync(cacheFile, "utf-8");
-          const parsed = JSON.parse(data);
-          if (Array.isArray(parsed)) {
-            for (const art of parsed) {
-              if (art && art.slug && !map.has(art.slug)) {
-                map.set(art.slug, art);
-              }
-            }
-          }
-        }
-      }
-    }
-  } catch (e) {
-    // Ignore
-  }
-  return Array.from(map.values());
+  return [];
 }
 
 function saveCacheToDisk(articles: Article[]) {
-  if (typeof window !== "undefined") return;
-  try {
-    const cacheFile = CACHE_FILES[0];
-    const req = eval("require");
-    const fsMod = req("fs");
-    if (fsMod) {
-      fsMod.writeFileSync(cacheFile, JSON.stringify(articles.slice(0, 500)), "utf-8");
-    }
-  } catch (e) {
-    // Ignore
-  }
+  // Disk caching disabled to prevent temporary auto-generated articles
 }
 
 const getGeminiApiKey = () => {
@@ -879,17 +846,6 @@ export async function getArticleBySlugAsync(slug: string): Promise<Article | und
   const all = getAllArticlesCombined();
   const found = all.find((a) => a.slug === slug || a.id === slug);
   if (found) return sanitizeOrMigrateArticle(found);
-
-  const rawKeyword = slug.replace(/-\d+$/, "").replace(/-/g, " ");
-  if (!rawKeyword.trim()) return undefined;
-
-  try {
-    const newlyGen = await generateArticleObjectAsync(rawKeyword, undefined, slug);
-    return sanitizeOrMigrateArticle(newlyGen);
-  } catch (err) {
-    console.error("On-demand article generation failed:", err);
-  }
-
   return undefined;
 }
 
