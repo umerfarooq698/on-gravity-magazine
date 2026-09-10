@@ -22,8 +22,7 @@ import {
   Bookmark
 } from "lucide-react";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 export const dynamicParams = true;
 
 interface ArticlePageProps {
