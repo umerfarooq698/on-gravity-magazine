@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
-import { getArticleBySlug, ARTICLES } from "@/data/articles";
+import { getArticleBySlug } from "@/data/articles";
+import { getAllArticlesCombined } from "@/lib/automation";
 import { getCategoryBySlug } from "@/data/categories";
 import { getAuthorSlug } from "@/data/authors";
 import ArticleCard from "@/components/ArticleCard";
@@ -154,9 +155,24 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const baseUrl = "https://on-gravity-magazine-mu.vercel.app";
   const pageUrl = `${baseUrl}/${article.slug}`;
   const category = getCategoryBySlug(article.category);
-  const relatedArticles = ARTICLES.filter(
-    (a) => a.category === article.category && a.id !== article.id
-  ).slice(0, 3);
+  const allArticles = getAllArticlesCombined();
+
+  const relatedArticles = allArticles
+    .filter(
+      (a) => a.category === article.category && a.id !== article.id && a.slug !== article.slug
+    )
+    .slice(0, 3);
+
+  const usedSlugs = new Set([
+    article.slug,
+    article.id,
+    ...relatedArticles.map((r) => r.slug),
+    ...relatedArticles.map((r) => r.id),
+  ]);
+
+  const missedArticles = allArticles
+    .filter((a) => !usedSlugs.has(a.slug) && !usedSlugs.has(a.id))
+    .slice(0, 6);
 
   // 1. JSON-LD NewsArticle Schema
   const newsArticleJsonLd = {
@@ -490,12 +506,35 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         {/* Related Articles Section */}
         {relatedArticles.length > 0 && (
           <section className="pt-8 border-t border-zinc-200 dark:border-zinc-800 space-y-6">
-            <h3 className="font-serif text-2xl font-bold text-zinc-900 dark:text-white">
+            <h3 className="font-sans text-xl sm:text-2xl font-black uppercase text-slate-900 dark:text-white border-b-2 border-red-600 pb-2">
               More from {category?.name || "this Edition"}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {relatedArticles.map((rel) => (
-                <ArticleCard key={rel.id} article={rel} variant="standard" />
+                <ArticleCard key={rel.id || rel.slug} article={rel} variant="standard" />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* You May Have Missed Section */}
+        {missedArticles.length > 0 && (
+          <section className="pt-10 border-t-4 border-red-600 space-y-6">
+            <div className="flex items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-6 bg-red-600" />
+                <h3 className="font-sans text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white uppercase">
+                  YOU MAY HAVE MISSED
+                </h3>
+              </div>
+              <span className="text-xs font-bold uppercase tracking-wider text-red-600 dark:text-red-500 hidden sm:inline-block">
+                LATEST DISPATCHES
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {missedArticles.map((missed) => (
+                <ArticleCard key={missed.id || missed.slug} article={missed} variant="standard" />
               ))}
             </div>
           </section>
