@@ -208,11 +208,11 @@ export function formatSeoTitle(rawKeyword: string, hashVal: number = 0): string 
   let kwWords = clean.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 
   const highCtrTemplates = [
-    `${kwWords} Review (2026): 5 Must-Know Secrets Before You Buy`,
-    `${kwWords} Buyer Guide (2026): Tested Specs, Pricing and Verdict`,
-    `Is ${kwWords} Worth It? Full Performance and Reliability Review`,
-    `The Ultimate ${kwWords} Guide (2026): Best Features and Real Truth`,
-    `${kwWords} Breakdown: Top Models, Key Specs and Expert Advice`
+    `${kwWords} Review: 5 Must-Know Secrets Before You Buy`,
+    `Is ${kwWords} Worth It? Performance Specs, Pricing and Verdict`,
+    `${kwWords} Analysis: Key Features, Top Models and Honest Verdict`,
+    `${kwWords} Breakdown: Performance Checks and Expert Advice`,
+    `Essential ${kwWords} Insights: Real Testing and Buyer Choice`
   ];
 
   return highCtrTemplates[Math.abs(hashVal) % highCtrTemplates.length].replace(/&/g, "and");
@@ -612,7 +612,7 @@ export async function generateArticleObjectAsync(
     imageCaption: image.caption,
     featured: true,
     trending: true,
-    tags: [cleanKw.split(" ")[0] || "Featured", category.toUpperCase(), "2026"],
+    tags: [cleanKw.split(" ")[0] || "Featured", category.toUpperCase(), "Editorial"],
   };
 
   dynamicArticlesStore = [resultArticle, ...dynamicArticlesStore.filter((a) => a.slug !== resultArticle.slug)];
@@ -720,7 +720,7 @@ function buildArticleFromQueueItem(item: QueueItem): Article {
     imageCaption: `Editorial photograph for ${title}.`,
     featured: true,
     trending: true,
-    tags: [cleanKw.split(" ")[0] || "Featured", category.toUpperCase(), "2026"],
+    tags: [cleanKw.split(" ")[0] || "Featured", category.toUpperCase(), "Editorial"],
   };
 }
 
