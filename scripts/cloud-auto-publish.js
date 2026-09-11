@@ -178,7 +178,35 @@ async function fetchUnsplashImage(keyword, category, usedPhotoIds) {
   };
 }
 
-const SYSTEM_PROMPT = `You are an expert SEO editor and senior journalist for On Gravity Magazine.
+function getExistingPublishedSlugs(articlesFileContent) {
+  const slugs = new Set();
+  const matches = articlesFileContent.match(/"slug":\s*"([^"]+)"/g) || [];
+  for (const m of matches) {
+    const match = m.match(/"slug":\s*"([^"]+)"/);
+    if (match && match[1]) {
+      slugs.add(match[1].toLowerCase().trim());
+    }
+  }
+  return slugs;
+}
+
+function validateAndCleanInternalLinks(paragraphs, validSlugsSet) {
+  return paragraphs.map(p => {
+    return p.replace(/\[([^\]]+)\]\(\/([a-z0-9-]+)\)/gi, (match, anchorText, targetSlug) => {
+      const cleanSlug = targetSlug.toLowerCase().trim();
+      if (validSlugsSet.has(cleanSlug)) {
+        return `[${anchorText}](/${cleanSlug})`;
+      } else {
+        console.warn(`Stripping non-existent internal link: [${anchorText}](/${cleanSlug})`);
+        return anchorText; // Revert link to plain text
+      }
+    });
+  });
+}
+
+function getSystemPrompt(validSlugsSet) {
+  const validSlugsList = Array.from(validSlugsSet).map(s => `/${s}`).join(", ");
+  return `You are an expert SEO editor and senior journalist for On Gravity Magazine.
 
 Your objective is to write a comprehensive, 100% unique, highly SEO-optimized, publication-ready article based on the submitted keyword/topic.
 
@@ -220,19 +248,21 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
      ### Q: [Short Question]
      A: [Short Answer]
 
-8. NATURAL INTERNAL LINKING:
-   - Include 1 to 2 natural internal links targeting existing articles (e.g. [bathroom tiles design](/bathroom-tiles-design), [character bathrooms](/character-bathrooms)) when relevant words appear organically.
+8. NATURAL INTERNAL LINKING (STRICT VALIDATION):
+   - Include 1 to 2 natural internal links ONLY when a word naturally matches one of these ALREADY PUBLISHED slugs on the magazine: [${validSlugsList}].
+   - DO NOT invent or link to any other slugs!
 
 Start directly with # [Generated Title].`;
+}
 
-async function generateArticleWithGemini(keyword) {
+async function generateArticleWithGemini(keyword, validSlugsSet) {
   const count = extractCountFromKeyword(keyword);
   let listicleInstruction = "";
   if (count) {
     listicleInstruction = `\n\nCRITICAL COUNT INSTRUCTION: The keyword asks for "${count}" items. You MUST create exactly ${count} main item headings (using "## 1. [Item]", "## 2. [Item]" up to "## ${count}. [Item]") with H3 sub-sections under each item and write full, informative paragraphs under EACH section to reach 1,000 to 1,200 words!`;
   }
 
-  const promptText = `${SYSTEM_PROMPT}${listicleInstruction}\n\nSubmitted Keyword / Topic: "${keyword}"\n[Target Word Count: 1000-1200 words]`;
+  const promptText = `${getSystemPrompt(validSlugsSet)}${listicleInstruction}\n\nSubmitted Keyword / Topic: "${keyword}"\n[Target Word Count: 1000-1200 words]`;
 
   for (const modelName of GEMINI_MODELS) {
     try {
@@ -252,7 +282,9 @@ async function generateArticleWithGemini(keyword) {
         const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
         if (text && text.trim().length > 200) {
           console.log(`Successfully generated article with Gemini API model ${modelName}! Length: ${text.length}`);
-          return parseGeminiMarkdown(text, keyword);
+          const parsed = parseGeminiMarkdown(text, keyword);
+          parsed.paragraphs = validateAndCleanInternalLinks(parsed.paragraphs, validSlugsSet);
+          return parsed;
         }
       } else {
         const errJson = await response.json();
@@ -336,14 +368,16 @@ async function runAutoPublish() {
   const item = queueData[pendingIndex];
   console.log(`Found pending keyword [Index: ${pendingIndex}]: "${item.keyword}" (Category: ${item.category})`);
 
-  // Parse existing articles to ensure image uniqueness
+  // Parse existing articles to ensure image uniqueness & get valid internal link slugs
   const articlesFileContent = fs.readFileSync(ARTICLES_FILE, 'utf-8');
   const usedPhotoIds = new Set();
   const photoMatches = articlesFileContent.match(/photo-([a-zA-Z0-9-]+)/g) || [];
   photoMatches.forEach(m => usedPhotoIds.add(m.replace('photo-', '')));
 
+  const validSlugsSet = getExistingPublishedSlugs(articlesFileContent);
+
   console.log(`Generating article with Gemini API model gemini-3.6-flash for "${item.keyword}"...`);
-  const generated = await generateArticleWithGemini(item.keyword);
+  const generated = await generateArticleWithGemini(item.keyword, validSlugsSet);
 
   console.log(`Fetching Unsplash image for "${item.keyword}"...`);
   const image = await fetchUnsplashImage(item.keyword, item.category || 'life-style', usedPhotoIds);
