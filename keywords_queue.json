@@ -11,7 +11,9 @@
     "id": "kw-2",
     "keyword": "felicity jones movie",
     "category": "celebrity",
-    "status": "pending"
+    "status": "published",
+    "publishedAt": "2026-09-11T07:20:24.383Z",
+    "generatedArticleSlug": "felicity-jones-movie"
   },
   {
     "id": "kw-3",
@@ -89,6 +91,12 @@
     "id": "kw-15",
     "keyword": "mushroom chocolate bars",
     "category": "food",
+    "status": "pending"
+  },
+  {
+    "id": "kw-16",
+    "keyword": "bathroom tiles design",
+    "category": "lifestyle",
     "status": "pending"
   }
 ]
