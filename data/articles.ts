@@ -82,9 +82,9 @@ export const ARTICLES: Article[] = [
     },
     "publishedAt": "Sep 11, 2026",
     "readTime": "6 min read",
-    "imageUrl": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80&sig=felicity-jones-movie_1789111224383",
-    "imageAlt": "High resolution photograph of felicity jones movie - celebrity feature",
-    "imageCaption": "Editorial photograph highlighting felicity jones movie.",
+    "imageUrl": "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Felicity Jones movie career spotlight and red carpet cinema premiere",
+    "imageCaption": "Editorial portrait highlighting Felicity Jones movie roles and red carpet cinema premieres.",
     "featured": true,
     "trending": true,
     "tags": [

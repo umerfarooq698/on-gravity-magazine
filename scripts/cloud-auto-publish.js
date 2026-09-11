@@ -128,34 +128,51 @@ async function fetchUnsplashImage(keyword, category, usedPhotoIds) {
   const slugSig = slugify(cleanKw);
   const hashVal = getDeterministicHash(`${cleanKw}-${Date.now()}`);
 
+  const searchQueries = [
+    cleanKw,
+    cleanKw.replace(/\b(movie|film|salary|houston|nyc|rent|ideas|tips|recipe|bars|tech|husband|instagram)\b/gi, "").trim()
+  ];
+
+  if (category === "celebrity") searchQueries.push(`${cleanKw} actress cinema red carpet fashion`, "hollywood actress red carpet cinema premiere");
+  if (category === "food") searchQueries.push(`${cleanKw} gourmet food dish`, "delicious gourmet food cuisine dish");
+  if (category === "tech") searchQueries.push(`${cleanKw} technology workstation`, "modern technology device computer hardware");
+  if (category === "life-style") searchQueries.push(`${cleanKw} interior decor`, "modern luxury interior design home decor");
+  if (category === "health") searchQueries.push(`${cleanKw} wellness fitness`, "health wellness fitness exercise lifestyle");
+  if (category === "business") searchQueries.push(`${cleanKw} finance corporate`, "corporate business office finance stock market");
+  if (category === "news") searchQueries.push(`${cleanKw} news event`, "global news journalism press conference");
+
   if (UNSPLASH_ACCESS_KEY) {
-    try {
-      const pageNum = (hashVal % 5) + 1;
-      const apiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keyword)}&per_page=30&page=${pageNum}&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}`;
-      const res = await fetch(apiUrl);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.results && data.results.length > 0) {
-          const unused = data.results.filter(p => p.id && !usedPhotoIds.has(p.id));
-          const photoList = unused.length > 0 ? unused : data.results;
-          const photo = photoList[hashVal % photoList.length];
-          const rawUrl = photo.urls?.regular || photo.urls?.full;
-          const photoId = photo.id;
-          if (rawUrl && photoId) {
-            usedPhotoIds.add(photoId);
-            const uniqueUrl = rawUrl.includes("?") ? `${rawUrl}&sig=${slugSig}_${Date.now()}` : `${rawUrl}?sig=${slugSig}_${Date.now()}`;
-            const altText = (photo.alt_description || photo.description || `Editorial photography for ${cleanKw}`).replace(/&/g, "and");
-            const finalAlt = altText.length > 10 ? `${altText} - ${cleanKw}` : `High-resolution editorial photography illustrating ${cleanKw}`;
-            return {
-              url: uniqueUrl,
-              caption: (photo.description || photo.alt_description || `Editorial photograph for ${cleanKw} on On Gravity Magazine.`).replace(/&/g, "and"),
-              alt: finalAlt.replace(/&/g, "and")
-            };
+    for (const q of searchQueries) {
+      if (!q || q.length < 2) continue;
+      try {
+        const pageNum = (hashVal % 3) + 1;
+        const apiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(q)}&per_page=20&page=${pageNum}&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}`;
+        const res = await fetch(apiUrl);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.results && data.results.length > 0) {
+            const unused = data.results.filter(p => p.id && !usedPhotoIds.has(p.id));
+            const photoList = unused.length > 0 ? unused : data.results;
+            const photo = photoList[hashVal % photoList.length];
+            const rawUrl = photo.urls?.regular || photo.urls?.full;
+            const photoId = photo.id;
+            if (rawUrl && photoId) {
+              usedPhotoIds.add(photoId);
+              const uniqueUrl = rawUrl.includes("?") ? `${rawUrl}&sig=${slugSig}_${Date.now()}` : `${rawUrl}?sig=${slugSig}_${Date.now()}`;
+              const altText = (photo.alt_description || photo.description || `Editorial photography for ${cleanKw}`).replace(/&/g, "and");
+              const finalAlt = altText.length > 10 ? `${altText} - ${cleanKw}` : `High-resolution editorial photography illustrating ${cleanKw}`;
+              console.log(`Matched high-relevancy photo for query "${q}": ${photoId}`);
+              return {
+                url: uniqueUrl,
+                caption: (photo.description || photo.alt_description || `Editorial photograph for ${cleanKw} on On Gravity Magazine.`).replace(/&/g, "and"),
+                alt: finalAlt.replace(/&/g, "and")
+              };
+            }
           }
         }
+      } catch (e) {
+        console.warn(`Unsplash API fetch failed for query "${q}":`, e.message);
       }
-    } catch (e) {
-      console.warn("Unsplash API fetch failed, using fallback pool:", e.message);
     }
   }
 
@@ -163,7 +180,7 @@ async function fetchUnsplashImage(keyword, category, usedPhotoIds) {
     "life-style": ["photo-1584622650111-993a426fbf0a", "photo-1507652313519-d4e9174996dd", "photo-1552321554-5fefe8c9ef14", "photo-1620626011761-996317b8d101"],
     "tech": ["photo-1615663245857-ac93bb7c39e7", "photo-1593359677879-a4bb92f829d1", "photo-1517336714731-489689fd1ca8"],
     "health": ["photo-1506126613408-eca07ce68773", "photo-1540420773420-3366772f4999", "photo-1571019613454-1cb2f99b2d8b"],
-    "celebrity": ["photo-1492684223066-81342ee5ff30", "photo-1515886657613-9f3515b0c78f"],
+    "celebrity": ["photo-1509631179647-0177331693ae", "photo-1492684223066-81342ee5ff30", "photo-1515886657613-9f3515b0c78f"],
     "business": ["photo-1621416894569-0f39ed31d247", "photo-1486406146926-c627a92ad1ab"],
     "food": ["photo-1555396273-367ea4eb4db5", "photo-1504674900247-0877df9cc836"],
     "news": ["photo-1470071459604-3b5ec3a7fe05", "photo-1585829365295-ab7cd400c167"]
@@ -198,7 +215,7 @@ function validateAndCleanInternalLinks(paragraphs, validSlugsSet) {
         return `[${anchorText}](/${cleanSlug})`;
       } else {
         console.warn(`Stripping non-existent internal link: [${anchorText}](/${cleanSlug})`);
-        return anchorText; // Revert link to plain text
+        return anchorText;
       }
     });
   });
