@@ -88,6 +88,7 @@ export default function Header() {
           <div className="flex items-center gap-3 shrink-0">
             <Link
               href="/search"
+              aria-label="Search articles and news"
               className="flex items-center gap-1 hover:text-red-400 transition-colors font-bold uppercase text-[11px] tracking-wider"
             >
               <Search className="w-3.5 h-3.5 text-slate-400" />
