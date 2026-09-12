@@ -43,7 +43,9 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
    - CRITICAL TITLE DIVERSITY MANDATE: DO NOT use repetitive title formulas like "5 Essential Secrets Before You Buy" across articles! Every article MUST have a unique, fresh title angle.
 
 5. UNIQUE 140-CHARACTER SEO META SUMMARY / EXCERPT:
-   - Immediately after the title, output "EXCERPT: [Write a completely fresh, 100% unique, punchy meta description of EXACTLY 135 to 140 characters summarizing the topic]".
+   - Immediately after the title, output "EXCERPT: [Write a 100% unique, human-sounding, high-CTR meta description of EXACTLY 135 to 145 characters summarizing the topic]".
+   - STRICT BANNED AI WORDS (NEVER USE): DO NOT use generic AI buzzwords such as "Discover", "Explore", "Learn more", "Dive into", "Uncover", or "In this article".
+   - Write like a professional senior journalist providing direct, compelling facts and value.
 
 6. HEADING NUMBERING & HIERARCHY (CRITICAL):
    - HEADING NUMBERING RULE: For standard informational articles, do NOT use numbered headings such as "1.", "2.", or "3.". Numbered headings should ONLY be used when the target topic or keyword is naturally count-based (e.g., "5 Best Laptops").
