@@ -169,7 +169,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     ...relatedArticles.map((r) => r.id),
   ]);
 
-  const missedArticles = allArticles
+  const missedArticles = [...allArticles]
+    .reverse()
     .filter((a) => !usedSlugs.has(a.slug) && !usedSlugs.has(a.id))
     .slice(0, 6);
 
