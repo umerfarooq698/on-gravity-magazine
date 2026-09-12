@@ -6,7 +6,6 @@ import { Article } from "@/data/articles";
 import { Category, CATEGORIES } from "@/data/categories";
 import { getCustomArticlesFromStorage } from "@/lib/clientStorage";
 import ArticleCard from "@/components/ArticleCard";
-import Newsletter from "@/components/Newsletter";
 import { FolderOpen, ArrowLeft } from "lucide-react";
 
 interface CategoryPageFeedProps {
@@ -120,8 +119,6 @@ export default function CategoryPageFeed({ category, initialArticles }: Category
           ))}
         </div>
       </div>
-
-      <Newsletter />
     </div>
   );
 }

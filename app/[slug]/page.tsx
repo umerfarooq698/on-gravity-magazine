@@ -8,7 +8,6 @@ import { getAllArticlesCombined } from "@/lib/automation";
 import { getCategoryBySlug } from "@/data/categories";
 import { getAuthorSlug } from "@/data/authors";
 import ArticleCard from "@/components/ArticleCard";
-import Newsletter from "@/components/Newsletter";
 import { formatMetaDescription } from "@/lib/meta";
 import { injectNaturalInternalLinks } from "@/lib/internalLinks";
 import {
@@ -540,8 +539,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </div>
           </section>
         )}
-
-        <Newsletter />
       </article>
     </>
   );
