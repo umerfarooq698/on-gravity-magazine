@@ -1,9 +1,10 @@
 import { getAllArticlesCombined } from "@/lib/automation";
+import { SITE_URL } from "@/lib/meta";
 
 export const revalidate = 60;
 
 export async function GET() {
-  const baseUrl = "https://on-gravity-magazine-mu.vercel.app";
+  const baseUrl = SITE_URL;
   const articles = getAllArticlesCombined();
 
   const itemsXml = articles

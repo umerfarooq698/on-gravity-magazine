@@ -8,7 +8,7 @@ import { getAllArticlesCombined } from "@/lib/automation";
 import { getCategoryBySlug } from "@/data/categories";
 import { getAuthorSlug } from "@/data/authors";
 import ArticleCard from "@/components/ArticleCard";
-import { formatMetaDescription } from "@/lib/meta";
+import { formatMetaDescription, SITE_URL } from "@/lib/meta";
 import { injectNaturalInternalLinks } from "@/lib/internalLinks";
 import {
   Clock,
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   const article = await getArticleBySlug(slug);
   if (!article) return { title: "Article Not Found | On Gravity Magazine" };
 
-  const baseUrl = "https://on-gravity-magazine-mu.vercel.app";
+  const baseUrl = SITE_URL;
   const title = (article.metaTitle || `${article.title} | On Gravity Magazine`).replace(/&/g, "and");
   const description = formatMetaDescription(article.metaDescription || article.excerpt);
   const url = `${baseUrl}/${article.slug}`;
@@ -151,7 +151,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
-  const baseUrl = "https://on-gravity-magazine-mu.vercel.app";
+  const baseUrl = SITE_URL;
   const pageUrl = `${baseUrl}/${article.slug}`;
   const category = getCategoryBySlug(article.category);
   const allArticles = getAllArticlesCombined();

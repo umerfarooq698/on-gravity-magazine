@@ -2,10 +2,12 @@ import { MetadataRoute } from "next";
 import { getAllArticlesCombined } from "@/lib/automation";
 import { CATEGORIES } from "@/data/categories";
 
+import { SITE_URL } from "@/lib/meta";
+
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://on-gravity-magazine-mu.vercel.app";
+  const baseUrl = SITE_URL;
 
   // Static core routes
   const staticRoutes: MetadataRoute.Sitemap = [

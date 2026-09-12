@@ -27,4 +27,4 @@ export function formatMetaDescription(raw: string, hashVal: number = 0): string 
   return sub + "...";
 }
 
-
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.ongravitymagazine.com";

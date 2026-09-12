@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { formatMetaDescription } from "@/lib/meta";
+import { formatMetaDescription, SITE_URL } from "@/lib/meta";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -22,7 +22,7 @@ const inter = Inter({
   preload: true,
 });
 
-const baseUrl = "https://on-gravity-magazine-mu.vercel.app";
+const baseUrl = SITE_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
