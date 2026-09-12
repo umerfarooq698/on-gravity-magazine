@@ -209,7 +209,8 @@ function getExistingPublishedSlugs(articlesFileContent) {
 
 function validateAndCleanInternalLinks(paragraphs, validSlugsSet) {
   return paragraphs.map(p => {
-    return p.replace(/\[([^\]]+)\]\(\/([a-z0-9-]+)\)/gi, (match, anchorText, targetSlug) => {
+    let cleaned = p.replace(/—/g, ", ").replace(/--/g, ", ");
+    return cleaned.replace(/\[([^\]]+)\]\(\/([a-z0-9-]+)\)/gi, (match, anchorText, targetSlug) => {
       const cleanSlug = targetSlug.toLowerCase().trim();
       if (validSlugsSet.has(cleanSlug)) {
         return `[${anchorText}](/${cleanSlug})`;
@@ -274,6 +275,9 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
    - NEVER force unrelated keywords or sentences into the article just to create a link.
    - If there is no genuine, natural topical fit with any published slug, output ZERO (0) internal links. Quality and natural reading flow are top priority.
    - DO NOT invent or link to any other non-existent slugs!
+
+9. STRICT BANNED PUNCTUATION (CRITICAL):
+   - NEVER use em-dashes ("—") or double dashes ("--") anywhere in the title, excerpt, headings, or content paragraphs. Use standard commas, parentheses, or periods instead.
 
 Start directly with # [Generated Title].`;
 }

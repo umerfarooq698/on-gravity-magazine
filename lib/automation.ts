@@ -66,6 +66,9 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
 10. NATURAL CONTEXTUAL INTERNAL LINKING (MANDATORY WHEN RELEVANT):
    - In every new article, incorporate 1 to 2 natural internal links ONLY when a word or topic naturally matches a published article on the magazine (e.g. [natural word](/target-slug)).
 
+11. STRICT BANNED PUNCTUATION (CRITICAL):
+   - NEVER use em-dashes ("—") or double dashes ("--") anywhere in the title, excerpt, headings, or content paragraphs. Use standard commas, parentheses, or periods instead.
+
 Start directly with # [Generated Title].`;
 
 const CACHE_FILES = [
@@ -806,17 +809,17 @@ export function sanitizeOrMigrateArticle(art: Article): Article {
   if (!art.title || !art.title.trim()) {
     art.title = cleanKw.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
   }
-  art.title = art.title.replace(/&/g, "and");
+  art.title = art.title.replace(/&/g, "and").replace(/—/g, ", ").replace(/--/g, ", ");
   art.metaTitle = `${art.title} | On Gravity Magazine`;
 
   if (!art.excerpt || !art.excerpt.trim()) {
     art.excerpt = `An in-depth editorial guide covering ${cleanKw} with practical insights and expert analysis.`;
   }
-  art.excerpt = art.excerpt.replace(/&/g, "and");
+  art.excerpt = art.excerpt.replace(/&/g, "and").replace(/—/g, ", ").replace(/--/g, ", ");
   art.metaDescription = art.excerpt;
 
   if (Array.isArray(art.content)) {
-    art.content = art.content.map(p => p.replace(/&/g, "and"));
+    art.content = art.content.map(p => p.replace(/&/g, "and").replace(/—/g, ", ").replace(/--/g, ", "));
   }
 
   return art;

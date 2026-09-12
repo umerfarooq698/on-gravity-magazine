@@ -98,7 +98,7 @@ export default function AboutPage() {
           7 Dedicated Editorial Desks
         </h2>
         <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl">
-          From red carpet moments in Celebrity to deep tech insights, wellness guides, economic analysis, breaking news, and food culture—our specialized desks bring you nuanced coverage daily.
+          From red carpet moments in Celebrity to deep tech insights, wellness guides, economic analysis, breaking news, and food culture, our specialized desks bring you nuanced coverage daily.
         </p>
 
         <div className="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-bold text-amber-400">
