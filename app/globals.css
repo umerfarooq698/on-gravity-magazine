@@ -55,10 +55,6 @@ body {
   color: #ffffff !important;
 }
 
-.dark .prose h2 {
-  border-color: #dc2626 !important;
-}
-
 /* Print-style Magazine Header Double Borders */
 .magazine-border-double {
   border-top: 3px double #e5e7eb;

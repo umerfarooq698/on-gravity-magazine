@@ -368,7 +368,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 return (
                   <h2
                     key={index}
-                    className="font-sans text-2xl sm:text-3xl font-black uppercase text-slate-900 dark:text-white pt-8 pb-2 border-b-2 border-red-600 mt-8 mb-4 tracking-tight"
+                    className="font-sans text-2xl sm:text-3xl font-black uppercase text-slate-900 dark:text-white pt-8 mt-8 mb-4 tracking-tight"
                   >
                     {parseRichText(headingText)}
                   </h2>
