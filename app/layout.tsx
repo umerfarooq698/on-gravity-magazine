@@ -26,6 +26,9 @@ const baseUrl = "https://on-gravity-magazine-mu.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
+  verification: {
+    google: "VcV0eUidkWh__QNSgtV9u1JFISBSvT77M4gCLWjb0As",
+  },
   title: {
     default: "On Gravity Magazine | Independent Journalism and Culture",
     template: "%s | On Gravity Magazine",
@@ -87,6 +90,7 @@ export default function RootLayout({
       className={`${playfair.variable} ${inter.variable} h-full antialiased`}
     >
       <head>
+        <meta name="google-site-verification" content="VcV0eUidkWh__QNSgtV9u1JFISBSvT77M4gCLWjb0As" />
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="preconnect" href="https://plus.unsplash.com" crossOrigin="anonymous" />
