@@ -6,6 +6,10 @@ export function formatMetaDescription(raw: string, hashVal: number = 0): string 
   str = str.replace(/^(discover|explore|learn more about|learn all about|dive into|uncover|in this article)\s+/i, "");
   str = str.replace(/\b(discover|explore|learn more)\b/gi, "review");
 
+  // STRICT RULE: Remove all hyphens and dashes (- and —) from meta descriptions
+  str = str.replace(/[-—–]+/g, " ");
+  str = str.replace(/\s+/g, " ").trim();
+
   if (str.length > 0) {
     str = str.charAt(0).toUpperCase() + str.slice(1);
   }

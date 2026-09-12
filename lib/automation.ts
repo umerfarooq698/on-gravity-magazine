@@ -45,6 +45,7 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
 5. STRICT 140-CHARACTER SEO META SUMMARY / EXCERPT:
    - Immediately after the title, output "EXCERPT: [Write a 100% unique, human-sounding, high-CTR meta description of EXACTLY 135 to 140 characters summarizing the topic]".
    - CRITICAL LENGTH MANDATE: The meta description MUST be strictly between 135 and 140 characters long.
+   - STRICT BANNED HYPHENS & DASHES: DO NOT use hyphens or dashes ("-", "—") anywhere inside the meta description. Use spaces or commas instead.
    - STRICT BANNED AI WORDS (NEVER USE): DO NOT use generic AI buzzwords such as "Discover", "Explore", "Learn more", "Dive into", "Uncover", or "In this article".
    - Write like a professional senior journalist providing direct, compelling facts and value.
 
