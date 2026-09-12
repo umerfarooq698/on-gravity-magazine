@@ -1,5 +1,5 @@
 import { Article, ARTICLES } from "@/data/articles";
-import { formatMetaDescription } from "@/lib/meta";
+import { formatMetaDescription, toSeoSlug } from "@/lib/meta";
 
 export interface QueueItem {
   id: string;
@@ -621,7 +621,7 @@ export async function generateArticleObjectAsync(
   clientSlugs?: string[]
 ): Promise<Article> {
   const cleanKw = rawKeyword.replace(/&/g, "and").trim();
-  const baseSlug = slugOverride || cleanKw.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const baseSlug = slugOverride ? toSeoSlug(slugOverride) : toSeoSlug(cleanKw);
   
   let slug = baseSlug;
 

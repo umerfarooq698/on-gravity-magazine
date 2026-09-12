@@ -28,3 +28,14 @@ export function formatMetaDescription(raw: string, hashVal: number = 0): string 
 }
 
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.ongravitymagazine.com";
+
+export function toSeoSlug(text: string): string {
+  if (!text) return "";
+  let clean = text.toLowerCase().trim();
+  clean = clean.replace(/&/g, "and");
+  clean = clean.replace(/[^a-z0-9\s-]/g, "");
+  clean = clean.replace(/\s+/g, "-");
+  clean = clean.replace(/-+/g, "-");
+  clean = clean.replace(/^-+|-+$/g, "");
+  return clean;
+}
