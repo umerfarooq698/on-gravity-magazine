@@ -13,6 +13,7 @@ import { Search, Sun, Moon, Menu, X, Radio, ChevronRight, ChevronLeft } from "lu
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [currentDateStr, setCurrentDateStr] = useState<string>("");
   const [breakingArticles, setBreakingArticles] = useState<Article[]>([]);
   const [tickerIndex, setTickerIndex] = useState(0);
 
@@ -21,6 +22,14 @@ export default function Header() {
 
   useEffect(() => {
     setMounted(true);
+    const now = new Date();
+    const formatted = now.toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+    setCurrentDateStr(formatted);
 
     const loadArticles = () => {
       const custom = getCustomArticlesFromStorage();
@@ -55,7 +64,7 @@ export default function Header() {
     return () => clearInterval(timer);
   }, [breakingArticles]);
 
-  const todayDate = "Friday, Sept 11, 2026";
+  const todayDate = currentDateStr || (typeof window !== "undefined" ? new Date().toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric", year: "numeric" }) : "");
   const currentArticle = breakingArticles[tickerIndex] || ARTICLES[0];
 
   return (
