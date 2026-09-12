@@ -330,14 +330,15 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         {/* Main Cover Image */}
         <div className="space-y-2">
-          <div className="relative w-full aspect-16/9 rounded-xs overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800">
+          <div className="relative w-full aspect-16/9 rounded-xs overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 bg-slate-200 dark:bg-slate-800">
             <Image
               src={article.imageUrl}
               alt={article.imageAlt || article.title}
               fill
               className="object-cover"
               priority
-              sizes="(max-width: 1024px) 100vw, 896px"
+              fetchPriority="high"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 896px"
             />
           </div>
           {article.imageCaption && (

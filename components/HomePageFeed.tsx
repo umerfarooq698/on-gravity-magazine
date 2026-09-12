@@ -19,6 +19,7 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
 
   const refreshArticles = () => {
     const customArticles = getCustomArticlesFromStorage();
+    if (!customArticles || customArticles.length === 0) return;
     const map = new Map<string, Article>();
     for (const art of [...customArticles, ...initialArticles]) {
       if (!map.has(art.slug)) {

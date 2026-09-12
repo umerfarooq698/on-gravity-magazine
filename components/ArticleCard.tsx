@@ -19,14 +19,15 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
     return (
       <article className="group relative bg-slate-950 rounded-xs overflow-hidden shadow-2xl flex flex-col justify-end min-h-[440px] sm:min-h-[520px] border-b-4 border-red-600">
         {/* Background Image */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 bg-slate-900">
           <Image
             src={article.imageUrl}
             alt={article.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-90"
-            sizes="(max-width: 1200px) 100vw, 66vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1200px) 66vw, 800px"
             priority
+            fetchPriority="high"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent" />
         </div>
@@ -86,7 +87,7 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
   if (variant === "horizontal") {
     return (
       <article className="group flex flex-col sm:flex-row gap-4 p-4 rounded-xs bg-white dark:bg-slate-900 border-l-4 border-red-600 border-y border-r border-slate-200 dark:border-slate-800 transition-all hover:shadow-lg">
-        <div className="relative w-full sm:w-48 h-44 sm:h-auto rounded-xs overflow-hidden shrink-0">
+        <div className="relative w-full sm:w-48 h-44 sm:h-auto rounded-xs overflow-hidden shrink-0 bg-slate-200 dark:bg-slate-800">
           <Image
             src={article.imageUrl}
             alt={article.title}
@@ -130,7 +131,7 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
   // Standard Card
   return (
     <article className="group flex flex-col bg-white dark:bg-slate-900 rounded-xs overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-red-600 dark:hover:border-red-600 transition-all hover:shadow-xl border-t-2 border-t-red-600">
-      <div className="relative w-full aspect-16/10 overflow-hidden">
+      <div className="relative w-full aspect-16/10 overflow-hidden bg-slate-200 dark:bg-slate-800">
         <Image
           src={article.imageUrl}
           alt={article.title}

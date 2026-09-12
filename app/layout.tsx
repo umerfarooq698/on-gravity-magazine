@@ -8,14 +8,18 @@ import { formatMetaDescription } from "@/lib/meta";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
+  weight: ["400", "700", "900"],
   variable: "--font-serif",
   display: "swap",
+  preload: true,
 });
 
 const inter = Inter({
   subsets: ["latin"],
+  weight: ["400", "600", "700", "900"],
   variable: "--font-sans",
   display: "swap",
+  preload: true,
 });
 
 const baseUrl = "https://on-gravity-magazine-mu.vercel.app";
@@ -85,6 +89,8 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="preconnect" href="https://plus.unsplash.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://plus.unsplash.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
