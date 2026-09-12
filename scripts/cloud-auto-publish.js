@@ -265,9 +265,12 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
      ### Q: [Short Question]
      A: [Short Answer]
 
-8. NATURAL INTERNAL LINKING (STRICT VALIDATION):
-   - Include 1 to 2 natural internal links ONLY when a word naturally matches one of these ALREADY PUBLISHED slugs on the magazine: [${validSlugsList}].
-   - DO NOT invent or link to any other slugs!
+8. NATURAL INTERNAL LINKING (STRICT OPTIONAL & VALIDATION):
+   - Internal linking is STRICTLY OPTIONAL.
+   - ONLY include an internal link if a phrase in your content naturally and contextually relates to one of these ALREADY PUBLISHED slugs: [${validSlugsList}].
+   - NEVER force unrelated keywords or sentences into the article just to create a link.
+   - If there is no genuine, natural topical fit with any published slug, output ZERO (0) internal links. Quality and natural reading flow are top priority.
+   - DO NOT invent or link to any other non-existent slugs!
 
 Start directly with # [Generated Title].`;
 }
