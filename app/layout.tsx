@@ -26,6 +26,11 @@ const baseUrl = "https://on-gravity-magazine-mu.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
   verification: {
     google: "VcV0eUidkWh__QNSgtV9u1JFISBSvT77M4gCLWjb0As",
   },
@@ -90,6 +95,8 @@ export default function RootLayout({
       className={`${playfair.variable} ${inter.variable} h-full antialiased`}
     >
       <head>
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/icon.svg" />
         <meta name="google-site-verification" content="VcV0eUidkWh__QNSgtV9u1JFISBSvT77M4gCLWjb0As" />
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
