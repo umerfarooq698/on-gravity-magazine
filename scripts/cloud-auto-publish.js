@@ -252,8 +252,9 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
    - DO NOT include any year (e.g. DO NOT write "2026" or "2025").
    - Replace any "&" with "and".
 
-5. UNIQUE 140-CHARACTER SEO META SUMMARY / EXCERPT:
-   - Immediately after title, output "EXCERPT: [Write a 100% unique, human-sounding, high-CTR meta description of EXACTLY 135 to 145 characters summarizing the topic]".
+5. STRICT 140-CHARACTER SEO META SUMMARY / EXCERPT:
+   - Immediately after title, output "EXCERPT: [Write a 100% unique, human-sounding, high-CTR meta description of EXACTLY 135 to 140 characters summarizing the topic]".
+   - CRITICAL LENGTH MANDATE: The meta description MUST be strictly between 135 and 140 characters long.
    - STRICT BANNED AI WORDS (NEVER USE): DO NOT use generic AI buzzwords such as "Discover", "Explore", "Learn more", "Dive into", "Uncover", or "In this article".
    - Write like a professional senior journalist providing direct, compelling facts and value.
 

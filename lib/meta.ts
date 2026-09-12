@@ -10,14 +10,14 @@ export function formatMetaDescription(raw: string, hashVal: number = 0): string 
     str = str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  // Target 135-155 characters
-  if (str.length <= 155) {
+  // Strict target: 135 to 140 characters max
+  if (str.length <= 140) {
     return str;
   }
 
-  const sub = str.slice(0, 147);
+  const sub = str.slice(0, 137);
   const lastSpace = sub.lastIndexOf(" ");
-  if (lastSpace > 110) {
+  if (lastSpace > 100) {
     return sub.slice(0, lastSpace) + "...";
   }
   return sub + "...";
