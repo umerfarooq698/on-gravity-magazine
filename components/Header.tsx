@@ -64,7 +64,7 @@ export default function Header() {
     return () => clearInterval(timer);
   }, [breakingArticles]);
 
-  const todayDate = currentDateStr || (typeof window !== "undefined" ? new Date().toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric", year: "numeric" }) : "");
+  const todayDate = mounted ? currentDateStr : "";
   const currentArticle = breakingArticles[tickerIndex] || ARTICLES[0];
 
   return (
@@ -73,7 +73,10 @@ export default function Header() {
       <div className="bg-[#001933] text-slate-200 text-xs py-1.5 px-4 sm:px-8 border-b border-slate-800">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 overflow-hidden flex-1">
-            <span className="font-semibold text-slate-300 hidden sm:inline uppercase text-[11px] tracking-wider shrink-0">
+            <span
+              className="font-semibold text-slate-300 hidden sm:inline uppercase text-[11px] tracking-wider shrink-0"
+              suppressHydrationWarning
+            >
               {todayDate}
             </span>
             <span className="hidden sm:inline text-slate-600 shrink-0">|</span>

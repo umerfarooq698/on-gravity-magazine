@@ -19,7 +19,7 @@ export default function Footer() {
             On Gravity Magazine delivers fair, fast, and comprehensive national, technological, lifestyle, and business coverage for readers worldwide.
           </p>
           <div className="pt-2 flex items-center gap-3 text-[11px] text-slate-400 font-semibold uppercase tracking-wider">
-            <span>© {new Date().getFullYear()} ON GRAVITY MAGAZINE. ALL RIGHTS RESERVED.</span>
+            <span suppressHydrationWarning>© {new Date().getFullYear()} ON GRAVITY MAGAZINE. ALL RIGHTS RESERVED.</span>
           </div>
         </div>
 
