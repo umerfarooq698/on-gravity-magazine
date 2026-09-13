@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   const category = getCategoryBySlug(slug);
   if (!category) return { title: "Category Not Found" };
   return {
-    title: `${category.name.replace(/&/g, "and")} | On Gravity Magazine`,
+    title: `${category.name.replace(/&/g, "and")}`,
     description: formatMetaDescription(category.description),
   };
 }

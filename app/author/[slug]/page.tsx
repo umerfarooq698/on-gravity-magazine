@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: AuthorPageProps) {
   const author = getAuthorBySlug(slug);
 
   return {
-    title: `${author.name} - Author Profile | On Gravity Magazine`,
+    title: `${author.name} - Author Profile`,
     description: `Read all articles, features, and columns written by ${author.name} (${author.role}) on On Gravity Magazine.`,
     openGraph: {
       title: `${author.name} - Author Profile`,

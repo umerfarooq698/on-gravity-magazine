@@ -38,10 +38,11 @@ interface ArticlePageProps {
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
-  if (!article) return { title: "Article Not Found | On Gravity Magazine" };
+  if (!article) return { title: "Article Not Found" };
 
   const baseUrl = SITE_URL;
-  const title = (article.metaTitle || `${article.title} | On Gravity Magazine`).replace(/&/g, "and");
+  const rawTitle = article.metaTitle ? article.metaTitle.replace(/\s*\|\s*On Gravity Magazine$/i, "") : article.title;
+  const title = rawTitle.replace(/&/g, "and");
   const description = formatMetaDescription(article.metaDescription || article.excerpt);
   const url = `${baseUrl}/${article.slug}`;
   const imageUrl = article.imageUrl.startsWith("http") ? article.imageUrl : `${baseUrl}${article.imageUrl}`;
