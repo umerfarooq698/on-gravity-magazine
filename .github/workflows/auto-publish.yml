@@ -1,10 +1,10 @@
-name: Auto Publish On Gravity Articles (Pending Schedule Confirmation)
+name: Auto Publish On Gravity Articles
 
-# Schedule paused for user schedule confirmation
 on:
-  # schedule:
-  #   - cron: '0 */3 * * *'
-  workflow_dispatch: # Manual trigger anytime from GitHub Actions tab
+  schedule:
+    # Publishes 3 articles spaced 3 hours apart (00:00, 03:00, 06:00 UTC), then pauses for 18 hours until next day
+    - cron: '0 0,3,6 * * *'
+  workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
 
 permissions:
   contents: write
