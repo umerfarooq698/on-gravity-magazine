@@ -2,7 +2,7 @@ name: Auto Publish On Gravity Articles
 
 on:
   schedule:
-    # Publishes 3 articles spaced 3 hours apart (00:00, 03:00, 06:00 UTC), then pauses for 18 hours until next day
+    # 3 articles published at 00:00, 03:00, 06:00 UTC (3 hours gap each), followed by EXACT 15 hours pause (09:00 to 00:00 UTC) before repeating daily
     - cron: '0 0,3,6 * * *'
   workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
 
