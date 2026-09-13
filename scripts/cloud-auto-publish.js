@@ -11,10 +11,7 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY || Buffer.from("QVEuQWI4Uk42SV
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY || "FLqjxtnt8-eGS9mpiB3-GMOvHhVAqT4_lQxyslYLO0A";
 
 const GEMINI_MODELS = [
-  "gemini-3.6-flash",
-  "gemini-3.6-pro",
-  "gemini-3.0-flash",
-  "gemini-2.5-flash"
+  "gemini-3.6-flash"
 ];
 
 function getDeterministicHash(str) {
@@ -292,38 +289,41 @@ async function generateArticleWithGemini(keyword, validSlugsSet) {
 
   const promptText = `${getSystemPrompt(validSlugsSet)}${listicleInstruction}\n\nSubmitted Keyword / Topic: "${keyword}"\n[Target Word Count: 1000-1200 words]`;
 
-  for (const modelName of GEMINI_MODELS) {
-    try {
-      console.log(`Calling Gemini API model: ${modelName}...`);
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ role: "user", parts: [{ text: promptText }] }],
-          generationConfig: { temperature: 0.75, topP: 0.95 }
-        })
-      });
+  for (let attempt = 1; attempt <= 4; attempt++) {
+    for (const modelName of GEMINI_MODELS) {
+      try {
+        console.log(`Calling Gemini API model: ${modelName} (Attempt ${attempt}/4)...`);
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ role: "user", parts: [{ text: promptText }] }],
+            generationConfig: { temperature: 0.75, topP: 0.95 }
+          })
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (text && text.trim().length > 200) {
-          console.log(`Successfully generated article with Gemini API model ${modelName}! Length: ${text.length}`);
-          const parsed = parseGeminiMarkdown(text, keyword);
-          parsed.paragraphs = validateAndCleanInternalLinks(parsed.paragraphs, validSlugsSet);
-          return parsed;
+        if (response.ok) {
+          const data = await response.json();
+          const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (text && text.trim().length > 200) {
+            console.log(`Successfully generated article with Gemini API model ${modelName}! Length: ${text.length}`);
+            const parsed = parseGeminiMarkdown(text, keyword);
+            parsed.paragraphs = validateAndCleanInternalLinks(parsed.paragraphs, validSlugsSet);
+            return parsed;
+          }
+        } else {
+          const errJson = await response.json();
+          console.warn(`Gemini model ${modelName} HTTP ${response.status}:`, errJson.error?.message);
         }
-      } else {
-        const errJson = await response.json();
-        console.warn(`Gemini model ${modelName} HTTP ${response.status}:`, errJson.error?.message);
+      } catch (err) {
+        console.warn(`Gemini model ${modelName} error:`, err.message);
       }
-    } catch (err) {
-      console.warn(`Gemini model ${modelName} error:`, err.message);
     }
+    await new Promise((r) => setTimeout(r, 2000));
   }
 
-  throw new Error("Gemini API call failed across all models.");
+  throw new Error("Gemini API call failed across all retries.");
 }
 
 function parseGeminiMarkdown(rawText, keyword) {
@@ -368,9 +368,18 @@ function parseGeminiMarkdown(rawText, keyword) {
     title = formatSeoTitle(keyword, getDeterministicHash(keyword));
   }
   if (!excerpt) {
-    excerpt = `Discover complete guide on ${keyword.replace(/&/g, 'and')}, featuring expert tips, structural insights, and modern styling solutions.`;
+    excerpt = `Comprehensive overview on ${keyword.replace(/&/g, 'and')}, detailing expert tips, structural insights, and modern styling solutions.`;
   }
-  if (excerpt.length > 150) excerpt = excerpt.substring(0, 147) + '...';
+  
+  // Format excerpt strictly according to rules (no AI words, no hyphens, ~140 chars)
+  excerpt = excerpt.replace(/^(discover|explore|learn more about|learn all about|dive into|uncover|in this article)\s+/i, "");
+  excerpt = excerpt.replace(/\b(discover|explore|learn more)\b/gi, "review");
+  excerpt = excerpt.replace(/[-—–]+/g, " ").replace(/\s+/g, " ").trim();
+  if (excerpt.length > 140) {
+    const sub = excerpt.slice(0, 137);
+    const lastSpace = sub.lastIndexOf(" ");
+    excerpt = (lastSpace > 100 ? sub.slice(0, lastSpace) : sub) + "...";
+  }
 
   return { title, excerpt, paragraphs, faqs };
 }
