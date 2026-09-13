@@ -125,18 +125,24 @@ async function fetchUnsplashImage(keyword, category, usedPhotoIds) {
   const slugSig = slugify(cleanKw);
   const hashVal = getDeterministicHash(`${cleanKw}-${Date.now()}`);
 
+  const words = cleanKw.split(/\s+/).filter((w) => w.length > 2 && w !== "and" && w !== "for" && w !== "the");
+  const firstWord = words[0] || cleanKw;
+  const secondWord = words[1] || "";
+  const firstTwoWords = `${firstWord} ${secondWord}`.trim();
+
   const searchQueries = [
     cleanKw,
-    cleanKw.replace(/\b(movie|film|salary|houston|nyc|rent|ideas|tips|recipe|bars|tech|husband|instagram)\b/gi, "").trim()
+    firstTwoWords,
+    firstWord
   ];
 
-  if (category === "celebrity") searchQueries.push(`${cleanKw} actress cinema red carpet fashion`, "hollywood actress red carpet cinema premiere");
-  if (category === "food") searchQueries.push(`${cleanKw} gourmet food dish`, "delicious gourmet food cuisine dish");
-  if (category === "tech") searchQueries.push(`${cleanKw} technology workstation`, "modern technology device computer hardware");
-  if (category === "life-style") searchQueries.push(`${cleanKw} interior decor`, "modern luxury interior design home decor");
-  if (category === "health") searchQueries.push(`${cleanKw} wellness fitness`, "health wellness fitness exercise lifestyle");
-  if (category === "business") searchQueries.push(`${cleanKw} finance corporate`, "corporate business office finance stock market");
-  if (category === "news") searchQueries.push(`${cleanKw} news event`, "global news journalism press conference");
+  if (category === "celebrity") searchQueries.push(`${firstTwoWords} hollywood cinema`, "hollywood red carpet premiere", "cinema star portrait");
+  if (category === "food") searchQueries.push(`${firstTwoWords} food dish`, "gourmet food dish cuisine", "delicious restaurant dish");
+  if (category === "tech") searchQueries.push(`${firstTwoWords} technology`, "modern workstation hardware technology", "computer tech device");
+  if (category === "life-style") searchQueries.push(`${firstTwoWords} interior decor`, "modern home interior design decor", "luxury room lifestyle");
+  if (category === "health") searchQueries.push(`${firstTwoWords} wellness`, "health exercise fitness wellness", "healthy lifestyle workout");
+  if (category === "business") searchQueries.push(`${firstTwoWords} business`, "corporate finance office business", "modern office workspace");
+  if (category === "news") searchQueries.push(`${firstTwoWords} news`, "global news journalism press event", "city architecture building");
 
   if (UNSPLASH_ACCESS_KEY) {
     for (const q of searchQueries) {

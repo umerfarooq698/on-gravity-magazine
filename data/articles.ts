@@ -81,9 +81,9 @@ export const ARTICLES: Article[] = [
     },
     "publishedAt": "Sep 13, 2026",
     "readTime": "6 min read",
-    "imageUrl": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80&sig=cara-delevingne-and-gene-hackman_1789318174791",
-    "imageAlt": "High resolution photograph of cara delevingne and gene hackman - celebrity feature",
-    "imageCaption": "Editorial photograph highlighting cara delevingne and gene hackman.",
+    "imageUrl": "https://images.unsplash.com/photo-1691071666279-58adb714d0b8?auto=format&fit=crop&w=1200&q=80&sig=cara-delevingne-and-gene-hackman_1789318174791",
+    "imageAlt": "Hollywood star red carpet arrival - Cara Delevingne and Gene Hackman feature",
+    "imageCaption": "Glamorous red carpet premiere highlighting iconic Hollywood cinema stars Cara Delevingne and Gene Hackman.",
     "featured": true,
     "trending": true,
     "tags": [
