@@ -24,6 +24,13 @@ import {
 export const revalidate = 60;
 export const dynamicParams = true;
 
+export async function generateStaticParams() {
+  const articles = getAllArticlesCombined();
+  return articles.map((art) => ({
+    slug: art.slug,
+  }));
+}
+
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
 }
