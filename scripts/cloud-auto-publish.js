@@ -498,7 +498,7 @@ async function runAutoPublish() {
       console.log("Configuring git and pushing changes in GitHub Actions...");
       execSync('git config user.name "github-actions[bot]"', { stdio: 'inherit' });
       execSync('git config user.email "github-actions[bot]@users.noreply.github.com"', { stdio: 'inherit' });
-      execSync('git add keywords_queue.json data/articles.ts', { stdio: 'inherit' });
+      execSync('git add keywords_queue.json data/articles.ts public/a65080e03104882ba93c502e351f98c1.txt', { stdio: 'inherit' });
       execSync(`git commit -m "auto-publish: Published article '${generated.title}' [${slug}]"`, { stdio: 'inherit' });
       execSync('git pull origin main --rebase', { stdio: 'inherit' });
       execSync('git push origin main', { stdio: 'inherit' });
@@ -508,7 +508,40 @@ async function runAutoPublish() {
     }
   }
 
+  // 4. Instant Indexing Ping (IndexNow + Google)
+  await pingSearchEnginesForIndexing(slug);
+
   console.log(`=== AUTO-PUBLISH COMPLETED FOR "${item.keyword}" ===`);
+}
+
+async function pingSearchEnginesForIndexing(slug) {
+  const url = `https://www.ongravitymagazine.com/${slug}`;
+  const sitemapUrl = `https://www.ongravitymagazine.com/sitemap.xml`;
+  console.log(`Triggering instant Search Engine Indexing ping for: ${url}`);
+
+  try {
+    const indexNowPayload = {
+      host: "www.ongravitymagazine.com",
+      key: "a65080e03104882ba93c502e351f98c1",
+      keyLocation: "https://www.ongravitymagazine.com/a65080e03104882ba93c502e351f98c1.txt",
+      urlList: [url, sitemapUrl]
+    };
+    const res = await fetch("https://api.indexnow.org/indexnow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify(indexNowPayload)
+    });
+    console.log(`IndexNow Instant Indexing Ping Status: ${res.status}`);
+  } catch (err) {
+    console.warn("IndexNow ping warning:", err.message);
+  }
+
+  try {
+    const gRes = await fetch(`https://www.google.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`);
+    console.log(`Google Sitemap Ping Status: ${gRes.status}`);
+  } catch (err) {
+    console.warn("Google sitemap ping warning:", err.message);
+  }
 }
 
 runAutoPublish().catch(err => {
