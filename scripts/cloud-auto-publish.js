@@ -493,6 +493,7 @@ async function runAutoPublish() {
       execSync('git config user.email "github-actions[bot]@users.noreply.github.com"', { stdio: 'inherit' });
       execSync('git add keywords_queue.json data/articles.ts', { stdio: 'inherit' });
       execSync(`git commit -m "auto-publish: Published article '${generated.title}' [${slug}]"`, { stdio: 'inherit' });
+      execSync('git pull origin main --rebase', { stdio: 'inherit' });
       execSync('git push origin main', { stdio: 'inherit' });
       console.log("Git push successful! Vercel auto-deployment triggered.");
     } catch (gitErr) {
