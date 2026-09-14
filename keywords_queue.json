@@ -75,7 +75,9 @@
     "id": "kw-10",
     "keyword": "kitchen island",
     "category": "life-style",
-    "status": "pending"
+    "status": "published",
+    "publishedAt": "2026-09-14T13:15:41.901Z",
+    "generatedArticleSlug": "kitchen-island"
   },
   {
     "id": "kw-11",
