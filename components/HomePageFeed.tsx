@@ -74,9 +74,9 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
           <div className="flex items-center justify-between border-b-4 border-red-600 pb-2">
             <div className="flex items-center gap-2">
               <span className="w-3 h-6 bg-red-600" />
-              <h2 className="font-sans text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white uppercase">
+              <h1 className="font-sans text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white uppercase">
                 TOP STORIES
-              </h2>
+              </h1>
             </div>
             <span className="text-xs font-black uppercase tracking-widest text-white bg-red-600 px-3 py-1 rounded-xs">
               LIVE NEWSROOM

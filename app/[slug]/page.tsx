@@ -41,8 +41,16 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   if (!article) return { title: "Article Not Found" };
 
   const baseUrl = SITE_URL;
-  const rawTitle = article.metaTitle ? article.metaTitle.replace(/\s*\|\s*On Gravity Magazine$/i, "") : article.title;
-  const title = rawTitle.replace(/&/g, "and");
+  let rawTitle = article.metaTitle ? article.metaTitle.replace(/\s*\|\s*On Gravity Magazine$/i, "") : article.title;
+  rawTitle = rawTitle.replace(/&/g, "and").trim();
+
+  if (rawTitle.length + 21 > 60) {
+    const sub = rawTitle.slice(0, 36);
+    const lastSpace = sub.lastIndexOf(" ");
+    rawTitle = (lastSpace > 25 ? sub.slice(0, lastSpace) : sub).trim();
+  }
+
+  const title = rawTitle;
   const description = formatMetaDescription(article.metaDescription || article.excerpt);
   const url = `${baseUrl}/${article.slug}`;
   const imageUrl = article.imageUrl.startsWith("http") ? article.imageUrl : `${baseUrl}${article.imageUrl}`;
