@@ -440,8 +440,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </div>
             <div className="grid grid-cols-1 gap-4">
               {article.faqs.map((faq, index) => {
-                const cleanQ = faq.question.replace(/^[\*\s]*(Q|Question)\s*[:\.]?\s*/gi, "").trim();
-                const cleanA = faq.answer.replace(/^[\*\s]*(A|Answer)\s*[:\.]?\s*/gi, "").trim();
+                const cleanQ = faq.question.replace(/^[\*\s\->]*(?:Q|Question)\s*[:\.\-]\s*/gi, "").replace(/^[\*#\s\->]+|[\*\s]+$/g, "").trim();
+                const cleanA = faq.answer.replace(/^[\*\s\->]*(?:A|Answer)\s*[:\.\-]\s*/gi, "").replace(/^[\*#\s\->]+|[\*\s]+$/g, "").trim();
                 return (
                   <div
                     key={index}

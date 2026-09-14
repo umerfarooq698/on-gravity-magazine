@@ -457,15 +457,15 @@ function parseGeminiMarkdownArticle(rawText: string, keyword: string) {
     if (inFaqs) {
       if (line.startsWith("### Q:") || line.startsWith("Q:") || line.startsWith("### ") || line.startsWith("**Q:")) {
         if (currentFaqQ && lines[i + 1]) {
-          const ans = lines[i + 1].replace(/^[\*\s]*(A|Answer)\s*[:\.]?\s*/gi, "").replace(/&/g, "and").trim();
-          const qClean = currentFaqQ.replace(/^[\*\s]*(Q|Question)\s*[:\.]?\s*/gi, "").replace(/&/g, "and").trim();
+          const ans = lines[i + 1].replace(/^[\*\s\->]*(?:A|Answer)\s*[:\.\-]\s*/gi, "").replace(/^[\*#\s\->]+|[\*\s]+$/g, "").replace(/&/g, "and").trim();
+          const qClean = currentFaqQ.replace(/^[\*\s\->]*(?:Q|Question)\s*[:\.\-]\s*/gi, "").replace(/^[\*#\s\->]+|[\*\s]+$/g, "").replace(/&/g, "and").trim();
           faqs.push({ question: qClean, answer: ans });
           currentFaqQ = "";
         }
-        currentFaqQ = line.replace(/^#+\s*/, "").replace(/^[\*\s]*(Q|Question)\s*[:\.]?\s*/gi, "").trim();
+        currentFaqQ = line.replace(/^#+\s*/, "").replace(/^[\*\s\->]*(?:Q|Question)\s*[:\.\-]\s*/gi, "").replace(/^[\*#\s\->]+|[\*\s]+$/g, "").trim();
       } else if (currentFaqQ) {
-        const ans = line.replace(/^[\*\s]*(A|Answer)\s*[:\.]?\s*/gi, "").replace(/&/g, "and").trim();
-        const qClean = currentFaqQ.replace(/^[\*\s]*(Q|Question)\s*[:\.]?\s*/gi, "").replace(/&/g, "and").trim();
+        const ans = line.replace(/^[\*\s\->]*(?:A|Answer)\s*[:\.\-]\s*/gi, "").replace(/^[\*#\s\->]+|[\*\s]+$/g, "").replace(/&/g, "and").trim();
+        const qClean = currentFaqQ.replace(/^[\*\s\->]*(?:Q|Question)\s*[:\.\-]\s*/gi, "").replace(/^[\*#\s\->]+|[\*\s]+$/g, "").replace(/&/g, "and").trim();
         faqs.push({ question: qClean, answer: ans });
         currentFaqQ = "";
       }
