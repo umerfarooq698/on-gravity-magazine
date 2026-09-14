@@ -1,0 +1,22 @@
+# On Gravity Magazine
+
+> On Gravity Magazine delivers independent journalism, breaking news, technology analysis, celebrity updates, lifestyle guides, business insights, and culinary features.
+
+## Site Structure & Categories
+
+- [Celebrity](https://www.ongravitymagazine.com/category/celebrity): Exclusive news, interviews, pop culture trends, and red carpet highlights.
+- [Life Style](https://www.ongravitymagazine.com/category/life-style): Wellness, interior design, fashion, travel guides, and inspiring everyday living.
+- [Tech](https://www.ongravitymagazine.com/category/tech): Innovations in AI, consumer electronics, software developments, and future tech.
+- [Health](https://www.ongravitymagazine.com/category/health): Medical breakthroughs, mental well-being, nutrition advice, and fitness intelligence.
+- [Business](https://www.ongravitymagazine.com/category/business): Global markets, startup strategy, venture capital, and economic trends.
+- [News](https://www.ongravitymagazine.com/category/news): Timely global coverage, breaking stories, and investigative journalism.
+- [Food](https://www.ongravitymagazine.com/category/food): Culinary arts, restaurant reviews, gourmet recipes, and global food culture.
+
+## Corporate & Policies
+
+- [About Us](https://www.ongravitymagazine.com/about)
+- [Contact Us](https://www.ongravitymagazine.com/contact)
+- [Privacy Policy](https://www.ongravitymagazine.com/privacy-policy)
+- [Cookie Policy](https://www.ongravitymagazine.com/cookie-policy)
+- [Sitemap](https://www.ongravitymagazine.com/sitemap.xml)
+- [RSS Feed](https://www.ongravitymagazine.com/rss.xml)
