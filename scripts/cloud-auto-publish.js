@@ -11,7 +11,9 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY || Buffer.from("QVEuQWI4Uk42SV
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY || "FLqjxtnt8-eGS9mpiB3-GMOvHhVAqT4_lQxyslYLO0A";
 
 const GEMINI_MODELS = [
-  "gemini-3.6-flash"
+  "gemini-3.6-flash",
+  "gemini-3.5-flash",
+  "gemini-flash-latest"
 ];
 
 function getDeterministicHash(str) {
@@ -299,6 +301,8 @@ async function generateArticleWithGemini(keyword, validSlugsSet) {
     for (const modelName of GEMINI_MODELS) {
       try {
         console.log(`Calling Gemini API model: ${modelName} (Attempt ${attempt}/4)...`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 60000);
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
         const response = await fetch(apiUrl, {
           method: "POST",
@@ -306,8 +310,10 @@ async function generateArticleWithGemini(keyword, validSlugsSet) {
           body: JSON.stringify({
             contents: [{ role: "user", parts: [{ text: promptText }] }],
             generationConfig: { temperature: 0.75, topP: 0.95 }
-          })
+          }),
+          signal: controller.signal
         });
+        clearTimeout(timeoutId);
 
         if (response.ok) {
           const data = await response.json();
