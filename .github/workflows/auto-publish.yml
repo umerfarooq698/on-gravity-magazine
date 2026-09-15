@@ -9,6 +9,8 @@ on:
     # Followed by EXACT 15-hour pause
     - cron: '5 7,10,13 * * *'
   workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
+  repository_dispatch:
+    types: [auto_publish]
 
 permissions:
   contents: write
