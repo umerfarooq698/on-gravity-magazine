@@ -151,28 +151,48 @@ async function fetchUnsplashImage(keyword, category, usedPhotoIds) {
     for (const q of searchQueries) {
       if (!q || q.length < 2) continue;
       try {
-        const apiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(q)}&per_page=10&page=1&orientation=landscape&order_by=relevant&client_id=${UNSPLASH_ACCESS_KEY}`;
+        const apiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(q)}&per_page=15&page=1&orientation=landscape&order_by=relevant&client_id=${UNSPLASH_ACCESS_KEY}`;
         const res = await fetch(apiUrl);
         if (res.ok) {
           const data = await res.json();
           if (data.results && data.results.length > 0) {
             const unused = data.results.filter(p => p.id && !usedPhotoIds.has(p.id));
-            const photoList = unused.length > 0 ? unused : data.results;
-            // Always pick top 1-2 most relevant photo from page 1, never random back pages!
-            const photo = photoList[0];
-            const rawUrl = photo.urls?.regular || photo.urls?.full;
-            const photoId = photo.id;
-            if (rawUrl && photoId) {
-              usedPhotoIds.add(photoId);
-              const uniqueUrl = rawUrl.includes("?") ? `${rawUrl}&sig=${slugSig}_${Date.now()}` : `${rawUrl}?sig=${slugSig}_${Date.now()}`;
-              const altText = (photo.alt_description || photo.description || `Editorial photography for ${cleanKw}`).replace(/&/g, "and");
-              const finalAlt = altText.length > 10 ? `${altText} - ${cleanKw}` : `High-resolution editorial photography illustrating ${cleanKw}`;
-              console.log(`Matched #1 top relevance photo for query "${q}": ${photoId} (${altText})`);
-              return {
-                url: uniqueUrl,
-                caption: (photo.description || photo.alt_description || `Editorial photograph for ${cleanKw} on On Gravity Magazine.`).replace(/&/g, "and"),
-                alt: finalAlt.replace(/&/g, "and")
-              };
+            const candidateList = unused.length > 0 ? unused : data.results;
+
+            // Score each candidate photo for genuine topic and keyword relevance
+            const scoredCandidates = candidateList.map(p => {
+              const textContent = ((p.description || "") + " " + (p.alt_description || "") + " " + (p.tags ? p.tags.map(t => t.title).join(" ") : "")).toLowerCase();
+              let score = 0;
+              // Exact phrase match
+              if (textContent.includes(cleanKw)) score += 100;
+              // Individual keyword word matches
+              words.forEach(w => {
+                if (textContent.includes(w)) score += 30;
+              });
+              // Prefer landscape photos with descriptive metadata
+              if (p.description || p.alt_description) score += 10;
+              return { photo: p, score, textContent };
+            });
+
+            // Sort by highest keyword relevance score first
+            scoredCandidates.sort((a, b) => b.score - a.score);
+            const bestMatch = scoredCandidates[0]?.photo;
+
+            if (bestMatch) {
+              const rawUrl = bestMatch.urls?.regular || bestMatch.urls?.full;
+              const photoId = bestMatch.id;
+              if (rawUrl && photoId) {
+                usedPhotoIds.add(photoId);
+                const uniqueUrl = rawUrl.includes("?") ? `${rawUrl}&sig=${slugSig}_${Date.now()}` : `${rawUrl}?sig=${slugSig}_${Date.now()}`;
+                const altText = (bestMatch.alt_description || bestMatch.description || `Editorial photography for ${cleanKw}`).replace(/&/g, "and");
+                const finalAlt = altText.length > 10 ? `${altText} - ${cleanKw}` : `High-resolution editorial photography illustrating ${cleanKw}`;
+                console.log(`Matched highest-scored keyword relevant photo for query "${q}": ${photoId} (Score: ${scoredCandidates[0].score}, Alt: "${altText}")`);
+                return {
+                  url: uniqueUrl,
+                  caption: (bestMatch.description || bestMatch.alt_description || `Editorial photograph for ${cleanKw} on On Gravity Magazine.`).replace(/&/g, "and"),
+                  alt: finalAlt.replace(/&/g, "and")
+                };
+              }
             }
           }
         }
