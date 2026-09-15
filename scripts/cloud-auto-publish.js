@@ -151,15 +151,15 @@ async function fetchUnsplashImage(keyword, category, usedPhotoIds) {
     for (const q of searchQueries) {
       if (!q || q.length < 2) continue;
       try {
-        const pageNum = (hashVal % 3) + 1;
-        const apiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(q)}&per_page=20&page=${pageNum}&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}`;
+        const apiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(q)}&per_page=10&page=1&orientation=landscape&order_by=relevant&client_id=${UNSPLASH_ACCESS_KEY}`;
         const res = await fetch(apiUrl);
         if (res.ok) {
           const data = await res.json();
           if (data.results && data.results.length > 0) {
             const unused = data.results.filter(p => p.id && !usedPhotoIds.has(p.id));
             const photoList = unused.length > 0 ? unused : data.results;
-            const photo = photoList[hashVal % photoList.length];
+            // Always pick top 1-2 most relevant photo from page 1, never random back pages!
+            const photo = photoList[0];
             const rawUrl = photo.urls?.regular || photo.urls?.full;
             const photoId = photo.id;
             if (rawUrl && photoId) {
@@ -167,7 +167,7 @@ async function fetchUnsplashImage(keyword, category, usedPhotoIds) {
               const uniqueUrl = rawUrl.includes("?") ? `${rawUrl}&sig=${slugSig}_${Date.now()}` : `${rawUrl}?sig=${slugSig}_${Date.now()}`;
               const altText = (photo.alt_description || photo.description || `Editorial photography for ${cleanKw}`).replace(/&/g, "and");
               const finalAlt = altText.length > 10 ? `${altText} - ${cleanKw}` : `High-resolution editorial photography illustrating ${cleanKw}`;
-              console.log(`Matched high-relevancy photo for query "${q}": ${photoId}`);
+              console.log(`Matched #1 top relevance photo for query "${q}": ${photoId} (${altText})`);
               return {
                 url: uniqueUrl,
                 caption: (photo.description || photo.alt_description || `Editorial photograph for ${cleanKw} on On Gravity Magazine.`).replace(/&/g, "and"),

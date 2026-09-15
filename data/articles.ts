@@ -85,9 +85,9 @@ export const ARTICLES: Article[] = [
     },
     "publishedAt": "Sep 15, 2026",
     "readTime": "6 min read",
-    "imageUrl": "https://images.unsplash.com/photo-1594679009566-5d9de6aeb8a4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDU5NTUzfDB8MXxzZWFyY2h8NTB8fHF1ZWVuJTIwbWF0dHJlc3N8ZW58MHwwfHx8MTc4OTQ4MTQ5MXww&ixlib=rb-4.1.0&q=80&w=1080&sig=queen-mattress_1789481491042",
-    "imageAlt": "woman in black tank top sitting on white couch - queen mattress",
-    "imageCaption": "Hearts eyes af ",
+    "imageUrl": "https://images.unsplash.com/photo-1583535045024-e2479a694777?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Comfortable luxury queen mattress in modern bedroom interior",
+    "imageCaption": "A modern queen size mattress setup designed for optimal support and restful sleep.",
     "featured": true,
     "trending": true,
     "tags": [
