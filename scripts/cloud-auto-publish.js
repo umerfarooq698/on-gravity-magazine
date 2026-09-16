@@ -35,6 +35,24 @@ function slugify(text) {
     .replace(/^-+|-+$/g, '');
 }
 
+function autoClassifyCategory(keyword) {
+  const k = keyword.toLowerCase().trim();
+  // Food & Beverage
+  if (/\b(food|recipe|recipes|cookie|cookies|cake|chocolate|taco|tacos|coffee|brew|brewing|french press|espresso|tea|dish|dishes|restaurant|burger|snack|dining|culinary|chef|bakery|bake|meal|eating|drink|drinks|bars)\b/i.test(k)) return "food";
+  // Celebrity & Pop Culture
+  if (/\b(movie|movies|film|actor|actress|singer|celebrity|husband|wife|instagram|net worth|star|dating|hollywood|cinema|song|album|revival|band|concert|grammy|oscar|treaty oak|delevingne|hackman|ridley|gadot|jones)\b/i.test(k)) return "celebrity";
+  // Tech & Software
+  if (/\b(tech|technology|ai|software|hardware|salary|code|developer|laptop|laptops|computer|phone|gadget|gadgets|app|apps|cyber|crypto|robot|radiology tech)\b/i.test(k)) return "tech";
+  // Health & Wellness
+  if (/\b(due date|due date calculator|pregnancy|pregnant|health|wellness|fitness|workout|medical|doctor|therapy|diet|weight|symptom|symptoms|remedy|remedies|muscle|vitamin|disease|sativa|indica|cbd|cannabis|strain)\b/i.test(k)) return "health";
+  // Business & Finance
+  if (/\b(business|finance|stock|stocks|market|markets|investing|investment|startup|money|bank|banking|insurance|crypto market|economy|corporate|enterprise|rent|appartments|apartments)\b/i.test(k)) return "business";
+  // News & Public Guides & Events
+  if (/\b(news|rage room|event|events|calendar|breaking|politics|court|crime|police|city|government|election|law|legal|social security|security office|dmv|passport office)\b/i.test(k)) return "news";
+  // Lifestyle / Home / Decor / Maintenance
+  return "life-style";
+}
+
 function parseCsvLines(csvText) {
   const lines = csvText.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
   const items = [];
@@ -42,9 +60,12 @@ function parseCsvLines(csvText) {
     const line = lines[i];
     const parts = line.split(/,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/).map(p => p.replace(/^"|"$/g, '').trim());
     const keyword = parts[0];
-    const category = parts[1] || 'life-style';
+    const explicitCat = parts[1];
     if (keyword && keyword.length > 1) {
-      items.push({ keyword, category: category.toLowerCase().replace(/\s+/g, '-') });
+      const category = (explicitCat && explicitCat.length > 1)
+        ? explicitCat.toLowerCase().replace(/\s+/g, '-')
+        : autoClassifyCategory(keyword);
+      items.push({ keyword, category });
     }
   }
   return items;
