@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" fill="none">
+  <!-- Outer Red Shield -->
+  <rect width="512" height="512" rx="100" fill="#DC2626" />
+  
+  <!-- Dark Navy Inner Container -->
+  <rect x="32" y="32" width="448" height="448" rx="76" fill="#001933" />
+  
+  <!-- Red Gravity Orbital Ring -->
+  <path
+    d="M 112 256 C 112 153, 400 153, 400 256 C 400 359, 112 359, 112 256 Z"
+    stroke="#DC2626"
+    stroke-width="32"
+    fill="none"
+    stroke-linecap="round"
+  />
+  
+  <!-- Bold White G Monogram -->
+  <path
+    d="M 348 194 C 317 153, 215 153, 184 215 C 143 276, 174 358, 266 358 C 333 358, 348 307, 348 266 L 256 266 L 256 225 L 389 225 L 389 287 C 389 369, 297 399, 225 399 C 123 399, 92 297, 133 205 C 174 113, 307 113, 379 164 Z"
+    fill="#FFFFFF"
+  />
+
+  <!-- Gold Star Accent -->
+  <polygon points="389,102 404,138 440,138 409,159 419,195 389,169 358,195 369,159 338,138 374,138" fill="#F59E0B" />
+</svg>
