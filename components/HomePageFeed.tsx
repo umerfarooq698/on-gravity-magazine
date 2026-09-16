@@ -16,6 +16,7 @@ interface HomePageFeedProps {
 
 export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
   const [allArticles, setAllArticles] = useState<Article[]>(initialArticles);
+  const [visibleCount, setVisibleCount] = useState<number>(18);
 
   const refreshArticles = () => {
     const customArticles = getCustomArticlesFromStorage();
@@ -47,7 +48,8 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
 
   const heroMain = featuredArticles[0] || allArticles[0];
   const sideFeed = allArticles.slice(1, 6);
-  const recentArticles = allArticles.slice(0, 100);
+  const recentArticles = allArticles.slice(0, visibleCount);
+  const hasMore = allArticles.length > visibleCount;
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-12">
@@ -184,11 +186,26 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
         </div>
 
         {allArticles.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recentArticles.map((article) => (
-              <ArticleCard key={article.id} article={article} variant="standard" />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {recentArticles.map((article) => (
+                <ArticleCard key={article.id} article={article} variant="standard" />
+              ))}
+            </div>
+
+            {hasMore && (
+              <div className="flex justify-center pt-8">
+                <button
+                  type="button"
+                  onClick={() => setVisibleCount((prev) => prev + 18)}
+                  className="group relative inline-flex items-center justify-center gap-2 px-8 py-3.5 text-xs sm:text-sm font-black uppercase tracking-wider text-white bg-red-600 hover:bg-slate-900 dark:hover:bg-white dark:hover:text-slate-900 border-2 border-red-600 transition-all duration-300 shadow-md hover:shadow-xl rounded-xs cursor-pointer active:scale-95"
+                >
+                  <span>LOAD MORE ARTICLES</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <div className="text-center py-20 bg-slate-50 dark:bg-slate-900/30 rounded-xs border border-dashed border-slate-300 dark:border-slate-800 space-y-4">
             <BookOpen className="w-12 h-12 text-slate-400 mx-auto" />
