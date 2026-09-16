@@ -53,6 +53,16 @@ function autoClassifyCategory(keyword) {
   return "life-style";
 }
 
+const VALID_CATEGORIES = new Set(["celebrity", "life-style", "tech", "health", "business", "news", "food"]);
+
+function normalizeCategory(cat) {
+  const c = (cat || "life-style").toLowerCase().trim().replace(/\s+/g, '-');
+  // Map common misspellings / variants to valid site slugs
+  if (c === "lifestyle") return "life-style";
+  if (VALID_CATEGORIES.has(c)) return c;
+  return "life-style";
+}
+
 function parseCsvLines(csvText) {
   const lines = csvText.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
   const items = [];
@@ -62,10 +72,10 @@ function parseCsvLines(csvText) {
     const keyword = parts[0];
     const explicitCat = parts[1];
     if (keyword && keyword.length > 1) {
-      const category = (explicitCat && explicitCat.length > 1)
+      const rawCategory = (explicitCat && explicitCat.length > 1)
         ? explicitCat.toLowerCase().replace(/\s+/g, '-')
         : autoClassifyCategory(keyword);
-      items.push({ keyword, category });
+      items.push({ keyword, category: normalizeCategory(rawCategory) });
     }
   }
   return items;
@@ -87,7 +97,7 @@ async function syncWithGoogleSheet(queueData) {
           queueData.push({
             id: `kw-${queueData.length + 1}`,
             keyword: item.keyword,
-            category: item.category || 'life-style',
+            category: normalizeCategory(item.category),
             status: 'pending'
           });
           existingKeywords.add(cleanKw);
@@ -516,14 +526,14 @@ async function runAutoPublish() {
   const generated = await generateArticleWithGemini(item.keyword, validSlugsSet);
 
   console.log(`Fetching Unsplash image for "${item.keyword}"...`);
-  const image = await fetchUnsplashImage(item.keyword, item.category || 'life-style', usedPhotoIds);
+  const image = await fetchUnsplashImage(item.keyword, normalizeCategory(item.category), usedPhotoIds);
 
   const slug = slugify(item.keyword);
   const now = new Date();
   const dateFormatted = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   const articleId = `art-${slug}`;
 
-  const categoryTag = (item.category || 'life-style').toUpperCase();
+  const categoryTag = normalizeCategory(item.category).toUpperCase();
   const tags = [
     item.keyword.split(' ')[0].toUpperCase(),
     item.keyword.split(' ')[1] ? item.keyword.split(' ')[1].toUpperCase() : 'GUIDE',
@@ -540,7 +550,7 @@ async function runAutoPublish() {
     excerpt: generated.excerpt,
     content: generated.paragraphs,
     faqs: generated.faqs,
-    category: item.category || 'life-style',
+    category: normalizeCategory(item.category),
     author: {
       name: "Sophia Chen",
       role: "Lifestyle and Wellness Columnist",
