@@ -2,12 +2,12 @@ name: Auto Publish On Gravity Articles
 
 on:
   schedule:
-    # 1st Article: 12:00 PM PKT (07:00 UTC)
-    - cron: '0 7 * * *'
-    # 2nd Article: 03:00 PM PKT (10:00 UTC)
-    - cron: '0 10 * * *'
-    # 3rd Article: 06:00 PM PKT (13:00 UTC)
-    - cron: '0 13 * * *'
+    # 1st Article: 12:03 PM PKT (07:03 UTC)
+    - cron: '3 7 * * *'
+    # 2nd Article: 03:03 PM PKT (10:03 UTC)
+    - cron: '3 10 * * *'
+    # 3rd Article: 06:03 PM PKT (13:03 UTC)
+    - cron: '3 13 * * *'
   workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
 
 permissions:
