@@ -449,6 +449,51 @@ async function runAutoPublish() {
   // 1. Sync live keywords from Google Sheet
   queueData = await syncWithGoogleSheet(queueData);
 
+  // 2. Self-Governing Schedule & Daily Quota Guard (3 articles / day spaced by >= 150 mins in PKT)
+  const nowUtc = new Date();
+  const pktOffsetMs = 5 * 60 * 60 * 1000; // PKT is UTC + 5
+  const nowPkt = new Date(nowUtc.getTime() + pktOffsetMs);
+  const pktDateString = nowPkt.toISOString().slice(0, 10);
+  const pktHours = nowPkt.getUTCHours();
+  const pktMinutes = nowPkt.getUTCMinutes();
+  const pktDecimalHour = pktHours + (pktMinutes / 60);
+
+  const publishedTodayInPkt = queueData.filter(q => {
+    if (q.status !== 'published' || !q.publishedAt) return false;
+    const itemUtc = new Date(q.publishedAt);
+    const itemPkt = new Date(itemUtc.getTime() + pktOffsetMs);
+    return itemPkt.toISOString().slice(0, 10) === pktDateString;
+  });
+
+  const MAX_DAILY_ARTICLES = 3;
+  const isForce = process.env.FORCE_PUBLISH === 'true';
+
+  if (!isForce) {
+    if (publishedTodayInPkt.length >= MAX_DAILY_ARTICLES) {
+      console.log(`[SCHEDULE GATING] Daily quota of ${MAX_DAILY_ARTICLES} articles already reached for today (${pktDateString} PKT). Published count: ${publishedTodayInPkt.length}. Exiting peacefully.`);
+      process.exit(0);
+    }
+
+    if (pktDecimalHour < 11.5) {
+      console.log(`[SCHEDULE GATING] Current PKT time is ${String(pktHours).padStart(2, '0')}:${String(pktMinutes).padStart(2, '0')}. Daily publishing window opens at 11:30 AM PKT. Exiting peacefully.`);
+      process.exit(0);
+    }
+
+    const sortedPublished = queueData
+      .filter(q => q.status === 'published' && q.publishedAt)
+      .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+
+    if (sortedPublished.length > 0) {
+      const lastPublishedTime = new Date(sortedPublished[0].publishedAt).getTime();
+      const elapsedMinutes = (nowUtc.getTime() - lastPublishedTime) / (1000 * 60);
+      const MIN_INTERVAL_MINUTES = 150; // 2.5 hours gap
+      if (elapsedMinutes < MIN_INTERVAL_MINUTES) {
+        console.log(`[SCHEDULE GATING] Only ${Math.round(elapsedMinutes)} minutes have passed since the last published article ("${sortedPublished[0].keyword}"). Minimum interval is ${MIN_INTERVAL_MINUTES} minutes. Exiting peacefully.`);
+        process.exit(0);
+      }
+    }
+  }
+
   const pendingIndex = queueData.findIndex(item => item.status === 'pending');
 
   if (pendingIndex === -1) {
