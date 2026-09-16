@@ -83,9 +83,9 @@ export const ARTICLES: Article[] = [
     },
     "publishedAt": "Sep 16, 2026",
     "readTime": "6 min read",
-    "imageUrl": "https://images.unsplash.com/photo-1626907103631-e79be4a5314a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDU5NTUzfDB8MXxzZWFyY2h8Mnx8c3F1YXJlJTIwdG9pbGV0JTIwc2VhdHxlbnwwfDB8fHwxNzg5NTUxMTc5fDA&ixlib=rb-4.1.0&q=80&w=1080&sig=square-toilet-seat_1789551179258",
-    "imageAlt": "white square paper on gray surface - square toilet seat",
-    "imageCaption": "white square paper on gray surface",
+    "imageUrl": "https://images.unsplash.com/photo-1569597967185-cd6120712154?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Modern square toilet seat and minimalist bathroom interior",
+    "imageCaption": "A contemporary square toilet seat design bringing geometric minimalism to modern bathrooms.",
     "featured": true,
     "trending": true,
     "tags": [
