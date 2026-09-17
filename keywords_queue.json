@@ -139,7 +139,9 @@
     "id": "kw-18",
     "keyword": "tacos near me",
     "category": "food",
-    "status": "pending"
+    "status": "published",
+    "publishedAt": "2026-09-17T11:18:11.909Z",
+    "generatedArticleSlug": "tacos-near-me"
   },
   {
     "id": "kw-19",
