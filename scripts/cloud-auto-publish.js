@@ -349,10 +349,10 @@ async function generateArticleWithGemini(keyword, validSlugsSet) {
 
   const promptText = `${getSystemPrompt(validSlugsSet)}${listicleInstruction}\n\nSubmitted Keyword / Topic: "${keyword}"\n[Target Word Count: 1000-1200 words]`;
 
-  for (let attempt = 1; attempt <= 4; attempt++) {
+  for (let attempt = 1; attempt <= 6; attempt++) {
     for (const modelName of GEMINI_MODELS) {
       try {
-        console.log(`Calling Gemini API model: ${modelName} (Attempt ${attempt}/4)...`);
+        console.log(`Calling Gemini API model: ${modelName} (Attempt ${attempt}/6)...`);
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 120000);
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
@@ -384,7 +384,9 @@ async function generateArticleWithGemini(keyword, validSlugsSet) {
         console.warn(`Gemini model ${modelName} error:`, err.message);
       }
     }
-    await new Promise((r) => setTimeout(r, 2000));
+    const delayMs = attempt <= 2 ? 10000 : 20000;
+    console.log(`All models failed on attempt ${attempt}/6. Waiting ${delayMs/1000}s before retry...`);
+    await new Promise((r) => setTimeout(r, delayMs));
   }
 
   throw new Error("Gemini API call failed across all retries.");
