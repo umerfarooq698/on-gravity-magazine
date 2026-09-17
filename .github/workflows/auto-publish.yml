@@ -2,8 +2,8 @@ name: Auto Publish On Gravity Articles
 
 on:
   schedule:
-    # Runs every 30 minutes to check self-governing publish windows (12 PM, 3 PM, 6 PM PKT)
-    - cron: '*/30 * * * *'
+    # Runs every 20 minutes on off-peak minutes (:07, :27, :47) to completely avoid GitHub Actions queue delays
+    - cron: '7,27,47 * * * *'
   workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
 
 permissions:
@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Run Cloud Auto-Publisher
         env:

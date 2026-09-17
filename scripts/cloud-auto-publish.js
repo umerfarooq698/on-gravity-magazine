@@ -498,7 +498,7 @@ async function runAutoPublish() {
     if (sortedPublished.length > 0) {
       const lastPublishedTime = new Date(sortedPublished[0].publishedAt).getTime();
       const elapsedMinutes = (nowUtc.getTime() - lastPublishedTime) / (1000 * 60);
-      const MIN_INTERVAL_MINUTES = 150; // 2.5 hours gap
+      const MIN_INTERVAL_MINUTES = 120; // 2 hours gap between articles
       if (elapsedMinutes < MIN_INTERVAL_MINUTES) {
         console.log(`[SCHEDULE GATING] Only ${Math.round(elapsedMinutes)} minutes have passed since the last published article ("${sortedPublished[0].keyword}"). Minimum interval is ${MIN_INTERVAL_MINUTES} minutes. Exiting peacefully.`);
         process.exit(0);
