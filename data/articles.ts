@@ -27,6 +27,74 @@ export interface Article {
 
 export const ARTICLES: Article[] = [
   {
+    "id": "art-water-heater-repair",
+    "slug": "water-heater-repair",
+    "title": "Practical Water Heater Repair Solutions for Modern Homes",
+    "metaTitle": "Practical Water Heater Repair Solutions for Modern Homes | On Gravity Magazine",
+    "metaDescription": "Identify early water heater repair signs, address tank leaks, restore hot water flow, and know when to call a professional plumbing expert.",
+    "excerpt": "Identify early water heater repair signs, address tank leaks, restore hot water flow, and know when to call a professional plumbing expert.",
+    "content": [
+        "## Recognizing Early Warning Signs of Water Heater Failure",
+        "Hot water serves as an essential foundation of modern residential comfort, quietly powering daily domestic routines from early morning showers to nightly appliance operation. When a water heater starts experiencing mechanical degradation, subtle warning signs almost always manifest before complete operational failure occurs. Recognizing these subtle performance shifts allows homeowners to implement targeted fixes early, saving substantial money on emergency service calls and preventing catastrophic property flooding.",
+        "Ignoring slight temperature drops or strange localized plumbing noises inevitably transforms simple fixes into expensive full-unit replacements.",
+        "One of the most noticeable red flags is the appearance of rusty or discolored tap water whenever the hot water faucet is opened. This discoloration frequently indicates internal wall corrosion inside the steel storage tank or severe degradation of the internal sacrificial anode rod, which requires immediate physical inspection. Another common indicator is persistent popping, clicking, or deep rumbling sounds echoing from the basement or utility closet. These audible disruptions occur when heavy layers of mineral scale and sediment settle at the bottom of the tank, trapping heat beneath the debris and boiling localized pockets of water. Furthermore, damp insulation around the outer jacket or minor pooling around the base of the heater signals compromised fittings, worn gaskets, or structural tank pinholes that demand urgent technical evaluation before total structural breach happens.",
+        "## Essential Troubleshooting and Repair Techniques",
+        "Before conducting any physical troubleshooting on a residential heating system, executing proper safety procedures remains non-negotiable. Homeowners must shut off electrical circuit breakers for electric models or rotate the main gas isolation valve to the off position for gas-fired appliances. Systematic inspection isolates secondary plumbing factors from primary mechanical defects, ensuring that corrective measures address the root cause of heating failure rather than superficial symptoms.",
+        "### Addressing Pilot Light and Heating Element Issues",
+        "Corroded thermocouples and burned-out heating coils account for the vast majority of sudden hot water losses in residential plumbing systems.",
+        "For gas-powered equipment, an unlit pilot flame often points to a clogged burner orifice or a malfunctioning thermocouple that can no longer sense thermal energy accurately. Carefully cleaning the thermocouple assembly with fine emery cloth or replacing the entire probe assembly restores consistent gas ignition. In electric water heaters, a complete absence of heated water typically indicates a tripped high-limit thermal safety switch located behind the upper access panel or a burned-out heating element. Using a digital multimeter to test electrical continuity across the element terminals provides instant verification of electrical integrity. Replacing a defective upper or lower heating element involves draining the storage tank below the element level, unscrewing the threaded element with a dedicated socket wrench, and installing a fresh high-wattage element equipped with a durable watertight rubber seal.",
+        "### Dealing with Sediment Build and Temperature Valves",
+        "Flushing accumulated mineral deposits restores thermal transfer efficiency and prevents overheating along the bottom of the storage tank.",
+        "Sediment layer accumulation acts as an insulating barrier between the burner or lower heating element and the internal water volume, forcing the appliance to run continuously to achieve target temperatures. Attaching a heavy-duty garden hose to the lower brass drain valve permits homeowners to discharge calcified sludge directly into a floor drain or outdoor disposal area. Concurrently, checking the temperature and pressure relief valve is a critical step to ensure safe operating pressure limits inside the vessel. Gently lifting the valve lever should release a brief burst of hot discharge water; if the valve fails to discharge or continues dripping after release, immediate valve replacement is mandatory. Replacing a faulty safety valve prevents severe over-pressurization conditions that could otherwise destabilize the entire structural integrity of the water tank.",
+        "## Critical Preventative Maintenance Best Practices",
+        "Implementing proactive maintenance routines significantly extends the reliable service lifespan of residential water heating systems well beyond baseline manufacturer expectations. Routine annual checkups allow homeowners to identify failing fittings, electrical breakdown, and scale accumulation long before these minor issues degrade domestic comfort. Homes located in areas with severe municipal hard water suffer from accelerated mineral precipitation, making consistent service even more critical. Establishing an organized yearly care regimen protects heating efficiency, keeps monthly energy expenditure under control, and maintains consistent hot water delivery across all fixtures in the household.",
+        "* **Anode Rod Evaluation:** Inspect the sacrificial anode rod every two years and replace the assembly whenever more than six inches of the inner steel core wire becomes exposed.",
+        "* **Annual Tank Flushing:** Drain and flush the main tank once per year to remove calcified mineral scale and optimize internal thermal energy transfer.",
+        "* **Thermostat Temperature Calibration:** Adjust the primary thermostat setting to 120 degrees Fahrenheit to optimize energy conservation and prevent domestic scalding hazards.",
+        "* **Clearance Zone Maintenance:** Maintain at least two feet of unobstructed clearance around the perimeter of the unit to ensure adequate ventilation and rapid access for emergency repairs.",
+        "Consistently performing these routine preventative tasks lowers operational costs and protects surrounding home structures from destructive moisture accumulation. Dedicated preventive care guarantees predictable performance while heading off emergency plumbing costs before they occur.",
+        "## Knowing When to Call a Certified Plumbing Professional",
+        "While basic tasks like relighting a standing pilot light or clearing sediment line blockage fall within the skill set of motivated homeowners, major water heater repair requires certified technical mastery. Altering natural gas supply lines, reconfiguring high-voltage electrical panels, or repairing severe internal tank shell cracks involves significant safety hazards and strict local municipal building code standards. Unintentional gas leaks can cause immediate fire hazards, whereas incorrect high-voltage electrical splices present life-threatening shock risks to residents. Licensed plumbing specialists bring specialized testing equipment, official permits, and liability insurance required to solve complex mechanical failures safely and accurately.",
+        "When structural tank corrosion emerges or electrical faults repeat, hiring a licensed plumbing professional safeguards both family safety and long-term property equity.",
+        "## Conclusion",
+        "Maintaining an efficient domestic hot water system depends on a sensible balance between early symptom detection, basic hands-on troubleshooting, and scheduled preventative care. By learning to identify clear warning signals like rust-colored tap water, low water pressure, or unusual tank noise, homeowners can fix minor component faults before they cause widespread structural damage. Proactive home maintenance optimizes heating performance, controls monthly utility expense, and significantly prolongs the service life of expensive mechanical equipment.",
+        "Recognizing the exact boundary between simple homeowner fixes and advanced professional plumbing interventions ensures personal safety and structural protection. Simple tasks such as adjusting thermostats or flushing sediment lines are manageable DIY projects, whereas structural tank leaks and gas valve repairs require professional trade expertise. Investing modest effort into regular system inspection guarantees continuous domestic comfort while protecting your residential investment for years to come."
+    ],
+    "faqs": [
+        {
+            "question": "How often should a home water heater be flushed?",
+            "answer": "Standard residential water heaters should be completely flushed at least once per year, though homes supplied with heavy hard water may require flushing every six months to eliminate aggressive mineral buildup."
+        },
+        {
+            "question": "What is the average lifespan of a standard water heater?",
+            "answer": "Traditional tank water heaters typically last between 8 and 12 years with routine care, whereas high-efficiency tankless models can operate reliably for up to 20 years before requiring full unit replacement."
+        },
+        {
+            "question": "Why is my water heater leaking from the top connections?",
+            "answer": "Top leaks usually stem from loose inlet cold water connections, degraded outlet nipple threads, a damaged thermal expansion tank, or a faulty temperature relief valve, all of which are repairable without replacing the complete tank."
+        }
+    ],
+    "category": "life-style",
+    "author": {
+        "name": "Sophia Chen",
+        "role": "Senior Lifestyle & Wellness Columnist",
+        "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+    },
+    "publishedAt": "Sep 17, 2026",
+    "readTime": "6 min read",
+    "imageUrl": "https://images.unsplash.com/photo-1575299737366-39c143459bc5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDU5NTUzfDB8MXxzZWFyY2h8Mnx8d2F0ZXIlMjBoZWF0ZXIlMjByZXBhaXJ8ZW58MHwwfHx8MTc4OTY0NzUzNHww&ixlib=rb-4.1.0&q=80&w=1080&sig=water-heater-repair_1789647534535",
+    "imageAlt": "water heater on wall above sink - water heater repair",
+    "imageCaption": "water heater on wall above sink",
+    "featured": true,
+    "trending": true,
+    "tags": [
+        "WATER",
+        "HEATER",
+        "MAGAZINE",
+        "LIFE-STYLE"
+    ]
+},
+  {
     "id": "art-june-2026-calendar",
     "slug": "june-2026-calendar",
     "title": "Master Your Schedule with a Printable June 2026 Calendar",
