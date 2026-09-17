@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 
 const QUEUE_FILE = path.join(__dirname, '..', 'keywords_queue.json');
 const ARTICLES_FILE = path.join(__dirname, '..', 'data', 'articles.ts');
@@ -543,6 +543,26 @@ async function runAutoPublish() {
     categoryTag
   ];
 
+  const cleanCat = normalizeCategory(item.category);
+  let authorObj = {
+    name: "Sophia Chen",
+    role: "Senior Lifestyle & Wellness Columnist",
+    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+  };
+  if (cleanCat === "tech" || cleanCat === "business") {
+    authorObj = {
+      name: "Marcus Vance",
+      role: "Chief Business & Technology Editor",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+    };
+  } else if (cleanCat === "celebrity" || cleanCat === "news") {
+    authorObj = {
+      name: "Elena Rostova",
+      role: "Pop Culture & Design Lead",
+      avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80"
+    };
+  }
+
   const newArticle = {
     id: articleId,
     slug: slug,
@@ -552,12 +572,8 @@ async function runAutoPublish() {
     excerpt: generated.excerpt,
     content: generated.paragraphs,
     faqs: generated.faqs,
-    category: normalizeCategory(item.category),
-    author: {
-      name: "Sophia Chen",
-      role: "Lifestyle and Wellness Columnist",
-      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
-    },
+    category: cleanCat,
+    author: authorObj,
     publishedAt: dateFormatted,
     readTime: "6 min read",
     imageUrl: image.url,
@@ -594,15 +610,17 @@ async function runAutoPublish() {
   if (process.env.GITHUB_ACTIONS) {
     try {
       console.log("Configuring git and pushing changes in GitHub Actions...");
-      execSync('git config user.name "github-actions[bot]"', { stdio: 'inherit' });
-      execSync('git config user.email "github-actions[bot]@users.noreply.github.com"', { stdio: 'inherit' });
-      execSync('git add keywords_queue.json data/articles.ts public/a65080e03104882ba93c502e351f98c1.txt', { stdio: 'inherit' });
-      execSync(`git commit -m "auto-publish: Published article '${generated.title}' [${slug}]"`, { stdio: 'inherit' });
-      execSync('git pull origin main --rebase', { stdio: 'inherit' });
-      execSync('git push origin main', { stdio: 'inherit' });
+      execFileSync('git', ['config', 'user.name', 'github-actions[bot]'], { stdio: 'inherit' });
+      execFileSync('git', ['config', 'user.email', 'github-actions[bot]@users.noreply.github.com'], { stdio: 'inherit' });
+      execFileSync('git', ['add', 'keywords_queue.json', 'data/articles.ts', 'public/a65080e03104882ba93c502e351f98c1.txt'], { stdio: 'inherit' });
+      const commitTitle = (generated.title || item.keyword).replace(/[\r\n]+/g, ' ').trim();
+      execFileSync('git', ['commit', '-m', `auto-publish: Published article '${commitTitle}' [${slug}]`], { stdio: 'inherit' });
+      execFileSync('git', ['pull', 'origin', 'main', '--rebase'], { stdio: 'inherit' });
+      execFileSync('git', ['push', 'origin', 'main'], { stdio: 'inherit' });
       console.log("Git push successful! Vercel auto-deployment triggered.");
     } catch (gitErr) {
-      console.warn("Git commit/push failed:", gitErr.message);
+      console.error("Git commit/push failed:", gitErr.message);
+      throw gitErr;
     }
   }
 
