@@ -2,8 +2,8 @@ name: Auto Publish On Gravity Articles
 
 on:
   schedule:
-    # Runs every 20 minutes on off-peak minutes (:07, :27, :47) to completely avoid GitHub Actions queue delays
-    - cron: '7,27,47 * * * *'
+    # Runs every 10 minutes on off-peak odd minutes to ensure zero queue delays on GitHub cloud runners
+    - cron: '7,17,27,37,47,57 * * * *'
   workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
 
 permissions:
