@@ -453,188 +453,157 @@ function parseGeminiMarkdown(rawText, keyword) {
 async function runAutoPublish() {
   console.log("=== ON GRAVITY CLOUD AUTO-PUBLISHER ===");
 
-  const BATCH_SIZE = process.env.GITHUB_ACTIONS ? 6 : 1;
-  const TARGET_INTERVAL_MS = 5 * 60 * 1000; // Exact 5 minutes (300 seconds)
+  let queueData = [];
+  if (fs.existsSync(QUEUE_FILE)) {
+    queueData = JSON.parse(fs.readFileSync(QUEUE_FILE, 'utf-8'));
+  }
 
-  for (let iteration = 1; iteration <= BATCH_SIZE; iteration++) {
-    console.log(`\n--- [Cycle ${iteration}/${BATCH_SIZE}] Starting at ${new Date().toISOString()} ---`);
+  // 1. Sync live keywords from Google Sheet
+  queueData = await syncWithGoogleSheet(queueData);
 
-    let queueData = [];
-    if (fs.existsSync(QUEUE_FILE)) {
-      queueData = JSON.parse(fs.readFileSync(QUEUE_FILE, 'utf-8'));
-    }
+  // 2. Strict 12-Hour Cadence Guard (at least 11.5 - 12 hours gap between consecutive publishes)
+  const nowUtc = new Date();
+  const isForce = process.env.FORCE_PUBLISH === 'true';
 
-    // 1. Sync live keywords from Google Sheet
-    queueData = await syncWithGoogleSheet(queueData);
-
-    // 2. Strict 5-Minute Guard: ensure at least 4.5 minutes have passed since last published article
-    const nowUtc = new Date();
+  if (!isForce) {
     const sortedPublished = queueData
       .filter(q => q.status === 'published' && q.publishedAt)
       .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
-    if (sortedPublished.length > 0 && !process.env.FORCE_PUBLISH) {
+    if (sortedPublished.length > 0) {
       const lastPublishedTime = new Date(sortedPublished[0].publishedAt).getTime();
-      const elapsedMs = nowUtc.getTime() - lastPublishedTime;
-      const MIN_GAP_MS = 4.5 * 60 * 1000;
-      if (elapsedMs < MIN_GAP_MS) {
-        const waitMs = MIN_GAP_MS - elapsedMs;
-        console.log(`[CADENCE GUARD] Only ${Math.round(elapsedMs / 1000)}s passed since last article ("${sortedPublished[0].keyword}"). Waiting ${Math.round(waitMs / 1000)}s for exact 5-min interval...`);
-        await new Promise(r => setTimeout(r, waitMs));
+      const elapsedMinutes = (nowUtc.getTime() - lastPublishedTime) / (1000 * 60);
+      const MIN_INTERVAL_MINUTES = 690; // 11.5 hours gap for 12-hour cadence
+      if (elapsedMinutes < MIN_INTERVAL_MINUTES) {
+        const elapsedHours = (elapsedMinutes / 60).toFixed(1);
+        const remainingHours = ((MIN_INTERVAL_MINUTES - elapsedMinutes) / 60).toFixed(1);
+        console.log(`[SCHEDULE GATING] Only ${elapsedHours} hours have passed since the last published article ("${sortedPublished[0].keyword}"). Next article will publish in ~${remainingHours} hours (12-hour cadence). Exiting peacefully.`);
+        process.exit(0);
       }
-    }
-
-    const pendingIndex = queueData.findIndex(item => item.status === 'pending');
-    if (pendingIndex === -1) {
-      console.log("No pending keywords remaining in queue. Auto-publisher finished!");
-      return;
-    }
-
-    const item = queueData[pendingIndex];
-    console.log(`[Item ${iteration}] Selected keyword: "${item.keyword}" (Category: ${item.category})`);
-
-    // 3. Read articles file & generate article
-    const articlesFileContent = fs.readFileSync(ARTICLES_FILE, 'utf-8');
-    const usedPhotoIds = new Set();
-    const photoMatches = articlesFileContent.match(/photo-([a-zA-Z0-9-]+)/g) || [];
-    photoMatches.forEach(m => usedPhotoIds.add(m.replace('photo-', '')));
-
-    const validSlugsSet = getExistingPublishedSlugs(articlesFileContent);
-
-    console.log(`Generating article with Gemini API for "${item.keyword}"...`);
-    const generated = await generateArticleWithGemini(item.keyword, validSlugsSet);
-
-    console.log(`Fetching Unsplash image for "${item.keyword}"...`);
-    const image = await fetchUnsplashImage(item.keyword, normalizeCategory(item.category), usedPhotoIds);
-
-    const slug = slugify(item.keyword);
-    const publishDate = new Date();
-    const dateFormatted = publishDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    const articleId = `art-${slug}`;
-
-    const cleanCat = normalizeCategory(item.category);
-    let authorObj = {
-      name: "Sophia Chen",
-      role: "Senior Lifestyle & Wellness Columnist",
-      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
-    };
-    if (cleanCat === "tech" || cleanCat === "business") {
-      authorObj = {
-        name: "Marcus Vance",
-        role: "Chief Business & Technology Editor",
-        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
-      };
-    } else if (cleanCat === "celebrity" || cleanCat === "news") {
-      authorObj = {
-        name: "Elena Rostova",
-        role: "Pop Culture & Design Lead",
-        avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80"
-      };
-    }
-
-    const categoryTag = cleanCat.toUpperCase();
-    const tags = [
-      item.keyword.split(' ')[0].toUpperCase(),
-      item.keyword.split(' ')[1] ? item.keyword.split(' ')[1].toUpperCase() : 'GUIDE',
-      'MAGAZINE',
-      categoryTag
-    ];
-
-    const newArticle = {
-      id: articleId,
-      slug: slug,
-      title: generated.title,
-      metaTitle: `${generated.title} | On Gravity Magazine`,
-      metaDescription: generated.excerpt,
-      excerpt: generated.excerpt,
-      content: generated.paragraphs,
-      faqs: generated.faqs,
-      category: cleanCat,
-      author: authorObj,
-      publishedAt: dateFormatted,
-      readTime: "6 min read",
-      imageUrl: image.url,
-      imageAlt: image.alt,
-      imageCaption: image.caption,
-      featured: true,
-      trending: true,
-      tags: tags
-    };
-
-    // 4. Update queue item
-    queueData[pendingIndex].status = 'published';
-    queueData[pendingIndex].publishedAt = publishDate.toISOString();
-    queueData[pendingIndex].generatedArticleSlug = slug;
-    fs.writeFileSync(QUEUE_FILE, JSON.stringify(queueData, null, 2), 'utf-8');
-    console.log(`Updated keywords_queue.json: status set to 'published' for "${item.keyword}".`);
-
-    // 5. Prepend new article to ARTICLES array in data/articles.ts
-    const marker = "export const ARTICLES: Article[] = [";
-    if (!articlesFileContent.includes(marker)) {
-      console.error("Could not find ARTICLES export marker in data/articles.ts!");
-      process.exit(1);
-    }
-
-    const jsonSerialized = JSON.stringify(newArticle, null, 4);
-    const updatedArticlesContent = articlesFileContent.replace(
-      marker,
-      `${marker}\n  ${jsonSerialized},`
-    );
-    fs.writeFileSync(ARTICLES_FILE, updatedArticlesContent, 'utf-8');
-    console.log(`Successfully added article "${generated.title}" (${slug}) to data/articles.ts!`);
-
-    // 6. Commit & push if running in GitHub Actions environment
-    if (process.env.GITHUB_ACTIONS) {
-      try {
-        console.log("Pushing commit to GitHub repository...");
-        execFileSync('git', ['config', 'user.name', 'github-actions[bot]'], { stdio: 'inherit' });
-        execFileSync('git', ['config', 'user.email', 'github-actions[bot]@users.noreply.github.com'], { stdio: 'inherit' });
-        execFileSync('git', ['add', 'keywords_queue.json', 'data/articles.ts', 'public/a65080e03104882ba93c502e351f98c1.txt'], { stdio: 'inherit' });
-        const commitTitle = (generated.title || item.keyword).replace(/[\r\n]+/g, ' ').trim();
-        execFileSync('git', ['commit', '-m', `auto-publish: Published article '${commitTitle}' [${slug}]`], { stdio: 'inherit' });
-        execFileSync('git', ['pull', 'origin', 'main', '--rebase'], { stdio: 'inherit' });
-        execFileSync('git', ['push', 'origin', 'main'], { stdio: 'inherit' });
-        console.log("Git push successful! Vercel auto-deployment triggered.");
-      } catch (gitErr) {
-        console.error("Git commit/push failed:", gitErr.message);
-        throw gitErr;
-      }
-    }
-
-    // 7. Instant Indexing Ping (IndexNow + Google)
-    await pingSearchEnginesForIndexing(slug);
-
-    console.log(`=== AUTO-PUBLISH COMPLETED FOR "${item.keyword}" ===`);
-
-    // 8. Sleep for exact 5 minutes (300 seconds) before starting next article
-    if (iteration < BATCH_SIZE) {
-      console.log(`\n⏳ Cycle ${iteration}/${BATCH_SIZE} complete. Waiting EXACTLY 5 minutes (300 seconds) before publishing next article...`);
-      await new Promise(r => setTimeout(r, TARGET_INTERVAL_MS));
     }
   }
 
-  // 9. Self-perpetuate by dispatching the next workflow run via GitHub API
+  const pendingIndex = queueData.findIndex(item => item.status === 'pending');
+  if (pendingIndex === -1) {
+    console.log("No pending keywords remaining in queue. Auto-publisher finished!");
+    process.exit(0);
+  }
+
+  const item = queueData[pendingIndex];
+  console.log(`Selected keyword: "${item.keyword}" (Category: ${item.category})`);
+
+  // 3. Read articles file & generate article
+  const articlesFileContent = fs.readFileSync(ARTICLES_FILE, 'utf-8');
+  const usedPhotoIds = new Set();
+  const photoMatches = articlesFileContent.match(/photo-([a-zA-Z0-9-]+)/g) || [];
+  photoMatches.forEach(m => usedPhotoIds.add(m.replace('photo-', '')));
+
+  const validSlugsSet = getExistingPublishedSlugs(articlesFileContent);
+
+  console.log(`Generating article with Gemini API for "${item.keyword}"...`);
+  const generated = await generateArticleWithGemini(item.keyword, validSlugsSet);
+
+  console.log(`Fetching Unsplash image for "${item.keyword}"...`);
+  const image = await fetchUnsplashImage(item.keyword, normalizeCategory(item.category), usedPhotoIds);
+
+  const slug = slugify(item.keyword);
+  const publishDate = new Date();
+  const dateFormatted = publishDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const articleId = `art-${slug}`;
+
+  const cleanCat = normalizeCategory(item.category);
+  let authorObj = {
+    name: "Sophia Chen",
+    role: "Senior Lifestyle & Wellness Columnist",
+    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+  };
+  if (cleanCat === "tech" || cleanCat === "business") {
+    authorObj = {
+      name: "Marcus Vance",
+      role: "Chief Business & Technology Editor",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+    };
+  } else if (cleanCat === "celebrity" || cleanCat === "news") {
+    authorObj = {
+      name: "Elena Rostova",
+      role: "Pop Culture & Design Lead",
+      avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80"
+    };
+  }
+
+  const categoryTag = cleanCat.toUpperCase();
+  const tags = [
+    item.keyword.split(' ')[0].toUpperCase(),
+    item.keyword.split(' ')[1] ? item.keyword.split(' ')[1].toUpperCase() : 'GUIDE',
+    'MAGAZINE',
+    categoryTag
+  ];
+
+  const newArticle = {
+    id: articleId,
+    slug: slug,
+    title: generated.title,
+    metaTitle: `${generated.title} | On Gravity Magazine`,
+    metaDescription: generated.excerpt,
+    excerpt: generated.excerpt,
+    content: generated.paragraphs,
+    faqs: generated.faqs,
+    category: cleanCat,
+    author: authorObj,
+    publishedAt: dateFormatted,
+    readTime: "6 min read",
+    imageUrl: image.url,
+    imageAlt: image.alt,
+    imageCaption: image.caption,
+    featured: true,
+    trending: true,
+    tags: tags
+  };
+
+  // 4. Update queue item
+  queueData[pendingIndex].status = 'published';
+  queueData[pendingIndex].publishedAt = publishDate.toISOString();
+  queueData[pendingIndex].generatedArticleSlug = slug;
+  fs.writeFileSync(QUEUE_FILE, JSON.stringify(queueData, null, 2), 'utf-8');
+  console.log(`Updated keywords_queue.json: status set to 'published' for "${item.keyword}".`);
+
+  // 5. Prepend new article to ARTICLES array in data/articles.ts
+  const marker = "export const ARTICLES: Article[] = [";
+  if (!articlesFileContent.includes(marker)) {
+    console.error("Could not find ARTICLES export marker in data/articles.ts!");
+    process.exit(1);
+  }
+
+  const jsonSerialized = JSON.stringify(newArticle, null, 4);
+  const updatedArticlesContent = articlesFileContent.replace(
+    marker,
+    `${marker}\n  ${jsonSerialized},`
+  );
+  fs.writeFileSync(ARTICLES_FILE, updatedArticlesContent, 'utf-8');
+  console.log(`Successfully added article "${generated.title}" (${slug}) to data/articles.ts!`);
+
+  // 6. Commit & push if running in GitHub Actions environment
   if (process.env.GITHUB_ACTIONS) {
     try {
-      const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
-      if (token) {
-        console.log("\n🚀 Current 30-min batch completed. Launching next 5-minute batch via GitHub API...");
-        const res = await fetch("https://api.github.com/repos/umerfarooq698/on-gravity-magazine/actions/workflows/auto-publish.yml/dispatches", {
-          method: "POST",
-          headers: {
-            "Accept": "application/vnd.github+json",
-            "Authorization": `Bearer ${token}`,
-            "X-GitHub-Api-Version": "2022-11-28",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ ref: "main" })
-        });
-        console.log(`Dispatched next 5-min workflow cycle. HTTP Status: ${res.status}`);
-      }
-    } catch (e) {
-      console.warn("Could not dispatch next cycle:", e.message);
+      console.log("Pushing commit to GitHub repository...");
+      execFileSync('git', ['config', 'user.name', 'github-actions[bot]'], { stdio: 'inherit' });
+      execFileSync('git', ['config', 'user.email', 'github-actions[bot]@users.noreply.github.com'], { stdio: 'inherit' });
+      execFileSync('git', ['add', 'keywords_queue.json', 'data/articles.ts', 'public/a65080e03104882ba93c502e351f98c1.txt'], { stdio: 'inherit' });
+      const commitTitle = (generated.title || item.keyword).replace(/[\r\n]+/g, ' ').trim();
+      execFileSync('git', ['commit', '-m', `auto-publish: Published article '${commitTitle}' [${slug}]`], { stdio: 'inherit' });
+      execFileSync('git', ['pull', 'origin', 'main', '--rebase'], { stdio: 'inherit' });
+      execFileSync('git', ['push', 'origin', 'main'], { stdio: 'inherit' });
+      console.log("Git push successful! Vercel auto-deployment triggered.");
+    } catch (gitErr) {
+      console.error("Git commit/push failed:", gitErr.message);
+      throw gitErr;
     }
   }
+
+  // 7. Instant Indexing Ping (IndexNow + Google)
+  await pingSearchEnginesForIndexing(slug);
+
+  console.log(`=== AUTO-PUBLISH COMPLETED FOR "${item.keyword}" ===`);
 }
 
 async function pingSearchEnginesForIndexing(slug) {

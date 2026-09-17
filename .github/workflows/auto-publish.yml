@@ -2,8 +2,8 @@ name: Auto Publish On Gravity Articles
 
 on:
   schedule:
-    # Runs every 5 minutes continuously to publish articles from queue
-    - cron: '*/5 * * * *'
+    # Checks every 30 minutes on off-peak minutes to publish 1 article every 12 hours
+    - cron: '17,47 * * * *'
   workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
 
 permissions:
