@@ -27,6 +27,72 @@ export interface Article {
 
 export const ARTICLES: Article[] = [
   {
+    "id": "art-treaty-oak-revival",
+    "slug": "treaty-oak-revival",
+    "title": "Treaty Oak Revival and the Unstoppable Rise of Texas Rock",
+    "metaTitle": "Treaty Oak Revival and the Unstoppable Rise of Texas Rock | On Gravity Magazine",
+    "metaDescription": "Treaty Oak Revival blends Texas country and heavy punk rock to dominate the national roots music scene with unmatched energy and raw grit.",
+    "excerpt": "Treaty Oak Revival blends Texas country and heavy punk rock to dominate the national roots music scene with unmatched energy and raw grit.",
+    "content": [
+        "## The Roots and Heavy Sound of West Texas Rockers",
+        "Formed in West Texas, Treaty Oak Revival has quietly built one of the most passionate grassroots followings in modern American roots music. Their signature blend of gritty Red Dirt country, punk urgency, and heavy rock riffage sets them completely apart from polished Nashville radio pop. This independent quintet delivers an uncompromising sound that reflects both rural isolation and aggressive youthful energy.",
+        "Originating around the Permian Basin, the five-piece outfit consists of frontman Sam Canty, guitarists Ben Burkhart and Jeremiah Vanley, bassist Andrew Vance, and drummer Cody Vance. Drawing heavy inspiration from Texas music icons like Cross Canadian Ragweed alongside 2000s alternative rock heavyweights, the group created a sonic identity defined by thunderous percussion and throat-shredding vocal deliveries. Instead of leaning into traditional acoustic balladry, Treaty Oak Revival treats every track as an explosive catharsis, documenting the blue-collar realities, heartbreaks, and late-night misadventures of young adults across the region. Their relentless touring ethic across Texas honky-tonks rapidly expanded into sold-out venues across the nation, driven almost entirely by word-of-mouth momentum and fan devotion. Each song balances infectious melodic hooks with heavy, driving electric guitars that captivate diverse crowds. The group has steadily redefined what it means to be a modern southern rock outfit.",
+        "This self-made momentum demonstrates how independent acts are bypassing traditional record label gatekeepers to establish genuine longevity. By staying true to their West Texas roots, the band has cultivated an unshakable identity that resonates with listeners fatigued by overly polished studio production. Their fast-growing footprint proves that authentic storytelling paired with heavy guitar riffs still commands massive audience loyalty. They continue to demonstrate that real fans prefer genuine emotion over artificial studio polishing.",
+        "## Evolving Discography and Critical Studio Milestones",
+        "The recording history of Treaty Oak Revival charts a clear evolution from raw bar band anthems to sophisticated, hard-hitting studio productions that capture their explosive stage presence. Through every project, the group has refined their songwriting polish while maintaining the explosive energy that initially brought them regional fame. Their catalog serves as a blueprint for independent artists seeking commercial viability without selling out.",
+        "### Debut Energy with No Highs",
+        "Released independently, the debut album No Highs immediately introduced Treaty Oak Revival as a formidable songwriting force in the roots community. Tracks like Ode to Smoke and Boomtown showcased Sam Canty vocal delivery alongside driving rhythm sections that captured the rough-edged spirit of West Texas working life.",
+        "### Sound Refinement in Have a Nice Day",
+        "With their follow-up full-length release, Have a Nice Day, the band expanded their sonic palette without sacrificing an ounce of their signature grit. Standout tracks such as Missed Call and Chasing Smoke feature tight dual-guitar harmonies, heavy breakdown riffs, and deeply introspective lyricism reflecting on addiction, romance, and road fatigue. The record catapulted the group into mainstream independent charts, earning praise from both country purists and rock enthusiasts who appreciated the raw musicality. The album solidified their standing as headliners capable of filling large amphitheaters and festival grounds without compromising their independent spirit. Beyond streaming metrics, the record proved that country and heavy rock can coexist seamlessly when anchored by top-tier craftsmanship. Fans and critics alike recognized the album as a defining landmark for modern Texas music culture.",
+        "## The High-Octane Live Performance Strategy",
+        "Attending a Treaty Oak Revival show feels less like a conventional country concert and more like a high-octane rock revival service. The band maintains a ferocious pace on stage, delivering extended guitar solos, wall-of-sound percussion, and intense crowd singalongs that turn venue floors into energetic, moving crowds. Frontman Sam Canty commands the audience with intense charisma, bridging the gap between roots storyteller and stadium rock frontman. Their touring schedule remains relentless, proving that live performance mastery remains the ultimate foundation for sustainable music careers.",
+        "* Unfiltered Stage Energy: Shows feature non-stop song transitions, thunderous basslines, and heavy guitar solos that keep crowds engaged from start to finish.",
+        "* Intimate Audience Connection: The band frequently interacts with fans directly, maintaining an approachable blue-collar ethos both on and off stage.",
+        "* Dynamic Setlist Curation: Live performances seamlessly alternate between fast-paced rock anthems and emotional, acoustic-driven ballads.",
+        "* Relentless Tour Schedule: Performing over one hundred dates annually across clubs, halls, and major music festivals keeps their fanbase expanding steadily.",
+        "This commitment to live excellence ensures that first-time attendees quickly transform into lifelong followers. As concert tickets sell out months in advance, Treaty Oak Revival continues to redefine what audience engagement looks like for independent touring bands.",
+        "## Redefining the Boundaries of Modern Independent Country",
+        "Treaty Oak Revival stands at the vanguard of a movement that is dismantling long-held genre divisions within southern music. By merging heavy distortion and punk pacing with traditional country narrative themes, they provide a soundtrack for a younger demographic raised on diverse musical genres. Their success underscores a broader shift where streaming platforms allow independent artists to build massive, profitable empires without surrendering creative control to commercial radio programmers. The band rise demonstrates that authenticity and uncompromising volume can achieve massive commercial viability on their own terms. They represent the vibrant future of DIY music culture in North America.",
+        "Treaty Oak Revival proves that heavy guitars and honest roots storytelling remain the ultimate recipe for independent music success.",
+        "## Conclusion",
+        "Treaty Oak Revival has carved out an unmistakable niche within the American roots and southern rock landscape through relentless work ethic and fierce creative independence. Their ability to blend gritty country songwriting with heavy, punk-infused instrumentation has captured the imagination of a rapidly growing national audience. As they continue to headline major venues, the West Texas quintet is setting a new benchmark for independent musicians everywhere.",
+        "Their trajectory proves that listener loyalty cannot be bought through traditional marketing gimmicks or pop formulas. By staying true to their West Texas identity, Treaty Oak Revival has sparked a genuine movement across the country scene. Their future remains bright as they push the boundaries of modern rock and Red Dirt music."
+    ],
+    "faqs": [
+        {
+            "question": "Where is Treaty Oak Revival from?",
+            "answer": "Treaty Oak Revival originated in West Texas, drawing heavy musical inspiration from the Permian Basin region and the broader Texas Red Dirt scene."
+        },
+        {
+            "question": "What genre of music does Treaty Oak Revival play?",
+            "answer": "The band plays a unique fusion of Red Dirt country, punk rock, and southern hard rock, defined by driving guitar riffs and raspy vocal melodies."
+        },
+        {
+            "question": "Who is the lead singer of Treaty Oak Revival?",
+            "answer": "Sam Canty serves as the lead vocalist and rhythm guitarist for Treaty Oak Revival, leading the band with his powerful and distinct vocal style."
+        }
+    ],
+    "category": "celebrity",
+    "author": {
+        "name": "Elena Rostova",
+        "role": "Pop Culture & Design Lead",
+        "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80"
+    },
+    "publishedAt": "Sep 17, 2026",
+    "readTime": "6 min read",
+    "imageUrl": "https://images.unsplash.com/photo-1603097121892-709f30dd2f29?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDU5NTUzfDB8MXxzZWFyY2h8MXx8dHJlYXR5JTIwb2FrJTIwcmV2aXZhbHxlbnwwfDB8fHwxNzg5NjQ3OTQ5fDA&ixlib=rb-4.1.0&q=80&w=1080&sig=treaty-oak-revival_1789647949762",
+    "imageAlt": "brown fruit on green leaves during daytime - treaty oak revival",
+    "imageCaption": "Oak",
+    "featured": true,
+    "trending": true,
+    "tags": [
+        "TREATY",
+        "OAK",
+        "MAGAZINE",
+        "CELEBRITY"
+    ]
+},
+  {
     "id": "art-water-heater-repair",
     "slug": "water-heater-repair",
     "title": "Practical Water Heater Repair Solutions for Modern Homes",
