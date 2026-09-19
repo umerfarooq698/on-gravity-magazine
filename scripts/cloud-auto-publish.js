@@ -90,9 +90,11 @@ async function syncWithGoogleSheet(queueData) {
       const sheetItems = parseCsvLines(csvText);
       const existingKeywords = new Set(queueData.map(q => q.keyword.toLowerCase().trim()));
 
+      const BANNED_KEYWORDS = new Set(["sativa vs indica"]);
       let addedCount = 0;
       for (const item of sheetItems) {
         const cleanKw = item.keyword.toLowerCase().trim();
+        if (BANNED_KEYWORDS.has(cleanKw)) continue;
         if (!existingKeywords.has(cleanKw)) {
           queueData.push({
             id: `kw-${queueData.length + 1}`,
