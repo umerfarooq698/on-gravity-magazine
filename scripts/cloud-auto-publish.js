@@ -455,6 +455,12 @@ function parseGeminiMarkdown(rawText, keyword) {
 async function runAutoPublish() {
   console.log("=== ON GRAVITY CLOUD AUTO-PUBLISHER ===");
 
+  const AUTO_PUBLISH_ENABLED = false; // Master switch: turned OFF by admin to allow existing pages to index
+  if (!AUTO_PUBLISH_ENABLED && process.env.FORCE_PUBLISH !== 'true') {
+    console.log("[PAUSED] Auto-publishing is currently PAUSED/OFF. No new articles will be published. Exiting peacefully.");
+    process.exit(0);
+  }
+
   let queueData = [];
   if (fs.existsSync(QUEUE_FILE)) {
     queueData = JSON.parse(fs.readFileSync(QUEUE_FILE, 'utf-8'));

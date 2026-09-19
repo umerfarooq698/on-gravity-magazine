@@ -1,10 +1,8 @@
 name: Auto Publish On Gravity Articles
 
+# Automatic schedule disabled by user request (only manual workflow_dispatch remains available)
 on:
-  schedule:
-    # Checks every 30 minutes on off-peak minutes to publish 1 article every 12 hours
-    - cron: '17,47 * * * *'
-  workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
+  workflow_dispatch: # Allows manual trigger only if explicitly started by admin
 
 permissions:
   contents: write
