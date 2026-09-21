@@ -23,6 +23,9 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   return {
     title: `${category.name.replace(/&/g, "and")} News and Trends`,
     description: formatMetaDescription(category.description),
+    alternates: {
+      canonical: `/category/${category.slug}`,
+    },
   };
 }
 
