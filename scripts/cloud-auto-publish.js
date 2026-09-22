@@ -90,7 +90,7 @@ async function syncWithGoogleSheet(queueData) {
       const sheetItems = parseCsvLines(csvText);
       const existingKeywords = new Set(queueData.map(q => q.keyword.toLowerCase().trim()));
 
-      const BANNED_KEYWORDS = new Set(["sativa vs indica"]);
+      const BANNED_KEYWORDS = new Set(["sativa vs indica", "e-hentai", "e hentai", "hentai"]);
       let addedCount = 0;
       for (const item of sheetItems) {
         const cleanKw = item.keyword.toLowerCase().trim();
@@ -283,9 +283,17 @@ function validateAndCleanInternalLinks(paragraphs, validSlugsSet) {
 
 function getSystemPrompt(validSlugsSet) {
   const validSlugsList = Array.from(validSlugsSet).map(s => `/${s}`).join(", ");
-  return `You are an expert SEO editor and senior journalist for On Gravity Magazine.
+  return `You are an expert SEO editor and senior investigative journalist for On Gravity Magazine.
 
-Your objective is to write a comprehensive, 100% unique, highly SEO-optimized, publication-ready article based on the submitted keyword/topic.
+Your objective is to write a comprehensive, 100% unique, authoritative, highly SEO-optimized, publication-ready INFORMATIONAL article based on the submitted keyword/topic.
+
+SEARCH INTENT & INFORMATIONAL CONTENT MANDATE (CRITICAL):
+- The content MUST strictly serve INFORMATIONAL intent: educate the reader, provide structured insights, deep explanations, objective analysis, practical tips, and expert perspectives.
+- AVOID shallow summaries, promotional copy, or sales pitches.
+- Answer the reader's core questions thoroughly:
+  * Address "What is it?", "Why does it matter?", "How does it work?", and "Who benefits most?".
+  * Provide practical, step-by-step guidance, actionable advice, best practices, and common mistakes to avoid.
+  * Establish On Gravity Magazine as a trustworthy, authoritative reference meeting high Google E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness) standards.
 
 STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
 
@@ -455,7 +463,7 @@ function parseGeminiMarkdown(rawText, keyword) {
 async function runAutoPublish() {
   console.log("=== ON GRAVITY CLOUD AUTO-PUBLISHER ===");
 
-  const AUTO_PUBLISH_ENABLED = false; // Master switch: turned OFF by admin to allow existing pages to index
+  const AUTO_PUBLISH_ENABLED = true; // Master switch: enabled for 24-hour cadence (1 article per day)
   if (!AUTO_PUBLISH_ENABLED && process.env.FORCE_PUBLISH !== 'true') {
     console.log("[PAUSED] Auto-publishing is currently PAUSED/OFF. No new articles will be published. Exiting peacefully.");
     process.exit(0);
@@ -469,7 +477,7 @@ async function runAutoPublish() {
   // 1. Sync live keywords from Google Sheet
   queueData = await syncWithGoogleSheet(queueData);
 
-  // 2. Strict 12-Hour Cadence Guard (at least 11.5 - 12 hours gap between consecutive publishes)
+  // 2. Strict 24-Hour Cadence Guard (at least 23 hours gap between consecutive publishes)
   const nowUtc = new Date();
   const isForce = process.env.FORCE_PUBLISH === 'true';
 
@@ -481,11 +489,11 @@ async function runAutoPublish() {
     if (sortedPublished.length > 0) {
       const lastPublishedTime = new Date(sortedPublished[0].publishedAt).getTime();
       const elapsedMinutes = (nowUtc.getTime() - lastPublishedTime) / (1000 * 60);
-      const MIN_INTERVAL_MINUTES = 690; // 11.5 hours gap for 12-hour cadence
+      const MIN_INTERVAL_MINUTES = 1380; // 23 hours gap for 24-hour cadence (1 article per day)
       if (elapsedMinutes < MIN_INTERVAL_MINUTES) {
         const elapsedHours = (elapsedMinutes / 60).toFixed(1);
         const remainingHours = ((MIN_INTERVAL_MINUTES - elapsedMinutes) / 60).toFixed(1);
-        console.log(`[SCHEDULE GATING] Only ${elapsedHours} hours have passed since the last published article ("${sortedPublished[0].keyword}"). Next article will publish in ~${remainingHours} hours (12-hour cadence). Exiting peacefully.`);
+        console.log(`[SCHEDULE GATING] Only ${elapsedHours} hours have passed since the last published article ("${sortedPublished[0].keyword}"). Next article will publish in ~${remainingHours} hours (24-hour cadence). Exiting peacefully.`);
         process.exit(0);
       }
     }

@@ -201,7 +201,9 @@
     "id": "kw-26",
     "keyword": "soul food near me",
     "category": "food",
-    "status": "pending"
+    "status": "published",
+    "publishedAt": "2026-09-22T09:36:56.219Z",
+    "generatedArticleSlug": "soul-food-near-me"
   },
   {
     "id": "kw-27",
@@ -213,7 +215,7 @@
     "id": "kw-28",
     "keyword": "e-hentai",
     "category": "life-style",
-    "status": "pending"
+    "status": "skipped"
   },
   {
     "id": "kw-29",

@@ -1,8 +1,10 @@
 name: Auto Publish On Gravity Articles
 
-# Automatic schedule disabled by user request (only manual workflow_dispatch remains available)
 on:
-  workflow_dispatch: # Allows manual trigger only if explicitly started by admin
+  schedule:
+    # Runs daily every 24 hours at 06:00 UTC (11:00 AM PKT)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allows manual trigger if explicitly started by admin
 
 permissions:
   contents: write
