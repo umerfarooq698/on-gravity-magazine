@@ -16,7 +16,7 @@ interface HomePageFeedProps {
 
 export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
   const [allArticles, setAllArticles] = useState<Article[]>(initialArticles);
-  const [visibleCount, setVisibleCount] = useState<number>(18);
+  const [visibleCount, setVisibleCount] = useState<number>(36);
 
   const refreshArticles = () => {
     const customArticles = getCustomArticlesFromStorage();
