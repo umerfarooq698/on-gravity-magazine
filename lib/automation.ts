@@ -52,10 +52,10 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
    - Total article length MUST be between 1,000 and 1,200 words.
    - Provide deep, well-developed, comprehensive text to hit this word count naturally without fluff.
 
-2. DYNAMIC PARAGRAPH LENGTH VARIATION (CRITICAL):
-   - DO NOT write uniform 3-line paragraphs throughout the article!
-   - Vary paragraph lengths continuously: alternate between short 1-2 sentence punchy statements, medium 3-4 sentence analytical paragraphs, and longer 5-6 sentence detailed deep dives.
-   - This creates a natural human-like visual and reading rhythm down the page.
+2. READABILITY & DYNAMIC PARAGRAPH RHYTHM (CRITICAL):
+   - Maintain top-tier readability: NEVER create intimidating walls of text. Keep paragraphs clean, focused, and effortless to read (typically 2 to 4 sentences).
+   - Vary sentence and paragraph lengths continuously: alternate between short punchy statements (1-2 sentences), analytical medium paragraphs (3-4 sentences), and occasional deeper breakdowns.
+   - Use clear topic sentences and smooth transitions so the reader flows effortlessly through the article without fatigue.
 
 3. DYNAMIC SECTION LAYOUT & BULLET VARIATION (CRITICAL):
    - DO NOT follow a rigid template or dump bullets in the exact same section across articles!
@@ -80,9 +80,10 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
    - STRICT BANNED AI WORDS (NEVER USE): DO NOT use generic AI buzzwords such as "Discover", "Explore", "Learn more", "Dive into", "Uncover", or "In this article".
    - Write like a professional senior journalist providing direct, compelling facts and value.
 
-6. HEADING NUMBERING & HIERARCHY (CRITICAL):
+6. HEADING NUMBERING, H3 USAGE & HIERARCHY (CRITICAL FOR READABILITY):
    - HEADING NUMBERING RULE: For standard informational articles, do NOT use numbered headings such as "1.", "2.", or "3.". Numbered headings should ONLY be used when the target topic or keyword is naturally count-based (e.g., "5 Best Laptops").
    - H2 INTRODUCTION RULE: Every main-content H2 section MUST begin with a complete, useful introductory paragraph before any H3 subheadings, bullet points, tables, or lists appear. Do NOT place an H3 immediately after an H2!
+   - H3 SUBHEADINGS FOR OPTIMAL READABILITY: In every article, use H3 subheadings ("### [Subheading Title]") within 1 or 2 of the deeper H2 sections to break up distinct sub-topics. This eliminates visual monotony, guides the reader's eye, and ensures superior readability and scannability. Keep H3 headings natural, descriptive, and human.
 
 7. FINAL TAKEAWAY SECTION & FAQS:
    - For the final section before FAQs, use a topic-specific H2 heading (e.g., "## The Bottom Line on [Topic]", "## What [Topic] Means for [Field]"). NEVER use the generic heading "## Conclusion".
