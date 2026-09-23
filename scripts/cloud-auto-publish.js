@@ -345,10 +345,21 @@ GOOGLE E-E-A-T & ANTI-ROBOTIC EDITORIAL MANDATE (CRITICAL):
    - Cite industry realities, historical context, or standard benchmarks where relevant to build deep domain credibility.
    - Zero sales pitches, zero superficial clickbait, zero promotional fluff.
 
-4. STRICT BANNED AI & ROBOTIC VOCABULARY (NEVER USE ANY OF THESE WORDS):
-   - NEVER use dead-giveaway AI clichés:
-     "delve", "delving", "tapestry", "testament", "beacon", "game-changer", "revolutionize", "revolutionizing", "plethora", "myriad", "furthermore", "moreover", "in today's fast-paced world", "in today's digital age", "navigating the landscape of", "it is important to remember", "a multifaceted approach", "crucial role", "vital role", "seamless", "seamlessly", "elevate", "foster", "unlock", "harness", "in conclusion", "in summary".
-   - Use direct, punchy, active, natural human language.
+4. STRICT BANNED AI & ROBOTIC VOCABULARY AND HEADING FORMULAS (CRITICAL):
+   - NEVER use dead-giveaway AI clichés in text:
+     "delve", "delving", "tapestry", "testament", "beacon", "game-changer", "revolutionize", "revolutionizing", "plethora", "myriad", "furthermore", "moreover", "in today's fast-paced world", "in today's digital age", "navigating the landscape of", "it is important to remember", "a multifaceted approach", "crucial role", "vital role", "seamless", "seamlessly", "elevate", "foster", "unlock", "harness", "in conclusion", "in summary", "at the end of the day".
+   - NEVER use repetitive, formulaic AI headings. STRICTLY BANNED heading patterns:
+     * "Understanding [Topic]..."
+     * "The Reality of [Topic]..."
+     * "Decoding [Topic]..."
+     * "The Fundamentals of [Topic]..."
+     * "Identifying Key Pillars of..."
+     * "Critical Variables for..."
+     * "A Step-by-Step Method to..."
+     * "The Landscape of..."
+     * "Essential Strategies for..."
+     * NEVER name your final section "## Conclusion"! Use a specific, natural title (e.g., "## The Bottom Line on [Topic]", "## Keeping [Topic] Reliable for the Long Haul", "## Final Thoughts on [Topic]").
+   - Write headings like an experienced journalist at The New York Times, The Atlantic, or Wirecutter: direct, punchy, conversational, descriptive, and engaging.
 
 STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
 
@@ -361,12 +372,14 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
    - Vary paragraph lengths continuously: alternate between short 1-2 sentence punchy statements, medium 3-4 sentence analytical paragraphs, and longer 5-6 sentence detailed deep dives.
    - This creates a natural human-like visual and reading rhythm down the page.
 
-3. DYNAMIC SECTION LAYOUT VARIATIONS:
-   - Avoid repetitive heading patterns across articles. Vary layout per section:
-     * Section A: H2 heading followed directly by 2 to 3 paragraphs of varying lengths with NO H3 subheadings.
-     * Section B: H2 heading with an introductory paragraph, followed by 2 distinct H3 subheadings (with 1 short and 1 long paragraph each).
-     * Section C: H2 heading with a detailed paragraph, followed by a bulleted list of key features/takeaways, concluded by a short summary paragraph.
-     * Section D: H2 heading with 1 analytical paragraph and a single punchy takeaway sentence.
+3. DYNAMIC SECTION LAYOUT & BULLET VARIATION (CRITICAL):
+   - DO NOT follow a rigid template or dump bullets in the exact same section across articles!
+   - Every article must adopt one of these diverse editorial archetypes suited to the topic:
+     * Archetype 1 (Narrative Deep-Dive): Pure continuous prose across all sections with ZERO bullet points. Ideal for cultural topics, music, history, and analytical stories.
+     * Archetype 2 (Practical Step Guide): A numbered sequence (e.g., "1. ...", "2. ...") embedded inside an execution section, with narrative prose elsewhere.
+     * Archetype 3 (Field Checklist or Comparison): A concise bulleted checklist or material comparison (4 to 5 bullets) placed naturally where an actual list belongs.
+     * Archetype 4 (Diagnostic Framework): Direct subheadings addressing specific real-world scenarios with explanatory paragraphs and no forced bullet blocks.
+   - MANDATE: Bullet points should ONLY appear when presenting a genuine list (like tools, specs, or inspection criteria). Never force bullets into an article just to fill space. At least 40% of generated articles should contain ZERO bullet points!
 
 4. CLICKABLE SEO TITLE GENERATION (STRICT 55-60 CHARACTERS):
    - Create an irresistible, click-worthy title starting directly with "# ".
@@ -386,8 +399,8 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
    - HEADING NUMBERING RULE: For standard informational articles, do NOT use numbered headings such as "1.", "2.", or "3.". Numbered headings should ONLY be used when the target topic or keyword is naturally count-based (e.g., "5 Best Laptops").
    - H2 INTRODUCTION RULE: Every main-content H2 section MUST begin with a complete, useful introductory paragraph before any H3 subheadings, bullet points, tables, or lists appear. Do NOT place an H3 immediately after an H2!
 
-7. CONCLUSION & FAQS:
-   - Include a dedicated "## Conclusion" section.
+7. FINAL TAKEAWAY SECTION & FAQS:
+   - For the final section before FAQs, use a topic-specific H2 heading (e.g., "## The Bottom Line on [Topic]", "## What [Topic] Means for [Field]"). NEVER use the generic heading "## Conclusion".
    - Include a dedicated "## Frequently Asked Questions" section with 2-3 FAQs formatted as:
      ### Q: [Short Question]
      A: [Short Answer]
