@@ -266,23 +266,63 @@ function getExistingPublishedSlugs(articlesFileContent) {
   return slugs;
 }
 
-function validateAndCleanInternalLinks(paragraphs, validSlugsSet) {
-  return paragraphs.map(p => {
+function postProcessNaturalInternalLinks(paragraphs, validSlugsSet) {
+  // 1. Clean em-dashes and strip any rogue markdown links Gemini may have output
+  const cleanedParas = paragraphs.map(p => {
     let cleaned = p.replace(/—/g, ", ").replace(/--/g, ", ");
-    return cleaned.replace(/\[([^\]]+)\]\(\/([a-z0-9-]+)\)/gi, (match, anchorText, targetSlug) => {
-      const cleanSlug = targetSlug.toLowerCase().trim();
-      if (validSlugsSet.has(cleanSlug)) {
-        return `[${anchorText}](/${cleanSlug})`;
-      } else {
-        console.warn(`Stripping non-existent internal link: [${anchorText}](/${cleanSlug})`);
-        return anchorText;
+    return cleaned.replace(/\[([^\]]+)\]\([^)]+\)/gi, "$1");
+  });
+
+  // 2. Prepare target phrases from valid slugs (excluding numbers, formatting to natural text)
+  const targets = [];
+  for (const slug of validSlugsSet) {
+    const phrase = slug.replace(/-\d+$/, "").replace(/-/g, " ").toLowerCase().trim();
+    if (phrase.length >= 4) {
+      targets.push({ phrase, slug });
+    }
+  }
+  // Sort longest phrase first so specific matches take precedence
+  targets.sort((a, b) => b.phrase.length - a.phrase.length);
+
+  let insertedCount = 0;
+  const MAX_LINKS = 2;
+  const usedSlugs = new Set();
+
+  return cleanedParas.map(para => {
+    // Skip headings, list items, FAQs, or if max links reached
+    if (
+      insertedCount >= MAX_LINKS ||
+      para.startsWith("#") ||
+      para.startsWith("*") ||
+      para.startsWith("-") ||
+      para.startsWith("### Q:") ||
+      para.startsWith("A:")
+    ) {
+      return para;
+    }
+
+    let modified = para;
+    for (const target of targets) {
+      if (insertedCount >= MAX_LINKS) break;
+      if (usedSlugs.has(target.slug)) continue;
+
+      const escaped = target.phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regex = new RegExp(`\\b(${escaped})\\b`, "i");
+
+      if (regex.test(modified)) {
+        // Natural match found! Wrap only this existing natural phrase:
+        modified = modified.replace(regex, (match) => `[${match}](/${target.slug})`);
+        usedSlugs.add(target.slug);
+        insertedCount++;
+        console.log(`Naturally linked existing phrase "${target.phrase}" -> /${target.slug}`);
+        break; // max 1 link per paragraph
       }
-    });
+    }
+    return modified;
   });
 }
 
-function getSystemPrompt(validSlugsSet) {
-  const validSlugsList = Array.from(validSlugsSet).map(s => `/${s}`).join(", ");
+function getSystemPrompt() {
   return `You are a distinguished senior investigative journalist and subject-matter editor for On Gravity Magazine.
 
 Your mission is to write an authentic, human-written, highly authoritative, 100% original, publication-ready article grounded in genuine GOOGLE E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness).
@@ -352,12 +392,10 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
      ### Q: [Short Question]
      A: [Short Answer]
 
-8. NATURAL INTERNAL LINKING (STRICT OPTIONAL & VALIDATION):
-   - Internal linking is STRICTLY OPTIONAL.
-   - ONLY include an internal link if a phrase in your content naturally and contextually relates to one of these ALREADY PUBLISHED slugs: [${validSlugsList}].
-   - NEVER force unrelated keywords or sentences into the article just to create a link.
-   - If there is no genuine, natural topical fit with any published slug, output ZERO (0) internal links. Quality and natural reading flow are top priority.
-   - DO NOT invent or link to any other non-existent slugs!
+8. STRICT NO LINKS MANDATE (CRITICAL):
+   - DO NOT insert any markdown links [anchor](url) or web URLs anywhere in the title, headings, excerpt, or paragraphs.
+   - Write 100% pure editorial content. Do not attempt to link to external websites or other articles.
+   - Editorial focus must remain purely on natural journalistic depth.
 
 9. STRICT BANNED PUNCTUATION (CRITICAL):
    - NEVER use em-dashes ("—") or double dashes ("--") anywhere in the title, excerpt, headings, or content paragraphs. Use standard commas, parentheses, or periods instead.
@@ -365,14 +403,14 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
 Start directly with # [Generated Title].`;
 }
 
-async function generateArticleWithGemini(keyword, validSlugsSet) {
+async function generateArticleWithGemini(keyword) {
   const count = extractCountFromKeyword(keyword);
   let listicleInstruction = "";
   if (count) {
     listicleInstruction = `\n\nCRITICAL COUNT INSTRUCTION: The keyword asks for "${count}" items. You MUST create exactly ${count} main item headings (using "## 1. [Item]", "## 2. [Item]" up to "## ${count}. [Item]") with H3 sub-sections under each item and write full, informative paragraphs under EACH section to reach 1,000 to 1,200 words!`;
   }
 
-  const promptText = `${getSystemPrompt(validSlugsSet)}${listicleInstruction}\n\nSubmitted Keyword / Topic: "${keyword}"\n[Target Word Count: 1000-1200 words]`;
+  const promptText = `${getSystemPrompt()}${listicleInstruction}\n\nSubmitted Keyword / Topic: "${keyword}"\n[Target Word Count: 1000-1200 words]`;
 
   for (let attempt = 1; attempt <= 6; attempt++) {
     for (const modelName of GEMINI_MODELS) {
@@ -398,7 +436,6 @@ async function generateArticleWithGemini(keyword, validSlugsSet) {
           if (text && text.trim().length > 200) {
             console.log(`Successfully generated article with Gemini API model ${modelName}! Length: ${text.length}`);
             const parsed = parseGeminiMarkdown(text, keyword);
-            parsed.paragraphs = validateAndCleanInternalLinks(parsed.paragraphs, validSlugsSet);
             return parsed;
           }
         } else {
@@ -531,8 +568,9 @@ async function runAutoPublish() {
 
   const validSlugsSet = getExistingPublishedSlugs(articlesFileContent);
 
-  console.log(`Generating article with Gemini API for "${item.keyword}"...`);
-  const generated = await generateArticleWithGemini(item.keyword, validSlugsSet);
+  console.log(`Generating pure editorial article with Gemini API for "${item.keyword}"...`);
+  const generated = await generateArticleWithGemini(item.keyword);
+  generated.paragraphs = postProcessNaturalInternalLinks(generated.paragraphs, validSlugsSet);
 
   console.log(`Fetching Unsplash image for "${item.keyword}"...`);
   const image = await fetchUnsplashImage(item.keyword, normalizeCategory(item.category), usedPhotoIds);
