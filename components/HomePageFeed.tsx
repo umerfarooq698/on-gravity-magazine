@@ -112,7 +112,8 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
                         src={item.imageUrl}
                         alt={item.title}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        draggable={false}
+                        className="object-cover group-hover:scale-105 transition-transform duration-300 select-none"
                         sizes="80px"
                       />
                     </div>

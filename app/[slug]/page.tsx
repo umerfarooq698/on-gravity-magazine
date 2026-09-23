@@ -351,7 +351,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               src={article.imageUrl}
               alt={article.imageAlt || article.title}
               fill
-              className="object-cover"
+              draggable={false}
+              className="object-cover select-none"
               priority
               fetchPriority="high"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 896px"

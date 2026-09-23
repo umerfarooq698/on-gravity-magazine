@@ -18,23 +18,28 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
   if (variant === "featured") {
     return (
       <article className="group relative bg-slate-950 rounded-xs overflow-hidden shadow-2xl flex flex-col justify-end min-h-[440px] sm:min-h-[520px] border-b-4 border-red-600">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0 bg-slate-900">
+        {/* Background Image - Clickable Link to Article */}
+        <Link
+          href={articleUrl}
+          className="absolute inset-0 z-0 bg-slate-900 block cursor-pointer"
+          aria-label={article.title}
+        >
           <Image
             src={article.imageUrl}
             alt={article.title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-90"
+            draggable={false}
+            className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-90 select-none"
             sizes="(max-width: 640px) 100vw, (max-width: 1200px) 66vw, 800px"
             priority
             fetchPriority="high"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent" />
-        </div>
+        </Link>
 
         {/* Content */}
-        <div className="relative z-10 p-6 sm:p-10 space-y-4 text-white">
-          <div className="flex items-center gap-3 flex-wrap">
+        <div className="relative z-10 p-6 sm:p-10 space-y-4 text-white pointer-events-none">
+          <div className="flex items-center gap-3 flex-wrap pointer-events-auto">
             <span className="px-3 py-1 text-xs font-black uppercase tracking-widest bg-red-600 text-white rounded-xs shadow-sm">
               {category?.name || article.category}
             </span>
@@ -45,13 +50,13 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
             <span className="text-xs text-slate-400 font-medium">• {article.publishedAt}</span>
           </div>
 
-          <h2 className="font-sans text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white group-hover:text-red-400 transition-colors uppercase">
+          <h2 className="font-sans text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white group-hover:text-red-400 transition-colors uppercase pointer-events-auto">
             <Link href={articleUrl} className="text-white hover:text-red-400">
               {article.title}
             </Link>
           </h2>
 
-          <div className="pt-2 flex items-center justify-between">
+          <div className="pt-2 flex items-center justify-between pointer-events-auto">
             <Link
               href={`/author/${getAuthorSlug(article.author.name)}`}
               className="flex items-center gap-3 group/author hover:opacity-90 transition-opacity"
@@ -61,6 +66,7 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
                 alt={article.author.name}
                 width={40}
                 height={40}
+                draggable={false}
                 className="rounded-full border-2 border-red-600 object-cover"
               />
               <div>
@@ -87,15 +93,21 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
   if (variant === "horizontal") {
     return (
       <article className="group flex flex-col sm:flex-row gap-4 p-4 rounded-xs bg-white dark:bg-slate-900 border-l-4 border-red-600 border-y border-r border-slate-200 dark:border-slate-800 transition-all hover:shadow-lg">
-        <div className="relative w-full sm:w-48 h-44 sm:h-auto rounded-xs overflow-hidden shrink-0 bg-slate-200 dark:bg-slate-800">
+        {/* Clickable Image Link */}
+        <Link
+          href={articleUrl}
+          className="relative w-full sm:w-48 h-44 sm:h-auto rounded-xs overflow-hidden shrink-0 bg-slate-200 dark:bg-slate-800 block cursor-pointer"
+          aria-label={article.title}
+        >
           <Image
             src={article.imageUrl}
             alt={article.title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            draggable={false}
+            className="object-cover group-hover:scale-105 transition-transform duration-500 select-none"
             sizes="(max-width: 640px) 100vw, 200px"
           />
-        </div>
+        </Link>
 
         <div className="flex flex-col justify-between space-y-2 flex-1">
           <div className="space-y-1.5">
@@ -131,20 +143,26 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
   // Standard Card
   return (
     <article className="group flex flex-col bg-white dark:bg-slate-900 rounded-xs overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-red-600 dark:hover:border-red-600 transition-all hover:shadow-xl border-t-2 border-t-red-600">
-      <div className="relative w-full aspect-16/10 overflow-hidden bg-slate-200 dark:bg-slate-800">
+      {/* Clickable Image Link to Article */}
+      <Link
+        href={articleUrl}
+        className="relative w-full aspect-16/10 overflow-hidden bg-slate-200 dark:bg-slate-800 block cursor-pointer group/img"
+        aria-label={article.title}
+      >
         <Image
           src={article.imageUrl}
           alt={article.title}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          draggable={false}
+          className="object-cover group-hover:scale-105 transition-transform duration-500 select-none"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <div className="absolute top-2 left-2">
+        <div className="absolute top-2 left-2 pointer-events-none">
           <span className="px-2.5 py-0.5 text-[10px] font-black uppercase tracking-widest bg-red-600 text-white shadow-md rounded-xs">
             {category?.name || article.category}
           </span>
         </div>
-      </div>
+      </Link>
 
       <div className="p-4 flex flex-col justify-between flex-1 space-y-3">
         <div className="space-y-2">
@@ -172,6 +190,7 @@ export default function ArticleCard({ article, variant = "standard" }: ArticleCa
               alt={article.author.name}
               width={24}
               height={24}
+              draggable={false}
               className="rounded-full object-cover border border-slate-300 dark:border-slate-700"
             />
             <span className="font-bold text-slate-800 dark:text-slate-200 group-hover/author:text-red-600 dark:group-hover/author:text-red-500">
