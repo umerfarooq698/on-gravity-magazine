@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     default: "On Gravity Magazine | Independent Journalism and Culture",
     template: "%s | On Gravity Magazine",
   },
-  description: formatMetaDescription("Explore in-depth reporting across Tech, Celebrity, Life Style, Health, Business, News, and Food on On Gravity Magazine."),
+  description: formatMetaDescription("Independent journalism delivering verified reporting, sharp cultural commentary, technology investigations, and practical lifestyle guides."),
   keywords: ["Magazine", "Blogs", "Tech", "Celebrity", "Lifestyle", "Health", "Business", "News", "Food"],
   robots: {
     index: true,
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     url: baseUrl,
     siteName: "On Gravity Magazine",
     title: "On Gravity Magazine | Independent Journalism and Culture",
-    description: formatMetaDescription("Explore in-depth reporting across Tech, Celebrity, Life Style, Health, Business, News, and Food on On Gravity Magazine."),
+    description: formatMetaDescription("Independent journalism delivering verified reporting, sharp cultural commentary, technology investigations, and practical lifestyle guides."),
     images: [
       {
         url: `${baseUrl}/on-gravity-logo.png`,
@@ -78,7 +78,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "On Gravity Magazine | Independent Journalism and Culture",
-    description: formatMetaDescription("Explore in-depth reporting across Tech, Celebrity, Life Style, Health, Business, News, and Food on On Gravity Magazine."),
+    description: formatMetaDescription("Independent journalism delivering verified reporting, sharp cultural commentary, technology investigations, and practical lifestyle guides."),
     images: [`${baseUrl}/on-gravity-logo.png`],
   },
 };

@@ -17,13 +17,13 @@ export async function generateMetadata({ params }: AuthorPageProps) {
   const author = getAuthorBySlug(slug);
 
   return {
-    title: `${author.name} - Author Profile`,
-    description: `Read all articles, features, and columns written by ${author.name} (${author.role}) on On Gravity Magazine.`,
+    title: `${author.name} | Staff Writer Profile`,
+    description: `${author.name} is the ${author.role} for On Gravity Magazine. Browse verified journalism, columns, and reported analysis.`,
     alternates: {
       canonical: `/author/${author.slug}`,
     },
     openGraph: {
-      title: `${author.name} - Author Profile`,
+      title: `${author.name} | Staff Writer Profile`,
       description: author.bio,
       type: "profile",
       images: [{ url: author.avatar }],

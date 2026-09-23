@@ -18,7 +18,7 @@ export const AUTHORS: Author[] = [
     name: "Marcus Vance",
     role: "Chief Business & Technology Editor",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-    bio: "Marcus covers high-tech innovation, industrial design, corporate strategy, and first-principles engineering breakthroughs across global markets.",
+    bio: "Marcus reports on hardware engineering, enterprise software systems, corporate strategy, and global market shifts.",
     location: "San Francisco, CA",
     socials: {
       twitter: "https://twitter.com",
@@ -30,7 +30,7 @@ export const AUTHORS: Author[] = [
     name: "Elena Rostova",
     role: "Pop Culture & Design Lead",
     avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
-    bio: "Elena specializes in contemporary architecture, interior design trends, pop culture movements, and luxury lifestyle features.",
+    bio: "Elena covers architectural history, contemporary interior planning, pop culture criticism, and artistic movements.",
     location: "London, UK",
     socials: {
       twitter: "https://twitter.com",
@@ -42,7 +42,7 @@ export const AUTHORS: Author[] = [
     name: "Sophia Chen",
     role: "Senior Lifestyle & Wellness Columnist",
     avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80",
-    bio: "Sophia writes in-depth guides on modern home design, ergonomic living, health benchmarks, and domestic utility solutions.",
+    bio: "Sophia delivers actionable guides on ergonomic home design, domestic engineering, culinary traditions, and wellness routines.",
     location: "New York, NY",
     socials: {
       twitter: "https://twitter.com",
