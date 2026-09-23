@@ -639,31 +639,15 @@ async function runAutoPublish() {
 
 async function pingSearchEnginesForIndexing(slug) {
   const url = `https://www.ongravitymagazine.com/${slug}`;
-  const sitemapUrl = `https://www.ongravitymagazine.com/sitemap.xml`;
   console.log(`Triggering instant Search Engine Indexing ping for: ${url}`);
 
   try {
-    const indexNowPayload = {
-      host: "www.ongravitymagazine.com",
-      key: "a65080e03104882ba93c502e351f98c1",
-      keyLocation: "https://www.ongravitymagazine.com/a65080e03104882ba93c502e351f98c1.txt",
-      urlList: [url, sitemapUrl]
-    };
-    const res = await fetch("https://api.indexnow.org/indexnow", {
-      method: "POST",
-      headers: { "Content-Type": "application/json; charset=utf-8" },
-      body: JSON.stringify(indexNowPayload)
-    });
-    console.log(`IndexNow Instant Indexing Ping Status: ${res.status}`);
+    const { pingGoogleWebSub, pingIndexNow, getAllPublishedUrls } = require('./instant-index-ping.js');
+    await pingGoogleWebSub();
+    const allUrls = getAllPublishedUrls();
+    await pingIndexNow(allUrls);
   } catch (err) {
-    console.warn("IndexNow ping warning:", err.message);
-  }
-
-  try {
-    const gRes = await fetch(`https://www.google.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`);
-    console.log(`Google Sitemap Ping Status: ${gRes.status}`);
-  } catch (err) {
-    console.warn("Google sitemap ping warning:", err.message);
+    console.warn("Auto-indexing ping warning:", err.message);
   }
 }
 
