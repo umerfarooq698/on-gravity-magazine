@@ -358,7 +358,7 @@ GOOGLE E-E-A-T & ANTI-ROBOTIC EDITORIAL MANDATE (CRITICAL):
      * "A Step-by-Step Method to..."
      * "The Landscape of..."
      * "Essential Strategies for..."
-     * NEVER name your final section "## Conclusion"! Use a specific, natural title (e.g., "## The Bottom Line on [Topic]", "## Keeping [Topic] Reliable for the Long Haul", "## Final Thoughts on [Topic]").
+     * NEVER name your final section "## Conclusion", "## The Bottom Line", or "## Final Thoughts"! Use a specific, natural, topic-driven action or forward-looking heading.
    - Write headings like an experienced journalist at The New York Times, The Atlantic, or Wirecutter: direct, punchy, conversational, descriptive, and engaging.
 
 STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
@@ -367,9 +367,10 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
    - Total article length MUST be between 1,000 and 1,200 words.
    - Provide deep, well-developed, comprehensive text to hit this word count naturally without fluff.
 
-2. READABILITY & DYNAMIC PARAGRAPH RHYTHM (CRITICAL):
-   - Maintain top-tier readability: NEVER create intimidating walls of text. Keep paragraphs clean, focused, and effortless to read (typically 2 to 4 sentences).
-   - Vary sentence and paragraph lengths continuously: alternate between short punchy statements (1-2 sentences), analytical medium paragraphs (3-4 sentences), and occasional deeper breakdowns.
+2. READABILITY & STRICT SHORT PARAGRAPH RHYTHM (CRITICAL):
+   - Maintain top-tier readability: NEVER create intimidating walls of text.
+   - Keep paragraphs strictly short, focused, and effortless to read: EXACTLY 2 to 3 sentences per paragraph maximum!
+   - NEVER write a paragraph with 4 or more sentences. Break thoughts into clean, bite-sized blocks.
    - Use clear topic sentences and smooth transitions so the reader flows effortlessly through the article without fatigue.
 
 3. DYNAMIC SECTION LAYOUT & BULLET VARIATION (CRITICAL):
@@ -401,7 +402,7 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
    - H3 SUBHEADINGS FOR OPTIMAL READABILITY: In every article, use H3 subheadings ("### [Subheading Title]") within 1 or 2 of the deeper H2 sections to break up distinct sub-topics. This eliminates visual monotony, guides the reader's eye, and ensures superior readability and scannability. Keep H3 headings natural, descriptive, and human.
 
 7. FINAL TAKEAWAY SECTION & FAQS:
-   - For the final section before FAQs, use a topic-specific H2 heading (e.g., "## The Bottom Line on [Topic]", "## What [Topic] Means for [Field]"). NEVER use the generic heading "## Conclusion".
+   - For the final section before FAQs, use a topic-specific H2 heading (e.g., "## What [Topic] Means for [Field]", "## Long-Term Maintenance and Longevity"). NEVER use generic headings like "## Conclusion", "## The Bottom Line", or "## Final Thoughts".
    - Include a dedicated "## Frequently Asked Questions" section with 2-3 FAQs formatted as:
      ### Q: [Short Question]
      A: [Short Answer]
@@ -555,7 +556,7 @@ async function runAutoPublish() {
     if (sortedPublished.length > 0) {
       const lastPublishedTime = new Date(sortedPublished[0].publishedAt).getTime();
       const elapsedMinutes = (nowUtc.getTime() - lastPublishedTime) / (1000 * 60);
-      const MIN_INTERVAL_MINUTES = 1380; // 23 hours gap for 24-hour cadence (1 article per day)
+      const MIN_INTERVAL_MINUTES = 18 * 60; // 18 hours minimum gap (ensures exactly 1 per day without morning delay drift)
       if (elapsedMinutes < MIN_INTERVAL_MINUTES) {
         const elapsedHours = (elapsedMinutes / 60).toFixed(1);
         const remainingHours = ((MIN_INTERVAL_MINUTES - elapsedMinutes) / 60).toFixed(1);
