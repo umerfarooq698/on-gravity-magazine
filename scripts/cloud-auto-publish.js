@@ -556,7 +556,7 @@ async function runAutoPublish() {
     if (sortedPublished.length > 0) {
       const lastPublishedTime = new Date(sortedPublished[0].publishedAt).getTime();
       const elapsedMinutes = (nowUtc.getTime() - lastPublishedTime) / (1000 * 60);
-      const MIN_INTERVAL_MINUTES = 18 * 60; // 18 hours minimum gap (ensures exactly 1 per day without morning delay drift)
+      const MIN_INTERVAL_MINUTES = 16 * 60; // 16 hours minimum gap (guarantees exactly 1 per day and triggers smoothly at 9:23 AM PKT)
       if (elapsedMinutes < MIN_INTERVAL_MINUTES) {
         const elapsedHours = (elapsedMinutes / 60).toFixed(1);
         const remainingHours = ((MIN_INTERVAL_MINUTES - elapsedMinutes) / 60).toFixed(1);
