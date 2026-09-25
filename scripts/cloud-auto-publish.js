@@ -11,10 +11,13 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY || Buffer.from("QVEuQWI4Uk42SV
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY || "FLqjxtnt8-eGS9mpiB3-GMOvHhVAqT4_lQxyslYLO0A";
 
 const GEMINI_MODELS = [
-  "gemini-3.5-flash",
+  "gemini-3.5-flash-lite",
+  "gemini-3.1-flash-lite",
+  "gemini-flash-lite-latest",
+  "gemini-3.1-flash-lite-preview",
   "gemini-3.6-flash",
-  "gemini-flash-latest",
-  "gemini-3.8-flash"
+  "gemini-3.7-flash",
+  "gemini-3.5-flash"
 ];
 
 function getDeterministicHash(str) {
