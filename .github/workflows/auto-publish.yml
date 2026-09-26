@@ -6,7 +6,7 @@ on:
     # 04:23 UTC = 09:23 AM PKT (primary morning trigger on odd minute to avoid delays)
     # 06:47 UTC = 11:47 AM PKT (secondary fallback trigger)
     # 09:19 UTC = 02:19 PM PKT (afternoon fallback trigger)
-    # The script strictly enforces maximum 1 article per day via an 18-hour interval guard.
+    # The script strictly enforces 1 article every 2 days via a 40-hour minimum interval guard.
     - cron: '23 4 * * *'
     - cron: '47 6 * * *'
     - cron: '19 9 * * *'

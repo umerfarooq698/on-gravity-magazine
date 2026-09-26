@@ -547,7 +547,7 @@ async function runAutoPublish() {
   // 1. Sync live keywords from Google Sheet
   queueData = await syncWithGoogleSheet(queueData);
 
-  // 2. Strict 24-Hour Cadence Guard (at least 23 hours gap between consecutive publishes)
+  // 2. Strict 48-Hour Cadence Guard (at least 40 hours gap between consecutive publishes -> exactly 1 article every 2 days)
   const nowUtc = new Date();
   const isForce = process.env.FORCE_PUBLISH === 'true';
 
@@ -559,11 +559,11 @@ async function runAutoPublish() {
     if (sortedPublished.length > 0) {
       const lastPublishedTime = new Date(sortedPublished[0].publishedAt).getTime();
       const elapsedMinutes = (nowUtc.getTime() - lastPublishedTime) / (1000 * 60);
-      const MIN_INTERVAL_MINUTES = 16 * 60; // 16 hours minimum gap (guarantees exactly 1 per day and triggers smoothly at 9:23 AM PKT)
+      const MIN_INTERVAL_MINUTES = 40 * 60; // 40 hours minimum gap (guarantees exactly 1 article every 2 days)
       if (elapsedMinutes < MIN_INTERVAL_MINUTES) {
         const elapsedHours = (elapsedMinutes / 60).toFixed(1);
         const remainingHours = ((MIN_INTERVAL_MINUTES - elapsedMinutes) / 60).toFixed(1);
-        console.log(`[SCHEDULE GATING] Only ${elapsedHours} hours have passed since the last published article ("${sortedPublished[0].keyword}"). Next article will publish in ~${remainingHours} hours (24-hour cadence). Exiting peacefully.`);
+        console.log(`[SCHEDULE GATING] Only ${elapsedHours} hours have passed since the last published article ("${sortedPublished[0].keyword}"). Next article will publish in ~${remainingHours} hours (48-hour cadence / 1 article every 2 days). Exiting peacefully.`);
         process.exit(0);
       }
     }
