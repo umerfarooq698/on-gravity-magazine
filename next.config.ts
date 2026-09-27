@@ -26,6 +26,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/index",
+        destination: "/",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

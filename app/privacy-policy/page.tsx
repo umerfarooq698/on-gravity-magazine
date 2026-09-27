@@ -6,6 +6,9 @@ import { formatMetaDescription } from "@/lib/meta";
 export const metadata = {
   title: "Privacy Policy | On Gravity Magazine",
   description: formatMetaDescription("Privacy policy and reader data protection guidelines for subscribers of On Gravity Magazine online."),
+  alternates: {
+    canonical: "/privacy-policy",
+  },
 };
 
 export default function PrivacyPolicyPage() {

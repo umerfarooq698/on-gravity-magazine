@@ -7,6 +7,9 @@ import { formatMetaDescription } from "@/lib/meta";
 export const metadata = {
   title: "About Us | Editorial Standards & Mission",
   description: formatMetaDescription("Learn about the mission, editorial standards, journalism values, and executive team behind On Gravity Magazine."),
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {

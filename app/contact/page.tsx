@@ -5,6 +5,9 @@ import { formatMetaDescription } from "@/lib/meta";
 export const metadata = {
   title: "Contact Us | Newsroom and Inquiries",
   description: formatMetaDescription("Get in touch with the editorial team at On Gravity Magazine for story tips, press inquiries, and general feedback."),
+  alternates: {
+    canonical: "/contact",
+  },
 };
 
 export default function ContactPage() {

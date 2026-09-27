@@ -27,7 +27,7 @@ const baseUrl = SITE_URL;
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   alternates: {
-    canonical: "./",
+    canonical: "/",
   },
   icons: {
     icon: [

@@ -6,6 +6,9 @@ import { formatMetaDescription } from "@/lib/meta";
 export const metadata = {
   title: "Cookie Policy | On Gravity Magazine",
   description: formatMetaDescription("Cookie policy explaining tracking cookies, user preferences, and browser consent settings on On Gravity Magazine."),
+  alternates: {
+    canonical: "/cookie-policy",
+  },
 };
 
 export default function CookiePolicyPage() {
