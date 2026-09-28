@@ -49,15 +49,19 @@ export const ARTICLES: Article[] = [
     "faqs": [
         {
             "question": "What does FLDSMDFR stand for in the film?",
-            "answer": "The acronym stands for Flint Lockwood Diatonic Super Mutating Dynamic Food Replicator. It is the core invention that converts cloud moisture into raining food."
+            "answer": "The acronym stands for Flint Lockwood Diatonic Super Mutating Dynamic Food Replicator."
         },
         {
-            "question": "Is Cloudy with a Chance of Meatballs based on a true book?",
-            "answer": "Yes, the movie is inspired by the 1978 children book written by Judi Barrett and illustrated by Ron Barrett. The film expanded the simple picture book into an action-packed feature film."
+            "question": "Is Cloudy with a Chance of Meatballs based on a real book?",
+            "answer": "The film is based on the 1978 children book written by Judi Barrett and illustrated by Ron Barrett."
+        },
+        {
+            "question": "Where can you stream Cloudy with a Chance of Meatballs online?",
+            "answer": "The movie is available to stream on Netflix and to rent in 4K on Apple TV and Amazon Prime Video."
         },
         {
             "question": "Is there a sequel to Cloudy with a Chance of Meatballs?",
-            "answer": "Sony released Cloudy with a Chance of Meatballs 2 in theaters in 2013. The sequel continues Flint story as he discovers living food animals on his home island."
+            "answer": "Sony Pictures Animation released the theatrical sequel Cloudy with a Chance of Meatballs 2 in 2013."
         }
     ],
     "category": "life-style",

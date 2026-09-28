@@ -406,9 +406,11 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
 
 7. FINAL TAKEAWAY SECTION & FAQS:
    - For the final section before FAQs, use a topic-specific H2 heading (e.g., "## What [Topic] Means for [Field]", "## Long-Term Maintenance and Longevity"). NEVER use generic headings like "## Conclusion", "## The Bottom Line", or "## Final Thoughts".
-   - Include a dedicated "## Frequently Asked Questions" section with 2-3 FAQs formatted as:
-     ### Q: [Short Question]
-     A: [Short Answer]
+   - Include a dedicated "## Frequently Asked Questions" section with EXACTLY 3 to 4 FAQs.
+   - STRICT FAQ SENTENCE RULE (CRITICAL): Each Question MUST be strictly 1 single sentence. Each Answer MUST be strictly 1 single sentence! Never write 2 or more sentences for either question or answer.
+     Format strictly as:
+     ### Q: [Single sentence question]
+     A: [Single sentence answer]
 
 8. STRICT NO LINKS MANDATE (CRITICAL):
    - DO NOT insert any markdown links [anchor](url) or web URLs anywhere in the title, headings, excerpt, or paragraphs.
