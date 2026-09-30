@@ -370,11 +370,10 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
    - Total article length MUST be between 1,000 and 1,200 words.
    - Provide deep, well-developed, comprehensive text to hit this word count naturally without fluff.
 
-2. READABILITY & STRICT SHORT PARAGRAPH RHYTHM (CRITICAL):
-   - Maintain top-tier readability: NEVER create intimidating walls of text.
-   - Keep paragraphs strictly short, focused, and effortless to read: EXACTLY 2 to 3 sentences per paragraph maximum!
-   - NEVER write a paragraph with 4 or more sentences. Break thoughts into clean, bite-sized blocks.
-   - Use clear topic sentences and smooth transitions so the reader flows effortlessly through the article without fatigue.
+2. READABILITY & NATURAL PARAGRAPH VARIETY (CRITICAL):
+   - AVOID FORMULAIC MONOTONY: Never write every section with the exact same paragraph count or sentence count!
+   - DYNAMIC PARAGRAPH DISTRIBUTION: In some H2 sections, write 2 paragraphs; in others, write 1 paragraph. In some H3 sections, write 2 short paragraphs (1-2 sentences each); in others, write 1 paragraph.
+   - NATURAL SENTENCE RHYTHM: Keep all paragraphs strictly bite-sized (1 to 3 sentences max per paragraph). Vary between 1-sentence punchy observations, 2-sentence standard blocks, and 3-sentence explanations to create a natural, human cadence. Never write 4 or more sentences in any paragraph.
 
 3. DYNAMIC SECTION LAYOUT & BULLET VARIATION (CRITICAL):
    - DO NOT follow a rigid template or dump bullets in the exact same section across articles!
