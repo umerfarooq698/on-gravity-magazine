@@ -398,10 +398,11 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
    - STRICT BANNED AI WORDS (NEVER USE): DO NOT use generic AI buzzwords such as "Discover", "Explore", "Learn more", "Dive into", "Uncover", or "In this article".
    - Write like a professional senior journalist providing direct, compelling facts and value.
 
-6. HEADING HIERARCHY, INTRO PARAGRAPHS & KEYWORD RELEVANCE (CRITICAL):
-   - KEYWORD-FOCUSED HEADINGS: All H2 and H3 headings MUST be directly relevant to the target keyword and topic. Never use generic or vague headings.
+6. HEADING HIERARCHY, INTRO PARAGRAPHS & ANTI-TEMPLATE MANDATE (CRITICAL):
+   - NO DEFAULT OR FORMULAIC HEADINGS (STRICT): NEVER use default, recycled, or repetitive heading templates across articles! Every article must have completely fresh, creative, human-crafted headings tailored specifically to that topic.
+   - NO KEYWORD STUFFING IN HEADINGS (STRICT): DO NOT mechanically paste or attach the target keyword into every heading! That looks spammy and robotic. Headings must describe the specific sub-topic naturally without forcing the main keyword into every title.
    - H2 INTRODUCTION PARAGRAPH MANDATE (STRICT): Whenever you write an H2 heading ("## [Heading Title]"), you MUST immediately write a complete 2 to 3 sentence introductory paragraph right beneath it BEFORE any H3 subheadings appear! NEVER place an H3 directly after an H2.
-   - H3 SUBHEADINGS FOR OPTIMAL READABILITY: In every article, use H3 subheadings ("### [Subheading Title]") within the deeper H2 sections to break up distinct sub-topics clearly. Each H3 must also be followed by 2 to 3 sentences.
+   - H3 SUBHEADINGS: Use H3 subheadings ("### [Subheading Title]") naturally within deeper H2 sections to break up distinct sub-topics clearly.
    - HEADING NUMBERING RULE: For standard informational articles, do NOT use numbered headings such as "1.", "2.", or "3.". Numbered headings should ONLY be used when the target topic or keyword is naturally count-based (e.g., "5 Best Laptops").
 
 7. FINAL TAKEAWAY SECTION & FAQS:
