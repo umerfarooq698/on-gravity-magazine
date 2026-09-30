@@ -332,11 +332,11 @@ Your mission is to write an authentic, human-written, highly authoritative, 100%
 
 GOOGLE E-E-A-T & ANTI-ROBOTIC EDITORIAL MANDATE (CRITICAL):
 
-1. EXPERIENCE (FIRST-HAND OBSERVATIONAL & FIELD PERSPECTIVE):
-   - Write from a place of real-world observation, testing, and practical application.
-   - Include authentic observational framing: (e.g., "In hands-on evaluations...", "When testing across different scenarios...", "Our field observations revealed...", "Practical inspection shows...", "In everyday use...").
-   - Ground every section in concrete, granular specifics rather than abstract generalities: exact temperature ranges (e.g., "195°F to 205°F"), realistic price brackets (e.g., "$45 to $120"), precise timelines (e.g., "3 to 4 business weeks"), and specific material compositions.
-   - Give real-world examples, realistic scenarios, and clear context so the advice feels genuinely lived and battle-tested.
+1. PRACTICAL AND GENUINELY HELPFUL PERSPECTIVE (FOR REAL READERS):
+   - Write directly, simply, and clearly to help real people solve their problems or understand the topic.
+   - STRICTLY BANNED FAKE REPORTING: NEVER invent fake lab tests, fake field trials, or fake investigative teams! NEVER use phrases like "our field observations revealed", "practical inspection shows", "in our investigative reporting", or "when testing across different scenarios". Speak honestly and directly to the reader.
+   - Ground every section in concrete, helpful specifics rather than abstract generalities: realistic costs, exact timelines, practical steps, and actionable advice.
+   - Provide clear context so the guidance is immediately useful, easy to understand, and trustworthy.
 
 2. EXPERTISE & ACTIONABLE PRACTICAL VALUE:
    - Provide deep, analytical, step-by-step guidance that actually solves the reader's problem or answers their query comprehensively.
@@ -350,7 +350,7 @@ GOOGLE E-E-A-T & ANTI-ROBOTIC EDITORIAL MANDATE (CRITICAL):
 
 4. STRICT BANNED AI & ROBOTIC VOCABULARY AND HEADING FORMULAS (CRITICAL):
    - NEVER use dead-giveaway AI clichés in text:
-     "delve", "delving", "tapestry", "testament", "beacon", "game-changer", "revolutionize", "revolutionizing", "plethora", "myriad", "furthermore", "moreover", "in today's fast-paced world", "in today's digital age", "navigating the landscape of", "it is important to remember", "a multifaceted approach", "crucial role", "vital role", "seamless", "seamlessly", "elevate", "foster", "unlock", "harness", "in conclusion", "in summary", "at the end of the day".
+     "delve", "delving", "tapestry", "testament", "beacon", "game-changer", "revolutionize", "revolutionizing", "plethora", "myriad", "furthermore", "moreover", "in today's fast-paced world", "in today's digital age", "navigating the landscape of", "it is important to remember", "a multifaceted approach", "crucial", "vital", "our field observations", "field observations", "investigative reporting", "practical inspection", "hands-on evaluations", "seamless", "seamlessly", "elevate", "foster", "unlock", "harness", "in conclusion", "in summary", "at the end of the day".
    - NEVER use repetitive, formulaic AI headings. STRICTLY BANNED heading patterns:
      * "Understanding [Topic]..."
      * "The Reality of [Topic]..."
@@ -507,7 +507,27 @@ function parseGeminiMarkdown(rawText, keyword) {
       }
     } else {
       if (line.startsWith('# ') || line.toLowerCase().startsWith('excerpt:')) continue;
-      paragraphs.push(line.replace(/&/g, 'and'));
+      let cleanLine = line.replace(/&/g, 'and');
+      // Clean any accidental fake reporting phrases
+      cleanLine = cleanLine.replace(/our field observations (?:revealed|reveal) that /gi, "");
+      cleanLine = cleanLine.replace(/practical inspection shows that /gi, "");
+      cleanLine = cleanLine.replace(/when we evaluate [^,]+ in our investigative reporting, /gi, "");
+      cleanLine = cleanLine.replace(/when testing across different [^,]+, /gi, "");
+      
+      // If line is a regular text paragraph (not heading or list), split if > 3 sentences
+      if (!cleanLine.startsWith('#') && !cleanLine.startsWith('-') && !cleanLine.match(/^\d+\./)) {
+        const sentences = cleanLine.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 0);
+        if (sentences.length > 3) {
+          // split into 2-sentence chunks
+          for (let i = 0; i < sentences.length; i += 2) {
+            paragraphs.push(sentences.slice(i, i + 2).join(' '));
+          }
+        } else {
+          paragraphs.push(cleanLine);
+        }
+      } else {
+        paragraphs.push(cleanLine);
+      }
     }
   }
 
