@@ -454,10 +454,22 @@ async function generateArticleWithGemini(keyword) {
         if (response.ok) {
           const data = await response.json();
           const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (text && text.trim().length > 200) {
-            console.log(`Successfully generated article with Gemini API model ${modelName}! Length: ${text.length}`);
+          if (text && text.trim().length > 500) {
             const parsed = parseGeminiMarkdown(text, keyword);
-            return parsed;
+            // Calculate word count of parsed content paragraphs
+            const wordCount = parsed.paragraphs.reduce((acc, p) => {
+              if (p.startsWith('#')) return acc;
+              return acc + p.split(/\s+/).filter(Boolean).length;
+            }, 0);
+
+            const hasH2 = parsed.paragraphs.some(p => p.startsWith('## ') && !p.toLowerCase().includes('frequently asked'));
+
+            if (wordCount >= 800 && hasH2) {
+              console.log(`Successfully generated article with Gemini API model ${modelName}! Words: ${wordCount}`);
+              return parsed;
+            } else {
+              console.warn(`Article output below editorial standard (Words: ${wordCount}, Has H2: ${hasH2}). Retrying for full depth...`);
+            }
           }
         } else {
           const errJson = await response.json();
