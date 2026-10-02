@@ -27,6 +27,69 @@ export interface Article {
 
 export const ARTICLES: Article[] = [
   {
+    "id": "art-peripheral-artery-disease",
+    "slug": "peripheral-artery-disease",
+    "title": "Understanding Peripheral Artery Disease and Circulation Health",
+    "metaTitle": "Understanding Peripheral Artery Disease and Circulation Health | On Gravity Magazine",
+    "metaDescription": "Peripheral artery disease restricts blood flow to your limbs by narrowing blood vessels, causing pain and mobility challenges.",
+    "excerpt": "Peripheral artery disease restricts blood flow to your limbs by narrowing blood vessels, causing pain and mobility challenges.",
+    "content": [
+        "Peripheral artery disease quietly alters the way millions of people walk, work, and move through daily life. Plaque accumulation inside the blood vessels gradually restricts circulation to the limbs, most commonly the legs and feet.",
+        "Medical professionals frequently overlook early symptoms because many individuals dismiss aching calves as normal signs of aging. Recognizing these subtle physical shifts early on prevents severe mobility losses and dangerous cardiovascular events down the line.",
+        "### The Biological Mechanics of Vascular Narrowing",
+        "Fatty deposits known as plaque build up inside arterial walls over many decades. This chronic inflammatory process stiffens the pathways that deliver oxygen rich blood from the heart to peripheral tissues.",
+        "When exertion demands higher blood flow, narrowed vessels fail to supply adequate oxygen. This mismatch triggers cramping and fatigue in the lower extremities during physical activity.",
+        "### Recognizing the Early Warning Signs",
+        "Many individuals experience a distinct cramping sensation in their calves or thighs during routine walks. This uncomfortable tightening consistently disappears after a few minutes of total rest.",
+        "Coldness in one lower leg compared to the other often signals localized circulation deficits. Ignoring these signs allows the underlying vascular narrowing to progress unchecked toward critical limb ischemia.",
+        "### Diagnostic Tools Used by Specialists",
+        "Physicians evaluate suspected circulation problems using straightforward noninvasive assessments in standard clinical settings. The ankle brachial index compares blood pressure readings taken at the ankle with those measured in the upper arm.",
+        "Ultrasound imaging provides a direct visual map of arterial blood flow velocity through targeted limb segments. Advanced angiography techniques offer high resolution roadmaps for surgeons planning interventions on blocked vessels.",
+        "### Managing Symptoms Through Lifestyle Shifts",
+        "Supervised exercise programs remain a cornerstone of conservative treatment for impaired circulation. Regular walking encourages the formation of tiny collateral blood vessels that bypass major blockages.",
+        "Quitting smoking halts the rapid progression of arterial damage and lowers overall cardiovascular inflammation. Dietary adjustments targeting cholesterol levels protect the entire vascular network from further deterioration.",
+        "### Medical and Surgical Interventions",
+        "Minimally invasive catheter procedures restore open pathways by inflating tiny balloons inside blocked segments. Vascular specialists often insert small metal mesh tubes called stents to keep fragile vessel walls propped open.",
+        "Bypass surgery redirects blood flow around severely damaged arteries using healthy grafts harvested from other body regions. These operations carry standard surgical risks but save limbs when conservative therapies fail to provide relief.",
+        "### Long Term Circulation Health and Daily Maintenance",
+        "Living with chronic vascular restriction requires daily vigilance regarding foot hygiene and protective footwear. Minor blisters or cuts demand immediate medical attention because compromised circulation delays normal tissue healing processes.",
+        "Cardiologists coordinate closely with primary care providers to manage concurrent conditions like hypertension and diabetes. Consistent monitoring ensures that treatment plans adapt as physical needs evolve over time."
+    ],
+    "faqs": [
+        {
+            "question": "What is the primary cause of arterial narrowing in the lower extremities?",
+            "answer": "Atherosclerosis causes plaque accumulation that gradually restricts blood flow through the vessels."
+        },
+        {
+            "question": "Why does walking trigger leg pain for people with this condition?",
+            "answer": "Active muscles require more oxygen than narrowed arteries can successfully deliver during exertion."
+        },
+        {
+            "question": "Can lifestyle modifications reverse existing vascular damage completely?",
+            "answer": "Lifestyle changes halt disease progression and improve symptoms but rarely eliminate established plaque buildup entirely."
+        }
+    ],
+    "category": "health",
+    "author": {
+        "name": "Sophia Chen",
+        "role": "Senior Lifestyle & Wellness Columnist",
+        "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+    },
+    "publishedAt": "Oct 2, 2026",
+    "readTime": "6 min read",
+    "imageUrl": "https://images.unsplash.com/photo-1507070491081-c86dc15d6e12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDU5NTUzfDB8MXxzZWFyY2h8MXx8cGVyaXBoZXJhbCUyMGFydGVyeSUyMGRpc2Vhc2V8ZW58MHwwfHx8MTc5MDkzNzE4N3ww&ixlib=rb-4.1.0&q=80&w=1080&sig=peripheral-artery-disease_1790937187091",
+    "imageAlt": "person foot on brown rock - peripheral artery disease",
+    "imageCaption": "person foot on brown rock",
+    "featured": true,
+    "trending": true,
+    "tags": [
+        "PERIPHERAL",
+        "ARTERY",
+        "MAGAZINE",
+        "HEALTH"
+    ]
+},
+  {
     "id": "art-how-to-stop-snoring",
     "slug": "how-to-stop-snoring",
     "title": "Proven Methods That Actually Fix Chronic Nighttime Snoring",
