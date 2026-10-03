@@ -727,7 +727,7 @@ export const ARTICLES: Article[] = [
     "excerpt": "Mastering the French press requires the right water temperature, grind size, and steep time to extract maximum flavor without bitterness.",
     "content": [
       "## How Full Immersion Brewing Works",
-      "Full immersion brewing lets coffee grounds steep directly in hot water rather than letting water wash past in a flash.",
+      "Learning how to brew french press correctly begins with understanding full immersion extraction, where coffee grounds steep directly in hot water rather than letting water wash past in a flash.",
       "This extended soak pulls out delicate aromatic oils and soluble sugars, giving your mug a velvety texture and heavy body.",
       "### Why Direct Water Contact Builds Rich Body",
       "Unlike paper filter pour-overs that trap natural coffee oils, a metal mesh filter lets those rich aromatics pass into your cup.",
@@ -752,7 +752,7 @@ export const ARTICLES: Article[] = [
       "Set a digital timer for four minutes the moment hot water hits the grounds.",
       "Four minutes gives the water plenty of time to dissolve rich sugars without leaching out harsh plant bitterness.",
       "## A Reliable 6-Step Brew Method",
-      "A reliable brewing routine keeps your water hot and distributes moisture evenly through the coffee bed.",
+      "Mastering how to brew french press correctly requires a dependable routine that keeps your water hot and distributes moisture evenly through the coffee bed.",
       "Preheat the glass carafe with hot tap water for thirty seconds to prevent sudden heat loss.",
       "Dump the rinse water, add your coarse grounds, and place the press on a flat counter.",
       "1. Warm the carafe with hot tap water beforehand to retain brewing heat throughout.",
