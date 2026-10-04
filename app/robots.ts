@@ -10,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin/", "/api/", "/search"],
+        disallow: ["/admin/", "/api/", "/search", "/glock-19-gen-5"],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
