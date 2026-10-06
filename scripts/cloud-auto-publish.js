@@ -450,7 +450,7 @@ async function generateArticleWithGemini(keyword) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             contents: [{ role: "user", parts: [{ text: promptText }] }],
-            generationConfig: { temperature: 0.75, topP: 0.95 }
+            generationConfig: { temperature: 0.75, topP: 0.95, maxOutputTokens: 4000 }
           }),
           signal: controller.signal
         });
