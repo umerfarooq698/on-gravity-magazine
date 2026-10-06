@@ -270,10 +270,12 @@ function getExistingPublishedSlugs(articlesFileContent) {
 }
 
 function postProcessNaturalInternalLinks(paragraphs, validSlugsSet) {
-  // 1. Clean em-dashes and strip any rogue markdown links Gemini may have output
+  // 1. Clean em-dashes and strip any non-internal or malformed links
   const cleanedParas = paragraphs.map(p => {
     let cleaned = p.replace(/—/g, ", ").replace(/--/g, ", ");
-    return cleaned.replace(/\[([^\]]+)\]\([^)]+\)/gi, "$1");
+    // Keep internal links that point to /slug, strip external URLs like http/https
+    cleaned = cleaned.replace(/\[([^\]]+)\]\((?:https?:\/\/[^)]+)\)/gi, "$1");
+    return cleaned;
   });
 
   // 2. Prepare target phrases from valid slugs (excluding numbers, formatting to natural text)
@@ -414,10 +416,12 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
      ### Q: [Single sentence question]
      A: [Single sentence answer]
 
-8. STRICT NO LINKS MANDATE (CRITICAL):
-   - DO NOT insert any markdown links [anchor](url) or web URLs anywhere in the title, headings, excerpt, or paragraphs.
-   - Write 100% pure editorial content. Do not attempt to link to external websites or other articles.
-   - Editorial focus must remain purely on natural journalistic depth.
+8. NATURAL EDITORIAL INTERNAL LINKING (STRICT 1 LINK):
+   - You may naturally weave EXACTLY ONE (1) relevant internal link to an existing topic from our magazine into the body text where it genuinely helps the reader (format as [natural anchor text](/target-slug)).
+   - Do NOT place the link in the title, excerpt, first 2 paragraphs, headings, or FAQs.
+   - Varied Placement: Place the link naturally within a middle body paragraph (either in the 1st sentence, middle sentence, or last sentence of that paragraph).
+   - Natural Anchor: Use natural conversational anchor text (e.g. "[how to stop snoring](/how-to-stop-snoring)", "[water heater repair](/water-heater-repair)"). Never write "click here" or "read more".
+   - Zero External Links: Never link to external websites or domains outside the magazine.
 
 9. STRICT BANNED PUNCTUATION (CRITICAL):
    - NEVER use em-dashes ("—") or double dashes ("--") anywhere in the title, excerpt, headings, or content paragraphs. Use standard commas, parentheses, or periods instead.
