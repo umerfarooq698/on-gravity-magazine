@@ -27,6 +27,94 @@ export interface Article {
 
 export const ARTICLES: Article[] = [
   {
+    "id": "art-upper-respiratory-infection",
+    "slug": "upper-respiratory-infection",
+    "title": "Managing an Upper Respiratory Infection at Home and Work",
+    "metaTitle": "Managing an Upper Respiratory Infection at Home and Work | On Gravity Magazine",
+    "metaDescription": "An upper respiratory infection causes congestion and coughs that disrupt your daily routine. Here is how to manage symptoms and stay safe.",
+    "excerpt": "An upper respiratory infection causes congestion and coughs that disrupt your daily routine. Here is how to manage symptoms and stay safe.",
+    "content": [
+        "## Identifying the Common Cold Versus Something More Serious",
+        "An upper respiratory infection involves inflammation in the nose, sinuses, pharynx, or larynx. Most cases are viral, meaning they resolve without antibiotics over seven to ten days.",
+        "Distinguishing these minor ailments from influenza or bacterial sinus infections requires attention to your specific symptom profile. A classic cold typically begins with a scratchy throat, followed by sneezing, runny nose, and eventually, a productive cough.",
+        "Influenza, by contrast, strikes with sudden high fever, body aches, and profound fatigue that leaves you unable to function. If your fever spikes above 102 degrees Fahrenheit or persists for more than three days, the infection may have moved beyond the upper airways.",
+        "### The Role of Viral Pathogens",
+        "Most infections in the upper airways originate from rhinoviruses, coronaviruses, or parainfluenza. These pathogens latch onto the mucosal linings of the throat and nasal passages.",
+        "Your immune system responds by increasing blood flow to these areas to deploy white blood cells. This process creates the swelling and fluid buildup you experience as congestion.",
+        "### When to Seek Medical Attention",
+        "Persistent chest pain or difficulty catching your breath indicates a potential transition to lower respiratory involvement. You should also watch for symptoms that improve for a few days only to return with greater severity.",
+        "This secondary spike often suggests a bacterial superinfection, such as streptococcal pharyngitis or acute bacterial sinusitis. A healthcare provider can determine if a diagnostic test is necessary to rule out these complications.",
+        "## Practical Strategies for Symptom Management",
+        "Recovering from a viral infection requires patience and a focus on supporting your body as it fights the pathogen. While no medication kills the common cold, specific interventions reduce the strain on your system.",
+        "Hydration remains the most effective tool in your kit for thinning mucus secretions. Water, herbal tea, and clear broths prevent dehydration while easing the irritation in your throat.",
+        "Rest allows your immune system to allocate energy toward recovery rather than daily physical demands. Skipping a workout or a late night out is often the difference between a three-day recovery and a two-week struggle.",
+        "### Humidity and Airway Comfort",
+        "Dry indoor air often exacerbates the hacking cough associated with many upper respiratory infections. Using a cool-mist humidifier in your bedroom adds moisture to the air you inhale while you sleep.",
+        "If you find yourself waking up with a raw throat, try keeping the room temperature moderate. Excessive heat can dry out your mucous membranes and prolong your discomfort.",
+        "### Managing Congestion and Inflammation",
+        "Over-the-counter decongestants provide temporary relief by shrinking swollen nasal tissues. Use these products sparingly, as frequent use for more than three days can lead to rebound congestion.",
+        "Saline nasal rinses offer a safer, non-medicated alternative for clearing out sinus passages. You can learn more about these methods through our comprehensive guide on [natural sinus relief](/natural-sinus-relief) techniques.",
+        "## Dietary Considerations During Recovery",
+        "Your body consumes significant resources while mounting an immune response to an upper respiratory infection. Consuming nutrient-dense foods helps maintain energy levels without taxing your digestive system.",
+        "Focus on simple carbohydrates and proteins that are easy to process. Avoid heavy, greasy meals that leave you feeling sluggish or increase inflammation throughout the body.",
+        "Zinc and vitamin C are frequently discussed as supplements, though their efficacy varies by individual. Rather than relying on high-dose pills, prioritize fresh fruits and vegetables to support your internal health.",
+        "### The Importance of Electrolyte Balance",
+        "When you are congested, you may not drink as much as you should due to mouth breathing or a lack of appetite. Electrolyte-balanced drinks help maintain the fluid levels necessary for proper cellular function.",
+        "Avoid excessive caffeine and alcohol, as both act as diuretics. These substances can deplete the very fluids your body needs to thin out mucus and resolve the infection.",
+        "## Protecting Your Social and Professional Environment",
+        "Contagious pathogens spread quickly through shared spaces, especially in office settings or crowded transit. Practicing basic hygiene prevents you from passing the virus to colleagues or family members.",
+        "Wash your hands frequently with soap and warm water for at least twenty seconds. Use hand sanitizer if soap is unavailable, but remember that physical washing is superior for removing viral particles.",
+        "Cover your nose and mouth when you sneeze or cough, ideally using the crook of your elbow. Dispose of used tissues immediately to prevent the contamination of surfaces in your workspace.",
+        "### Managing Time Away From Work",
+        "Many people feel pressured to return to their desks prematurely. However, returning while still symptomatic often leads to a slower recovery and risks infecting your entire team.",
+        "If you must work, prioritize tasks that do not require intense focus or physical exertion. Communication with your supervisor regarding your condition ensures you can take the necessary time to heal without added stress.",
+        "## Long-Term Maintenance and Respiratory Health",
+        "Frequent infections often point toward underlying environmental factors or neglected immune support. Assessing your daily habits provides a clearer picture of why your respiratory system might be vulnerable.",
+        "Poor sleep quality is a major contributor to a weakened immune response. If you consistently struggle with fatigue, your body lacks the downtime required to perform cellular repair.",
+        "Consider the air quality in your home and office. Dust, pet dander, and mold spores can keep your nasal passages in a constant state of low-level inflammation.",
+        "### Strengthening Your Immune Baseline",
+        "Building a resilient immune system takes consistency rather than sporadic effort. Regular physical activity, even if it is just a daily walk, improves circulation and helps flush out pathogens.",
+        "Stress management is equally significant. Chronic stress releases cortisol, which suppresses immune function and leaves you susceptible to common viruses."
+    ],
+    "faqs": [
+        {
+            "question": "Should I use antibiotics for an upper respiratory infection?",
+            "answer": "Antibiotics treat bacterial infections and have no effect on the viruses that cause the common cold."
+        },
+        {
+            "question": "How long does a typical upper respiratory infection last?",
+            "answer": "Most viral respiratory infections resolve on their own within seven to ten days."
+        },
+        {
+            "question": "Is it safe to exercise while I am sick?",
+            "answer": "Light activity is generally fine, but you should avoid intense workouts until your symptoms have fully subsided."
+        },
+        {
+            "question": "When is a sore throat considered a medical emergency?",
+            "answer": "Seek immediate care if you experience severe difficulty swallowing or if you cannot breathe properly."
+        }
+    ],
+    "category": "life-style",
+    "author": {
+        "name": "Sophia Chen",
+        "role": "Senior Lifestyle & Wellness Columnist",
+        "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+    },
+    "publishedAt": "Oct 6, 2026",
+    "readTime": "6 min read",
+    "imageUrl": "https://images.unsplash.com/photo-1743767587847-08c42b31cdec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDU5NTUzfDB8MXxzZWFyY2h8MXx8dXBwZXIlMjByZXNwaXJhdG9yeSUyMGluZmVjdGlvbnxlbnwwfDB8fHwxNzkxMzAyNDI0fDA&ixlib=rb-4.1.0&q=80&w=1080&sig=upper-respiratory-infection_1791302424766",
+    "imageAlt": "Human lungs with visible bronchial tubes and tissue on a beige background - upper respiratory infection",
+    "imageCaption": "Lungs.",
+    "featured": true,
+    "trending": true,
+    "tags": [
+        "UPPER",
+        "RESPIRATORY",
+        "MAGAZINE",
+        "LIFE-STYLE"
+    ]
+},
+  {
     "id": "art-pawn-shops-near-me",
     "slug": "pawn-shops-near-me",
     "title": "Navigating Local Collateral Lenders and Pawn Shops Guide",
