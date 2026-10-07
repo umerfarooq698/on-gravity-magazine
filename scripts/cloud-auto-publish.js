@@ -352,9 +352,11 @@ GOOGLE E-E-A-T & ANTI-ROBOTIC EDITORIAL MANDATE (CRITICAL):
    - Include realistic trade-offs: address both the advantages and the disadvantages or limitations. Real experts always discuss caveats, failure points, and common amateur mistakes to avoid.
    - Clarify edge cases: "When this approach works best" vs. "When you should choose an alternative".
 
-3. AUTHORITATIVENESS, SEMANTIC SEO & LSI KEYWORDS (CRITICAL):
-   - Write with the calm, measured authority of a veteran investigative reporter.
-   - RICH SEMANTIC & LSI KEYWORD COVERAGE: Naturally weave in closely related LSI (Latent Semantic Indexing) keywords, synonyms, contextual entities, sub-topics, technical terms, and industry jargon across the text. Do not repeat the exact target keyword over and over; instead, expand topical authority using semantic variations that Google expects to see in a comprehensive expert article.
+3. AUTHORITATIVENESS, SEMANTIC SEO & LSI KEYWORDS (MANDATORY FOR EVERY ARTICLE):
+   - Write with the calm, measured authority of a veteran investigative reporter and subject matter specialist.
+   - RICH SEMANTIC ENTITIES & LSI KEYWORDS: In every single article, you MUST identify and naturally weave in the core sub-concepts, contextual entities, synonyms, and field-specific terminology related to the keyword (e.g., medical conditions need diagnostic terms, symptoms, biological mechanisms; products need materials, measurements, real-world utility; guides need actionable steps, tools, failure modes).
+   - ZERO KEYWORD STUFFING (STRICT): Do NOT mechanically repeat the primary keyword over and over. Instead, prioritize topical depth and natural semantic vocabulary that Google algorithms look for to establish topical authority.
+   - 100% NATURAL CONVERSATIONAL INTEGRATION: Every LSI phrase must fit completely effortlessly into the sentence flow, reading exactly like a human expert wrote it without any awkward or forced phrasing.
    - Cite industry realities, historical context, or standard benchmarks where relevant to build deep domain credibility.
    - Zero sales pitches, zero superficial clickbait, zero promotional fluff.
 
@@ -443,7 +445,7 @@ async function generateArticleWithGemini(keyword) {
     listicleInstruction = `\n\nCRITICAL COUNT INSTRUCTION: The keyword asks for "${count}" items. You MUST create exactly ${count} main item headings (using "## 1. [Item]", "## 2. [Item]" up to "## ${count}. [Item]") with H3 sub-sections under each item and write full, informative paragraphs under EACH section to reach 1,000 to 1,200 words!`;
   }
 
-  const promptText = `${getSystemPrompt()}${listicleInstruction}\n\nSubmitted Keyword / Topic: "${keyword}"\n[Target Word Count: 1000-1200 words]`;
+  const promptText = `${getSystemPrompt()}${listicleInstruction}\n\nSubmitted Keyword / Topic: "${keyword}"\n[Target Word Count: 1000-1200 words]\n[MANDATORY REQUIREMENT: Naturally integrate topic-specific LSI and semantic keywords into the body paragraphs with zero keyword stuffing]`;
 
   for (let attempt = 1; attempt <= 6; attempt++) {
     for (const modelName of GEMINI_MODELS) {
