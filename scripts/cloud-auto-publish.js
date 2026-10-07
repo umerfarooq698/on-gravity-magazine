@@ -270,11 +270,18 @@ function getExistingPublishedSlugs(articlesFileContent) {
 }
 
 function postProcessNaturalInternalLinks(paragraphs, validSlugsSet) {
-  // 1. Clean em-dashes and strip any non-internal or malformed links
+  // 1. Clean em-dashes and strip any non-internal, malformed, or non-existent links
   const cleanedParas = paragraphs.map(p => {
     let cleaned = p.replace(/—/g, ", ").replace(/--/g, ", ");
     // Keep internal links that point to /slug, strip external URLs like http/https
     cleaned = cleaned.replace(/\[([^\]]+)\]\((?:https?:\/\/[^)]+)\)/gi, "$1");
+    // Strip any internal link whose slug does NOT exist in validSlugsSet
+    cleaned = cleaned.replace(/\[([^\]]+)\]\(\/([a-z0-9-]+)\)/gi, (fullMatch, text, slug) => {
+      if (validSlugsSet && validSlugsSet.has(slug.toLowerCase())) {
+        return fullMatch;
+      }
+      return text;
+    });
     return cleaned;
   });
 

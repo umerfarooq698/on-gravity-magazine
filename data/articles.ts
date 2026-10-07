@@ -53,7 +53,7 @@ export const ARTICLES: Article[] = [
         "If you find yourself waking up with a raw throat, try keeping the room temperature moderate. Excessive heat can dry out your mucous membranes and prolong your discomfort.",
         "### Managing Congestion and Inflammation",
         "Over-the-counter decongestants provide temporary relief by shrinking swollen nasal tissues. Use these products sparingly, as frequent use for more than three days can lead to rebound congestion.",
-        "Saline nasal rinses offer a safer, non-medicated alternative for clearing out sinus passages. You can learn more about these methods through our comprehensive guide on [natural sinus relief](/natural-sinus-relief) techniques.",
+        "Saline nasal rinses offer a safer, non-medicated alternative for clearing out blocked sinus passages. Keeping nasal airways open at night also helps explain [how to stop snoring](/how-to-stop-snoring) when acute congestion disrupts your sleep.",
         "## Dietary Considerations During Recovery",
         "Your body consumes significant resources while mounting an immune response to an upper respiratory infection. Consuming nutrient-dense foods helps maintain energy levels without taxing your digestive system.",
         "Focus on simple carbohydrates and proteins that are easy to process. Avoid heavy, greasy meals that leave you feeling sluggish or increase inflammation throughout the body.",
