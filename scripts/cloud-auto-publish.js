@@ -192,7 +192,12 @@ async function fetchUnsplashImage(keyword, category, usedPhotoIds) {
         if (res.ok) {
           const data = await res.json();
           if (data.results && data.results.length > 0) {
-            const unused = data.results.filter(p => p.id && !usedPhotoIds.has(p.id));
+            const unused = data.results.filter(p => {
+              const urlBase = (p.urls?.regular || p.urls?.full || "").split("?")[0];
+              const match = urlBase.match(/photo-([a-zA-Z0-9-]+)/);
+              const urlPhotoId = match ? match[1] : "";
+              return p.id && !usedPhotoIds.has(p.id) && (!urlPhotoId || !usedPhotoIds.has(urlPhotoId));
+            });
             const candidateList = unused.length > 0 ? unused : data.results;
 
             // Score each candidate photo for genuine topic and keyword relevance
@@ -219,6 +224,8 @@ async function fetchUnsplashImage(keyword, category, usedPhotoIds) {
               const photoId = bestMatch.id;
               if (rawUrl && photoId) {
                 usedPhotoIds.add(photoId);
+                const match = rawUrl.match(/photo-([a-zA-Z0-9-]+)/);
+                if (match) usedPhotoIds.add(match[1]);
                 const uniqueUrl = rawUrl.includes("?") ? `${rawUrl}&sig=${slugSig}_${Date.now()}` : `${rawUrl}?sig=${slugSig}_${Date.now()}`;
                 const altText = (bestMatch.alt_description || bestMatch.description || `Editorial photography for ${cleanKw}`).replace(/&/g, "and");
                 const finalAlt = altText.length > 10 ? `${altText} - ${cleanKw}` : `High-resolution editorial photography illustrating ${cleanKw}`;

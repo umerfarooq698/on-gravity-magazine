@@ -94,9 +94,9 @@ export const ARTICLES: Article[] = [
     },
     "publishedAt": "Oct 10, 2026",
     "readTime": "6 min read",
-    "imageUrl": "https://images.unsplash.com/photo-1747931219252-4ed69e78389a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDU5NTUzfDB8MXxzZWFyY2h8OXx8dHJ1Y2slMjBhY2NpZGVudCUyMGF0dG9ybmV5fGVufDB8MHx8fDE3OTE2MjkwNTR8MA&ixlib=rb-4.1.0&q=80&w=1080&sig=truck-accident-attorney_1791629054725",
-    "imageAlt": "A yellow semi-truck is in a roadside accident - truck accident attorney",
-    "imageCaption": "A yellow semi-truck is in a roadside accident",
+    "imageUrl": "https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=1200&q=80&sig=truck-accident-attorney_1791631500000",
+    "imageAlt": "Commercial semi-truck traveling on a highway - truck accident attorney",
+    "imageCaption": "Commercial semi-truck freight transportation on a multi-lane highway.",
     "featured": true,
     "trending": true,
     "tags": [
