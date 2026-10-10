@@ -445,14 +445,23 @@ STRICT ARTICLE STRUCTURE & PARAGRAPH RHYTHM INSTRUCTIONS:
 Start directly with # [Generated Title].`;
 }
 
-async function generateArticleWithGemini(keyword) {
+async function generateArticleWithGemini(keyword, validSlugsSet) {
   const count = extractCountFromKeyword(keyword);
   let listicleInstruction = "";
   if (count) {
     listicleInstruction = `\n\nCRITICAL COUNT INSTRUCTION: The keyword asks for "${count}" items. You MUST create exactly ${count} main item headings (using "## 1. [Item]", "## 2. [Item]" up to "## ${count}. [Item]") with H3 sub-sections under each item and write full, informative paragraphs under EACH section to reach 1,000 to 1,200 words!`;
   }
 
-  const promptText = `${getSystemPrompt()}${listicleInstruction}\n\nSubmitted Keyword / Topic: "${keyword}"\n[Target Word Count: 1000-1200 words]\n[MANDATORY REQUIREMENT: Naturally integrate topic-specific LSI and semantic keywords into the body paragraphs with zero keyword stuffing]`;
+  let slugPoolInstruction = "";
+  if (validSlugsSet && validSlugsSet.size > 0) {
+    const sampleSlugs = Array.from(validSlugsSet).slice(0, 40).join(", /");
+    slugPoolInstruction = `\n\nOFFICIAL EXISTING MAGAZINE TOPICS FOR OPTIONAL 1 INTERNAL LINK:
+You may weave at most 1 relevant link chosen ONLY from our verified magazine topics (format as [natural anchor](/slug)):
+/${sampleSlugs}
+STRICT RULE: NEVER invent a slug not on this list. Only link if it naturally helps the reader.`;
+  }
+
+  const promptText = `${getSystemPrompt()}${listicleInstruction}${slugPoolInstruction}\n\nSubmitted Keyword / Topic: "${keyword}"\n[Target Word Count: 1000-1200 words]\n[MANDATORY REQUIREMENT: Naturally integrate topic-specific LSI and semantic keywords into the body paragraphs with zero keyword stuffing]`;
 
   for (let attempt = 1; attempt <= 6; attempt++) {
     for (const modelName of GEMINI_MODELS) {
@@ -643,7 +652,7 @@ async function runAutoPublish() {
   const validSlugsSet = getExistingPublishedSlugs(articlesFileContent);
 
   console.log(`Generating pure editorial article with Gemini API for "${item.keyword}"...`);
-  const generated = await generateArticleWithGemini(item.keyword);
+  const generated = await generateArticleWithGemini(item.keyword, validSlugsSet);
   generated.paragraphs = postProcessNaturalInternalLinks(generated.paragraphs, validSlugsSet);
 
   console.log(`Fetching Unsplash image for "${item.keyword}"...`);
