@@ -27,6 +27,74 @@ export interface Article {
 
 export const ARTICLES: Article[] = [
   {
+    "id": "art-when-is-ramadan",
+    "slug": "when-is-ramadan",
+    "title": "Navigating the Lunar Calendar for Ramadan Observance Dates",
+    "metaTitle": "Navigating the Lunar Calendar for Ramadan Observance Dates | On Gravity Magazine",
+    "metaDescription": "Ramadan follows the Islamic lunar calendar which causes the start date to shift by approximately eleven days earlier each year for...",
+    "excerpt": "Ramadan follows the Islamic lunar calendar which causes the start date to shift by approximately eleven days earlier each year for...",
+    "content": [
+        "## The Mechanics of a Lunar Observance",
+        "The timing of Ramadan remains a subject of precision because it relies entirely on the sighting of the new crescent moon. Unlike the Gregorian calendar that follows the solar cycle, the Islamic calendar functions on lunar phases that total about 354 days annually. This twelve day discrepancy ensures that the holy month rotates through every season over a thirty-three year cycle.",
+        "Observers look to the moon to determine the exact transition from the month of Sha'ban to the month of Ramadan. Because the lunar cycle does not align perfectly with solar months, the specific start date cannot be predicted with total certainty years in advance. Religious authorities in various regions often wait for the visual confirmation of the crescent moon before declaring the beginning of the fast.",
+        "## Regional Variations in Moon Sighting",
+        "Different geographic locations may begin the fast on slightly different days based on when the moon becomes visible in their specific longitude. While some communities follow a calculated approach based on astronomical data, others maintain the traditional practice of physical observation. This creates a nuance where neighboring nations might start their month of reflection on separate days.",
+        "The global nature of the observance means that modern technology has helped synchronize these sightings across borders. Many international Islamic councils use standardized astronomical calculations to provide a reliable window for the month. Despite these advancements, the local cultural emphasis on witnessing the moon remains a cornerstone of the experience.",
+        "## The Rhythms of Fasting and Reflection",
+        "Ramadan serves as a period of intense spiritual discipline where the physical act of fasting from dawn until sunset takes center stage. During this time, the community focuses on prayer, charity, and introspection to deepen their connection to their faith. The daily schedule changes significantly to accommodate the pre-dawn meal and the evening breaking of the fast.",
+        "The evening meal, known as iftar, often brings families and neighbors together to share food after a long day of abstention. This period of communal eating fosters a sense of solidarity that defines the month for participants. Many individuals also dedicate extra time to reciting scriptures and performing night prayers known as taraweeh.",
+        "## Balancing Modern Life and Daily Observance",
+        "Maintaining a standard professional or academic routine while fasting presents a unique set of physical challenges for many practitioners. The shift in sleep patterns, combined with the lack of hydration during daylight hours, requires careful management of energy levels. It is common for people to adjust their workload or exercise intensity to align with their reduced capacity during the day.",
+        "If you find that your physical health or sleep quality suffers significantly, you might consider [[how to stop snoring](/how-to-stop-snoring)](/how-to-stop-snoring) to ensure that the rest you do get is as restorative as possible. Quality sleep becomes even more essential when the body is undergoing a metabolic shift due to restricted eating windows. Many find that minor adjustments to their environment or schedule can make the month much easier to manage.",
+        "## Preparing for the Month of Fasting",
+        "Preparation often begins weeks before the actual start date to ensure a smooth transition into the new routine. Families typically stock their pantries with essential ingredients for iftar and plan meals that offer sustained energy. This proactive approach helps reduce the stress of shopping and cooking during the days when energy levels might be lower.",
+        "Financial planning for charitable donations also plays a large role in the pre-Ramadan period. Many people calculate their annual obligations and set aside funds to support those in need throughout the month. This focus on generosity is a core component of the observance that extends beyond the individual to the entire community.",
+        "## Navigating the Final Days and Celebration",
+        "As the month draws to a close, the focus shifts toward the celebration of Eid al-Fitr, which marks the end of the fasting period. This day is characterized by communal prayers, gift-giving, and elaborate meals that signify the completion of the spiritual journey. It serves as a joyous culmination of the discipline practiced over the previous thirty days.",
+        "The transition back to a normal schedule happens gradually after the holiday concludes. Many people take a few days to reconnect with friends and family before resuming their standard professional responsibilities. The lessons learned during the month regarding patience and empathy often influence their behavior throughout the remainder of the year.",
+        "## Long-Term Integration of Spiritual Lessons",
+        "The influence of the holy month often continues well after the lunar cycle has moved on to the next period. Participants frequently report that the habits formed during Ramadan, such as increased mindfulness and controlled consumption, remain part of their daily life. This lasting impact is often considered one of the primary benefits of the annual commitment to fasting.",
+        "Maintaining these positive changes requires a conscious effort to prioritize reflection even when the external structure of the month is gone. Many individuals find that keeping a journal or continuing with nightly prayer helps them stay grounded. Over time, these small actions build a foundation of mental clarity that serves them throughout the changing seasons."
+    ],
+    "faqs": [
+        {
+            "question": "Why does the start date of Ramadan change every single year?",
+            "answer": "The Islamic calendar is lunar, meaning it is approximately eleven days shorter than the solar year, causing the month to shift earlier annually."
+        },
+        {
+            "question": "Is the start of the fast determined by astronomical calculation or visual sighting?",
+            "answer": "Practices vary by region, but many communities rely on the visual confirmation of the new crescent moon to officially announce the start."
+        },
+        {
+            "question": "Does the duration of the fast change depending on where you live in the world?",
+            "answer": "The length of the fast from dawn to sunset varies significantly based on your latitude and the specific season of the year."
+        },
+        {
+            "question": "Are there specific health considerations for those participating in the fast?",
+            "answer": "Individuals often focus on hydration during non-fasting hours and balanced nutrition during the evening meal to maintain their physical health."
+        }
+    ],
+    "category": "life-style",
+    "author": {
+        "name": "Sophia Chen",
+        "role": "Senior Lifestyle & Wellness Columnist",
+        "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+    },
+    "publishedAt": "Oct 12, 2026",
+    "readTime": "6 min read",
+    "imageUrl": "https://images.unsplash.com/photo-1742294627422-800b930fd29c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDU5NTUzfDB8MXxzZWFyY2h8OXx8d2hlbiUyMGlzJTIwcmFtYWRhbnxlbnwwfDB8fHwxNzkxODA2NzkyfDA&ixlib=rb-4.1.0&q=80&w=1080&sig=when-is-ramadan_1791806792260",
+    "imageAlt": "Ramadan kareem is illuminated at night - when is ramadan",
+    "imageCaption": "Ramadan kareem is illuminated at night",
+    "featured": true,
+    "trending": true,
+    "tags": [
+        "WHEN",
+        "IS",
+        "MAGAZINE",
+        "LIFE-STYLE"
+    ]
+},
+  {
     "id": "art-truck-accident-attorney",
     "slug": "truck-accident-attorney",
     "title": "Why Hiring A Truck Accident Attorney Demands Careful Focus",
