@@ -27,6 +27,82 @@ export interface Article {
 
 export const ARTICLES: Article[] = [
   {
+    "id": "art-how-to-bake-sourdough-bread",
+    "slug": "how-to-bake-sourdough-bread",
+    "title": "The Masterclass Guide To Baking Authentic Sourdough Bread",
+    "metaTitle": "The Masterclass Guide To Baking Authentic Sourdough Bread | On Gravity Magazine",
+    "metaDescription": "Master the art of wild yeast fermentation and hydration levels to produce professional sourdough loaves with a crispy crust and chewy crumb.",
+    "excerpt": "Master the art of wild yeast fermentation and hydration levels to produce professional sourdough loaves with a crispy crust and chewy crumb.",
+    "content": [
+        "## The Foundation of Wild Yeast Fermentation",
+        "Baking sourdough bread relies on a symbiotic culture of wild yeast and lactic acid bacteria rather than commercial dry yeast packets. This biological process demands patience, as the fermentation timeline fluctuates significantly based on your ambient kitchen temperature and the specific hydration of your starter.",
+        "### Understanding Your Starter Culture",
+        "A healthy starter is the engine of your entire process, requiring consistent feedings of flour and filtered water to remain active. You should observe consistent bubbling and a pleasant, tangy aroma before attempting to mix your primary dough. If the culture remains sluggish, keep it in a warmer spot or increase the frequency of your feedings to build microbial density.",
+        "### Managing Dough Hydration Levels",
+        "The ratio of water to flour determines the physical handling properties of your dough, with higher hydration levels yielding more open, airy crumb structures. Beginners often find success starting around 70 percent hydration, as this creates a manageable dough that does not stick excessively to your hands or work surface. As you gain experience, you can incrementally increase water volume to explore the limits of your flour strength and gluten network development.",
+        "## Essential Techniques for Dough Development",
+        "Developing a robust gluten network is the primary objective during the early stages of mixing and folding. Unlike standard yeast breads that rely on vigorous mechanical kneading, sourdough benefits from gentle handling to preserve the delicate gas bubbles trapped during the long fermentation window.",
+        "### The Autolyse Stage",
+        "Mixing only your flour and water before adding the salt or starter allows the flour to hydrate fully and begins the enzymatic breakdown of starches. Letting this mixture rest for forty-five minutes creates a more extensible dough, which makes the subsequent folding process much easier to manage. You will notice the dough feels significantly smoother and more pliable once the autolyse period is complete.",
+        "### Folding for Strength",
+        "Instead of traditional kneading, use a series of stretch-and-fold maneuvers spaced thirty minutes apart during the bulk fermentation phase. Grab the edge of the dough, pull it upward until you feel tension, and fold it over the center, rotating the bowl to repeat this on all four sides. This technique builds structural integrity without degassing the dough, ensuring you maintain the aeration necessary for a beautiful oven spring.",
+        "### The Bulk Fermentation Window",
+        "This phase represents the most critical period where flavor develops and the yeast begins to produce carbon dioxide. You should look for a 30 to 50 percent increase in volume and a dough that feels light and jiggly when you shake the bowl. If your kitchen remains chilly, you can [learn [how to clean bathroom tiles](/how-to-clean-bathroom-tiles)](/how-to-clean-bathroom-tiles) or perform other household chores while the dough proofs in a temperature-controlled spot like a turned-off oven with the light on.",
+        "## Shaping and Retarding the Loaf",
+        "Once the bulk fermentation finishes, the dough must be shaped into a tight boule or batard to provide tension for the final rise. This tension is vital because it directs the expansion of the loaf upward rather than outward during the high-heat baking process.",
+        "### Mastering Final Tension",
+        "Gently turn the dough onto a lightly floured surface, being careful not to deflate the air pockets you worked so hard to build. Pull the dough toward you to tighten the outer skin, creating a smooth surface that feels firm to the touch. Once shaped, place the dough seam-side up into a floured banneton or a bowl lined with a lint-free kitchen towel.",
+        "### The Benefit of Cold Proofing",
+        "Placing your shaped dough into the refrigerator for an overnight proof serves two distinct purposes. The cold temperature slows down yeast activity while allowing lactic acid bacteria to continue producing deep, complex flavors. Furthermore, chilled dough is significantly easier to score with a razor blade, leading to more professional results when the bread hits the oven.",
+        "## Baking for Maximum Crust and Crumb",
+        "The transition from a cold proof to a hot oven is where the magic happens, specifically regarding the rapid expansion known as oven spring. You need an environment that traps steam effectively, as this prevents the crust from setting too early and allows the interior to rise fully.",
+        "### Using a Dutch Oven",
+        "A heavy cast iron Dutch oven acts as a miniature steam chamber, mimicking the environment of a professional hearth oven. Preheat the vessel for at least one hour at 500 degrees Fahrenheit to ensure the heat transfer is instantaneous once the dough is loaded. Remove the lid halfway through the bake to allow the crust to caramelize into a deep, mahogany brown color.",
+        "### Assessing Internal Doneness",
+        "Never cut into a fresh loaf while it is still steaming, as the interior continues to cook through residual heat. Waiting at least two hours ensures the crumb sets properly and prevents the texture from becoming gummy or overly moist. You can verify the bake is complete by tapping the bottom of the loaf, which should sound hollow and feel remarkably light for its size.",
+        "## Long-Term Maintenance and Longevity",
+        "Consistency in your baking schedule depends heavily on how you manage your starter when you are not actively mixing dough. Many bakers choose to store their starter in the refrigerator between weekend bakes to minimize the amount of flour required for daily maintenance feedings.",
+        "If you notice a dark liquid forming on the surface, this is known as hooch, which indicates the culture is hungry and needs an immediate feeding to regain its vigor. Keep your tools clean and your flour source consistent, as sudden changes in grain type can alter the fermentation rate of your signature sourdough loaves."
+    ],
+    "faqs": [
+        {
+            "question": "Why is my sourdough loaf flat after baking?",
+            "answer": "A flat loaf typically results from over-proofing the dough during the bulk fermentation stage or failing to create enough surface tension during the shaping process."
+        },
+        {
+            "question": "How do I know when my sourdough starter is ready to use?",
+            "answer": "Your starter is ready when it consistently doubles in volume within four to six hours after a feeding and features a bubbly, airy texture throughout."
+        },
+        {
+            "question": "Can I use all-purpose flour for my sourdough bread?",
+            "answer": "While bread flour provides higher protein content for better structure, you can certainly achieve great results using all-purpose flour if you handle the dough gently."
+        },
+        {
+            "question": "Does the temperature of my water matter?",
+            "answer": "Using lukewarm water helps accelerate fermentation in cool environments, while cold water is useful if you need to slow down the process to fit your schedule."
+        }
+    ],
+    "category": "food",
+    "author": {
+        "name": "Sophia Chen",
+        "role": "Senior Lifestyle & Wellness Columnist",
+        "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+    },
+    "publishedAt": "Oct 14, 2026",
+    "readTime": "6 min read",
+    "imageUrl": "https://images.unsplash.com/photo-1586765501019-cbe3973ef8fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDU5NTUzfDB8MXxzZWFyY2h8MXx8aG93JTIwdG8lMjBiYWtlJTIwc291cmRvdWdoJTIwYnJlYWR8ZW58MHwwfHx8MTc5MTk3MDQ1OXww&ixlib=rb-4.1.0&q=80&w=1080&sig=how-to-bake-sourdough-bread_1791970459669",
+    "imageAlt": "bread on brown wooden table - how to bake sourdough bread",
+    "imageCaption": "Sourdough bread loaves baking",
+    "featured": true,
+    "trending": true,
+    "tags": [
+        "HOW",
+        "TO",
+        "MAGAZINE",
+        "FOOD"
+    ]
+},
+  {
     "id": "art-when-is-ramadan",
     "slug": "when-is-ramadan",
     "title": "When is Ramadan 2027: Exact Dates, Calendar, and Global Guide",
