@@ -29,10 +29,10 @@ export const ARTICLES: Article[] = [
   {
     "id": "art-mens-wedding-bands",
     "slug": "mens-wedding-bands",
-    "title": "The Master Bench Jeweler Guide to Men's Wedding Rings\nEXCERPT: Find the ideal male band with this jeweler guide covering precious metals, sizing, durability, finishes, and expert online buying tips.",
-    "metaTitle": "The Master Bench Jeweler Guide to Men's Wedding Rings\nEXCERPT: Find the ideal male band with this jeweler guide covering precious metals, sizing, durability, finishes, and expert online buying tips. | On Gravity Magazine",
-    "metaDescription": "",
-    "excerpt": "",
+    "title": "The Complete Guide to Men's Wedding Bands",
+    "metaTitle": "The Complete Guide to Men's Wedding Bands | On Gravity Magazine",
+    "metaDescription": "Learn how to choose the best ring metal, find a comfortable fit, pick durable finishes, and avoid common sizing mistakes on any budget.",
+    "excerpt": "Learn how to choose the best ring metal, find a comfortable fit, pick durable finishes, and avoid common sizing mistakes on any budget.",
     "content": [
       "## The Bench Jeweler Perspective on Men's Wedding Jewelry",
       "Sitting at a jewelry bench for decades gives a person a distinct perspective on what makes a wedding band work over a lifetime. A ring is not merely a static symbol placed in a velvet box on a ceremony day. It is an active mechanical object exposed to abrasive dust, door handles, hand tools, barbell knurling, and body chemistry. Evaluating the best mens wedding bands requires understanding how design, metallurgical composition, and geometry interact with everyday human activity.",

@@ -842,7 +842,7 @@ export function sanitizeOrMigrateArticle(art: Article): Article {
   art.metaTitle = `${art.title} | On Gravity Magazine`;
 
   if (!art.excerpt || !art.excerpt.trim()) {
-    art.excerpt = `An in-depth editorial guide covering ${cleanKw} with practical insights and expert analysis.`;
+    art.excerpt = `Explore clear facts, practical tips, and essential details on ${cleanKw} for everyday readers.`;
   }
   art.excerpt = art.excerpt.replace(/&/g, "and").replace(/—/g, ", ").replace(/--/g, ", ");
   art.metaDescription = art.excerpt;
