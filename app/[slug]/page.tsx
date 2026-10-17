@@ -399,6 +399,75 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 );
               }
 
+              // Render Markdown Image
+              const imgMatch = trimmed.match(/^!\[(.*?)\]\((.*?)(?:\s+"(.*?)")?\)$/);
+              if (imgMatch) {
+                const alt = imgMatch[1];
+                const src = imgMatch[2];
+                const caption = imgMatch[3] || alt;
+                return (
+                  <figure
+                    key={index}
+                    className="my-8 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 shadow-sm"
+                  >
+                    <img
+                      src={src}
+                      alt={alt}
+                      className="w-full h-auto max-h-[500px] object-cover"
+                      loading="lazy"
+                    />
+                    {caption && (
+                      <figcaption className="p-3 text-center text-sm text-slate-500 dark:text-slate-400 italic">
+                        {caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                );
+              }
+
+              // Render Markdown Table
+              if (trimmed.startsWith("|") && trimmed.includes("\n")) {
+                const lines = trimmed.split("\n").filter((l) => l.trim().startsWith("|"));
+                if (lines.length >= 2) {
+                  const headerCells = lines[0]
+                    .split("|")
+                    .slice(1, -1)
+                    .map((c) => c.trim());
+                  const bodyRows = lines.slice(2).map((row) =>
+                    row
+                      .split("|")
+                      .slice(1, -1)
+                      .map((c) => c.trim())
+                  );
+                  return (
+                    <div key={index} className="my-8 overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-800">
+                      <table className="w-full text-left text-sm text-slate-800 dark:text-slate-200 divide-y divide-slate-200 dark:divide-slate-800">
+                        <thead className="bg-slate-100 dark:bg-slate-800 text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
+                          <tr>
+                            {headerCells.map((h, i) => (
+                              <th key={i} className="px-4 py-3">
+                                {parseRichText(h)}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 bg-white dark:bg-slate-900">
+                          {bodyRows.map((row, rIdx) => (
+                            <tr key={rIdx} className={rIdx % 2 === 0 ? "bg-white dark:bg-slate-900" : "bg-slate-50/50 dark:bg-slate-800/30"}>
+                              {row.map((cell, cIdx) => (
+                                <td key={cIdx} className="px-4 py-3 whitespace-nowrap">
+                                  {parseRichText(cell)}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  );
+                }
+              }
+
               const isBullet = /^[*\-•]\s+/.test(trimmed) || /^[*\-•]\s*\*\*/.test(trimmed);
 
               if (isBullet) {

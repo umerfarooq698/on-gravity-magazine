@@ -44,6 +44,8 @@ export function injectNaturalInternalLinks(
         para.startsWith("#") ||
         para.startsWith("*") ||
         para.startsWith("-") ||
+        para.startsWith("|") ||
+        para.startsWith("!") ||
         para.includes("](")
       ) {
         return para;
