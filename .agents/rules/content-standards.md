@@ -19,7 +19,7 @@ Every article creation process MUST strictly follow this exact step-by-step work
 - Grounded in **E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness)** and Google Helpful Content standards.
 - Deliver real, actionable, reader-first value without fluff, filler, or commercial sales bias.
 
-## Step 4: 100% Unique Outline & Dynamic Heading Blueprint
+## Step 4: 100% Unique Structure & Dynamic Heading Blueprint
 - Every new article MUST have a **completely unique, fresh structure, pattern, and heading architecture**.
 - **NEVER reuse templates, structures, or identical heading formats** from previous articles.
 - Headings must be informative, sharp, and relevant (no fluff or filler headings).
@@ -27,11 +27,11 @@ Every article creation process MUST strictly follow this exact step-by-step work
 
 ## Step 5: Pure Human Voice & Zero AI Patterns
 - **Tone**: Authentic, grounded human journalism (The Cut, Rolling Stone, The Atlantic style).
+- **No Word Count Limit**: There is NO fixed word limit. Write as many words as needed based on comprehensive, deep informational coverage.
 - **Zero AI Sentences**:
   - NO formulaic synthetic constructions ("Not only X, but also Y", "While X, Y remains", "It is worth noting", "At its core", "In a world where", "When it comes to").
   - NO robotic paragraph-ending summaries.
   - Paragraphs: 3 to 5 natural, well-paced sentences (no single-sentence lines).
-  - Word count: 1,800 to 2,500 words.
 - **Zero Banned Words**:
   - Stock AI words: `delve`, `tapestry`, `beacon`, `vital`, `crucial`, `seamlessly`, `testament`, `realm`, `moreover`, `furthermore`, `navigating`, `landscape`, `journey`, `underscores`, `plethora`, `intricate`, `embark`, `ever-evolving`, etc.
   - PR/Essay fluff: `masterclass`, `zeitgeist`, `titan`, `juggernaut`, `earthquake`, `dismantled`, `unapologetic`, `unabashed`, `delicate equilibrium`, `audacity`, `swagger`, `multi-hyphenate`, `game-changer`.
@@ -44,7 +44,7 @@ Every article creation process MUST strictly follow this exact step-by-step work
 - **Images**: Minimum 2 images (1 Top Featured + 1 Contextual Middle Image with alt text and caption).
 - **Internal Linking**: Naturally include 1 to 2 relevant internal links to existing ongravitymagazine.com articles.
 
-## Step 7: Mandatory Self-Audit Before Showing to User
+## Step 7: Mandatory Self-Audit Before Showing Draft
 - Before presenting any draft to the user, run a comprehensive self-audit:
   1. Verify top organic research and gap coverage.
   2. Verify all user keywords and extracted LSI keywords are naturally placed.

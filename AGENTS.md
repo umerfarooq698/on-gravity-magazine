@@ -11,7 +11,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 # On Gravity Magazine - Mandatory Content & Research System
 
 ## 1. Top 10 Organic SERP Research (No Social Media)
-- Main keyword milte hi pehle Google top 10 organic web pages research karne hain.
+- Main keyword milte hi pehle Google ke top 10 organic web pages research karne hain.
 - Reddit, X (Twitter), Facebook, Instagram, YouTube jese social media pages ko strictly exclude karna hai. Sirf real authoritative editorial pages analyze karne hain.
 
 ## 2. 50+ LSI/Semantic Keywords & Content Gap Analysis
@@ -29,10 +29,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Headings meaningful hongi (koi fazool heading nahi). Proper H2 aur multiple H3 subheadings.
 
 ## 5. Pure Human Voice & Zero AI Patterns
+- Words ki koi fixed limit nahi hogi: topic aur informational coverage ke mutabiq jitne words ki zaroorat ho utne likhne hain, bas content informative hona chahiye.
 - Zero AI words: delve, tapestry, beacon, vital, crucial, seamlessly, testament, realm, moreover, furthermore, navigating, landscape, journey, underscores, plethora, intricate, embark, bustling, ever-evolving, etc.
 - Zero PR puffery: masterclass, zeitgeist, titan, juggernaut, earthquake, dismantled, unapologetic, unabashed, delicate equilibrium, audacity, swagger, multi-hyphenate, game-changer.
 - Zero AI sentence patterns: no "Not only X, but also Y", no "While X, Y remains", no "It is worth noting", no "At its core", no "In a world where".
-- 3 to 5 natural sentences per paragraph. 1,800 to 2,500 words.
+- 3 to 5 natural sentences per paragraph.
 
 ## 6. Formatting & Rules
 - Zero Oxford commas: strictly NO `", and"` anywhere (headings, body, meta).
