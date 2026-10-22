@@ -8,25 +8,41 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-# On Gravity Magazine - Editorial Quality & Writing Standards
+# On Gravity Magazine - Mandatory Content & Research System
 
-## Unique Structure & Outline (NEVER REUSE TEMPLATES)
-- Har naye article ke liye bilkul fresh aur alag outline, structure, headings aur flow banani hai.
-- Kabhi bhi purane articles ka template, heading pattern ya structure repeat nahi karna.
+## 1. Top 10 Organic SERP Research (No Social Media)
+- Main keyword milte hi pehle Google top 10 organic web pages research karne hain.
+- Reddit, X (Twitter), Facebook, Instagram, YouTube jese social media pages ko strictly exclude karna hai. Sirf real authoritative editorial pages analyze karne hain.
 
-## Zero AI Sentences & Pure Human Voice
-- AI ke synthetic sentence patterns bilkul use nahi karne (no "Not only X but also Y", no "While X, Y remains", no "It is worth noting", no "At its core", no "In a world where").
-- Paragraphs ke aakhir mein synthetic summary sentences nahi likhne.
-- Real human journalism voice (The Cut / Rolling Stone / The Atlantic style) mein natural sentence flow use karna hai.
+## 2. 50+ LSI/Semantic Keywords & Content Gap Analysis
+- Top 10 organic pages se 50+ LSI/semantic keywords extract karne hain.
+- Content gaps aur keyword gaps find karne hain taake competitors se behtar aur informative article bane.
+- User ke diye hue LSI/semantic keywords ko bhi laazmi integrate karna hai.
 
-## Banned Words (Zero Tolerance)
-- NEVER use: delve, tapestry, beacon, vital, crucial, seamlessly, in conclusion, testament, realm, moreover, furthermore, it's important to remember, navigating, landscape, journey, underscores, plethora, nestled, foster, intricate, embark, bustling, ever-evolving, multifaceted, look no further, in today's world.
-- NEVER use PR puffery: masterclass, zeitgeist, titan, juggernaut, earthquake, dismantled, unapologetic, unabashed, delicate equilibrium, poise of, reverberated, audacity, swagger, multi-hyphenate, game-changer, testament to.
+## 3. Informational Intent & E-E-A-T (Helpful Content / HUC)
+- Content 100% informational hoga, real reader-first value ke sath.
+- E-E-A-T standards (Experience, Expertise, Authoritativeness, Trustworthiness) follow karne hain. Koi filler ya fazool material nahi hoga.
 
-## Punctuation & Layout
-- Zero Oxford commas: strictly NO `", and"` anywhere in the text or headings.
-- Proper `##` (H2) aur multiple `###` (H3) subheadings.
+## 4. Unique Structure & Headings (Zero Template Reuse)
+- Har naye article ki outline, headings aur structure bilkul naya aur unique hoga.
+- Koi repeated template, heading style ya pattern reuse nahi hoga.
+- Headings meaningful hongi (koi fazool heading nahi). Proper H2 aur multiple H3 subheadings.
+
+## 5. Pure Human Voice & Zero AI Patterns
+- Zero AI words: delve, tapestry, beacon, vital, crucial, seamlessly, testament, realm, moreover, furthermore, navigating, landscape, journey, underscores, plethora, intricate, embark, bustling, ever-evolving, etc.
+- Zero PR puffery: masterclass, zeitgeist, titan, juggernaut, earthquake, dismantled, unapologetic, unabashed, delicate equilibrium, audacity, swagger, multi-hyphenate, game-changer.
+- Zero AI sentence patterns: no "Not only X, but also Y", no "While X, Y remains", no "It is worth noting", no "At its core", no "In a world where".
+- 3 to 5 natural sentences per paragraph. 1,800 to 2,500 words.
+
+## 6. Formatting & Rules
+- Zero Oxford commas: strictly NO `", and"` anywhere (headings, body, meta).
 - Zero bolded keywords.
 - Meta description strictly 135 to 140 characters, 0 hyphens, 0 `", and"`.
 - 4 single-sentence FAQs.
-- Pre-publish protocol: Always show full preview to user before publishing.
+- 2 images (Top Featured + Middle Body Image) + 1-2 internal links.
+
+## 7. Mandatory Self-Audit Before Showing Draft
+- Draft user ko dikhane se pehle khud test aur verify karna hai.
+- Agar khud ko thoda sa bhi synthetic ya defective lage to pehle khud rewrite karna hai.
+- Perfect hone ke baad hi pura draft user ko preview karwana hai.
+- User ke "publish kardo" ke baad hi codebase mein add aur live push karna hai.
