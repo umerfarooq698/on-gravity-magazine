@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /search
+Disallow: /glock-19-gen-5
+
+Sitemap: https://www.ongravitymagazine.com/sitemap.xml
