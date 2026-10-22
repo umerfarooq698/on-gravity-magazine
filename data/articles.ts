@@ -29,8 +29,8 @@ export const ARTICLES: Article[] = [
   {
     "id": "art-jeep-grand-wagoneer",
     "slug": "jeep-grand-wagoneer",
-    "title": "Jeep Grand Wagoneer Guide: Pricing, Cabin Space and Power",
-    "metaTitle": "Jeep Grand Wagoneer Guide: Pricing, Cabin Space and Power | On Gravity Magazine",
+    "title": "What Families Need to Know About the Jeep Grand Wagoneer",
+    "metaTitle": "What Families Need to Know About the Jeep Grand Wagoneer | On Gravity Magazine",
     "metaDescription": "Get honest facts on the Jeep Grand Wagoneer covering real showroom pricing shifts plus interior space and Hurricane engine performance.",
     "excerpt": "Get honest facts on the Jeep Grand Wagoneer covering real showroom pricing shifts plus interior space and Hurricane engine performance.",
     "content": [

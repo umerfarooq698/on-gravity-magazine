@@ -11,7 +11,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 # On Gravity Magazine - Mandatory Content & Research System
 
 ## 1. Top 10 Organic SERP Research (No Social Media)
-- Main keyword milte hi pehle Google ke top 10 organic web pages research karne hain.
+- Main keyword milte hi Google ke top 10 organic web pages research karne hain.
 - Reddit, X (Twitter), Facebook, Instagram, YouTube jese social media pages ko strictly exclude karna hai. Sirf real authoritative editorial pages analyze karne hain.
 
 ## 2. 50+ LSI/Semantic Keywords & Content Gap Analysis
@@ -26,16 +26,21 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## 4. Unique Structure & Headings (Zero Template Reuse)
 - Har naye article ki outline, headings aur structure bilkul naya aur unique hoga.
 - Koi repeated template, heading style ya pattern reuse nahi hoga.
-- Headings meaningful hongi (koi fazool heading nahi). Proper H2 aur multiple H3 subheadings.
+- Headings meaningful hongi. Proper H2 aur multiple H3 subheadings.
+- **Har H2 ke baad laazmi introductory paragraphs honge**, H2 ke foran baad direct H3 nahi aayegi.
 
 ## 5. Pure Human Voice & Zero AI Patterns
-- Words ki koi fixed limit nahi hogi: topic aur informational coverage ke mutabiq jitne words ki zaroorat ho utne likhne hain, bas content informative hona chahiye.
+- Words ki koi fixed limit nahi hogi: topic aur informational coverage ke mutabiq jitne words zaroori hon utne likhne hain.
 - Zero AI words: delve, tapestry, beacon, vital, crucial, seamlessly, testament, realm, moreover, furthermore, navigating, landscape, journey, underscores, plethora, intricate, embark, bustling, ever-evolving, etc.
 - Zero PR puffery: masterclass, zeitgeist, titan, juggernaut, earthquake, dismantled, unapologetic, unabashed, delicate equilibrium, audacity, swagger, multi-hyphenate, game-changer.
-- Zero AI sentence patterns: no "Not only X, but also Y", no "While X, Y remains", no "It is worth noting", no "At its core", no "In a world where".
+- Zero AI sentence patterns: no "Not only X, but also Y", no "While X, Y remains", no "It is worth noting", no "At its core", no "In a world where", no "Underneath X lies Y".
 - 3 to 5 natural sentences per paragraph.
 
-## 6. Formatting & Rules
+## 6. Title, Formatting & Rules
+- **Title**:
+  - Length around 50–60 characters (SEO standard).
+  - **Zero Colons (`:`)**: Title mein colon (`:`) bilkul use nahi hoga.
+  - **Dynamic Keyword Placement**: Main keyword hamesha start mein nahi aayega; kabhi start mein, kabhi middle mein, kabhi end mein naturally aayega.
 - Zero Oxford commas: strictly NO `", and"` anywhere (headings, body, meta).
 - Zero bolded keywords.
 - Meta description strictly 135 to 140 characters, 0 hyphens, 0 `", and"`.
@@ -43,7 +48,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - 2 images (Top Featured + Middle Body Image) + 1-2 internal links.
 
 ## 7. Mandatory Self-Audit Before Showing Draft
-- Draft user ko dikhane se pehle khud test aur verify karna hai.
+- Draft user ko dikhane se pehle khud test aur verify karna hai (keywords, zero banned words, zero AI sentence patterns, zero Oxford commas, zero colons in titles, H2 intro paragraphs).
 - Agar khud ko thoda sa bhi synthetic ya defective lage to pehle khud rewrite karna hai.
 - Perfect hone ke baad hi pura draft user ko preview karwana hai.
 - User ke "publish kardo" ke baad hi codebase mein add aur live push karna hai.

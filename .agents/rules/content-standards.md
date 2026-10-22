@@ -24,19 +24,24 @@ Every article creation process MUST strictly follow this exact step-by-step work
 - **NEVER reuse templates, structures, or identical heading formats** from previous articles.
 - Headings must be informative, sharp, and relevant (no fluff or filler headings).
 - Proper hierarchy: `##` (H2) main thematic sections with multiple `###` (H3) subheadings under each section.
+- **MANDATORY**: Every `##` (H2) section MUST have substantive introductory paragraphs before any `###` (H3) subheadings appear. Never follow an H2 directly with an H3.
 
 ## Step 5: Pure Human Voice & Zero AI Patterns
 - **Tone**: Authentic, grounded human journalism (The Cut, Rolling Stone, The Atlantic style).
 - **No Word Count Limit**: There is NO fixed word limit. Write as many words as needed based on comprehensive, deep informational coverage.
 - **Zero AI Sentences**:
-  - NO formulaic synthetic constructions ("Not only X, but also Y", "While X, Y remains", "It is worth noting", "At its core", "In a world where", "When it comes to").
+  - NO formulaic synthetic constructions ("Not only X, but also Y", "While X, Y remains", "It is worth noting", "At its core", "In a world where", "When it comes to", "Underneath X lies Y").
   - NO robotic paragraph-ending summaries.
   - Paragraphs: 3 to 5 natural, well-paced sentences (no single-sentence lines).
 - **Zero Banned Words**:
-  - Stock AI words: `delve`, `tapestry`, `beacon`, `vital`, `crucial`, `seamlessly`, `testament`, `realm`, `moreover`, `furthermore`, `navigating`, `landscape`, `journey`, `underscores`, `plethora`, `intricate`, `embark`, `ever-evolving`, etc.
-  - PR/Essay fluff: `masterclass`, `zeitgeist`, `titan`, `juggernaut`, `earthquake`, `dismantled`, `unapologetic`, `unabashed`, `delicate equilibrium`, `audacity`, `swagger`, `multi-hyphenate`, `game-changer`.
+  - Stock AI words: `delve`, `tapestry`, `beacon`, `vital`, `crucial`, `seamlessly`, `in conclusion`, `testament`, `realm`, `moreover`, `furthermore`, `it's important to remember`, `navigating`, `landscape`, `journey`, `underscores`, `plethora`, `nestled`, `foster`, `intricate`, `embark`, `bustling`, `ever-evolving`, `multifaceted`, `look no further`, `in today's world`.
+  - PR/Essay fluff: `masterclass`, `zeitgeist`, `titan`, `juggernaut`, `earthquake`, `dismantled`, `unapologetic`, `unabashed`, `delicate equilibrium`, `poise of`, `reverberated`, `audacity`, `swagger`, `multi-hyphenate`, `game-changer`, `testament to`.
 
-## Step 6: Punctuation, Metadata & Media
+## Step 6: Title, Punctuation, Metadata & Media
+- **Title Rules**:
+  - Length: Around 50 to 60 characters for clean SEO snippet display.
+  - **Zero Colons (`:`)**: Never use colons (`:`) in article titles.
+  - **Dynamic Keyword Placement**: Main keyword must NOT always be at the start. Vary naturally: sometimes at the start, sometimes in the middle, and sometimes at the end.
 - **Zero Oxford Commas**: Strictly NO `", and"` anywhere in text, headings, or metadata (always `"X, Y and Z"`).
 - **Zero Bold Keywords**: All keywords must appear in natural sentence case without bolding (`**`).
 - **Meta Description**: Strictly between 135 and 140 characters, 0 hyphens, 0 `", and"`.
@@ -48,7 +53,7 @@ Every article creation process MUST strictly follow this exact step-by-step work
 - Before presenting any draft to the user, run a comprehensive self-audit:
   1. Verify top organic research and gap coverage.
   2. Verify all user keywords and extracted LSI keywords are naturally placed.
-  3. Verify 0 banned words, 0 AI sentence formulas, 0 Oxford commas, correct H2/H3 structure, and exact meta length.
+  3. Verify 0 banned words, 0 AI sentence formulas, 0 Oxford commas, 0 colons in titles, correct H2 intro paragraphs, and exact meta length.
 - **If anything fails or feels synthetic/robotic, REWRITE IT INTERNALLY first.** Never give an unverified or subpar draft to the user.
 - Present the verified full draft preview to the user in chat.
 - Publish to codebase and push to GitHub/Vercel ONLY after explicit user confirmation ("publish kardo").
