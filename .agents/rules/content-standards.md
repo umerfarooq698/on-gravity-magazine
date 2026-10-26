@@ -26,16 +26,17 @@ Every article creation process MUST strictly follow this exact step-by-step work
 - Proper hierarchy: `##` (H2) main thematic sections with multiple `###` (H3) subheadings under each section.
 - **MANDATORY**: Every `##` (H2) section MUST have substantive introductory paragraphs before any `###` (H3) subheadings appear. Never follow an H2 directly with an H3.
 
-## Step 5: Pure Human Voice & Zero AI Patterns
+## Step 5: Pure Human Voice & Zero AI Patterns (Google-Penalized Patterns Forbidden)
 - **Tone**: Authentic, grounded human journalism (The Cut, Rolling Stone, The Atlantic style).
 - **No Word Count Limit**: There is NO fixed word limit. Write as many words as needed based on comprehensive, deep informational coverage.
-- **Zero AI Sentences**:
-  - NO formulaic synthetic constructions ("Not only X, but also Y", "While X, Y remains", "It is worth noting", "At its core", "In a world where", "When it comes to", "Underneath X lies Y").
-  - NO robotic paragraph-ending summaries.
+- **Zero AI Sentences & Formulas**:
+  - NO formulaic synthetic constructions ("Not only X, but also Y", "While X, Y remains", "It is worth noting", "At its core", "In a world where", "When it comes to", "Underneath X lies Y", "It goes without saying").
+  - NO robotic paragraph-ending summaries or repetitive thesis echoes.
   - Paragraphs: 3 to 5 natural, well-paced sentences (no single-sentence lines).
-- **Zero Banned Words**:
+- **Zero Banned Words (All AI / Essay / PR Fluff Forbidden by Google Guidelines)**:
   - Stock AI words: `delve`, `tapestry`, `beacon`, `vital`, `crucial`, `seamlessly`, `in conclusion`, `testament`, `realm`, `moreover`, `furthermore`, `it's important to remember`, `navigating`, `landscape`, `journey`, `underscores`, `plethora`, `nestled`, `foster`, `intricate`, `embark`, `bustling`, `ever-evolving`, `multifaceted`, `look no further`, `in today's world`.
   - PR/Essay fluff: `masterclass`, `zeitgeist`, `titan`, `juggernaut`, `earthquake`, `dismantled`, `unapologetic`, `unabashed`, `delicate equilibrium`, `poise of`, `reverberated`, `audacity`, `swagger`, `multi-hyphenate`, `game-changer`, `testament to`.
+  - Corporate AI phrases: `exponentially`, `dramatically`, `tangible`, `remediation`, `substantial premiums`, `porous items`, `dynamics shift`.
 
 ## Step 6: Title, Punctuation, Metadata & Media
 - **Title Rules**:
@@ -49,11 +50,12 @@ Every article creation process MUST strictly follow this exact step-by-step work
 - **Images**: Minimum 2 images (1 Top Featured + 1 Contextual Middle Image with alt text and caption).
 - **Internal Linking**: Naturally include 1 to 2 relevant internal links to existing ongravitymagazine.com articles.
 
-## Step 7: Mandatory Self-Audit Before Showing Draft
-- Before presenting any draft to the user, run a comprehensive self-audit:
-  1. Verify top organic research and gap coverage.
-  2. Verify all user keywords and extracted LSI keywords are naturally placed.
-  3. Verify 0 banned words, 0 AI sentence formulas, 0 Oxford commas, 0 colons in titles, correct H2 intro paragraphs, and exact meta length.
-- **If anything fails or feels synthetic/robotic, REWRITE IT INTERNALLY first.** Never give an unverified or subpar draft to the user.
+## Step 7: Exhaustive Self-Audit Before Showing Draft
+- The agent must exhaustively inspect the entire text line-by-line before presenting anything to the user:
+  1. Scan and verify that NO Google-disliked AI words or robotic sentence patterns exist anywhere in the draft.
+  2. Verify that all user keywords and extracted organic LSI keywords are naturally placed.
+  3. Verify 0 Oxford commas, 0 colons in titles, H2 intro paragraphs exist under every H2, and meta description is exactly 135-140 characters.
+  4. Ensure no structural requirement or guidelines are missed.
+- **If even a single flaw or robotic pattern is found, REWRITE IT INTERNALLY first.** Never deliver an unvetted or subpar draft.
 - Present the verified full draft preview to the user in chat.
-- Publish to codebase and push to GitHub/Vercel ONLY after explicit user confirmation ("publish kardo").
+- Publish to codebase and push to GitHub/Vercel ONLY after explicit user confirmation ("published kardo").

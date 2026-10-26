@@ -1,54 +1,61 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# On Gravity Magazine - Mandatory End-to-End Workflow & Editorial Standards
 
-# This is NOT the Next.js you know
+Every article creation process MUST strictly follow this exact step-by-step workflow:
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+## Step 1: Top 10 Organic SERP Research (Main Keyword)
+- As soon as the main keyword is provided, perform live web search to analyze the **top 10 organic search results**.
+- **EXCLUDE all social platforms**: Ignore Reddit, X (Twitter), Facebook, Instagram, TikTok, Pinterest, YouTube, Quora, etc.
+- Focus strictly on authoritative editorial, informational, and publication articles ranking in top 10.
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+## Step 2: Extract 50+ LSI Keywords & Gap Analysis
+- Extract **50+ LSI / semantic keywords and co-occurring topical entities** from top 10 ranking pages.
+- Perform a thorough **Content Gap and Keyword Gap analysis**:
+  - Identify critical angles, questions, or facts competitors missed.
+  - Plan how our article will provide superior depth, clarity, and value.
+- Integrate **all user-provided LSI / semantic keywords** alongside discovered gap keywords naturally.
 
-<!-- END:nextjs-agent-rules -->
+## Step 3: Informational Intent, E-E-A-T & Helpful Content (HUC)
+- Content must strictly satisfy **Informational Search Intent**.
+- Grounded in **E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness)** and Google Helpful Content standards.
+- Deliver real, actionable, reader-first value without fluff, filler, or commercial sales bias.
 
-# On Gravity Magazine - Mandatory Content & Research System
+## Step 4: 100% Unique Structure & Dynamic Heading Blueprint
+- Every new article MUST have a **completely unique, fresh structure, pattern, and heading architecture**.
+- **NEVER reuse templates, structures, or identical heading formats** from previous articles.
+- Headings must be informative, sharp, and relevant (no fluff or filler headings).
+- Proper hierarchy: `##` (H2) main thematic sections with multiple `###` (H3) subheadings under each section.
+- **MANDATORY**: Every `##` (H2) section MUST have substantive introductory paragraphs before any `###` (H3) subheadings appear. Never follow an H2 directly with an H3.
 
-## 1. Top 10 Organic SERP Research (No Social Media)
-- Main keyword milte hi Google ke top 10 organic web pages research karne hain.
-- Reddit, X (Twitter), Facebook, Instagram, YouTube jese social media pages ko strictly exclude karna hai. Sirf real authoritative editorial pages analyze karne hain.
+## Step 5: Pure Human Voice & Zero AI Patterns (Google-Penalized Patterns Forbidden)
+- **Tone**: Authentic, grounded human journalism (The Cut, Rolling Stone, The Atlantic style).
+- **No Word Count Limit**: There is NO fixed word limit. Write as many words as needed based on comprehensive, deep informational coverage.
+- **Zero AI Sentences & Formulas**:
+  - NO formulaic synthetic constructions ("Not only X, but also Y", "While X, Y remains", "It is worth noting", "At its core", "In a world where", "When it comes to", "Underneath X lies Y", "It goes without saying").
+  - NO robotic paragraph-ending summaries or repetitive thesis echoes.
+  - Paragraphs: 3 to 5 natural, well-paced sentences (no single-sentence lines).
+- **Zero Banned Words (All AI / Essay / PR Fluff Forbidden by Google Guidelines)**:
+  - Stock AI words: `delve`, `tapestry`, `beacon`, `vital`, `crucial`, `seamlessly`, `in conclusion`, `testament`, `realm`, `moreover`, `furthermore`, `it's important to remember`, `navigating`, `landscape`, `journey`, `underscores`, `plethora`, `nestled`, `foster`, `intricate`, `embark`, `bustling`, `ever-evolving`, `multifaceted`, `look no further`, `in today's world`.
+  - PR/Essay fluff: `masterclass`, `zeitgeist`, `titan`, `juggernaut`, `earthquake`, `dismantled`, `unapologetic`, `unabashed`, `delicate equilibrium`, `poise of`, `reverberated`, `audacity`, `swagger`, `multi-hyphenate`, `game-changer`, `testament to`.
+  - Corporate AI phrases: `exponentially`, `dramatically`, `tangible`, `remediation`, `substantial premiums`, `porous items`, `dynamics shift`.
 
-## 2. 50+ LSI/Semantic Keywords & Content Gap Analysis
-- Top 10 organic pages se 50+ LSI/semantic keywords extract karne hain.
-- Content gaps aur keyword gaps find karne hain taake competitors se behtar aur informative article bane.
-- User ke diye hue LSI/semantic keywords ko bhi laazmi integrate karna hai.
+## Step 6: Title, Punctuation, Metadata & Media
+- **Title Rules**:
+  - Length: Around 50 to 60 characters for clean SEO snippet display.
+  - **Zero Colons (`:`)**: Never use colons (`:`) in article titles.
+  - **Dynamic Keyword Placement**: Main keyword must NOT always be at the start. Vary naturally: sometimes at the start, sometimes in the middle, and sometimes at the end.
+- **Zero Oxford Commas**: Strictly NO `", and"` anywhere in text, headings, or metadata (always `"X, Y and Z"`).
+- **Zero Bold Keywords**: All keywords must appear in natural sentence case without bolding (`**`).
+- **Meta Description**: Strictly between 135 and 140 characters, 0 hyphens, 0 `", and"`.
+- **FAQs**: Exactly 4 single-sentence questions and 4 single-sentence direct answers.
+- **Images**: Minimum 2 images (1 Top Featured + 1 Contextual Middle Image with alt text and caption).
+- **Internal Linking**: Naturally include 1 to 2 relevant internal links to existing ongravitymagazine.com articles.
 
-## 3. Informational Intent & E-E-A-T (Helpful Content / HUC)
-- Content 100% informational hoga, real reader-first value ke sath.
-- E-E-A-T standards (Experience, Expertise, Authoritativeness, Trustworthiness) follow karne hain. Koi filler ya fazool material nahi hoga.
-
-## 4. Unique Structure & Headings (Zero Template Reuse)
-- Har naye article ki outline, headings aur structure bilkul naya aur unique hoga.
-- Koi repeated template, heading style ya pattern reuse nahi hoga.
-- Headings meaningful hongi. Proper H2 aur multiple H3 subheadings.
-- **Har H2 ke baad laazmi introductory paragraphs honge**, H2 ke foran baad direct H3 nahi aayegi.
-
-## 5. Pure Human Voice & Zero AI Patterns
-- Words ki koi fixed limit nahi hogi: topic aur informational coverage ke mutabiq jitne words zaroori hon utne likhne hain.
-- Zero AI words: delve, tapestry, beacon, vital, crucial, seamlessly, testament, realm, moreover, furthermore, navigating, landscape, journey, underscores, plethora, intricate, embark, bustling, ever-evolving, etc.
-- Zero PR puffery: masterclass, zeitgeist, titan, juggernaut, earthquake, dismantled, unapologetic, unabashed, delicate equilibrium, audacity, swagger, multi-hyphenate, game-changer.
-- Zero AI sentence patterns: no "Not only X, but also Y", no "While X, Y remains", no "It is worth noting", no "At its core", no "In a world where", no "Underneath X lies Y".
-- 3 to 5 natural sentences per paragraph.
-
-## 6. Title, Formatting & Rules
-- **Title**:
-  - Length around 50–60 characters (SEO standard).
-  - **Zero Colons (`:`)**: Title mein colon (`:`) bilkul use nahi hoga.
-  - **Dynamic Keyword Placement**: Main keyword hamesha start mein nahi aayega; kabhi start mein, kabhi middle mein, kabhi end mein naturally aayega.
-- Zero Oxford commas: strictly NO `", and"` anywhere (headings, body, meta).
-- Zero bolded keywords.
-- Meta description strictly 135 to 140 characters, 0 hyphens, 0 `", and"`.
-- 4 single-sentence FAQs.
-- 2 images (Top Featured + Middle Body Image) + 1-2 internal links.
-
-## 7. Mandatory Self-Audit Before Showing Draft
-- Draft user ko dikhane se pehle khud test aur verify karna hai (keywords, zero banned words, zero AI sentence patterns, zero Oxford commas, zero colons in titles, H2 intro paragraphs).
-- Agar khud ko thoda sa bhi synthetic ya defective lage to pehle khud rewrite karna hai.
-- Perfect hone ke baad hi pura draft user ko preview karwana hai.
-- User ke "publish kardo" ke baad hi codebase mein add aur live push karna hai.
+## Step 7: Exhaustive Self-Audit Before Showing Draft
+- The agent must exhaustively inspect the entire text line-by-line before presenting anything to the user:
+  1. Scan and verify that NO Google-disliked AI words or robotic sentence patterns exist anywhere in the draft.
+  2. Verify that all user keywords and extracted organic LSI keywords are naturally placed.
+  3. Verify 0 Oxford commas, 0 colons in titles, H2 intro paragraphs exist under every H2, and meta description is exactly 135-140 characters.
+  4. Ensure no structural requirement or guidelines are missed.
+- **If even a single flaw or robotic pattern is found, REWRITE IT INTERNALLY first.** Never deliver an unvetted or subpar draft.
+- Present the verified full draft preview to the user in chat.
+- Publish to codebase and push to GitHub/Vercel ONLY after explicit user confirmation ("published kardo").
