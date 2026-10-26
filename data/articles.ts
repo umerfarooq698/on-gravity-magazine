@@ -27,6 +27,82 @@ export interface Article {
 
 export const ARTICLES: Article[] = [
   {
+    "id": "art-how-to-cook-barley",
+    "slug": "how-to-cook-barley",
+    "title": "Simple Home Methods for How to Cook Barley Right Every Time",
+    "metaTitle": "Simple Home Methods for How to Cook Barley Right Every Time | On Gravity Magazine",
+    "metaDescription": "Discover how to cook barley on your stovetop or with white rice using simple water measurements and reliable timing for dinner tonight.",
+    "excerpt": "Discover how to cook barley on your stovetop or with white rice using simple water measurements and reliable timing for dinner tonight.",
+    "category": "life-style",
+    "author": {
+      "name": "Sophia Chen",
+      "role": "Lifestyle & Food Columnist",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+    },
+    "publishedAt": "October 26, 2026",
+    "readTime": "7 min read",
+    "imageUrl": "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Dry whole grains of barley and wheat on a wooden table ready for cooking",
+    "imageCaption": "A pot of simmering whole grains requires steady heat and the right amount of liquid on your stove.",
+    "tags": [
+      "How to Cook Barley",
+      "Barley Recipes",
+      "Grain Bowls",
+      "Healthy Eating",
+      "Meal Prep"
+    ],
+    "content": [
+      "Most people who have never worked with whole grains pick up a bag of barley, dump it in a pot with random amounts of water and end up disappointed forty minutes later. Either the kernels are still hard in the center, or they have turned into a thick, sticky porridge that sticks to the bottom of the pan. That bad first batch usually convinces home cooks to stick with boxed white rice or dry noodles.",
+      "Cooking this grain is actually easy once you understand how heat and moisture work through its dense kernel. You do not need broth cubes, butter or special cookware to make a great batch. With normal tap water, a good pinch of salt and twenty-five to forty minutes on a medium burner, you can make clean, separate grains that taste great hot from the pot or cold straight out of the fridge.",
+      "## Why Most People Mess Up Their First Pot of Grain",
+      "The biggest mistake in home kitchens is treating every grain like long-grain white rice. White rice gives up its surface starch quickly and softens within fifteen minutes because its hard outer bran has been completely milled off. Barley has a thicker, denser seed structure that takes longer to let boiling water reach its starch center. If you turn off the heat too early or let the pot run dry, you get stubborn, undercooked pellets.",
+      "### Treating It Like Rice vs Boiling It Like Pasta",
+      "If you want soft grains that stay completely loose and separate, stop worrying about measuring water to the exact drop. The easiest kitchen trick is to boil it exactly like spaghetti in a big pot of rolling salted water. Pour dry kernels into boiling water, leave the lid off and taste a few grains around the thirty-minute mark. When they bite through cleanly without a chalky center, pour the whole pot into a fine colander to drain. This method washes away extra surface starch so your grains never turn into sticky paste.",
+      "### Reading the Bag Before Turning on the Stove",
+      "Take ten seconds to look at the grocery label before you pour anything into your measuring cup. Pearled grains have the outer bran polished away, which means they soften in about thirty to thirty-five minutes. Unhulled or pot barley keeps its tough bran shell intact, so it needs forty-five to fifty-five minutes of steady simmering. Grabbing the wrong bag without adjusting your cooking time will ruin your dinner schedule.",
+      "## Practical Stove Methods That Give Consistent Results",
+      "Once you know what grain you have in your cupboard, you can pick between the classic pot simmer or the faster parboiled versions sold in cardboard boxes. Both ways produce solid results if you watch the burner flame.",
+      "### The Direct Simmer and Tested Liquid Measurements",
+      "For cooks who like the absorption approach where the pot drinks up all the seasoned cooking liquid, measure your ingredients carefully. The standard barley to water ratio is one cup of dry grain to three cups of liquid. If you are learning how to cook barley pearled on a standard gas or electric burner, bring the three cups of salted liquid to a rolling boil first. Stir in your cup of dry grain, drop the heat to low, cover the saucepan with a tight lid and let it simmer for thirty-five minutes. Take the pan off the burner and let it sit covered for ten minutes before touching it with a fork. This resting step lets the trapped steam finish softening the center.",
+      "### The Quick Box Method for Busy Weeknights",
+      "If you get home late from work and need dinner on the table in fifteen minutes, quick barley is a dependable alternative. Brands like quaker barley steam and press the grain flat at the mill, which lets boiling liquid soak into the core in about ten to twelve minutes. While these parboiled grains have a softer bite than slow-simmered whole kernels, they work great in fast weeknight vegetable soups and breakfast bowls with sliced fruit.",
+      "![Cooked grains and vegetables in a ceramic bowl](https://images.unsplash.com/photo-1631311695255-8dde6bf96cb5?auto=format&fit=crop&w=1200&q=80)",
+      "*Cooked grains hold their shape when tossed with fresh vegetables, olive oil and lemon juice.*",
+      "## Easy Ways to Eat Cooked Grains Through the Week",
+      "Cooked barley holds up in a sealed container in the fridge for five full days without getting soggy or drying out. Unlike delicate brown rice or quinoa that can get mushy after twenty-four hours in sauce, this firm grain stays chewy and fresh.",
+      "### Cold Lunch Bowls with Sharp Dressings",
+      "One of the simplest barley dishes you can throw together for lunch takes five minutes. Scoop cold cooked grain into a bowl, toss it with diced cucumber, kalamata olives, red onion, crumbled feta and torn mint leaves. Pour over olive oil, red wine vinegar, salt and black pepper. The grains soak up the sharp vinegar without breaking down, making a lunch you can pack in a bag without worrying about it getting limp by noon.",
+      "### Hot Skillet Dinners and Broth Pots",
+      "For hot weeknight dinners, spoon cooked grains into a hot cast iron skillet with olive oil, sweet corn, chopped garlic and shredded leftover roast chicken. Cook until the bottom layer gets crispy, then finish with fresh lime juice. If you are making soup, stir your cooked grains into the pot during the last five minutes of cooking. Adding precooked grains prevents the soup broth from turning murky and keeps the vegetables from getting overcooked.",
+      "Testing out different barley recipes and new recipes using barley helps you use up pantry staples without wasting food. Just like learning [how to bake sourdough bread](/how-to-bake-sourdough-bread) teaches you how flour and water interact over time, learning how to prepare barley gives you a reliable base for lunches, dinners and make-ahead family meals.",
+      "## The Simple Rice Cooker Blend from Korean and Japanese Kitchens",
+      "In Korea, families mix barley with white rice every single day to make boribap, while Japanese homes call a similar blend mugi gohan. Adding barley gives regular white rice extra chew and prevents it from feeling heavy after dinner.",
+      "### Soaking Steps to Fix the Cooking Time Gap",
+      "The only challenge with this rice and barley recipe is that white rice cooks twice as fast as raw barley. To fix this gap, measure half a cup of pearled barley into a small bowl, cover it with warm tap water and let it sit on the counter for thirty minutes while you prep the rest of dinner. Drain that soaked grain, dump it into your rice cooker bowl along with one cup of rinsed white rice and fill with water to the standard two-cup white rice line on the pot.",
+      "### Serving Ideas with Greens and Fried Eggs",
+      "Hit the normal cook switch on your machine and let it run its standard cycle. When the button clicks off, let the pot rest closed for ten minutes, then fluff the warm barley rice with a rice paddle. Spoon it into deep bowls and top with sautéed spinach, sliced radish, a fried egg and a spoonful of spicy pepper paste for a complete dinner that costs very little to make."
+    ],
+    "faqs": [
+      {
+        "question": "Do you have to rinse barley before cooking it on the stove?",
+        "answer": "Rinsing dry barley in a fine mesh strainer removes surface dust and loose starch so the grains stay separate in the pot."
+      },
+      {
+        "question": "How long can you keep cooked barley in the refrigerator?",
+        "answer": "Cooked barley stays fresh and holds its firm bite for up to five days in an airtight container."
+      },
+      {
+        "question": "Why did my cooked barley turn out sticky instead of fluffy?",
+        "answer": "Cooking barley in too little water without draining excess starch makes the kernels release a thick paste that clings together."
+      },
+      {
+        "question": "Can you freeze leftover cooked barley for future meals?",
+        "answer": "Spread cooled grains on a baking sheet to freeze, then pack into airtight freezer bags for up to three months."
+      }
+    ]
+  },
+
+  {
     "id": "art-emergency-plumbing-services",
     "slug": "emergency-plumbing-services",
     "title": "How to Handle Emergency Plumbing Services Before Flooding",
