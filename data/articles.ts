@@ -33,6 +33,8 @@ export const ARTICLES: Article[] = [
     "metaTitle": "Simple Home Methods for How to Cook Barley Right Every Time | On Gravity Magazine",
     "metaDescription": "Learn how to cook barley on your stove or with white rice using simple pot water amounts, tested simmer times and practical kitchen steps.",
     "excerpt": "Learn how to cook barley on your stove or with white rice using simple pot water amounts, tested simmer times and practical kitchen steps.",
+    "featured": true,
+    "trending": true,
     "category": "life-style",
     "author": {
       "name": "Sophia Chen",

@@ -47,7 +47,7 @@ export default function HomePageFeed({ initialArticles }: HomePageFeedProps) {
   const trendingArticles = allArticles.filter((a) => a.trending);
 
   const heroMain = featuredArticles[0] || allArticles[0];
-  const sideFeed = allArticles.slice(1, 6);
+  const sideFeed = allArticles.filter((a) => a.slug !== heroMain?.slug).slice(0, 5);
   const recentArticles = allArticles.slice(0, visibleCount);
   const hasMore = allArticles.length > visibleCount;
 
