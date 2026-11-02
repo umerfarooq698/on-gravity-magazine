@@ -3,6 +3,16 @@ import { SITE_URL } from "@/lib/meta";
 
 export const revalidate = 60;
 
+function escapeXml(str: string): string {
+  if (!str) return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
 export async function GET() {
   const baseUrl = SITE_URL;
   const articles = getAllArticlesCombined();
@@ -10,33 +20,40 @@ export async function GET() {
   const itemsXml = articles
     .map((art) => {
       const link = `${baseUrl}/${art.slug}`;
-      const pubDate = new Date(art.publishedAt).toUTCString();
-      const title = art.title.replace(/&/g, "and");
+      const pubDate = art.publishedAt ? new Date(art.publishedAt).toUTCString() : new Date().toUTCString();
+      const title = (art.title || "").replace(/&/g, "and");
       const description = (art.excerpt || "").replace(/&/g, "and");
       const category = (art.category || "General").toUpperCase();
+      const author = art.author?.name || "Editorial Team";
+      const imageUrl = art.imageUrl ? escapeXml(art.imageUrl) : "";
+
+      const mediaTag = imageUrl
+        ? `      <media:content url="${imageUrl}" medium="image" />\n      <enclosure url="${imageUrl}" length="0" type="image/jpeg" />`
+        : "";
 
       return `    <item>
       <title><![CDATA[${title}]]></title>
-      <link>${link}</link>
-      <guid isPermaLink="true">${link}</guid>
+      <link>${escapeXml(link)}</link>
+      <guid isPermaLink="true">${escapeXml(link)}</guid>
       <pubDate>${pubDate}</pubDate>
       <description><![CDATA[${description}]]></description>
       <category><![CDATA[${category}]]></category>
-      <author><![CDATA[${art.author.name}]]></author>
-      <media:content url="${art.imageUrl}" medium="image" />
+      <author><![CDATA[${author}]]></author>
+${mediaTag}
     </item>`;
     })
     .join("\n");
 
   const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="/feed-style.xsl" type="text/xsl"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>On Gravity Magazine | Independent Journalism and Culture</title>
-    <link>${baseUrl}</link>
+    <link>${escapeXml(baseUrl)}</link>
     <description>Explore in-depth reporting across Tech, Celebrity, Life Style, Health, Business, News, and Food on On Gravity Magazine.</description>
     <language>en-us</language>
     <copyright>© ${new Date().getFullYear()} On Gravity Magazine. All rights reserved.</copyright>
-    <atom:link href="${baseUrl}/rss.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="${escapeXml(baseUrl)}/rss.xml" rel="self" type="application/rss+xml" />
 ${itemsXml}
   </channel>
 </rss>`;
