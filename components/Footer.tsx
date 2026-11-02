@@ -74,7 +74,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/rss.xml" className="hover:text-red-500 transition-colors" target="_blank">
+              <Link href="/rss.xml" className="hover:text-red-500 transition-colors" target="_blank" rel="nofollow noopener noreferrer">
                 RSS Feed
               </Link>
             </li>
@@ -129,7 +129,7 @@ export default function Footer() {
             <Link href="/sitemap.xml" className="hover:text-white" target="_blank">
               SITEMAP
             </Link>
-            <Link href="/rss.xml" className="hover:text-white" target="_blank">
+            <Link href="/rss.xml" className="hover:text-white" target="_blank" rel="nofollow noopener noreferrer">
               RSS FEED
             </Link>
           </div>

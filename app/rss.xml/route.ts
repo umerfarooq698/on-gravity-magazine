@@ -45,6 +45,7 @@ ${itemsXml}
     headers: {
       "Content-Type": "application/xml; charset=utf-8",
       "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+      "X-Robots-Tag": "noindex, nofollow",
     },
   });
 }

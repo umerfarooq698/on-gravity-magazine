@@ -4,5 +4,11 @@ Disallow: /admin/
 Disallow: /api/
 Disallow: /search
 Disallow: /glock-19-gen-5
+Disallow: /feed
+Disallow: /feed/
+Disallow: /feed.xml
+Disallow: /rss
+Disallow: /rss/
+Disallow: /rss.xml
 
 Sitemap: https://www.ongravitymagazine.com/sitemap.xml

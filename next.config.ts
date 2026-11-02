@@ -79,6 +79,15 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        source: "/(feed|feed/.*|feed\\.xml|rss|rss/.*|rss\\.xml)",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow",
+          },
+        ],
+      },
     ];
   },
 };

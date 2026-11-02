@@ -10,8 +10,6 @@ function getAllPublishedUrls() {
   const urls = [
     "https://www.ongravitymagazine.com/",
     "https://www.ongravitymagazine.com/sitemap.xml",
-    "https://www.ongravitymagazine.com/feed.xml",
-    "https://www.ongravitymagazine.com/rss.xml",
     "https://www.ongravitymagazine.com/about",
     "https://www.ongravitymagazine.com/category/tech",
     "https://www.ongravitymagazine.com/category/life-style",
@@ -44,8 +42,6 @@ async function pingGoogleWebSub() {
   ];
 
   const feedsToPing = [
-    "https://www.ongravitymagazine.com/feed.xml",
-    "https://www.ongravitymagazine.com/rss.xml",
     "https://www.ongravitymagazine.com/sitemap.xml"
   ];
 
