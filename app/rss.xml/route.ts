@@ -38,6 +38,7 @@ export async function GET() {
       <pubDate>${pubDate}</pubDate>
       <description><![CDATA[${description}]]></description>
       <category><![CDATA[${category}]]></category>
+      <dc:creator><![CDATA[${author}]]></dc:creator>
       <author><![CDATA[${author}]]></author>
 ${mediaTag}
     </item>`;
@@ -45,8 +46,7 @@ ${mediaTag}
     .join("\n");
 
   const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="/feed-style.xsl" type="text/xsl"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>On Gravity Magazine | Independent Journalism and Culture</title>
     <link>${escapeXml(baseUrl)}</link>
