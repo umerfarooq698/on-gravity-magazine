@@ -454,7 +454,7 @@ export const ARTICLES: Article[] = [
     },
     "publishedAt": "Oct 20, 2026",
     "readTime": "9 min read",
-    "imageUrl": "/images/kylie-jenner-fantasy-bra.webp",
+    "imageUrl": "https://www.ongravitymagazine.com/images/kylie-jenner-fantasy-bra.webp",
     "imageAlt": "Kylie Jenner wearing the diamond Fantasy Bra and sculpted white angel wings on the runway",
     "imageCaption": "Kylie Jenner wearing the custom Jacob and Co diamond Fantasy Bra and sculpted angel wings.",
     "featured": true,

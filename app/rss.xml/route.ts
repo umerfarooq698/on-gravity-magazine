@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import { getAllArticlesCombined } from "@/lib/automation";
 import { SITE_URL } from "@/lib/meta";
 
@@ -13,23 +15,116 @@ function escapeXml(str: string): string {
     .replace(/'/g, "&apos;");
 }
 
+function escapeCdata(str: string): string {
+  if (!str) return "";
+  return str.replace(/]]>/g, "]]]]><![CDATA[>");
+}
+
+function getImageMimeType(url: string): string {
+  const clean = url.split("?")[0].toLowerCase();
+  if (clean.endsWith(".webp")) return "image/webp";
+  if (clean.endsWith(".png")) return "image/png";
+  if (clean.endsWith(".gif")) return "image/gif";
+  if (clean.endsWith(".svg")) return "image/svg+xml";
+  if (clean.endsWith(".avif")) return "image/avif";
+  return "image/jpeg";
+}
+
+function resolveAbsoluteImageUrl(rawUrl: string, baseUrl: string): string {
+  if (!rawUrl) return "";
+  const trimmed = rawUrl.trim();
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+    return trimmed;
+  }
+  const cleanPath = trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+  return `${baseUrl}${cleanPath}`;
+}
+
+function getLocalFileByteLength(imageUrl: string, baseUrl: string): number | null {
+  try {
+    let pathname = "";
+    if (imageUrl.startsWith(baseUrl)) {
+      pathname = imageUrl.slice(baseUrl.length);
+    } else if (imageUrl.startsWith("/")) {
+      pathname = imageUrl;
+    } else {
+      try {
+        const parsed = new URL(imageUrl);
+        const baseParsed = new URL(baseUrl);
+        if (parsed.hostname === baseParsed.hostname) {
+          pathname = parsed.pathname;
+        } else {
+          return null;
+        }
+      } catch {
+        return null;
+      }
+    }
+
+    if (pathname) {
+      const sanitized = pathname.split("?")[0].replace(/^\/+/, "");
+      const fullPath = path.join(process.cwd(), "public", sanitized);
+      if (fs.existsSync(fullPath)) {
+        const stats = fs.statSync(fullPath);
+        if (stats.isFile() && stats.size > 0) {
+          return stats.size;
+        }
+      }
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
 export async function GET() {
   const baseUrl = SITE_URL;
-  const articles = getAllArticlesCombined();
+  const rawArticles = getAllArticlesCombined();
+
+  // Deduplicate articles by slug
+  const seenSlugs = new Set<string>();
+  const articles = rawArticles.filter((art) => {
+    if (!art || !art.slug) return false;
+    const cleanSlug = art.slug.trim();
+    if (seenSlugs.has(cleanSlug)) return false;
+    seenSlugs.add(cleanSlug);
+    return true;
+  });
+
+  // Sort articles by publication date descending (newest first)
+  articles.sort((a, b) => {
+    const timeA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+    const timeB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+    return timeB - timeA;
+  });
 
   const itemsXml = articles
     .map((art) => {
       const link = `${baseUrl}/${art.slug}`;
-      const pubDate = art.publishedAt ? new Date(art.publishedAt).toUTCString() : new Date().toUTCString();
-      const title = (art.title || "").replace(/&/g, "and");
-      const description = (art.excerpt || "").replace(/&/g, "and");
-      const category = (art.category || "General").toUpperCase();
-      const author = art.author?.name || "Editorial Team";
-      const imageUrl = art.imageUrl ? escapeXml(art.imageUrl) : "";
+      const pubDateObj = art.publishedAt ? new Date(art.publishedAt) : null;
+      const pubDate =
+        pubDateObj && !isNaN(pubDateObj.getTime())
+          ? pubDateObj.toUTCString()
+          : new Date("2026-09-01T00:00:00Z").toUTCString();
 
-      const mediaTag = imageUrl
-        ? `      <media:content url="${imageUrl}" medium="image" />\n      <enclosure url="${imageUrl}" length="0" type="image/jpeg" />`
-        : "";
+      const title = escapeCdata((art.title || "").replace(/&/g, "and"));
+      const description = escapeCdata((art.excerpt || "").replace(/&/g, "and"));
+      const category = escapeCdata((art.category || "General").toUpperCase());
+      const author = escapeCdata(art.author?.name || "Editorial Team");
+
+      const resolvedImage = resolveAbsoluteImageUrl(art.imageUrl || "", baseUrl);
+      const escapedImageUrl = resolvedImage ? escapeXml(resolvedImage) : "";
+      const mimeType = resolvedImage ? getImageMimeType(resolvedImage) : "image/jpeg";
+      const localByteLength = resolvedImage ? getLocalFileByteLength(resolvedImage, baseUrl) : null;
+
+      let mediaXml = "";
+      if (escapedImageUrl) {
+        if (localByteLength !== null && localByteLength > 0) {
+          mediaXml = `      <media:content url="${escapedImageUrl}" medium="image" type="${mimeType}" />\n      <enclosure url="${escapedImageUrl}" length="${localByteLength}" type="${mimeType}" />`;
+        } else {
+          mediaXml = `      <media:content url="${escapedImageUrl}" medium="image" type="${mimeType}" />`;
+        }
+      }
 
       return `    <item>
       <title><![CDATA[${title}]]></title>
@@ -40,7 +135,7 @@ export async function GET() {
       <category><![CDATA[${category}]]></category>
       <dc:creator><![CDATA[${author}]]></dc:creator>
       <author><![CDATA[${author}]]></author>
-${mediaTag}
+${mediaXml}
     </item>`;
     })
     .join("\n");
