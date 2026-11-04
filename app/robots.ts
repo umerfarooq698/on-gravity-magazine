@@ -15,15 +15,12 @@ export default function robots(): MetadataRoute.Robots {
           "/api/",
           "/search",
           "/glock-19-gen-5",
-          "/feed",
-          "/feed/",
-          "/feed.xml",
-          "/rss",
-          "/rss/",
-          "/rss.xml",
         ],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: [
+      `${baseUrl}/sitemap.xml`,
+      `${baseUrl}/rss.xml`,
+    ],
   };
 }
