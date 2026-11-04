@@ -5,6 +5,14 @@ import { SITE_URL } from "@/lib/meta";
 
 export const revalidate = 3600;
 
+function parseUtcDate(dateStr: string): Date {
+  const clean = (dateStr || "").trim();
+  if (!clean) return new Date("2026-09-01T00:00:00Z");
+  const d = new Date(clean.endsWith("UTC") ? clean : `${clean} UTC`);
+  if (!isNaN(d.getTime())) return d;
+  return new Date(clean);
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_URL;
 
@@ -27,9 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (seenUrls.has(url)) continue;
     seenUrls.add(url);
 
-    const pubDate = art.publishedAt ? new Date(art.publishedAt) : null;
-    const lastModified =
-      pubDate && !isNaN(pubDate.getTime()) ? pubDate : new Date("2026-09-01T00:00:00Z");
+    const lastModified = parseUtcDate(art.publishedAt);
 
     articleEntries.push({
       url,
@@ -80,7 +86,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     );
 
     const catLatestDate = catArticles.reduce((latest, art) => {
-      const d = art.publishedAt ? new Date(art.publishedAt) : null;
+      const d = art.publishedAt ? parseUtcDate(art.publishedAt) : null;
       if (!d || isNaN(d.getTime())) return latest;
       return d > latest ? d : latest;
     }, STATIC_PAGES_LASTMOD);

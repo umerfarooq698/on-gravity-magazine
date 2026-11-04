@@ -20,6 +20,14 @@ function escapeCdata(str: string): string {
   return str.replace(/]]>/g, "]]]]><![CDATA[>");
 }
 
+function parseUtcDate(dateStr: string): Date {
+  const clean = (dateStr || "").trim();
+  if (!clean) return new Date("2026-09-01T00:00:00Z");
+  const d = new Date(clean.endsWith("UTC") ? clean : `${clean} UTC`);
+  if (!isNaN(d.getTime())) return d;
+  return new Date(clean);
+}
+
 function getImageMimeType(url: string): string {
   const clean = url.split("?")[0].toLowerCase();
   if (clean.endsWith(".webp")) return "image/webp";
@@ -93,15 +101,15 @@ export async function GET() {
 
   // Sort articles by publication date descending (newest first)
   articles.sort((a, b) => {
-    const timeA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
-    const timeB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+    const timeA = a.publishedAt ? parseUtcDate(a.publishedAt).getTime() : 0;
+    const timeB = b.publishedAt ? parseUtcDate(b.publishedAt).getTime() : 0;
     return timeB - timeA;
   });
 
   const itemsXml = articles
     .map((art) => {
       const link = `${baseUrl}/${art.slug}`;
-      const pubDateObj = art.publishedAt ? new Date(art.publishedAt) : null;
+      const pubDateObj = art.publishedAt ? parseUtcDate(art.publishedAt) : null;
       const pubDate =
         pubDateObj && !isNaN(pubDateObj.getTime())
           ? pubDateObj.toUTCString()

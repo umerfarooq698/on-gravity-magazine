@@ -31,6 +31,14 @@ export async function generateStaticParams() {
   }));
 }
 
+function toIsoDate(dateStr: string): string {
+  const clean = (dateStr || "").trim();
+  if (!clean) return "2026-09-01T00:00:00.000Z";
+  const d = new Date(clean.endsWith("UTC") ? clean : `${clean} UTC`);
+  if (!isNaN(d.getTime())) return d.toISOString();
+  return new Date(clean).toISOString();
+}
+
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
 }
@@ -78,7 +86,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
         },
       ],
       type: "article",
-      publishedTime: article.publishedAt,
+      publishedTime: toIsoDate(article.publishedAt),
       authors: [article.author.name],
     },
     twitter: {
@@ -196,8 +204,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     },
     "headline": article.title.replace(/&/g, "and"),
     "image": [article.imageUrl],
-    "datePublished": article.publishedAt,
-    "dateModified": article.publishedAt,
+    "datePublished": toIsoDate(article.publishedAt),
+    "dateModified": toIsoDate(article.publishedAt),
     "author": {
       "@type": "Person",
       "name": article.author.name,
