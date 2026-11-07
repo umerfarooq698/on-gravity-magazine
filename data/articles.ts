@@ -42,8 +42,8 @@ export const ARTICLES: Article[] = [
     "publishedAt": "November 7, 2026",
     "readTime": "11 min read",
     "imageUrl": "https://www.ongravitymagazine.com/images/adam-sandler.jpg",
-    "imageAlt": "Adam Sandler attending a red carpet premiere and industry celebration",
-    "imageCaption": "Adam Sandler turned comedy and authentic personal style into one of Hollywood's most durable independent fortunes.",
+    "imageAlt": "Adam Sandler on the red carpet with his wife Jackie and daughters Sunny and Sadie",
+    "imageCaption": "Adam Sandler with his family—wife Jackie and daughters Sunny and Sadie—attending a premiere.",
     "featured": true,
     "trending": true,
     "tags": [
